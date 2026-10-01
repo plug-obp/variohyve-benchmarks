@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1790882225124,
+  "lastUpdate": 1790882554066,
   "repoUrl": "https://github.com/plug-obp/variohyve",
   "entries": {
     "VarioHyve / shared-name-bootstrap": [
@@ -40,6 +40,48 @@ window.BENCHMARK_DATA = {
           {
             "name": "vh.benchmarks.VisitorSemanticsBenchmark.methodSend",
             "value": 12.722518765341244,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ciprian.teodorov@gmail.com",
+            "name": "Ciprian Teodorov",
+            "username": "teodorov"
+          },
+          "committer": {
+            "email": "ciprian.teodorov@gmail.com",
+            "name": "Ciprian Teodorov",
+            "username": "teodorov"
+          },
+          "distinct": true,
+          "id": "84b3421c7e2322245e4a413eba1df191c8d939a4",
+          "message": "Use current Node 24 GitHub Actions",
+          "timestamp": "2026-10-01T21:20:45+02:00",
+          "tree_id": "6bb31aea3bb62bae90f08f8cf9da65b00d1c1279",
+          "url": "https://github.com/plug-obp/variohyve/commit/84b3421c7e2322245e4a413eba1df191c8d939a4"
+        },
+        "date": 1790882553594,
+        "tool": "jmh",
+        "benches": [
+          {
+            "name": "vh.benchmarks.VisitorSemanticsBenchmark.closureSend",
+            "value": 10.673541872582955,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.VisitorSemanticsBenchmark.literal",
+            "value": 10.562708353431168,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.VisitorSemanticsBenchmark.methodSend",
+            "value": 12.975487073248804,
             "unit": "us/op",
             "extra": "iterations: 5\nforks: 1\nthreads: 1"
           }
