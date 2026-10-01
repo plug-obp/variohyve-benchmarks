@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1790883636280,
+  "lastUpdate": 1790892460420,
   "repoUrl": "https://github.com/plug-obp/variohyve",
   "entries": {
     "VarioHyve / shared-name-bootstrap": [
@@ -166,6 +166,48 @@ window.BENCHMARK_DATA = {
           {
             "name": "vh.benchmarks.VisitorSemanticsBenchmark.methodSend",
             "value": 16.409162790205578,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ciprian.teodorov@gmail.com",
+            "name": "Ciprian Teodorov",
+            "username": "teodorov"
+          },
+          "committer": {
+            "email": "ciprian.teodorov@gmail.com",
+            "name": "Ciprian Teodorov",
+            "username": "teodorov"
+          },
+          "distinct": true,
+          "id": "d474f26c185702565db886ab2c7befb208313413",
+          "message": "Add federated composition bootstrap example",
+          "timestamp": "2026-10-02T00:05:35+02:00",
+          "tree_id": "f3f23de2ab04f481e02a9b98cf3437b6815200bc",
+          "url": "https://github.com/plug-obp/variohyve/commit/d474f26c185702565db886ab2c7befb208313413"
+        },
+        "date": 1790892459490,
+        "tool": "jmh",
+        "benches": [
+          {
+            "name": "vh.benchmarks.VisitorSemanticsBenchmark.closureSend",
+            "value": 13.90846015545184,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.VisitorSemanticsBenchmark.literal",
+            "value": 13.708937879253043,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.VisitorSemanticsBenchmark.methodSend",
+            "value": 17.031262303021947,
             "unit": "us/op",
             "extra": "iterations: 5\nforks: 1\nthreads: 1"
           }
