@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1790882984335,
+  "lastUpdate": 1790883636280,
   "repoUrl": "https://github.com/plug-obp/variohyve",
   "entries": {
     "VarioHyve / shared-name-bootstrap": [
@@ -124,6 +124,48 @@ window.BENCHMARK_DATA = {
           {
             "name": "vh.benchmarks.VisitorSemanticsBenchmark.methodSend",
             "value": 12.404548481604223,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ciprian.teodorov@gmail.com",
+            "name": "Ciprian Teodorov",
+            "username": "teodorov"
+          },
+          "committer": {
+            "email": "ciprian.teodorov@gmail.com",
+            "name": "Ciprian Teodorov",
+            "username": "teodorov"
+          },
+          "distinct": true,
+          "id": "c4222e5c94812f125f912362b33b47088b38a1f4",
+          "message": "Publish JUnit reports on benchmark dashboard",
+          "timestamp": "2026-10-01T21:38:45+02:00",
+          "tree_id": "886eb38b05fad60b420fbe26c6dd6966581421fd",
+          "url": "https://github.com/plug-obp/variohyve/commit/c4222e5c94812f125f912362b33b47088b38a1f4"
+        },
+        "date": 1790883635846,
+        "tool": "jmh",
+        "benches": [
+          {
+            "name": "vh.benchmarks.VisitorSemanticsBenchmark.closureSend",
+            "value": 13.610199920561467,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.VisitorSemanticsBenchmark.literal",
+            "value": 13.728632194763808,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.VisitorSemanticsBenchmark.methodSend",
+            "value": 16.409162790205578,
             "unit": "us/op",
             "extra": "iterations: 5\nforks: 1\nthreads: 1"
           }
