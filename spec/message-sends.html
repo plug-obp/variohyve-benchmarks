@@ -1,0 +1,585 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Message Sends - VarioHyve Language Specification</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-0392ca55.css">
+        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/vh-2de7eb16.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-e880608a.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-da21433a.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">VarioHyve Language Specification</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="message-sends"><a class="header" href="#message-sends">Message Sends</a></h1>
+<p>All computation in VarioHyve is expressed through message sends. There are no operators, no field access, no function calls — only messages dispatched to receivers.</p>
+<h2 id="implicit-message-send"><a class="header" href="#implicit-message-send">Implicit Message Send</a></h2>
+<p>A bare name is an implicit zero-argument send. Parentheses request invocation at
+the written arity; both forms use declaration-relative lexical lookup:</p>
+<pre><code class="language-vh">x           // ordinary x/0 send: execute an accessor or method
+x()         // invoke zero-argument behavior named x
+x!(5)       // invoke x!/1; a synthesized setter stores and returns 5
+foo(a, b)   // invoke foo/2 through a method or eligible accessor result
+</code></pre>
+<p><code>x</code> and <code>x()</code> remain different forms. For a method <code>x { 7 }</code>, either executes
+that method once and returns <code>7</code>. For a slot containing <code>fun { 7 }</code>, bare <code>x</code>
+returns the lambda and <code>x()</code> invokes it. A method returning a callable does not
+implicitly invoke its result. This distinction lets <code>Factory</code> return a class
+object and <code>Factory()</code> invoke its zero-argument factory.</p>
+<h2 id="self-dispatch-message-send-leading-dot"><a class="header" href="#self-dispatch-message-send-leading-dot">Self-Dispatch Message Send (Leading Dot)</a></h2>
+<p>A message prefixed with a bare <code>.</code> — no expression to the left — sends the message directly to <code>self</code>, bypassing the lexical chain entirely:</p>
+<pre><code class="language-vh">.x          // send 'x' to self — inheritance chain only
+.x!(5)      // send 'x!(5)' to self — setter, returns 5
+.move(1, 2) // send 'move(1,2)' to self
+</code></pre>
+<p>This is the <code>#SelfMessageSendExp</code> grammar rule. It is semantically distinct from an implicit message send:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Form</th><th>Grammar rule</th><th>Lookup</th></tr>
+</thead>
+<tbody>
+<tr><td><code>x</code></td><td><code>#ImplicitMessageSendExp</code></td><td>Locals → lexical chain (enclosing objects) → self’s class hierarchy</td></tr>
+<tr><td><code>.x</code></td><td><code>#SelfMessageSendExp</code></td><td>Self’s class hierarchy <strong>only</strong> — lexical chain skipped</td></tr>
+<tr><td><code>self.x</code></td><td><code>#MessageSendExp</code></td><td>Self’s class hierarchy only — identical to <code>.x</code></td></tr>
+</tbody>
+</table>
+</div>
+<p><code>.x</code> and <code>self.x</code> are fully equivalent. <strong>Prefer <code>self.x</code> for clarity</strong> — the explicit receiver makes intent obvious, especially in code with nested classes. Use the leading-dot shorthand only in tightly scoped contexts where <code>self</code> is unambiguously clear.</p>
+<p>The distinction between <code>x</code> and <code>.x</code> is <strong>not stylistic</strong> — it matters inside nested classes where the lexical chain reaches into an enclosing object:</p>
+<pre><code class="language-vh">class Outer {
+    x = 0
+    class Inner {
+        process() {
+            x!(5)      // lexical lookup → finds Outer's x! → mutates Outer's slot
+            .x!(5)     // self-dispatch only → Inner has no x → doesNotUnderstand
+            self.x!(5) // identical to .x!(5), explicit form
+        }
+    }
+}
+</code></pre>
+<h2 id="explicit-message-send-dot"><a class="header" href="#explicit-message-send-dot">Explicit Message Send (Dot)</a></h2>
+<p>The <code>.</code> operator sends a message to an explicit receiver. The same distinction
+between ordinary sends and invocation applies:</p>
+<pre><code class="language-vh">p.x          // ordinary x/0 send: return the accessor/method result
+p.x()        // invoke zero-argument behavior named x on p
+p.x!(5)      // send 'x!(5)' to p — setter, returns 5
+p.move(1, 2) // send 'move(1,2)' to p
+</code></pre>
+<p>Dot-chains evaluate left to right. Each message is sent to the result of the previous:</p>
+<pre><code class="language-vh">a.b.c(3)
+// equivalent to:
+// temp = a.b
+// temp.c(3)
+</code></pre>
+<p>This means <code>a.b.c(3)</code> sends <code>b</code> to <code>a</code>, then sends <code>c(3)</code> to whatever <code>b</code> returned. If <code>b</code> returns a different object, <code>c(3)</code> goes to that object — not to <code>a</code>.</p>
+<h3 id="no-operator-precedence"><a class="header" href="#no-operator-precedence">No Operator Precedence</a></h3>
+<p>Because VarioHyve has no binary operators — only message sends — there is no operator precedence. Dot-chains evaluate strictly left to right:</p>
+<pre><code class="language-vh">3.plus(4).times(2)          // (3 + 4) * 2 = 14, not 3 + (4 * 2)
+a.greaterThan(b).and(c.lt(d))  // explicit grouping required
+</code></pre>
+<p>To control evaluation order, use parentheses to nest receiver expressions:</p>
+<pre><code class="language-vh">3.plus(4.times(2))          // 3 + (4 * 2) = 11
+</code></pre>
+<p>This is a direct consequence of the “everything is a message send” principle: arithmetic expressions are just dot-chains, and all dot-chains evaluate left to right. The planned <a href="./future.html#operators-and-control-structures">extensible parser</a> will introduce operator syntax with conventional precedence rules, desugaring back to message sends.</p>
+<h2 id="dispatch-rules"><a class="header" href="#dispatch-rules">Dispatch Rules</a></h2>
+<p>Invocation selects an operation by name and arity. Native methods, stored
+lambdas, stored native callable objects and member-class factories can supply
+the same invocation selector. Their bodies retain their own receiver, lexical
+scope and return home; invocation equivalence does not change those contexts.</p>
+<p>All these routes consist of message sends: either the direct <code>name/N</code> operation,
+or a generated <code>name/0</code> accessor followed by <code>apply/N</code> on its result. Locals and
+parameters also have generated accessor messages on backend-private activation
+objects. The same message protocol applies throughout. The VM may implement a
+generated accessor’s known behavior with an internal slot primitive and may
+inspect member declaration metadata for eligibility. These are implementations
+of the message protocol, not additional source-level ways to access values.</p>
+<h3 id="candidate-selection"><a class="header" href="#candidate-selection">Candidate Selection</a></h3>
+<p>At each searched lexical scope or hierarchy contribution for <code>name/N</code>:</p>
+<ol>
+<li>Prefer a directly matching operation. At <code>N = 0</code>, a generated getter is
+considered under the accessor rule below rather than accepted as the operation.</li>
+<li>Otherwise consider the effective generated <code>name/0</code> accessor. A storage
+accessor qualifies only when its value supplies exactly <code>apply/N</code>. A
+member-class accessor qualifies through its declaration’s factory signatures.</li>
+<li>On a miss, continue to the next scope or contribution. Exhausting lookup
+produces a missing-selector diagnostic.</li>
+</ol>
+<p>Implicit invocation searches declaration-relative lexical scopes before a self
+invocation. Explicit native invocation searches contributions in dispatch order:
+owned contribution, direct mixins left-to-right, then the superclass chain.
+<code>super</code> begins after the executing contribution’s exact application occurrence.
+The candidate rule is identical at every level, so an own callable slot can beat
+an inherited exact method.</p>
+<p>For implicit invocation, a declaration-relative scope first establishes
+eligibility: it declares the requested operation, or it declares <code>name/0</code> whose
+effective accessor on that scope’s receiver is generated and qualifies at the
+requested arity. Then dispatch the original <code>name/N</code> invocation normally on
+that receiver, regardless of which kind of declaration established eligibility.
+An overriding <code>name/N</code> method can replace an eligible stored callable or member
+factory; an eligible callable accessor can replace a method. The winning behavior
+keeps its own receiver, declaration origin and lexical context. A candidate that
+fails eligibility continues outward before any self invocation; an unrelated
+method on an inner receiver cannot capture an eligible outer dependency.</p>
+<p>An overridden generated getter is not eligible: do not execute the overriding
+method and do not inspect its backing storage. Getter masking persists down the
+hierarchy, even if the overriding getter does not supply the requested invocation
+arity. An ordinary zero-argument method directly matches <code>name/0</code>, but is not
+executed to discover behavior at other arities. Explicitly retrieve its result
+when that is intended, for example <code>obj.name.apply(arg)</code>.</p>
+<p>For native values, capability selection looks for an exact <code>apply/N</code> method
+through the value’s hierarchy, or checks a lambda’s declared arity. It does not
+recursively treat a stored <code>apply</code> value as an <code>apply/N</code> method. An Alien value
+returned by an eligible generated accessor can qualify through its adapter’s
+effect-free <code>apply/N</code> selection; <code>ForeignCallable</code> remains usable. A send whose explicit
+receiver is Alien selects the requested foreign name/arity directly. It does not
+speculatively invoke a foreign <code>name/0</code> operation to discover a callable.</p>
+<p>Receiver and arguments are evaluated once, left-to-right, before selection.
+Retain an eligible generated accessor’s result and selected callable operation
+through virtual dispatch. Revisiting it uses this retained result,
+including any selected foreign operation, rather than repeating the read or
+resolution. A wrong-arity or non-callable value is a miss; an uninitialized read
+or a selected operation’s failure is an error. Neither errors nor non-local
+control flow cause lookup to resume or effects to replay. Foreign selection failures are errors,
+not selector misses. Eligibility precedes virtual dispatch: its uninitialized
+read or foreign selection failure remains an error even when that receiver has
+an overriding method at the requested arity.</p>
+<h3 id="invocation-at-arity-zero"><a class="header" href="#invocation-at-arity-zero">Invocation at Arity Zero</a></h3>
+<p><code>name()</code> uses the same candidate rule as every other invocation:</p>
+<ul>
+<li>A zero-argument method executes once and returns its result.</li>
+<li>A generated storage getter supplies a candidate only if its stored value has
+<code>apply/0</code>; invoke that operation once.</li>
+<li>An eligible member-class accessor supplies its class’s <code>apply/0</code>.</li>
+</ul>
+<p>Bare <code>name</code> remains an ordinary <code>name/0</code> send and returns the accessor or method
+result without testing callability. Consequently replacing a stored callable
+with a computed getter preserves bare reads but may change invocation behavior.
+Accessor overrides are legal; ordinary methods do not acquire generated-accessor
+semantics.</p>
+<pre><code class="language-vh">{
+    method { 7 }
+    thunk = fun { 7 };
+    returnsThunk { fun { 7 } }
+}
+</code></pre>
+<p>For this object, <code>method</code> and <code>method()</code> return <code>7</code>; <code>thunk</code> returns the lambda
+and <code>thunk()</code> returns <code>7</code>; <code>returnsThunk()</code> returns its lambda without invoking
+it. Write <code>returnsThunk().apply()</code> to perform both operations explicitly.</p>
+<h3 id="member-class-invocation"><a class="header" href="#member-class-invocation">Member-Class Invocation</a></h3>
+<p>The generated accessor for a member class advertises callable arities from its
+selected declaration: the constructor’s arity and any owned <code>factory apply</code>
+methods. Flat metaclasses import no superclass or mixin factories, so neither
+contributor lookup nor class realization is needed to discover these arities.
+An overriding member declaration supplies its own signatures. An ordinary method
+overriding the accessor has no generated-accessor metadata.</p>
+<pre><code class="language-vh">class Widget(x, y) {
+    factory apply(x) { new(x, x) }
+}
+</code></pre>
+<p><code>Widget</code> is an ordinary access returning the class object. <code>Widget(1)</code> and
+<code>Widget(1, 2)</code> match the advertised arities. <code>Widget()</code> is a miss at this
+declaration, without realizing it, and lookup may continue elsewhere.</p>
+<p>For implicit invocation, metadata eligibility first selects the lexical receiver.
+If virtual dispatch selects a method instead of the member factory, the member
+remains unrealized. When final dispatch selects the member factory, commit to that candidate and
+realize its class through the normal cache keyed by enclosing receiver and
+declaration occurrence. Class definition may execute computations to obtain
+mixin and superclass receivers: direct mixin targets are evaluated left-to-right,
+followed by the superclass target. Their
+results identify the actual contributors and must be native class values,
+excluding metaclasses. Routed
+constructor arguments remain deferred until instance construction. Realization
+failures are cached and propagated, not converted into arity misses.</p>
+<p>Thus no rejected member-class candidate executes definition clauses, but the
+selected member class can use ordinary capability-bearing computations in its
+definition. See the <a href="../../design-notes/unified-callable-lookup.html">accepted design</a>.</p>
+<h3 id="complete-dispatch-walkthrough"><a class="header" href="#complete-dispatch-walkthrough">Complete Dispatch Walkthrough</a></h3>
+<p>Given an object with this shape:</p>
+<pre><code class="language-vh">{
+    slot1 = 32;
+    slot2 = fun(x) { x.plus(slot1) };
+    method1(a) { a.plus(slot1) }
+    answer { 7 }
+    class NoArg { }
+    class WithArgs(x, y) { }
+}
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Expression</th><th>Selected behavior</th><th>Result</th></tr>
+</thead>
+<tbody>
+<tr><td><code>a.slot1</code></td><td>Ordinary generated getter</td><td><code>32</code></td></tr>
+<tr><td><code>a.slot1()</code></td><td>No callable candidate</td><td>Missing-selector error</td></tr>
+<tr><td><code>a.slot2</code></td><td>Ordinary generated getter</td><td>The lambda</td></tr>
+<tr><td><code>a.slot2(3)</code></td><td>Stored lambda’s <code>apply/1</code></td><td><code>35</code></td></tr>
+<tr><td><code>a.slot2()</code></td><td>No candidate at arity zero</td><td>Missing-selector error</td></tr>
+<tr><td><code>a.method1</code></td><td>No <code>method1/0</code></td><td>Missing-selector error</td></tr>
+<tr><td><code>a.method1(2)</code></td><td>Exact <code>method1/1</code></td><td><code>34</code></td></tr>
+<tr><td><code>a.answer()</code></td><td>Exact <code>answer/0</code>, once</td><td><code>7</code></td></tr>
+<tr><td><code>a.NoArg</code></td><td>Cached member-class accessor</td><td>Class object</td></tr>
+<tr><td><code>a.NoArg()</code></td><td>Declared class <code>apply/0</code></td><td>Instance</td></tr>
+<tr><td><code>a.WithArgs(1, 2)</code></td><td>Declared class <code>apply/2</code></td><td>Instance</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="reading-convention"><a class="header" href="#reading-convention">Reading Convention</a></h3>
+<p>Parentheses request invocation; bare selectors request ordinary zero-argument sends:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Syntax form</th><th>Meaning</th><th>Example</th></tr>
+</thead>
+<tbody>
+<tr><td><code>name</code></td><td>ordinary send — lexical lookup, then run the accessor/method</td><td><code>count</code>, <code>describe</code>, <code>Factory</code></td></tr>
+<tr><td><code>name()</code></td><td>invoke zero-argument behavior once</td><td><code>Factory()</code>, <code>thunk()</code></td></tr>
+<tr><td><code>name(args)</code></td><td>invoke matching method or callable accessor result</td><td><code>move(1, 2)</code>, <code>Factory(x, y)</code></td></tr>
+<tr><td><code>name!(v)</code></td><td>invoke setter; generated setters return <strong>v</strong>, custom methods return their own result</td><td><code>x!(5)</code></td></tr>
+<tr><td><code>.name</code></td><td>self-dispatch — skip lexical chain, send to self’s class hierarchy</td><td><code>.count</code>, <code>.describe</code></td></tr>
+<tr><td><code>.name(args)</code></td><td>self-dispatch with args</td><td><code>.move(1, 2)</code></td></tr>
+<tr><td><code>self.name</code></td><td>same as <code>.name</code> — explicit form, prefer for clarity</td><td><code>self.count</code></td></tr>
+<tr><td><code>outer C.name</code></td><td>qualified outer-dispatch — select receiver for lexically enclosing declaration C</td><td><code>outer Counter.count</code>, <code>outer Module.log(x)</code></td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Receiver origins and selector names are distinct.</strong> <code>self</code> denotes the current
+native receiver, while <code>alien.self</code> is an ordinary selector sent through the
+Alien boundary. Native receivers have no synthesized or user-defined <code>self</code>
+selector. Using <code>self</code> as a value passed to another object remains supported.</p>
+<p><strong>Native <code>outer</code> is a qualified lexical receiver.</strong> <code>outer C</code> selects
+the ordinary receiver associated with the nearest lexically enclosing declaration
+named <code>C</code>. A subsequent <code>.message</code> uses normal dispatch. Bare <code>outer</code> and
+native <code>expr.outer</code> are invalid; no universal parent getter or activation mirror
+is provided. Explicit Alien selectors <code>outer</code>, <code>self</code> and <code>super</code> are eligible
+for foreign dispatch and have only the meanings supplied by that adapter.
+See <a href="./name-resolution.html#outer--qualified-lexical-receiver">Name Resolution</a>.</p>
+<p>A normal top-level class has an empty top activation as its lexical base, with
+no enclosing application scope. Its <code>outer</code> path must not expose the
+instantiation service or an implicitly injected platform. External capabilities
+enter that module through its declared constructor arguments; see
+<a href="./program-structure.html#top-level-classes-and-instantiation">Program Structure</a>.
+Explicit tooling contexts can supply other lexical objects for evaluation;
+ordinary scope and dispatch rules apply to those objects as well.</p>
+<p>For the <code>=</code> grammar sugar forms of all setter variants, see <a href="./syntactic-sugar.html#-setter-sugar">Syntactic Sugar — <code>=</code> Setter Sugar</a>.</p>
+<p>Classes implement <code>apply</code> for construction (the default <code>apply</code> delegates to <code>new</code>). Lambdas implement <code>apply</code> for invocation. Any user object can implement <code>apply</code> to become callable. See <a href="./slots.html#the-apply-protocol-and-callable-objects">Slots and Accessors</a>.</p>
+<h2 id="cascade-"><a class="header" href="#cascade-">Cascade (<code>..</code>)</a></h2>
+<p>The cascade operator <code>..</code> sends one or more messages to the <strong>same receiver</strong>,
+ignoring intermediate return values. The receiver is evaluated once. Arms execute
+left-to-right, with each arm’s arguments evaluated immediately before that send.
+Each arm preserves ordinary bare-send versus parenthesized-invocation behavior,
+and can use canonical messages or assignment sugar:</p>
+<pre><code class="language-vh">p..x!(2)..y!(3)..move(1, 1)
+</code></pre>
+<p>Its evaluation is equivalent to saving the receiver and sequencing sends (the
+actual lowering uses a private accessor name that cannot collide with source names):</p>
+<pre><code class="language-vh">var receiver = p;
+receiver.x!(2);       // return value discarded
+receiver.y!(3);       // return value discarded
+receiver.move(1, 1)   // the cascade expression returns the result of the last send
+</code></pre>
+<p>The key difference from dot-chains:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Expression</th><th>Receiver of each message</th></tr>
+</thead>
+<tbody>
+<tr><td><code>p.x!(2).y!(3)</code></td><td><code>p</code> receives <code>x!(2)</code>, then <strong>the result of <code>x!(2)</code></strong> receives <code>y!(3)</code></td></tr>
+<tr><td><code>p..x!(2)..y!(3)</code></td><td><code>p</code> receives <code>x!(2)</code>, then <strong><code>p</code></strong> receives <code>y!(3)</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>Cascade does not depend on intermediate results. Generated setters return the
+new value, so <code>p.x!(2).y!(3)</code> sends <code>y!(3)</code> to <code>2</code>. Custom setters may return
+anything; cascades still send every arm to the saved receiver. A failing arm or
+non-local return stops the cascade before later arms or their arguments execute.
+Earlier effects are neither undone nor replayed.</p>
+<h2 id="cascade-return-value"><a class="header" href="#cascade-return-value">Cascade Return Value</a></h2>
+<p>The cascade expression evaluates to the result of the <strong>last</strong> message in the chain:</p>
+<pre><code class="language-vh">result = (p..x(2)..y(3)..describe)
+// result is whatever p.describe returns
+</code></pre>
+<p>Thus <code>p..a..b..c</code> returns the last send’s result. To return the receiver, write
+it explicitly after the cascade, for example <code>p..a..b; p</code>.</p>
+<h2 id="implicit-receiver-cascade-leading-"><a class="header" href="#implicit-receiver-cascade-leading-">Implicit-Receiver Cascade (Leading <code>..</code>)</a></h2>
+<p>A cascade prefixed with <code>..</code> — no expression to the left — sends all messages directly to <code>self</code>. This is the <code>#SelfCascadeExp</code> grammar rule:</p>
+<pre><code class="language-vh">..x!(2)..y!(3)..move(1, 1)
+// equivalent to:
+self..x!(2)..y!(3)..move(1, 1)
+</code></pre>
+<p>Each message is dispatched through the inheritance chain only — the lexical chain is not consulted. <strong>Prefer the explicit <code>self..</code> form for clarity.</strong></p>
+<pre><code class="language-vh">class Point {
+    x = 0;
+    y = 0;
+    reset() {
+        ..x!(0)..y!(0)   // sends x!(0) then y!(0) to self
+    }
+}
+</code></pre>
+<h3 id="mnp-vs-mnp"><a class="header" href="#mnp-vs-mnp"><code>m..n..p</code> vs <code>..m..n..p</code></a></h3>
+<p>These two cascade forms are <strong>semantically different</strong>:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Expression</th><th>Grammar rule</th><th>Cascade receiver</th></tr>
+</thead>
+<tbody>
+<tr><td><code>m..n..p</code></td><td><code>#CascadeExp</code> (receiver = <code>#ImplicitMessageSendExp</code> <code>m</code>)</td><td>The <strong>result</strong> of evaluating <code>m</code> via lexical lookup</td></tr>
+<tr><td><code>..m..n..p</code></td><td><code>#SelfCascadeExp</code></td><td><code>self</code> directly — no lexical chain consulted</td></tr>
+</tbody>
+</table>
+</div>
+<p>In <code>m..n..p</code>, <code>m</code> is evaluated first through the full lexical chain; whatever it returns becomes the cascade receiver for <code>n</code> and <code>p</code>. In <code>..m..n..p</code> all three messages go to <code>self</code>:</p>
+<pre><code class="language-vh">handler..notify..cleanup    // evaluate handler via lexical chain, cascade on its result
+..notify..cleanup           // both messages go to self directly
+</code></pre>
+<h2 id="combining-dot-and-cascade"><a class="header" href="#combining-dot-and-cascade">Combining Dot and Cascade</a></h2>
+<p>Dot and cascade can be mixed. The cascade receiver is the expression to the left of the first <code>..</code>:</p>
+<pre><code class="language-vh">a.b..c(1)..d(2)
+// cascade receiver is (a.b)
+// sends c(1) to (a.b), discards result
+// sends d(2) to (a.b), returns result
+</code></pre>
+<p>The grammar does <strong>not</strong> accept an unparenthesized dot after a cascade:</p>
+<pre><code class="language-vh">a..b..c.d       // parse error
+(a..b..c).d     // send d to the last cascade result
+a.b..c..d      // save a.b, then send c and d to that receiver
+</code></pre>
+<p>This follows from <code>expression</code>: a cascade has a <code>nonCascadeExpr</code> receiver and
+message arms, while a dot send’s receiver must itself be a <code>nonCascadeExpr</code>.
+Parentheses turn a full expression into an eligible receiver. Arguments can
+contain nested cascades without extra grouping, as in <code>a..take(b..x..y)..finish</code>.
+Assignment’s RHS has its own <a href="./syntactic-sugar.html#the-cascade-fence">cascade fence</a>.</p>
+<p>There is no <code>super..a..b</code> form: <code>super</code> is not a receiver value. A completed super
+send can supply a cascade receiver, as in <code>super.make..a..b</code>; the arms are normal
+sends on the value returned by <code>super.make</code>, not additional super sends.</p>
+<p>These forms execute on the bootstrap VM. Lowering saves an explicit receiver
+in a private activation slot and sequences ordinary core sends. Leading
+<code>..</code> uses self sends. The lowering preserves lexical captures and non-local
+return homes without exposing a new scope object to programs. See
+<a href="../../../vh-core/src/main/antlr/vh.g4">vh.g4</a> and the
+<a href="../../../vh-core/src/test/java/boundaryclient/CascadesAndAssignmentTest.java">source regressions</a>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="slots.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="message-sends-apply-tear-offs.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="slots.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="message-sends-apply-tear-offs.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-33e14e7d.js"></script>
+        <script src="book-c22b7243.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

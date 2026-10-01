@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VarioHyve</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body { font: 17px/1.55 system-ui, sans-serif; max-width: 880px; margin: 0 auto; padding: 3rem 1.25rem; }
+    h1 { margin-bottom: .35rem; }
+    p { margin-top: 0; }
+    ul { list-style: none; padding: 0; display: grid; gap: 1rem; }
+    li { border: 1px solid #8888; border-radius: .6rem; padding: 1rem 1.25rem; }
+    li a { font-size: 1.15rem; font-weight: 650; }
+    li p { margin: .25rem 0 0; }
+    a { color: #0969da; }
+    @media (prefers-color-scheme: dark) { a { color: #80b7ff; } }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>VarioHyve</h1>
+    <p>Language specification and performance history.</p>
+    <ul>
+      <li>
+        <a href="dev/bench/">Performance dashboard</a>
+        <p>Historical JMH benchmarks, with links to Gradle test reports.</p>
+      </li>
+      <li>
+        <a href="spec/">Language specification (web)</a>
+        <p>Read the generated mdBook specification in your browser.</p>
+      </li>
+      <li>
+        <a href="spec/variohyve-spec.pdf">Language specification (PDF)</a>
+        <p>Download the generated PDF specification.</p>
+      </li>
+    </ul>
+  </main>
+</body>
+</html>

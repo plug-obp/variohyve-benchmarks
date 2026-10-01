@@ -1,0 +1,521 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>SoS Design - VarioHyve Language Specification</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-0392ca55.css">
+        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/vh-2de7eb16.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-e880608a.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-da21433a.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">VarioHyve Language Specification</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="variohyve-for-systems-of-systems-and-federated-modeling"><a class="header" href="#variohyve-for-systems-of-systems-and-federated-modeling">VarioHyve for Systems-of-Systems and Federated Modeling</a></h1>
+<p>Most programming languages are designed around a single application: one runtime, one concurrency model, one object model, one team, one semantic universe. Heterogeneity — different languages, different tools, different organizations, different timing models — is treated as an exception to be bridged from the outside.</p>
+<p>Systems-of-Systems (SoS) work the opposite way. Multiple partially-autonomous subsystems, implemented by different teams with different tools under different governance regimes, must still compose into a coherent whole. Heterogeneity is not the exception — it is the structure. VarioHyve is designed from first principles around that reality.</p>
+<p>This section explains why each architectural choice in VarioHyve maps directly to the demands of SoS design and federated behavioral modeling.</p>
+<h2 id="heterogeneity-as-the-default-not-the-exception"><a class="header" href="#heterogeneity-as-the-default-not-the-exception">Heterogeneity as the Default, Not the Exception</a></h2>
+<p>The VarioHyve spec opens with a design statement that sets the tone:</p>
+<blockquote>
+<p>“multiple subsystems (potentially implemented in different languages, running on different runtimes, governed by different concurrency models) must compose into a coherent whole.”</p>
+</blockquote>
+<p>This is not a use case. It is the baseline design constraint. Every structural decision — no global environment, constructor-parameter injection, the Alien/Expat boundary model, the AAM-style interpreter — flows from this commitment.</p>
+<h2 id="explicit-constructor-dependencies"><a class="header" href="#explicit-constructor-dependencies">Explicit Constructor Dependencies</a></h2>
+<p>VarioHyve has no global environment and no import statements. Named and
+anonymous class literals obtain capabilities through superclass inheritance,
+mixin composition, lexical nesting, and constructor parameters. Normal module
+evaluation has an empty top activation at its base, with no enclosing application
+scope. The top-level class inherits only from root <code>Object</code> and composes no
+mixins. Its external dependencies therefore arrive through its constructor
+parameters. See <a href="./program-structure.html">Program Structure</a>.</p>
+<p>Development and debugging tools may explicitly provide richer evaluation
+contexts under the same language rules. These contexts do not silently enrich
+normal module roots, and results may capture the supplied tooling objects.</p>
+<pre><code class="language-vh">class Mission(consoleService, clockService, communicationBus) {
+    console = consoleService;
+    clock = clockService;
+    bus = communicationBus;
+}
+</code></pre>
+<p>An instantiation service supplies existing objects it has acquired or already
+holds. There can be any declared number of arguments. A <code>kernel</code> object may
+bundle several dependencies, but neither its name nor a single-argument
+signature is required. The service’s remaining capabilities do not become a
+lexical scope for the module. Access to further objects through a supplied
+service is part of that service’s authority.</p>
+<p>In SoS terms, this means:</p>
+<ul>
+<li><strong>Partitioning follows object reachability.</strong> A module obtains another
+participant’s services only through the object graphs made available to it.</li>
+<li><strong>Deployment can replace dependencies independently.</strong> Supply a mock clock,
+a real communication bus, or a recording console without changing lookup.</li>
+<li><strong>Analysis has explicit inputs.</strong> All constructor arguments and their reachable
+behavior must be modeled; this is not restricted to one kernel object.</li>
+</ul>
+<p>Optional bundles can simplify repeated deployment configurations:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Bundle convention</th><th>Example contents</th><th>Use case</th></tr>
+</thead>
+<tbody>
+<tr><td><code>ConcreteKernel</code></td><td>Real I/O, real clock, real bus</td><td>Deployment</td></tr>
+<tr><td><code>SimKernel</code></td><td>Virtual clock, mock sensors, replay bus</td><td>Simulation</td></tr>
+<tr><td><code>TestKernel</code></td><td>Recording console, fault injector</td><td>Testing</td></tr>
+<tr><td><code>AbstractKernel</code></td><td>Abstract input values and effect models</td><td>Future analysis</td></tr>
+<tr><td><code>ModelCheckKernel</code></td><td>State-logging inputs and effect models</td><td>Future model checking</td></tr>
+</tbody>
+</table>
+</div>
+<p>These are ordinary objects chosen by the instantiation service. The language
+commitment is explicit object parameters, with a fixed lookup and invocation
+semantics across configurations. Abstract inputs still require an implemented
+abstract interpreter; changing a bundle alone does not supply one.</p>
+<h2 id="structural-encapsulation-and-governance-boundaries"><a class="header" href="#structural-encapsulation-and-governance-boundaries">Structural Encapsulation and Governance Boundaries</a></h2>
+<p>Nesting grants access to enclosing scope. Two objects nested under the same
+capability-rich module do not become isolated merely because each stores a
+different service in one slot: both can still reach their common outer scope.
+Inheritance and mixin definition scopes are additional capability routes.</p>
+<p>For independent authority boundaries, use separate top-level modules and pass
+restricted object graphs to each. For example, these are two separate module
+expressions instantiated by an external service:</p>
+<pre><code class="language-vh">class Avionics(flightBus) {
+    flightComputer = flightBus;
+}
+</code></pre>
+<pre><code class="language-vh">class Entertainment(mediaStream) {
+    mediaServer = mediaStream;
+}
+</code></pre>
+<p>Neither module has an outer path to the instantiation service or to the other
+module. Isolation still depends on the supplied objects: a <code>mediaStream</code> that
+returns the flight bus would intentionally grant that access. Lexical nesting
+is useful where authority is meant to be shared; it is not a substitute for
+restricting the reachable capability graph.</p>
+<h2 id="the-alienexpat-federation-protocol"><a class="header" href="#the-alienexpat-federation-protocol">The Alien/Expat Federation Protocol</a></h2>
+<p>The most operationally significant SoS feature in VarioHyve is the <strong>Alien/Expat boundary model</strong> — the formal protocol for interaction between VarioHyve and foreign runtimes.</p>
+<p>VarioHyve federates with external systems without absorbing them. Legacy subsystems in C++, controllers in Simulink, business logic in Java, and formal models in TLA+ can all remain in their original form. What VarioHyve provides is a behavioral bridge with precisely defined semantics.</p>
+<p><strong>Aliens</strong> are references to foreign semantic values or entities. An object-oriented
+adapter may expose message forwarding, for example:</p>
+<pre><code>VarioHyve code              Alien proxy              Foreign runtime
+─────────────               ──────────               ───────────────
+aServer.start(port)  ──►  expatriate args  ──►   server.start(8080)
+         result      ◄──  alienate result  ◄──   return value
+</code></pre>
+<p>An explicit Alien send crosses to its adapter: arguments are expatriated, the
+selected foreign operation runs, and its result is alienated. The foreign domain
+defines the operation. An opaque handle may support no direct sends; explicit
+capabilities can operate on it instead. Aliens do not acquire native classes,
+mixins, lexical outers or VarioHyve lookup. Native wrappers supply those
+abstractions explicitly.</p>
+<p><strong>Expats</strong> are the symmetric inverse — foreign proxies for VarioHyve objects:</p>
+<pre><code>Foreign runtime              Expat proxy              VarioHyve store
+───────────────              ──────────               ───────────────
+server.start(8080)  ──►  alienate args  ──►   vh_server.start(8080)
+       result       ◄──  expatriate result  ◄──  return value
+</code></pre>
+<p>When Python or Java code calls a method on an Expat, the Expat alienates the foreign arguments into VarioHyve values, dispatches the message to the wrapped VarioHyve object, and expatriates the result back.</p>
+<p>The protocol preserves compatible reference round trips: exporting an Alien to
+its originating domain recovers the foreign entity, and importing a runtime’s
+own Expat recovers the native value. Identity-bearing values preserve aliases;
+marshalled primitives instead follow their defined value conversions.</p>
+<p>This matters for SoS because:</p>
+<ul>
+<li><strong>No forced monoculture.</strong> Legacy subsystems stay in their original language. VarioHyve provides the behavioral coordination layer, not a migration target.</li>
+<li><strong>Explicit interaction contracts.</strong> VarioHyve uses sends to request foreign operations; each adapter specifies how those requests map to its domain. The domains need not share an object model.</li>
+<li><strong>A principled seam for interface evolution.</strong> The Alien and Expat surfaces are explicit. When a foreign subsystem changes its API, the change is localized to the proxy layer and the constructor-argument wiring — not scattered across the model.</li>
+<li><strong>Instantiation supplies explicit wiring.</strong> The service passes Alien-backed or native objects as constructor arguments, independently or in optional bundles. Language-visible VM services use the same Alien/Expat boundary.</li>
+</ul>
+<h2 id="behavioral-lingua-franca-one-interaction-model"><a class="header" href="#behavioral-lingua-franca-one-interaction-model">Behavioral Lingua Franca: One Interaction Model</a></h2>
+<p>Behavioral interactions in VarioHyve use <code>(name, arity)</code> message sends. Operators,
+slot access and function application use that common interaction form. Native
+receiver origins, lexical binding and construction still have specified language
+semantics; they are not foreign protocol requirements.</p>
+<p>This is not minimalism for its own sake. In a federated system, adapters must bridge foreign systems to VarioHyve. A message-centric core means every adapter bridges exactly one concept:</p>
+<pre><code>incoming event    →  message send to a VarioHyve handler
+RPC call          →  message send to an Alien proxy
+simulation tick   →  message send to a simulation coordinator
+hardware callback →  message send to a driver object
+</code></pre>
+<p>This common request form gives adapters a small language-facing transport
+surface. It does not remove the foreign domain’s own semantic obligations.</p>
+<p>The native lookup algorithm terminates at the Alien boundary. The adapter may
+expose method forwarding, a function call, a memory capability or another domain
+operation. This common transport does not make every participant an object or
+make adapter semantics trivial. Signatures, failure, identity, lifetime and
+effects remain explicit adapter obligations.</p>
+<h2 id="composable-structure-for-heterogeneous-participants"><a class="header" href="#composable-structure-for-heterogeneous-participants">Composable Structure for Heterogeneous Participants</a></h2>
+<p>Not every SoS participant is “an instance of a class.” VarioHyve provides a spectrum of participant styles with a unified interaction model:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Participant style</th><th>VarioHyve construct</th><th>Example</th></tr>
+</thead>
+<tbody>
+<tr><td>Unique service</td><td>Singleton object literal</td><td><code>Radar = { ... }</code></td></tr>
+<tr><td>Family of instances</td><td>Class</td><td><code>class Sensor(id) { ... }</code></td></tr>
+<tr><td>Namespace/registry</td><td>Singleton with nested structure</td><td><code>Protocol = { v1 = ..., v2 = ... }</code></td></tr>
+<tr><td>Configurable factory</td><td>Class with <code>factory apply</code> variants</td><td>Multiple construction paths</td></tr>
+<tr><td>Delegation wrapper</td><td>Object with <code>apply</code> method</td><td>Callable proxy</td></tr>
+<tr><td>Dynamic coalition</td><td>Objects assembled at runtime</td><td>First-class object composition</td></tr>
+</tbody>
+</table>
+</div>
+<p>A coordinator can use <code>sensor.detect(target)</code> with a native object or an Alien
+adapter when both support the required behavioral contract. Native receivers
+use fixed VarioHyve lookup; Alien receivers cross to their foreign domain.
+Common invocation syntax alone does not make arbitrary participants
+interchangeable: signatures, results, effects and failure behavior must agree.</p>
+<p>The <code>factory apply</code> pattern is particularly relevant for federated deployment. A subsystem class can define multiple construction signatures for different operational contexts:</p>
+<pre><code class="language-vh">class Sensor(id, config) {
+    factory apply(id, config) { new(id, config) }        // normal deployment
+    factory apply(id) { new(id, SimConfig()) }            // simulation mode
+    factory apply() { new(#mock, MockConfig()) }          // test/verification
+}
+</code></pre>
+<p>This is a nested-class fragment: <code>SimConfig</code> and <code>MockConfig</code> must be available in its definition scope. The instantiating code selects a factory and supplies its arguments; there is no implicit kernel argument.</p>
+<h2 id="mixins-for-cross-cutting-federation-concerns"><a class="header" href="#mixins-for-cross-cutting-federation-concerns">Mixins for Cross-Cutting Federation Concerns</a></h2>
+<p>SoS systems share cross-cutting concerns across subsystem boundaries: logging, tracing, fault tolerance, redundancy voting, time synchronization, cybersecurity guards, safety wrappers. These are not part of any one subsystem’s functional behavior — they are federation-level concerns that must be applied uniformly.</p>
+<p>In the following nested-class fragment, the enclosing scope supplies the superclass and mixins. Mixins in VarioHyve are the mechanism for this. A mixin is a regular object whose class holds methods. It becomes a behavioral layer applied to a class without forcing that class into a particular inheritance hierarchy:</p>
+<pre><code class="language-vh">class Drone(id) &lt;: Logging, SecureComm, FaultTolerant, TimeStamped &lt; Vehicle {
+    sId = id
+    fly(trajectory) { ... }
+}
+</code></pre>
+<p>Each mixin contributes behavior, member declarations and, if parameterized,
+initialization to the composed class. Physical slots may live on one instance;
+that representation must not erase declaration or application origins. The
+initial policy selects contributions in declared order with overriding. Deep
+family composition with state in members is an intended later increment,
+not an implemented bootstrap feature.</p>
+<p>For SoS this matters because:</p>
+<ul>
+<li><strong>Concerns can be added or removed without changing the subsystem model.</strong> Adding a mixin to a class requires no change to its internal logic.</li>
+<li><strong>Mixin composition retains its structure.</strong> Reified definitions and their origins remain available internally. A public mirror API is deferred.</li>
+<li><strong>Order and overrides are explicit.</strong> Own contributions precede composed
+entries in declaration order and inherited behavior. Determinism does not
+remove state collisions or initialization-effect dependencies; those require
+explicit composition contracts and, later, state/adaptation operators.</li>
+</ul>
+<h2 id="lexical-nesting-mirrors-system-hierarchy"><a class="header" href="#lexical-nesting-mirrors-system-hierarchy">Lexical Nesting Mirrors System Hierarchy</a></h2>
+<p>Lexical nesting can represent organizational hierarchy. Member classes bind to
+enclosing instances, while qualified <code>outer ClassName</code> selects a lexical receiver
+without exposing internal activations or a universal parent accessor:</p>
+<pre><code class="language-vh">class Mission(consoleService) {          // mission-level scope
+    console = consoleService;
+    class Fleet(id) {                    // fleet scope
+        class Platform(pid) {            // platform scope
+            class Subsystem(sid) {       // subsystem scope
+                log(msg) {
+                    outer Mission.console.print(msg)  // explicit lexical mission receiver
+                }
+            }
+        }
+    }
+}
+</code></pre>
+<p>Each level of nesting shares authority with its enclosing scope through lexical
+lookup and qualified <code>outer</code>. Constructor parameters are initializer-only inputs:
+the mission explicitly stores its console service in a slot for member behavior.
+A member declaration cannot recover an unstored constructor argument. Ordinary
+lambdas and class expressions created in an initializer can deliberately capture
+its parameters, with names retained only for named class expressions. Nested subsystems can also receive capabilities through inheritance, mixins and their own constructor parameters. The top-level mission has only the empty top activation beneath it, with no enclosing application scope; it receives its console as an explicit argument.</p>
+<p>This structural alignment between language semantics and governance structure means the model itself expresses the authority hierarchy — it is not an external documentation artifact.</p>
+<h2 id="late-binding-for-evolving-systems"><a class="header" href="#late-binding-for-evolving-systems">Late Binding for Evolving Systems</a></h2>
+<p>All names in VarioHyve are late-bound. A bare name is an implicit message send resolved at runtime through the lexical and inheritance chains. No name is resolved at compile time to a specific object address.</p>
+<p>In SoS, this matters because:</p>
+<ul>
+<li><strong>Supplier replacement does not break callers.</strong> A subsystem that calls <code>kernel.radar.detect(target)</code> does not bind to a specific Radar implementation. The instantiation service can supply a different bundle with the same behavioral interface without modifying the caller.</li>
+<li><strong>Interface versioning is handled by the message protocol.</strong> A new version of a subsystem that adds methods does not break existing callers — unused methods are simply not called. A removed method surfaces as <code>doesNotUnderstand</code> at the call site, which can be caught and handled.</li>
+<li><strong>Dynamic coalition formation is natural.</strong> Objects can be assembled and rewired at runtime. A coordination object can be handed a different set of participants without requiring structural changes to the coordination logic.</li>
+</ul>
+<p>The <code>apply</code> protocol extends this: any object that implements <code>apply</code> is callable. A mock object, a proxy, a recorded trace, and a live hardware driver can all sit in the same slot and receive the same messages — the calling code has no way to distinguish them and no reason to care.</p>
+<h2 id="execution-and-verification-from-the-same-core"><a class="header" href="#execution-and-verification-from-the-same-core">Execution and Verification from the Same Core</a></h2>
+<p>Many SoS efforts maintain separate artifacts for execution and verification: a simulation model, a formal model, a code implementation, a documentation model. These quickly diverge. VarioHyve unifies them by design.</p>
+<p>The VarioHyve interpreter is an <strong>AAM-style CESK machine</strong>. The machine has four components (Control, Environment, Store, Kontinuation) and a single parameterization point: the <code>Alloc</code> function that determines how store addresses are allocated:</p>
+<ul>
+<li><strong>Concrete <code>Alloc</code></strong> (fresh integer per allocation) → the v1 deterministic interpreter. Runs the model.</li>
+<li><strong>Abstract <code>Alloc</code></strong> (k-CFA, bounded by call site and environment prefix) → a sound abstract interpreter. Explores all reachable abstract states. Computes program properties.</li>
+</ul>
+<p>The <code>step</code> function — the semantic core — is the same in both cases. This is the key commitment: the verification artifact and the execution artifact share one semantic definition. There is no translation layer between them, no semantic gap to manage, no risk of the verification model drifting from the implementation.</p>
+<p>For SoS this enables:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Activity</th><th>Mechanism</th></tr>
+</thead>
+<tbody>
+<tr><td>Simulation</td><td>Concrete CESK with <code>SimKernel</code></td></tr>
+<tr><td>Unit and integration testing</td><td>Concrete CESK with <code>TestKernel</code></td></tr>
+<tr><td>Type inference / interval analysis</td><td>Abstract CESK with abstract kernel values</td></tr>
+<tr><td>State space exploration</td><td>Abstract CESK with nondeterministic abstract transitions</td></tr>
+<tr><td>Model checking foundations</td><td>Abstract CESK with state-logging <code>ModelCheckKernel</code></td></tr>
+<tr><td>Trace replay and runtime monitoring</td><td>Concrete CESK with a trace-recording store</td></tr>
+</tbody>
+</table>
+</div>
+<p>This is what SoS engineering desperately lacks: behavioral models that are simultaneously executable and formally analyzable, with no semantic mismatch between the two.</p>
+<h2 id="descriptors-multi-stakeholder-semantic-layers"><a class="header" href="#descriptors-multi-stakeholder-semantic-layers">Descriptors: Multi-Stakeholder Semantic Layers</a></h2>
+<p>A federated system has multiple stakeholders, each with different concerns about the same behavioral model: safety engineers, cybersecurity analysts, simulation teams, certification bodies, code generators. These stakeholders need to attach their own metadata to model elements without altering the execution semantics.</p>
+<p>Descriptors are VarioHyve’s mechanism for this. They are ordinary expressions that annotate syntactic elements — slots, methods, classes, lambdas, parameters — and are completely ignored by the core interpreter. A program with all descriptors stripped executes identically to the annotated version.</p>
+<pre><code class="language-vh">class Sensor(id, config) {
+    reading = 0 : immutable : serializedAs("json") : safetyLevel(4)
+    calibrate(ref) {
+        ...
+    } : cached : realTime : certified(DO178C)
+} : module : traceable(reqId= "SYS-042")
+</code></pre>
+<p>Since descriptors are expressions, they can be message sends that return descriptor objects:</p>
+<pre><code class="language-vh">{
+    altitude = 0 : constrained(0, 50000) : units("feet") : safetyLevel(4)
+    velocity = 0 : constrained(0, 3000)  : units("knots")
+} : module : certifiedBy("avionics-safety-team")
+</code></pre>
+<p>The same model element carries annotations for:</p>
+<ul>
+<li><strong>Safety engineers</strong>: <code>safetyLevel(4)</code>, <code>certified(DO178C)</code>, <code>constrained(0, 50000)</code></li>
+<li><strong>Simulation teams</strong>: <code>realTime</code>, <code>cached</code></li>
+<li><strong>Serialization/integration</strong>: <code>serializedAs("json")</code>, <code>units("feet")</code></li>
+<li><strong>Traceability/audit</strong>: <code>traceable(reqId= "SYS-042")</code>, <code>certifiedBy(...)</code></li>
+<li><strong>Documentation tooling</strong>: anything else</li>
+</ul>
+<p>Each tool layer reads the descriptors it understands and ignores the rest. The core interpreter runs through all of them unchanged. This is federated modeling in its direct form: one behavioral model, multiple stakeholder interpretations, cleanly separated.</p>
+<h2 id="in-summary"><a class="header" href="#in-summary">In Summary</a></h2>
+<p>VarioHyve is uniquely equipped for heterogeneous SoS design because its architecture directly encodes the structural realities of SoS:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>SoS requirement</th><th>VarioHyve mechanism</th></tr>
+</thead>
+<tbody>
+<tr><td>Implementation diversity</td><td>Alien/Expat protocol — foreign runtimes stay foreign</td></tr>
+<tr><td>Governance partitioning</td><td>No globals; restricted constructor arguments and reachable object graphs</td></tr>
+<tr><td>Uniform interaction across boundaries</td><td>Everything is a message send — one adapter model</td></tr>
+<tr><td>Participant diversity</td><td>Objects, classes, singletons, callables — same dispatch</td></tr>
+<tr><td>Cross-cutting concerns</td><td>Mixins — behavioral layers without forced hierarchy</td></tr>
+<tr><td>Organizational hierarchy</td><td>Member-class nesting and qualified lexical receivers</td></tr>
+<tr><td>Evolving interfaces</td><td>Late binding — names resolve at runtime</td></tr>
+<tr><td>Executable + analyzable</td><td>AAM-parameterized CESK — same core, swap <code>Alloc</code></td></tr>
+<tr><td>Multi-stakeholder views</td><td>Descriptors — optional, execution-transparent annotations</td></tr>
+<tr><td>Context-specific deployment</td><td>Constructor arguments, optionally bundled — same model, different contexts</td></tr>
+</tbody>
+</table>
+</div>
+<p>Most languages tolerate heterogeneity from the outside. VarioHyve is built for it from the inside.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+                            <a rel="next prefetch" href="program-structure.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+                    <a rel="next prefetch" href="program-structure.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-33e14e7d.js"></script>
+        <script src="book-c22b7243.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

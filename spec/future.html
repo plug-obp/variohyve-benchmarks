@@ -1,0 +1,946 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Future Directions - VarioHyve Language Specification</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-0392ca55.css">
+        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/vh-2de7eb16.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-e880608a.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-da21433a.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">VarioHyve Language Specification</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="future-directions"><a class="header" href="#future-directions">Future Directions</a></h1>
+<p>This section documents features intentionally omitted from v1 of VarioHyve, the rationale for their absence, and the planned approach for introducing them after v1 is bootstrapped.</p>
+<p>Examples using <code>kernel</code> use an optional ordinary capability bundle. A normal
+top-level class can take any declared number of existing object arguments; its
+lexical base is an empty top activation with no enclosing application scope.
+It inherits only from root <code>Object</code> and composes no mixins. Tools may explicitly
+supply richer <a href="./tooling-architecture.html#evaluation-contexts">evaluation contexts</a>
+for development and debugging, using the same lexical and boundary rules. Class fragments
+using other superclass/mixin names assume an enclosing scope supplying them.
+Future features must preserve all four <a href="./program-structure.html#four-sources-of-class-capabilities">capability routes</a>:
+inheritance, composition, nesting and constructor parameters. A proposed runtime
+default-handler service must be supplied explicitly to the execution service or
+through application arguments, not discovered via an ambient <code>kernel</code> binding.</p>
+<h2 id="operators-and-control-structures"><a class="header" href="#operators-and-control-structures">Operators and Control Structures</a></h2>
+<p><strong>Status:</strong> Not in v1.</p>
+<p>v1 has no binary operators (<code>a + b</code>, <code>a &gt; b</code>) and no built-in control structures (<code>if</code>/<code>then</code>/<code>else</code>, <code>while</code> loops). All computation is expressed through message sends:</p>
+<pre><code class="language-vh">x.plus(dx)        // instead of x + dx
+x.greaterThan(y)  // instead of x &gt; y
+cond.ifTrue(fun { ... }).ifFalse(fun { ... })  // instead of if/else
+</code></pre>
+<p><strong>Why not in v1:</strong> Operators and control structures are surface syntax — they don’t introduce new semantics. Adding them as fixed grammar rules would make the language harder to extend and evolve. They are better expressed as syntactic sugar that desugars to message sends.</p>
+<p><strong>Planned approach:</strong> After v1 is bootstrapped, we plan to add a <strong>monadic extensible parser</strong> in the spirit of Lean 4. This will allow syntax extensions to be defined <em>within the language itself</em>:</p>
+<ul>
+<li>Binary operators (<code>+</code>, <code>-</code>, <code>*</code>, <code>&gt;</code>, <code>==</code>) as sugar for message sends</li>
+<li>Control structures (<code>if</code>/<code>else</code>, <code>while</code>, <code>for</code>) as sugar for message sends with lambda arguments</li>
+<li>Pattern matching</li>
+<li>Specialized DSLs defined by library authors</li>
+</ul>
+<p>The extensible parser will desugar all new syntax forms into the core v1 AST (message sends, object literals, lambdas). This ensures the interpreter and runtime remain simple while the surface language grows in expressiveness.</p>
+<h2 id="named-and-optional-arguments"><a class="header" href="#named-and-optional-arguments">Named and Optional Arguments</a></h2>
+<p><strong>Status:</strong> Not in v1.</p>
+<p>v1 message sends support only positional arguments:</p>
+<pre><code class="language-vh">point.move(3, 4)
+</code></pre>
+<p><strong>Why not in v1:</strong> Positional arguments are sufficient to bootstrap the language and its core libraries. Named arguments, default values, and varargs add complexity to the dispatch mechanism (arity-based lookup, synthesized setters) and would slow down the bootstrapping effort.</p>
+<p><strong>Planned extensions:</strong></p>
+<ul>
+<li>
+<p><strong>Named arguments</strong> — allow callers to specify arguments by name for readability and to avoid positional errors. We believe named arguments will clearly improve the readability and ease the use of the language, especially for message sends with multiple arguments where positional ordering is not obvious:</p>
+<pre><code class="language-vh">point.move(dx= 3, dy= 4)
+rect.resize(width= 100, height= 50)
+</code></pre>
+</li>
+<li>
+<p><strong>Optional arguments with defaults</strong> — parameters with predefined values that callers can omit:</p>
+<pre><code class="language-vh">connect(host, port= 8080, timeout= 30) { ... }
+connect("localhost")  // port and timeout use defaults
+</code></pre>
+</li>
+<li>
+<p><strong>Varargs</strong> — methods that accept a variable number of arguments:</p>
+<pre><code class="language-vh">log(messages...) { ... }
+log("start", "processing", "done")
+</code></pre>
+</li>
+</ul>
+<p><strong>Token consistency:</strong> Named argument syntax (<code>dx= 3</code>) uses the same <code>=</code> token as <a href="./syntactic-sugar.html#-setter-sugar">setter sugar</a> and slot initialization — <code>=</code> is VarioHyve’s unified binding operator. In call-argument position the grammar will introduce a dedicated argument rule that distinguishes <code>name = expr</code> (named argument) from a positional expression, keeping the two contexts syntactically unambiguous.</p>
+<p>The exact syntax and dispatch semantics for these features will be designed after v1 is stable, potentially leveraging the extensible parser to define them as syntax extensions rather than grammar changes.</p>
+<h2 id="string-interpolation"><a class="header" href="#string-interpolation">String Interpolation</a></h2>
+<p><strong>Status:</strong> Not in v1.</p>
+<p>v1 strings are plain literals. Building dynamic strings requires explicit concatenation:</p>
+<pre><code class="language-vh">"hello, ".concat(name).concat("!")
+</code></pre>
+<p><strong>Why not in v1:</strong> Interpolation is surface syntax — it desugars to message sends. The core runtime doesn’t need it.</p>
+<p><strong>Planned approach:</strong> An interpolation form (syntax TBD) that desugars to <code>concat</code> calls:</p>
+<pre><code class="language-vh">"hello, ${name}!"     // desugars to "hello, ".concat(name).concat("!")
+</code></pre>
+<p>This is a natural candidate for the extensible parser. The interpolation syntax would be defined as a syntax extension, not a grammar change.</p>
+<h2 id="collection-literals"><a class="header" href="#collection-literals">Collection Literals</a></h2>
+<p><strong>Status:</strong> Not in v1.</p>
+<p>v1 has no built-in syntax for arrays, lists, or maps. Collections must be built via message sends:</p>
+<pre><code class="language-vh">List.of(1, 2, 3)
+Map.of(#a, 1, #b, 2)
+</code></pre>
+<p><strong>Why not in v1:</strong> Collection literals are sugar — they create objects via the same construction protocol as everything else. Getting the core object model right first ensures collection types have a solid foundation.</p>
+<p><strong>Planned approach:</strong> Literal syntax for common collection types (syntax TBD):</p>
+<pre><code class="language-vh">[1, 2, 3]                // array/list literal
+{#a: 1, #b: 2}           // map/dictionary literal — syntax must not conflict with object literals
+</code></pre>
+<p>The exact syntax requires careful design to avoid ambiguity with object literals (<code>{ ... }</code>) and will likely be introduced via the extensible parser.</p>
+<h2 id="mixin-contract-verification"><a class="header" href="#mixin-contract-verification">Mixin Contract Verification</a></h2>
+<p><strong>Status:</strong> Not in v1.</p>
+<p>In v1, mixin methods that call <code>super</code> assume the application site satisfies their implicit contract — e.g., that <code>super</code> responds to a given message with a given arity. If the contract is not satisfied, a runtime error occurs.</p>
+<p><strong>Why not in v1:</strong> Contract verification requires static analysis of mixin method bodies to extract the set of <code>super</code> messages they send, then checking each application site against that set. This is analysis tooling, not core runtime.</p>
+<p><strong>Planned approach:</strong> An external verification tool that:</p>
+<ol>
+<li>Inspects each mixin’s methods and collects the set of <code>super</code> sends (name + arity).</li>
+<li>For each class that uses the mixin, resolves what <code>super</code> would point to at that position in the mixin list.</li>
+<li>Checks that the target class or mixin provides all required methods.</li>
+<li>Reports violations as warnings or errors.</li>
+</ol>
+<p>This fits naturally into the <a href="./tooling-architecture.html">Tooling Architecture</a>: the tool reads the AST, follows the mixin lists and super chains defined in the <a href="./object-model.html">Object Model</a>, and reports results externally — without modifying the source or the runtime. Descriptors could be used to annotate a mixin’s expected <code>super</code> contract explicitly, enabling more precise verification.</p>
+<h2 id="deep-family-and-mixin-composition"><a class="header" href="#deep-family-and-mixin-composition">Deep Family and Mixin Composition</a></h2>
+<p><strong>Accepted long-term direction; deferred beyond the initial ordered composition.</strong>
+VarioHyve intends to support deep family composition with state in member
+classes. This requires more than selecting a same-named member from an ordered
+list: it must define how nested declarations, constructor signatures, state and
+sibling references compose. The bootstrap must retain declaration identities,
+definition scopes and composition origins without claiming that this richer
+operation already exists.</p>
+<p>Initially, own contributions override composed contributions, composed entries
+are considered in declaration order (leftmost first), and inherited contributions
+follow. A member override selects a whole declaration. Duplicate names within
+one body remain errors. Ordinary slot initializers still execute in declaration
+order; member accessors bind and cache classes independently of that sequence.
+This simple policy leaves deep member merging for a later increment.</p>
+<p>Future operators may include aliases, renaming, hiding, exclusion, explicit
+precedence and state mapping/sharing. These are different operations: an alias
+need not rename recursive self sends; hiding need not remove internal access;
+and selecting a method does not resolve unrelated state collisions. Repeated
+application of one mixin needs occurrence identity rather than reliance only on
+the shared definition object or mutable list index.</p>
+<p>Effectful initializers require their own argument routing and execution plan.
+An algebra over declarations cannot assume registrations, callbacks or other
+foreign effects commute, nor infer rollback on construction failure. Preserve
+one-object construction and explicit Alien/Expat boundaries as this model grows.
+See <a href="../../design-notes/initializer-scope-and-member-classes.html">the accepted decisions and sequence</a>
+and <a href="../../design-notes/construction-scope-and-mixin-composition.html">the earlier design-space analysis</a>.</p>
+<h2 id="trait-style-conflict-resolution"><a class="header" href="#trait-style-conflict-resolution">Trait-Style Conflict Resolution</a></h2>
+<p><strong>Status:</strong> Not in v1.</p>
+<p>In v1, when multiple mixins define a method with the same name and arity, the <strong>first match wins</strong> (leftmost mixin in the <code>&lt;:</code> list). This is simple and deterministic, but conflicts are silent — the programmer may not realize a method was shadowed.</p>
+<p><strong>Why not in v1:</strong> Conflict resolution requires detection (scanning all mixins for overlapping method signatures) and a resolution mechanism (syntax for the programmer to explicitly choose which mixin’s method to use). Both add complexity to the runtime and the grammar.</p>
+<p><strong>One future option, not yet an accepted replacement for ordered overrides:</strong> trait-style conflict handling in two phases:</p>
+<ol>
+<li>
+<p><strong>Detection</strong> — at class creation time (or via static analysis), scan all mixins for methods with the same <code>(name, arity)</code>. If a conflict is found and the class does not provide its own override, raise an error.</p>
+</li>
+<li>
+<p><strong>Explicit resolution</strong> — the class must define its own method that explicitly delegates:</p>
+<pre><code class="language-vh">class App &lt;: Logging, Auditing &lt; Base {
+    // Both Logging and Auditing define log(msg)
+    // The programmer must resolve:
+    log(msg) { Logging.log(self, msg) }
+}
+</code></pre>
+<p>This requires a mechanism for calling a specific mixin’s method directly (passing the receiver explicitly). The exact syntax is TBD.</p>
+</li>
+</ol>
+<p>Reified mixin definitions preserve information useful for conflict detection.
+The list alone is not the complete future model: declaration identity, definition
+scope, application occurrence and state identity must also survive composition.
+Do not assume the entire algebra can be added without changing backend metadata.</p>
+<h3 id="doesnotunderstand-as-a-message"><a class="header" href="#doesnotunderstand-as-a-message"><code>doesNotUnderstand</code> as a Message</a></h3>
+<p>The Newspeak/Smalltalk approach — where <code>doesNotUnderstand</code> is itself a message sent to the receiver — is a natural fit for VarioHyve’s “everything is a message” philosophy. An object could intercept failed dispatches by implementing a <code>doesNotUnderstand(selector, args)</code> method, enabling proxies, dynamic delegation, and other meta-programming patterns.</p>
+<p>However, this introduces design questions that require careful exploration:</p>
+<ul>
+<li><strong>Performance</strong>: every failed dispatch becomes another dispatch, which can fail again (infinite recursion risk).</li>
+<li><strong>Debugging</strong>: intercepted failures can mask bugs — a typo in a method name silently triggers <code>doesNotUnderstand</code> instead of a clear error.</li>
+<li><strong>Abstract interpretation</strong>: <code>doesNotUnderstand</code> as a method is a dynamic dispatch with an open-ended set of selectors — it complicates static analysis significantly.</li>
+<li><strong>Base implementation</strong>: does Object provide a default <code>doesNotUnderstand</code> that raises the fatal error? Or is it a primitive mechanism?</li>
+</ul>
+<p>This is a post-v1 design exploration. See <a href="./future.html">Future Directions</a> for other deferred features.</p>
+<h2 id="exception-system"><a class="header" href="#exception-system">Exception System</a></h2>
+<p><strong>Status:</strong> A language exception/condition system is not in v1. Missing dispatch
+(<code>doesNotUnderstand</code>), dead return contexts and other invalid language operations
+terminate execution with diagnostics. Boundary failures also remain fatal, while
+preserving defined categories such as conversion, ownership and foreign failure;
+see <a href="./foreign-objects.html#error-propagation">Foreign Error Propagation</a>. These
+diagnostic categories do not provide language-level catch, resume or retry.</p>
+<h3 id="design-requirements"><a class="header" href="#design-requirements">Design Requirements</a></h3>
+<p>A VarioHyve exception system must satisfy four requirements that arise directly from the SoS deployment model:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>#</th><th>Requirement</th><th>SoS motivation</th></tr>
+</thead>
+<tbody>
+<tr><td>(a)</td><td>A component gets a chance to handle an exception <strong>locally</strong>, near the signaling site, before the problem escalates</td><td>A subsystem should be self-healing by default — local restarts keep system-level responsibilities contained</td></tr>
+<tr><td>(b)</td><td>If unhandled locally, the exception <strong>escalates up the call chain</strong> — each caller gets a chance to handle it before the next</td><td>Organizational boundaries map to call boundaries; governance decisions propagate upward naturally</td></tr>
+<tr><td>(c)</td><td>A handler can <strong>resume execution at the signaling site</strong> — optionally supplying a degraded value</td><td>Sensors, actuators, and communication channels fail transiently; the correct response is often “use the last known value and continue”, not “abort the mission”</td></tr>
+<tr><td>(d)</td><td>If no handler fires, the exception reaches a <strong>kernel-level default handler</strong> whose behavior is configurable per deployment context</td><td>A simulation kernel, test kernel, and production kernel have different appropriate “last resort” behaviors — this should not be hardcoded in the language</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="why-not-trycatch"><a class="header" href="#why-not-trycatch">Why Not Try/Catch</a></h3>
+<p>Java-style try/catch satisfies (a), (b), and (d) but <strong>cannot satisfy (c)</strong>. When a <code>catch</code> block executes, the call stack above the handler has already been discarded. There is no way to resume the signaling site from inside a catch block. For a language where sensor-read degradation, communication-timeout recovery, and graceful degradation under partial failure are first-class concerns, this is a disqualifying limitation.</p>
+<p>Delimited continuations and algebraic effects can satisfy (c) but require capturing a slice of the continuation as a first-class value. In the CESK machine, this means the continuation <code>K</code> is no longer a flat linked list at signal time — it must be split, allocated, and passed to the handler. This has significant consequences for the AAM abstract interpretation path: captured continuation slices create potential state-space explosion in the abstract machine, undermining the static analysis story that is one of VarioHyve’s core architectural commitments.</p>
+<blockquote>
+<p><strong>Implementation tradeoff — post-v1 study item.</strong> The condition system below can be implemented either as a direct mechanism (two new K frame types, no additional language semantics) or as a derived mechanism built on top of delimited continuations. The direct approach minimises runtime complexity and has predictable AAM cost. The derived approach is theoretically more general and may simplify the interpreter core if delimited continuations are introduced independently for other purposes. This tradeoff — direct vs. derived — will be evaluated after v1 is bootstrapped.</p>
+</blockquote>
+<h3 id="the-common-lisp-condition-system"><a class="header" href="#the-common-lisp-condition-system">The Common Lisp Condition System</a></h3>
+<p>The <strong>Common Lisp condition system</strong> satisfies all four requirements while requiring only two new continuation frame types — no continuation capture at any point.</p>
+<p>The design separates three orthogonal concerns:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Concept</th><th>Installed by</th><th>Lives where</th><th>Purpose</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Condition</strong></td><td>signaling code</td><td>raised at the error site</td><td>describes what went wrong</td></tr>
+<tr><td><strong>Handler</strong></td><td>caller code</td><td>anywhere in the call chain</td><td>decides the recovery <em>policy</em></td></tr>
+<tr><td><strong>Restart</strong></td><td>component code</td><td>near the signaling site</td><td>named recovery <em>mechanism</em> — the actual fix</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>The key insight:</strong> the <em>policy decision</em> (which caller says “on SensorError, use the last measured value”) is separated from the <em>mechanism</em> (which component provides the code that actually retrieves and returns the last measured value). The handler is written by the caller without knowing the sensor’s internals; the restart is written by the sensor component as a named escape hatch. The handler invokes the restart by name. The call stack is never unwound — the signaling call simply returns the restart’s value.</p>
+<p><strong>CESK cost:</strong> Two new frame types pushed on <code>K</code>, no slice capture:</p>
+<ul>
+<li><code>signal(condition)</code> — walks <code>K</code> collecting matching <code>HandlerFrame</code>s, calls each in order <strong>with K intact</strong>. The activation that called <code>signal</code> is still on the stack. If a handler calls <code>invokeRestart(name)</code>, the runtime scans K for the matching <code>RestartFrame</code> and executes it; the result becomes the return value of <code>signal</code>. Only if a handler explicitly aborts does any unwinding occur.</li>
+<li><code>withRestartFrame(name, fn)</code> — pushes a <code>RestartFrame(name, fn)</code> onto <code>K</code></li>
+<li><code>withHandlerFrame(condClass, fn)</code> — pushes a <code>HandlerFrame(condClass, fn)</code> onto <code>K</code></li>
+</ul>
+<p>This keeps K as a flat, finite, finitely summarizable linked list in the abstract machine — the AAM path is unaffected.</p>
+<h3 id="worked-example-1--component-handles-and-resumes-local-restart"><a class="header" href="#worked-example-1--component-handles-and-resumes-local-restart">Worked Example 1 — Component Handles and Resumes (local restart)</a></h3>
+<p>The sensor component installs a restart near the signaling site. It also installs a local handler that immediately invokes that restart — the component resolves the problem itself without involving the caller at all.</p>
+<pre><code class="language-vh">// Layer 1 — the raw hardware sensor: this is the signal site
+class TemperatureSensor(hardwareId, kernel) {
+    hardwareId = hardwareId
+    hardware = kernel.hardware
+    exc = kernel.exceptions
+
+    read() {
+        var raw = hardware.readSensor(hardwareId)   // raw I/O call
+        raw.isError.ifTrue(fun {
+            exc.signal(SensorError(hardwareId, raw.errorCode))  // &lt;&lt; SIGNAL SITE
+        })
+        raw.value
+    }
+}
+
+// Layer 2 — the component controller: installs both the restart and a local handler
+class SensorController(rawSensor, kernel) {
+    rawSensor = rawSensor
+    exc = kernel.exceptions
+    lastValue = 0
+
+    read() {
+        // Restart installed here — the component owns the recovery mechanism
+        exc.withRestart(#useLast, fun { lastValue }) {
+            // Local handler also installed here — component also owns the policy
+            // Fires before any handler in the call chain above
+            exc.withHandler(SensorError, fun(e) {
+                exc.invokeRestart(#useLast)
+            }) {
+                var v = rawSensor.read()   // calls TemperatureSensor.read — may signal
+                lastValue = v              // update cache on success
+                v
+            }
+        }
+    }
+}
+</code></pre>
+<p>When <code>rawSensor.read()</code> calls <code>exc.signal(SensorError(...))</code> inside <code>TemperatureSensor.read</code>:</p>
+<ol>
+<li><code>signal</code> walks K upward from the signal site. The <code>HandlerFrame(SensorError, ...)</code> installed by <code>withHandler</code> in <code>SensorController.read</code> is the first match.</li>
+<li>The handler calls <code>invokeRestart(#useLast)</code>. The runtime finds the <code>RestartFrame(#useLast, ...)</code> also on K, installed just above by <code>withRestart</code>.</li>
+<li>The restart executes <code>fun { lastValue }</code> — returns the cached value.</li>
+<li><code>signal</code> returns <code>lastValue</code> to the call site — the <code>exc.signal(...)</code> expression inside <code>TemperatureSensor.read</code> evaluates to <code>lastValue</code>. The <code>ifTrue</code> body completes, and <code>TemperatureSensor.read</code> returns <code>lastValue</code>.</li>
+<li><code>SensorController.read</code> receives <code>lastValue</code> as <code>v</code>, updates <code>lastValue</code>, and returns it normally.</li>
+</ol>
+<p>The <strong>caller of <code>SensorController.read</code></strong> sees a normal return value and is never aware an error occurred. The component fully encapsulates both the mechanism and the policy.</p>
+<h3 id="worked-example-2--caller-handles-and-resumes-remote-restart"><a class="header" href="#worked-example-2--caller-handles-and-resumes-remote-restart">Worked Example 2 — Caller Handles and Resumes (remote restart)</a></h3>
+<p>The sensor component installs <strong>only</strong> the restart — it declares the recovery mechanism but makes no policy decision. The caller installs the handler and decides which restart to invoke. The stack is not unwound: <code>signal</code> finds the handler upstack, the handler calls <code>invokeRestart</code>, and the sensor’s <code>read()</code> returns normally.</p>
+<pre><code class="language-vh">// Layer 1 — same raw hardware sensor as Example 1: this is the signal site
+class TemperatureSensor(hardwareId, kernel) {
+    hardwareId = hardwareId
+    hardware = kernel.hardware
+    exc = kernel.exceptions
+
+    read() {
+        var raw = hardware.readSensor(hardwareId)
+        raw.isError.ifTrue(fun {
+            exc.signal(SensorError(hardwareId, raw.errorCode))  // &lt;&lt; SIGNAL SITE
+        })
+        raw.value
+    }
+}
+
+// Layer 2 — the component controller: installs ONLY the restart, no local handler
+// The component declares the recovery mechanism but makes no policy decision
+class SensorController(rawSensor, kernel) {
+    rawSensor = rawSensor
+    exc = kernel.exceptions
+    lastValue = 0
+
+    read() {
+        exc.withRestart(#useLast, fun { lastValue }) {
+            var v = rawSensor.read()   // may signal SensorError — will escalate
+            lastValue = v
+            v
+        }
+    }
+}
+
+// Layer 3 — the mission coordinator: installs the handler, decides the policy
+class MissionCoordinator(sensors, kernel) {
+    sensors = sensors
+    exc = kernel.exceptions
+
+    runMission() {
+        exc.withHandler(SensorError, fun(e) {
+            // Policy decision: when any sensor raises SensorError, use its last value
+            exc.invokeRestart(#useLast)
+        }) {
+            // Both reads are covered by the single handler above
+            var alt  = sensors.altimeter.read()
+            var gyro = sensors.gyroscope.read()
+            computeManeuver(alt, gyro)
+        }
+    }
+}
+</code></pre>
+<p>When <code>rawSensor.read()</code> calls <code>exc.signal(SensorError(...))</code> inside <code>TemperatureSensor.read</code>:</p>
+<ol>
+<li><code>signal</code> walks K upward from the signal site. It passes through the <code>RestartFrame(#useLast, ...)</code> installed by <code>SensorController.read</code> — restart frames are noted but do not stop the search.</li>
+<li><code>signal</code> continues up K through <code>SensorController.read</code>’s activation, then through <code>sensors.altimeter.read</code>’s call frame in <code>runMission</code>, until it finds the <code>HandlerFrame(SensorError, ...)</code> installed by <code>withHandler</code> in <code>MissionCoordinator.runMission</code>.</li>
+<li>The handler calls <code>invokeRestart(#useLast)</code>. The runtime scans K for the <code>RestartFrame</code> — finds the one installed in step 1, still present on K.</li>
+<li>The restart executes <code>fun { lastValue }</code> — returns the cached value from <code>SensorController</code>.</li>
+<li><code>signal</code> returns <code>lastValue</code> to the signal site inside <code>TemperatureSensor.read</code>. The <code>exc.signal(...)</code> expression evaluates to <code>lastValue</code>. <code>TemperatureSensor.read</code> returns <code>lastValue</code> → <code>SensorController.read</code> returns it as <code>v</code> → <code>sensors.altimeter.read()</code> in <code>runMission</code> returns <code>lastValue</code>. Execution continues with <code>var alt = lastValue</code>.</li>
+</ol>
+<p><code>TemperatureSensor</code> has no knowledge of who will handle its error. <code>SensorController</code> has no knowledge of what policy will be applied to its restart. <code>MissionCoordinator</code> has no knowledge of how <code>SensorController</code> stores its last value — it only knows the restart’s name. The three concerns are fully decoupled.</p>
+<h3 id="the-doesnotunderstand-resolution"><a class="header" href="#the-doesnotunderstand-resolution">The <code>doesNotUnderstand</code> Resolution</a></h3>
+<p><code>doesNotUnderstand</code> becomes a condition object, not a method on <code>Object</code>:</p>
+<pre><code class="language-vh">class MessageNotUnderstood(receiver, selector, args) &lt; Condition { }
+</code></pre>
+<p>When dispatch fails, the runtime signals a <code>MessageNotUnderstood</code> condition. The kernel’s default handler terminates with diagnostics. Objects that need proxy or delegation behavior install a <code>withHandler(MessageNotUnderstood, ...)</code> around relevant code — no DNU method required, no open-ended dispatch to an unknown method, no complication of the abstract interpretation graph.</p>
+<p>This resolves all four concerns raised in the <code>doesNotUnderstand</code> discussion above.</p>
+<h3 id="kernel-default-handlers"><a class="header" href="#kernel-default-handlers">Kernel Default Handlers</a></h3>
+<p>If <code>signal</code> reaches the bottom of K without a matching handler, the condition is delivered to <code>kernel.exceptions.defaultHandler</code>. Different kernels provide different behaviors:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Kernel</th><th>Default handler behavior</th></tr>
+</thead>
+<tbody>
+<tr><td><code>ConcreteKernel</code></td><td>Print diagnostic (receiver, selector, condition class), terminate</td></tr>
+<tr><td><code>TestKernel</code></td><td>Record the unhandled signal as a test failure, optionally continue</td></tr>
+<tr><td><code>SimKernel</code></td><td>Log to the simulation trace with timestamp, continue with a degraded state</td></tr>
+<tr><td><code>ModelCheckKernel</code></td><td>Nondeterministically handle or not handle — explores both paths</td></tr>
+<tr><td><code>AbstractKernel</code></td><td>Soundly approximate: assume any handler may or may not fire</td></tr>
+</tbody>
+</table>
+</div>
+<p>The v1 behavior (fatal termination) becomes the <code>ConcreteKernel</code>’s default handler — a runtime object, not a hardcoded language rule.</p>
+<h3 id="sdk-sugar-layer"><a class="header" href="#sdk-sugar-layer">SDK Sugar Layer</a></h3>
+<p>The condition system primitives are low-level by design. An SDK layer provides familiar sugar:</p>
+<pre><code class="language-vh">class Exceptions(kernel) {
+    exc = kernel.exceptions
+
+    // try/catch — for callers who want unwind-on-error semantics
+    try(body) catch(condClass, handler) {
+        exc.withHandler(condClass, fun(e) {
+            exc.abort(e, handler)   // explicit unwind + handler body
+        }) { body() }
+    }
+
+    // ensure — always run cleanup, regardless of outcome
+    ensure(body, cleanup) { ... }
+
+    // guard — assertion-style; signal a condition if predicate fails
+    guard(pred, conditionFn, body) {
+        pred().ifFalse(fun { exc.signal(conditionFn()) })
+        body()
+    }
+}
+</code></pre>
+<p>Users who want Java-style try/catch import from the SDK. Users who need restarts use the core mechanism directly.</p>
+<h3 id="aam-compatibility"><a class="header" href="#aam-compatibility">AAM Compatibility</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Mechanism</th><th>AAM cost</th></tr>
+</thead>
+<tbody>
+<tr><td>Try/Catch</td><td>Low — <code>HandlerFrame</code> is finite; unwind is K-scan</td></tr>
+<tr><td>Condition + Restarts</td><td>Low — <code>HandlerFrame</code> + <code>RestartFrame</code> on K; <code>signal</code> is K-scan, no capture</td></tr>
+<tr><td>Algebraic effects</td><td>High — continuation capture = reachable-state explosion</td></tr>
+</tbody>
+</table>
+</div>
+<p>The condition system keeps K as a finitely summarizable linked list. The abstract machine can represent <code>HandlerFrame(condClass, fn)</code> and <code>RestartFrame(name, fn)</code> symbolically — condition class addresses and restart name symbols are both finite in any given program. The abstract <code>signal</code> operation joins the values returned by all reachable handlers, which is a standard widening step. No new AAM machinery is required.</p>
+<h3 id="incremental-roadmap"><a class="header" href="#incremental-roadmap">Incremental Roadmap</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Phase</th><th>What</th><th>Interpreter impact</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>v1</strong></td><td>Fatal <code>doesNotUnderstand</code> and dead-context errors. No condition system.</td><td>None</td></tr>
+<tr><td><strong>v2</strong></td><td><code>Condition</code> base class. <code>signal</code>/<code>withHandler</code> primitives in <code>kernel.exceptions</code>. <code>MessageNotUnderstood</code> replaces hardcoded DNU. Kernel default handler receives unhandled conditions.</td><td>Two new K frame types: <code>HandlerFrame</code>, <code>DefaultHandlerFrame</code></td></tr>
+<tr><td><strong>v3</strong></td><td><code>withRestart</code>/<code>invokeRestart</code> primitives. Full component-level recovery. <code>abort</code> for explicit unwind.</td><td>One new K frame type: <code>RestartFrame</code>. <code>signal</code> extended to scan for restarts</td></tr>
+<tr><td><strong>v4</strong></td><td>SDK sugar layer: <code>try</code>/<code>catch</code>/<code>ensure</code>/<code>guard</code>. Dead-context error becomes a condition.</td><td>SDK library only — no interpreter changes</td></tr>
+<tr><td><strong>Future</strong></td><td>Abstract interpretation of condition handlers. Verify that all signaled conditions have matching handlers. Mixin-contract violations as conditions.</td><td>Analysis tooling</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="tail-call-optimization"><a class="header" href="#tail-call-optimization">Tail-Call Optimization</a></h2>
+<p><strong>Status:</strong> Not in v1.</p>
+<p>The v1 CESK interpreter is stack-safe — continuations are heap-allocated, so deep recursion cannot crash the host runtime (see <a href="./interpreter-design.html#stack-safety">Interpreter Design — Stack Safety</a>). However, without TCO, each recursive call allocates a continuation frame on the heap, consuming O(n) memory for n-deep recursion. TCO is a <strong>space efficiency</strong> optimization: tail calls reuse the current frame instead of allocating a new one, reducing heap usage to O(1) for tail-recursive loops.</p>
+<h3 id="implementation-layers"><a class="header" href="#implementation-layers">Implementation Layers</a></h3>
+<p>TCO is introduced incrementally. Each layer builds on the previous one; all layers are local changes to the <code>step</code> function’s frame-push logic.</p>
+<h4 id="layer-0-no-tco-v1-bootstrap"><a class="header" href="#layer-0-no-tco-v1-bootstrap">Layer 0: No TCO (v1 bootstrap)</a></h4>
+<p>The v1 interpreter allocates a continuation frame for every call. Programs run correctly — the CESK machine is stack-safe — but deep recursion consumes O(n) heap. This is the simplest correct implementation and the starting point.</p>
+<p><strong>What works:</strong> everything. <strong>What’s expensive:</strong> any loop expressed as recursion (which, without operators or control structures, is <em>all</em> loops).</p>
+<h4 id="layer-1-direct-tail-calls"><a class="header" href="#layer-1-direct-tail-calls">Layer 1: Direct tail calls</a></h4>
+<p>Detect <strong>syntactic tail position</strong> in method and lambda bodies: the last expression before the implicit return. When <code>step</code> is about to dispatch a message send in tail position, it pops the current <code>ReturnFrame</code> before pushing the callee’s frame. This is a one-pass AST check and ~20 lines in <code>step</code>.</p>
+<p><strong>Covers:</strong></p>
+<pre><code class="language-vh">// the recursive call is the last expression — tail position
+loop(n, acc) {
+    ^ loop(n.minus(1), n.mul(acc))
+}
+
+// generalized — the tail call resolves to any method, not just self
+process(data) {
+    ^ transform(data).process(next(data))
+}
+</code></pre>
+<p><strong>Does not cover:</strong> <code>^</code> inside lambdas passed to control-flow methods (the common <code>ifTrue</code>/<code>ifFalse</code> pattern).</p>
+<p>Note: Layer 1 already provides <strong>generalized</strong> TCO for direct tail calls — any message send in tail position is optimized, not just self-recursive ones. Because all names are late-bound, the runtime cannot distinguish self-recursion from mutual recursion or delegation at the call site. The optimization is purely structural: “is this call the last thing the method does?” This generality comes for free — there is no implementation difference between optimizing a self-call and optimizing a call to an unknown method.</p>
+<h4 id="layer-2-non-local-return-as-tail-return"><a class="header" href="#layer-2-non-local-return-as-tail-return">Layer 2: Non-local return as tail return</a></h4>
+<p>When <code>^</code> fires inside a lambda, it unwinds the continuation to the enclosing method’s <code>ReturnFrame</code>. If that <code>ReturnFrame</code> is the topmost frame — i.e., the method had nothing left to do after the call that invoked the lambda — then <code>^</code> is effectively a tail return. The runtime detects this dynamically: after unwinding, check whether the continuation was about to return anyway.</p>
+<p>This requires no knowledge of <code>ifTrue</code> or <code>ifFalse</code> — it is a purely structural check on the continuation. It handles any control-flow pattern, including user-defined ones.</p>
+<p><strong>Covers the common VarioHyve idiom:</strong></p>
+<pre><code class="language-vh">factorial(n, acc) {
+    n.eq(0).ifTrue(fun { ^ acc }).ifFalse(fun { ^ factorial(n.minus(1), n.mul(acc)) })
+}
+</code></pre>
+<p>Here, <code>^ factorial(...)</code> inside the <code>ifFalse</code> lambda unwinds to <code>factorial</code>’s <code>ReturnFrame</code>. With Layer 2, the runtime recognizes that <code>factorial</code> had nothing left to do, and reuses the frame — O(1) space for the recursion.</p>
+<p><strong>Key property:</strong> This is a <em>dynamic</em> check, not a static one. Whether <code>^</code> lands in tail position depends on the continuation shape at runtime. But for a CESK machine, the continuation <em>is</em> runtime data, so the check is natural and cheap — inspect the top of K after unwinding.</p>
+<p><strong>Implementation:</strong> When <code>^</code> fires and unwinds to a <code>ReturnFrame</code>, before delivering the return value, check if the next frame in the continuation is another <code>ReturnFrame</code> or a frame that would immediately pass the value through. If so, collapse the frames. This is the <code>^</code>-as-tail-return optimization.</p>
+<h4 id="layer-3-and-beyond-if-needed"><a class="header" href="#layer-3-and-beyond-if-needed">Layer 3 and beyond (if needed)</a></h4>
+<p>Further sophistication is possible but that is left for future work:</p>
+<ul>
+<li><strong>Continuation marks</strong> (à la Racket, following Clinger and Flatt) — annotate tail-position boundaries on the continuation itself, enabling O(1) tail-position detection without post-hoc unwinding checks. More principled than Layer 2 but adds continuation mark infrastructure.</li>
+<li><strong>Known-method inlining</strong> — recognize <code>ifTrue</code>, <code>ifFalse</code>, <code>and</code>, <code>or</code> as known control-flow patterns and inline their dispatch, turning the lambda bodies into direct tail positions. Philosophically compromised (“no special forms” principle) but potentially faster. Only worth considering if profiling shows Layer 2’s dynamic check is a bottleneck.</li>
+<li><strong>Static tail-position analysis across lambda boundaries</strong> — a compile-time analysis that determines when a <code>^</code> in a lambda is guaranteed to land in tail position. This would let the runtime skip the dynamic check of Layer 2. Requires flow analysis of which methods always invoke their lambda arguments in tail position, which is complex to do in general, we will see if the VarioHyve support for abstract interpretation makes this easier.</li>
+</ul>
+<h3 id="does-generalized-tco-matter"><a class="header" href="#does-generalized-tco-matter">Does Generalized TCO Matter?</a></h3>
+<p>In most languages, generalized TCO (optimizing tail calls to <em>any</em> method, not just self) is a nice-to-have — most loops are self-recursive. In VarioHyve, generalized TCO is <strong>essential</strong>:</p>
+<ul>
+<li>All names are late-bound. The runtime cannot determine at the call site whether <code>process(data)</code> will resolve to <code>self.process</code> (self-recursion), <code>OtherClass.process</code> (delegation), or something else entirely. Restricting TCO to self-calls would require runtime self-call detection, which is more complex than simply optimizing all tail calls.</li>
+<li>State machine patterns — where each state dispatches to the next — are naturally expressed as mutual tail calls between methods. Without generalized TCO, these patterns leak memory.</li>
+<li>The Clinger formalization is inherently generalized — it defines tail position structurally, independent of the callee’s identity.</li>
+</ul>
+<p>The good news: generalized TCO is not harder to implement than self-only TCO in a CESK machine. The optimization is “pop the current frame before pushing the new one” — the callee’s identity is irrelevant. Layers 1 and 2 are already fully generalized.</p>
+<h3 id="design-summary"><a class="header" href="#design-summary">Design Summary</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Layer</th><th>What it optimizes</th><th>Cost</th><th>When</th></tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>Nothing — O(n) heap per recursion depth</td><td>Zero</td><td>v1 bootstrap</td></tr>
+<tr><td>1</td><td>Direct tail calls (last expression in method/lambda)</td><td>~1 day</td><td>Immediately after v1 runs</td></tr>
+<tr><td>2</td><td><code>^</code> in lambdas that land in tail position (dynamic check)</td><td>~2-3 days</td><td>Shortly after Layer 1</td></tr>
+<tr><td>3+</td><td>Continuation marks, inlining, static analysis</td><td>Significant</td><td>Only if profiling demands</td></tr>
+</tbody>
+</table>
+</div>
+<p>Layers 1+2 together cover the vast majority of real recursive patterns in VarioHyve, including all <code>ifTrue</code>/<code>ifFalse</code> control flow. Layer 3+ is unlikely to be needed unless the language acquires deeply nested control-flow combinators.</p>
+<p><strong>Implementation basis:</strong> The layered approach follows Clinger (1998), <em>Proper tail recursion and space efficiency</em>, which formalizes proper tail recursion as an asymptotic space complexity property. Clinger defines tail position inductively over expression forms and proves that an implementation is properly tail-recursive if and only if it evaluates tail expressions in bounded space regardless of recursion depth. For the CESK machine, this translates directly: a tail call pops the current <code>ReturnFrame</code> before pushing the callee’s frame, keeping the continuation at constant depth for tail-recursive loops.</p>
+<p><strong>Debugging:</strong> TCO eliminates continuation frames, which can make traces less informative. This is a <strong>tooling concern</strong>, not a language concern — the debugger and profiler should reconstruct the logical call chain when needed, without compromising the runtime guarantee of bounded heap usage.</p>
+<p><strong>Reference:</strong> William D. Clinger. 1998. <em>Proper tail recursion and space efficiency.</em> In Proceedings of the ACM SIGPLAN 1998 conference on Programming language design and implementation (PLDI ’98), 174–185. <a href="https://doi.org/10.1145/277650.277719">https://doi.org/10.1145/277650.277719</a></p>
+<h2 id="mirror-based-reflection-api"><a class="header" href="#mirror-based-reflection-api">Mirror-Based Reflection API</a></h2>
+<p><strong>Status:</strong> Not in v1.</p>
+<p>v1 provides no runtime reflection — objects cannot inspect their own class, list methods, or introspect slot names programmatically.</p>
+<p><strong>Why not in v1:</strong> Reflection introduces a large API surface and raises questions about encapsulation, security, and optimization. Getting the core object model right first ensures the reflection layer has a solid foundation.</p>
+<p><strong>Planned approach:</strong> VarioHyve will adopt a <strong>mirror-based reflection API</strong> inspired by Bracha and Ungar’s mirrors:</p>
+<ul>
+<li><strong>Separation of concerns</strong> — reflective operations are not methods on Object. Instead, a mirror is a separate object that provides an introspective view of a target object.</li>
+<li><strong>First-class mirrors</strong> — mirrors are regular VarioHyve objects. They can be passed around, stored in slots, and composed.</li>
+<li><strong>Stratification</strong> — base-level code (application logic) and meta-level code (reflection) are cleanly separated. An object does not need to “know” it is being reflected upon.</li>
+</ul>
+<p>Example (syntax TBD):</p>
+<pre><code class="language-vh">mirror = reflect(aPoint)          // obtain a mirror on aPoint
+mirror.slotNames                  // → ["x", "y"]
+mirror.className                  // → "Point"
+mirror.send("move", [1, 2])      // reflective message send
+</code></pre>
+<p><strong>Key design note:</strong> No new runtime structures are needed. Mirrors are ordinary objects whose methods read the existing store entries — <code>slots</code>, <code>class</code>, <code>methods</code>, <code>super</code>, <code>mixins</code>. The additive object model (<code>Object → Class → Metaclass</code>) already exposes all the information mirrors need; the mirror API simply provides a controlled interface to it.</p>
+<h2 id="access-control"><a class="header" href="#access-control">Access Control</a></h2>
+<p><strong>Status:</strong> Not in v1.</p>
+<p>v1 has no access control — all methods and slots are publicly visible. Any object with a reference to another object can send any message to it.</p>
+<p><strong>Why not in v1:</strong> Access control interacts deeply with inheritance, mixins, lexical scoping, and construction. Designing it correctly requires a stable object model and practical experience with real VarioHyve programs. The v1 bootstrap prioritizes getting the core semantics right.</p>
+<h3 id="design-principles"><a class="header" href="#design-principles">Design Principles</a></h3>
+<p>VarioHyve’s access control follows an <strong>object-capability model</strong>: an object’s externally visible behavior is defined entirely by its <strong>exported methods</strong>. Everything else is internal.</p>
+<p><strong>1. Private by default, explicit export.</strong> An object does not answer to any message by default. Only methods explicitly marked as exported are visible to external callers. The export surface defines the object’s <strong>behavioral contract</strong> — it is the set of messages the object promises to respond to.</p>
+<pre><code class="language-vh">class Point(ax, ay) {
+    x = ax                                    // internal slot
+    y = ay                                    // internal slot
+    recompute() { ... }                       // internal helper
+    export x() { x }                          // exported getter
+    export y() { y }                          // exported getter
+    export move(dx, dy) { x!(x.plus(dx)); y!(y.plus(dy)) }  // exported method
+}
+</code></pre>
+<p>External code can call <code>aPoint.x</code>, <code>aPoint.y</code>, and <code>aPoint.move(1, 2)</code>. It cannot call <code>aPoint.recompute</code> or <code>aPoint.x!(5)</code> — those are internal.</p>
+<p><strong>2. Exports are heritable, internals are sealed.</strong> A subclass can only <code>super.method(...)</code> on methods that the parent exports. Internal methods are invisible to subclasses — they do not appear in the <code>super</code> chain. A subclass is a <em>client</em> of its parent’s behavioral contract, not a privileged insider.</p>
+<pre><code class="language-vh">class ColorPoint(ax, ay, ac) &lt; Point(ax, ay) {
+    color = ac
+    export color() { color }
+    export describe() {
+        super.x             // OK — x() is exported by Point
+        super.recompute     // ERROR — recompute is internal to Point
+    }
+}
+</code></pre>
+<p>This forces class authors to design explicit extension points as part of the export surface. Subclasses extend behavior through the same contract that external callers use.</p>
+<p><strong>3. Mixins are sealed — export surface becomes private in the applier.</strong> A mixin contributes only its exported methods to the applying class. The mixin’s internal helpers are invisible — they are implementation details of the mixin’s exported behavior.</p>
+<p>The mixin’s exported methods become <strong>internal</strong> (private) in the applying class by default. The applier can choose to re-export them, making them part of its own behavioral contract, or keep them as internal implementation helpers:</p>
+<pre><code class="language-vh">class Logging() {
+    formatMsg(msg) { "LOG: ".concat(msg) }                // internal to Logging
+    export log(msg) { console.print(formatMsg(msg)) }     // exported by Logging
+}
+
+class Server(port) &lt;: Logging &lt; Base {
+    // Logging.log is now available internally — it was exported by Logging
+    // but it is private to Server unless re-exported
+    export start() { log("starting on port ".concat(port.toString)) }
+    // Server does NOT have access to Logging.formatMsg — it is internal to Logging
+}
+</code></pre>
+<p>Here, <code>aServer.log("test")</code> fails — <code>log</code> is not exported by <code>Server</code>. But <code>aServer.start</code> works and internally uses <code>log</code>. If the server author wants to expose logging to external callers, they explicitly re-export:</p>
+<pre><code class="language-vh">class Server(port) &lt;: Logging &lt; Base {
+    export log       // re-export Logging's log as part of Server's contract
+    export start() { log("starting") }
+}
+</code></pre>
+<p>This is consistent with how superclasses are handled: the export surface is the interface, and each class in the chain decides what to expose.</p>
+<p><strong>Implementation note:</strong> This works cleanly because VarioHyve mixins are <a href="./object-model.html#mixin-application">not flattened</a>. Each mixin is a separate object in the class’s <code>mixins: List&lt;Addr&gt;</code> — its methods live in its own class, not merged into the applier’s method dictionary. Method lookup walks class → mixins[0] → mixins[1] → super, checking each mixin’s own methods. The runtime already tracks <strong>dispatch origin</strong> (<code>classAddr, mixinIndex?</code>) in each <a href="./object-model.html#method-activations">activation</a>, so it knows which class or mixin provided the currently executing method. Enforcing mixin internal visibility is then a comparison: when a self-send resolves to a method in mixin M, the runtime checks whether the dispatch origin is also M (internal access — always allowed) or something else (external access — requires export). No new provenance tags or per-method closures are needed; the existing dispatch machinery provides all the information.</p>
+<p><strong>4. Lexical scope gives full access.</strong> Code inside a lexical scope sees everything — all methods and slots of enclosing objects, not just their exports. This follows the Newspeak model: lexical nesting implies a trust relationship. If you wrote the inner class, you control it.</p>
+<pre><code class="language-vh">class Outer() {
+    secret = 42                    // internal slot
+    export getSecret() { secret }  // exported getter
+
+    class Inner() {
+        export test() {
+            secret                 // OK — lexical scope gives full access
+            // 'secret' is resolved via the outer chain, which is privileged
+        }
+    }
+}
+</code></pre>
+<p>The qualified receiver <code>outer ClassName</code> uses lexical declaration context. Any future access-control distinction for such sends must be defined explicitly; it cannot be inferred merely from possessing an object reference.</p>
+<p><strong>Accepted <code>outer</code> contract:</strong> <code>outer ClassName</code> selects an ordinary receiver
+from lexical declaration origin. There is no <code>object.outer</code> accessor to export,
+and activation reification is deferred. A future access-control design may
+distinguish lexical sends from external sends, but must not reintroduce a
+universal parent getter. Programs can deliberately expose enclosing objects
+through ordinary methods under their own capability contract.</p>
+<p><strong>5. Construction follows the same rules.</strong> <code>new</code>, <code>apply</code>, and named factory methods on the metaclass are internal by default. A class that does not export any construction path is unconstructable from outside — only code with lexical access to the class can instantiate it.</p>
+<pre><code class="language-vh">class PublicPoint(ax, ay) {
+    x = ax
+    y = ay
+    export x() { x }
+    export y() { y }
+    export new          // explicitly export the constructor
+}
+
+class InternalHelper() {
+    // new is not exported — only the enclosing module can instantiate this
+    export process(data) { ... }
+}
+</code></pre>
+<p>The exact syntax for exporting <code>new</code> (which is synthesized, not user-written) is TBD — it may use a class-level descriptor (<code>: exportNew</code>) or an explicit <code>export new</code> declaration in the class body. Object construction happens through the exported behavioral interface of the class object, consistent with the principle that the export surface <em>is</em> the contract.</p>
+<h3 id="roadmap"><a class="header" href="#roadmap">Roadmap</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Phase</th><th>What</th><th>Runtime enforcement</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>v1</strong></td><td>Everything public. No access control.</td><td>None</td></tr>
+<tr><td><strong>v2</strong></td><td>Add <code>export</code> as a descriptor (<code>: export</code>). A static analysis tool checks that external callers only use exported methods. The interpreter ignores the annotation.</td><td>None — tool-only</td></tr>
+<tr><td><strong>v3</strong></td><td>Runtime enforcement. Private-by-default. Message sends to non-exported methods from external callers are rejected with an access error.</td><td>Yes — dispatch checks export set</td></tr>
+<tr><td><strong>Future</strong></td><td>Research: can abstract interpretation derive access-control properties from export sets? Can it verify mixin contracts respect the export surface? Is a <code>heritable</code> dimension (visible to subclasses but not external callers) needed, or does the export-only model suffice?</td><td>Analysis-driven</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="connection-to-existing-design"><a class="header" href="#connection-to-existing-design">Connection to Existing Design</a></h3>
+<ul>
+<li><strong>Capability model alignment.</strong> VarioHyve has no globals. Top-level modules receive external capabilities through their constructor parameters; classes generally also receive capabilities through inheritance, mixins and lexical nesting. A kernel is only an optional bundle. Private-by-default would restrict exported methods without changing these sources of authority or making nested scopes isolated.</li>
+<li><strong><code>!</code> convention.</strong> With private-by-default, slots are automatically encapsulated. The <code>_x</code> backing-slot pattern becomes unnecessary — just don’t export the setter. Since slot names cannot end in <code>!</code>, setter names (<code>x!</code>) are always unambiguous and easy to control independently from getters.</li>
+<li><strong>Descriptor layer.</strong> Export annotations fit naturally as descriptors in v2. The v1 interpreter ignores them; a separate tool checks them.</li>
+<li><strong>Non-flattened mixins.</strong> The <a href="./object-model.html#mixin-application">runtime representation</a> of mixins (<code>mixins: List&lt;Addr&gt;</code>) and the <a href="./object-model.html#method-activations">dispatch origin</a> tracking in activations provide the infrastructure needed for mixin access control. No new runtime structures are required — enforcing export visibility on mixin members is a check in the existing dispatch loop.</li>
+<li><strong>Abstract interpretation.</strong> Export sets provide free precision for the abstract interpreter — message sends to non-exported methods are statically dead, pruning the abstract state space.</li>
+</ul>
+<h3 id="prior-art"><a class="header" href="#prior-art">Prior Art</a></h3>
+<ul>
+<li><strong>Newspeak</strong> (Bracha) — private/public with lexical module boundaries; lexical scope gives full access</li>
+<li><strong>E language</strong> (Miller) — pure capability model; encapsulation via lexical scope only, no access modifiers</li>
+<li><strong>Wyvern</strong> (Aldrich et al.) — capability-safe language with effect systems</li>
+<li><strong>Joe-E</strong> (Mettler et al.) — capability discipline as a subset of Java</li>
+</ul>
+<p>The combination of private-by-default capability model, sealed inheritance, mixin export propagation, Newspeak-style lexical trust, and AAM-based abstract interpretation is — to our knowledge — unexplored in the literature. This intersection represents a potential research contribution.</p>
+<h2 id="tear-off-first-class-method-references"><a class="header" href="#tear-off-first-class-method-references">Tear-Off: First-Class Method References</a></h2>
+<p><strong>Status:</strong> Not in v1.</p>
+<p>v1 provides no syntax for obtaining a method as a first-class callable without invoking it. A bare name <code>x</code> always invokes (runs the accessor or method); there is no way to “tear off” a method and pass it around as a value.</p>
+<p><strong>Why not in v1:</strong> <a href="./message-sends.html#dispatch-rules">Unified invocation</a> lets
+methods and eligible generated callable bindings supply the same invocation
+selector. Bare sends return accessor or method results, while parentheses invoke
+selected behavior once. Neither form reifies a method. Tear-off would add an
+explicit operation to obtain the method itself as a callable, requiring dedicated
+syntax and rules for bound versus unbound methods.</p>
+<p><strong>Planned approach:</strong> A <strong>name suffix operator</strong> (tentatively <code>$</code>) that produces a bound method reference:</p>
+<pre><code class="language-vh">class Sorter() {
+    compare(a, b) { a.lessThan(b) }
+    process(items) {
+        items.sortBy(compare$)       // tear-off — passes bound method as callable
+        items.forEach(describe$)     // equivalent to fun(x) { describe(x) }
+    }
+}
+</code></pre>
+<p>The <code>$</code> suffix on a name means: “don’t invoke the method — return a callable that, when applied, dispatches to this method on the current receiver.”</p>
+<h3 id="name-suffix-summary"><a class="header" href="#name-suffix-summary">Name Suffix Summary</a></h3>
+<p>VarioHyve uses name suffixes to distinguish four operations on a name:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Suffix</th><th>Syntax</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>.</code> (dot)</td><td><code>a.name</code></td><td>ordinary zero-argument send; parentheses request invocation at their arity</td></tr>
+<tr><td><code>!</code> (bang)</td><td><code>a.name!(v)</code></td><td>setter — synthesized for writable slots, convention for mutating/effectful methods; <strong>only valid on selectors, not on slot/parameter/local names</strong></td></tr>
+<tr><td><code>()</code> (parens)</td><td><code>a.name()</code></td><td>invoke zero-argument behavior once: exact method or eligible callable binding</td></tr>
+<tr><td><code>$</code> (dollar)</td><td><code>a.name$</code></td><td>tear-off — return bound method as callable, do not invoke</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="semantics"><a class="header" href="#semantics">Semantics</a></h3>
+<p>A tear-off <code>receiver.method$</code> produces a <strong>bound method object</strong> — a callable that captures both the method body and the receiver:</p>
+<pre><code class="language-vh">p = Point(3, 4)
+mover = p.move$        // bound method — captures p and move
+mover(1, 2)            // equivalent to p.move(1, 2)
+</code></pre>
+<p>The bound method object implements <code>(apply, N)</code> which dispatches the original method on the captured receiver with the given arguments.</p>
+<h3 id="design-considerations"><a class="header" href="#design-considerations">Design Considerations</a></h3>
+<ul>
+<li><strong>Bound vs unbound:</strong> <code>obj.method$</code> produces a <em>bound</em> method (receiver captured). <em>Unbound</em> method references (without a receiver) may be supported via the mirror API or a separate syntax (TBD).</li>
+<li><strong>Arity:</strong> The bound method inherits the original method’s arity. <code>compare$</code> from a <code>compare(a, b)</code> method produces a callable with <code>(apply, 2)</code>.</li>
+<li><strong>Identity:</strong> Whether two tear-offs of the same method on the same receiver are <code>==</code> is TBD. Structural equality (same method, same receiver) is likely but has allocation implications.</li>
+<li><strong>Language extension vs reflection:</strong> Tear-off is planned as a grammar extension (adding <code>$</code> or another symbol to the <code>IDENT</code> rule or as a postfix operator) rather than a reflection-only capability. This keeps it lightweight and syntactically natural. The mirror API may also expose tear-off functionality for reflective use cases, but the primary mechanism should be a language-level construct.</li>
+</ul>
+<h2 id="concurrency-and-parallelism"><a class="header" href="#concurrency-and-parallelism">Concurrency and Parallelism</a></h2>
+<p><strong>Status:</strong> Explicitly out of scope for the base VM. Concurrency is a composition-layer concern.</p>
+<p>The VarioHyve base VM is <strong>purely deterministic and sequential</strong>. There is no notion of threads, coroutines, channels, atomic operations, or shared mutable state in the base language. A single VarioHyve program executes as a single-threaded CESK reduction sequence — every step is deterministic and locally analyzable.</p>
+<p>This is a deliberate design choice, not a limitation.</p>
+<h3 id="the-semantic-language-interface-sli"><a class="header" href="#the-semantic-language-interface-sli">The Semantic Language Interface (SLI)</a></h3>
+<p>VarioHyve addresses concurrency through a <strong>layered architecture</strong> inspired by the Gamine Semantic Language Interface:</p>
+<pre><code>┌─────────────────────────────────────────────┐
+│         Semantic Composition VM              │
+│  (concurrency model, scheduling, sync)      │
+│                                             │
+│  Composes multiple Base VM instances via     │
+│  the SLI according to a concurrency model   │
+├─────────────────────────────────────────────┤
+│         Semantic Language Interface (SLI)    │
+│  (deterministic API exposed by each         │
+│   Base VM to the composition layer)         │
+├─────────────────────────────────────────────┤
+│         VarioHyve Base VM                   │
+│  (sequential, deterministic CESK machine)   │
+│  (one per "process" / "actor" / "agent")    │
+└─────────────────────────────────────────────┘
+</code></pre>
+<p><strong>Layer 0 — Base VM.</strong> A single CESK machine. Purely sequential. Exposes a Semantic Language Interface: a deterministic API that the composition layer uses to drive execution. The SLI provides operations like:</p>
+<ul>
+<li><code>step()</code> — advance the machine by one reduction step</li>
+<li><code>inject(message)</code> — enqueue an external message into the machine’s input</li>
+<li><code>extract()</code> — retrieve output messages or results</li>
+<li><code>snapshot()</code> / <code>restore(state)</code> — capture and restore machine state (for replay, migration, or speculative execution)</li>
+<li><code>inspect()</code> — query machine state (for monitoring, debugging, abstract interpretation)</li>
+</ul>
+<p>The exact SLI API is TBD and will be refined through implementation. The key property is that the SLI is <strong>deterministic and side-effect-free from the base VM’s perspective</strong> — all external interaction is mediated through explicit inject/extract operations.</p>
+<p><strong>Layer 1 — Semantic Composition VM.</strong> A meta-level runtime that manages multiple Base VM instances and composes them according to a chosen concurrency model. The Composition VM is not VarioHyve — it is external infrastructure (potentially written in Python, Java, Rust, or VarioHyve itself running in its own Base VM). Different Composition VM implementations can provide different concurrency semantics:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Concurrency Model</th><th>Composition Strategy</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Actor model</strong></td><td>One Base VM per actor. Messages between actors go through <code>inject</code>/<code>extract</code>. The Composition VM is the mailbox + scheduler.</td></tr>
+<tr><td><strong>CSP (channels)</strong></td><td>One Base VM per process. Channel operations are <code>inject</code>/<code>extract</code> calls mediated by the Composition VM.</td></tr>
+<tr><td><strong>Dataflow</strong></td><td>Each Base VM computes a pure function. The Composition VM wires outputs to inputs.</td></tr>
+<tr><td><strong>Parallel simulation</strong></td><td>Multiple Base VMs run model fragments. The Composition VM manages time synchronization (e.g., DEVS, HLA).</td></tr>
+<tr><td><strong>Speculative execution</strong></td><td><code>snapshot()</code> a Base VM, run two branches, <code>restore()</code> the loser.</td></tr>
+</tbody>
+</table>
+</div>
+<p>The Composition VM decides scheduling, synchronization, message routing, and failure handling. The Base VM is unaware of concurrency — it just steps, injects, and extracts.</p>
+<h3 id="why-this-layered-approach"><a class="header" href="#why-this-layered-approach">Why This Layered Approach</a></h3>
+<p><strong>1. The base stays simple.</strong> No locks, no atomics, no memory model complexity, no race conditions, no need for concurrent GC. The CESK machine is a pure function from state to state. This is essential for the abstract interpretation story — AAM-style analysis requires deterministic semantics.</p>
+<p><strong>2. Concurrency models are swappable.</strong> The same VarioHyve program can run under an actor model, a CSP model, or a dataflow model — the difference is in the Composition VM, not the language. This is critical for a system-of-systems lingua franca: different subsystems may require different concurrency semantics, and the federation layer must accommodate all of them.</p>
+<p><strong>3. Replay and debugging are free.</strong> A deterministic base VM with <code>snapshot</code>/<code>restore</code> enables time-travel debugging, deterministic replay, and speculative execution without any language-level support for these features.</p>
+<p><strong>4. Cross-boundary composition is natural.</strong> The <a href="./foreign-objects.html">Alien/Expat model</a> sits at the SLI boundary. When a VarioHyve Base VM sends a message to an Alien, the SLI <code>extract</code>s the message; the Composition VM routes it to the foreign runtime (or another Base VM); the response comes back via <code>inject</code>. The Alien/Expat protocol is the message-level API; the SLI is the machine-level API.</p>
+<h3 id="connection-to-the-alienexpat-model"><a class="header" href="#connection-to-the-alienexpat-model">Connection to the Alien/Expat Model</a></h3>
+<p>The Alien/Expat boundary and the SLI are complementary:</p>
+<ul>
+<li><strong>Alien/Expat</strong> defines how individual foreign operation requests cross the boundary — argument marshalling, identity, adapter dispatch and failures. Message forwarding is one adapter policy.</li>
+<li><strong>SLI</strong> defines how entire <em>machines</em> interact — stepping, message injection, state capture.</li>
+</ul>
+<p>In this future architecture, an Alien operation request goes through the SLI’s
+<code>extract</code> mechanism. It may request foreign message forwarding, an explicit
+capability operation on an opaque handle, or another adapter-defined interaction;
+no shared object ontology is implied. The Composition VM receives the extracted message, routes it to the appropriate foreign runtime (or another Base VM), gets the result, and <code>inject</code>s it back. From the Base VM’s perspective, the Alien just sent a message and got a reply — it has no awareness of the concurrency or routing that happened in between.</p>
+<h3 id="prior-art-1"><a class="header" href="#prior-art-1">Prior Art</a></h3>
+<ul>
+<li><strong>Gamine Semantic Language Interface</strong> — the direct inspiration for this layered approach; separation of base execution from semantic composition</li>
+<li><strong>Erlang/OTP</strong> — actor model with isolated processes and message passing; each process is effectively a sequential VM</li>
+<li><strong>E language</strong> — communicating event loops (vats); each vat is single-threaded, concurrency is inter-vat</li>
+<li><strong>DEVS</strong> (Discrete Event System Specification) — formal framework for modeling and simulation with well-defined composition semantics</li>
+<li><strong>Orleans / Virtual Actors</strong> — actor model where the runtime manages actor lifecycle and placement transparently</li>
+</ul>
+<h3 id="roadmap-1"><a class="header" href="#roadmap-1">Roadmap</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Phase</th><th>What</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>v1</strong></td><td>Sequential Base VM only. No SLI, no composition.</td></tr>
+<tr><td><strong>v2</strong></td><td>Define and implement the SLI API. Single Base VM exposed through the SLI to a host (Python/Java).</td></tr>
+<tr><td><strong>v3</strong></td><td>Composition VM prototype: actor-model composition of multiple Base VMs.</td></tr>
+<tr><td><strong>Future</strong></td><td>Additional concurrency models; formal semantics of composition; abstract interpretation across composed VMs.</td></tr>
+</tbody>
+</table>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="tooling-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="tooling-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-33e14e7d.js"></script>
+        <script src="book-c22b7243.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

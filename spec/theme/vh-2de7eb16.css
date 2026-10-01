@@ -1,0 +1,18 @@
+/* VarioHyve syntax highlighting extras for mdBook/Highlight.js
+ *
+ * Makes self, outer, super bold inside vh code blocks.
+ * The hljs-built_in class is applied by the VarioHyve Highlight.js definition.
+ */
+.language-vh .hljs-built_in {
+  font-weight: bold;
+}
+
+/* Hole (?) — inherit keyword color but also bold for extra visibility */
+.language-vh .hljs-keyword {
+  font-weight: bold;
+}
+
+/* Class and method declaration names */
+.language-vh .hljs-title {
+  font-weight: bold;
+}

@@ -1,0 +1,566 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Name Resolution - VarioHyve Language Specification</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-0392ca55.css">
+        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/vh-2de7eb16.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-e880608a.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-da21433a.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">VarioHyve Language Specification</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="name-resolution"><a class="header" href="#name-resolution">Name Resolution</a></h1>
+<p>Messages in VarioHyve are late-bound. A bare name <code>x</code> is an implicit send:
+lexical declaration context first selects a receiver; dispatch then selects
+behavior. If no lexical declaration supplies the requested selector,
+lookup falls back to the current receiver’s inheritance chain. Lexical receiver
+selection is not a search of arbitrary members added by a subclass.</p>
+<h2 id="lookup-order"><a class="header" href="#lookup-order">Lookup Order</a></h2>
+<ol>
+<li><strong>Local scope</strong> — parameters and <code>var</code> locals of the current method/lambda</li>
+<li><strong>Lexical chain</strong> — slots and methods of enclosing objects, from innermost to outermost</li>
+<li><strong>Mixin chain</strong> - mixins methods, in declaration order - left to right</li>
+<li><strong>Inheritance chain</strong> — superclass methods, from most specific to most general</li>
+</ol>
+<p>The first match wins. There is no global environment.</p>
+<h3 id="implicit-invocation-and-callable-accessor-results"><a class="header" href="#implicit-invocation-and-callable-accessor-results">Implicit invocation and callable accessor results</a></h3>
+<p>Locals, parameters and slots are reached through generated accessor messages.
+For locals and parameters, the receiver is the backend-private activation
+object. There is no separate lookup namespace or value-resolution mechanism.
+An invocation is implemented by a direct <code>f/N</code> message or by the generated
+<code>f/0</code> accessor followed by <code>apply/N</code> on its result.</p>
+<p>A message selector is a name/arity pair. For <code>f(args)</code> at arity <code>N</code>, including
+zero, examine each declaration-relative lexical scope from nearest to farthest:</p>
+<ol>
+<li>Prefer an exact operation <code>f/N</code> declared by that scope. At arity zero, a
+generated getter is an accessor candidate under the next rule, not an operation
+that satisfies the invocation by returning its value.</li>
+<li>Otherwise, if the scope declares <code>f/0</code>, consider its effective generated
+accessor. A storage accessor supplies an invocation candidate only if its
+current value supports exactly <code>apply/N</code>.
+A member-class accessor supplies one only if its selected declaration’s
+constructor or owned <code>factory apply</code> signatures include arity <code>N</code>.</li>
+<li>Continue outward when the scope supplies neither applicable candidate. If
+all lexical scopes miss, perform a self invocation through the receiver’s
+composition and superclass chain, with the same per-contribution rule.</li>
+</ol>
+<p>Once a scope qualifies, dispatch the original <code>f/N</code> invocation uniformly on
+that scope’s receiver. Eligibility selects the receiver; it does not fix the
+implementation to the method or accessor that established eligibility. Dynamic
+dispatch uses the same per-contribution candidate rule, so an overriding method
+can replace a callable accessor route and an overriding callable accessor can
+replace a method. Lookup never resumes at another lexical scope after choosing
+a receiver.</p>
+<p>An activation supplies its parameter/local accessors. A lexical object scope
+supplies declarations from its originating contribution, not arbitrary members
+added by a subclass. If its declaration supplies only <code>f/0</code>, first select
+the effective <code>f/0</code> accessor on that scope’s receiver and establish eligibility
+there. A subclass <code>f/N</code> alone cannot make an ineligible accessor qualify. Once
+eligible, that receiver’s <code>f/N</code> overrides participate normally. A method added
+on a different, inner receiver cannot capture a dependency whose eligible
+declaration belongs to an enclosing receiver.</p>
+<p>At arity zero, an ordinary method overriding the declared getter also qualifies
+as an exact <code>f/0</code> operation. Its body executes once; its result is not implicitly
+applied.</p>
+<p>Only the <strong>effective generated getter</strong> can supply an accessor candidate. An
+ordinary method overriding that getter is not executed to discover a callable,
+and lookup never inspects the storage hidden behind it. The same masking rule
+applies while traversing inheritance; an overridden accessor cannot reappear
+as a hidden accessor candidate farther down the chain. Exact methods at the
+requested arity can still match there.</p>
+<pre><code class="language-vh">{
+    f(x) { 42 }
+    run {
+        var f = fun(x) { 7 };
+        f(1)
+    }
+}.run  // 7: the local accessor's result supplies apply/1
+</code></pre>
+<pre><code class="language-vh">{
+    f(x) { 42 }
+    inner = {
+        f = fun(x, y) { 7 };
+        run { f(1) }
+    };
+}.inner.run  // 42: the inner accessor's result supplies apply/2, not apply/1
+</code></pre>
+<pre><code class="language-vh">{
+    class Base {
+        f = fun(x) { 7 };
+        run { f(1) }
+    }
+    class Child &lt; Base { f(x) { 42 } }
+}.Child().run  // 42: Base establishes eligibility; Child overrides f/1
+</code></pre>
+<p>The last example previously returned <code>7</code> by preserving the selected accessor
+route. Programs relying on that behavior must retrieve and invoke their chosen
+callable explicitly, for example <code>f.apply(1)</code> when the intended getter remains
+effective. Ordinary overriding still applies to that getter access.</p>
+<p>Within one scope, an exact method wins over a same-named callable accessor route.
+Wrong-arity and non-callable accessor results are misses; an uninitialized slot
+is an error. Receiver and arguments are evaluated once, left-to-right, before
+selection. Retain the eligible accessor result and selected callable operation
+through eligibility and dispatch; revisiting that candidate reuses the result
+without rereading storage or resolving a foreign operation again. An uninitialized
+read or foreign selection failure while establishing eligibility remains an
+error even if that receiver has an overriding <code>f/N</code> method. Failure
+while accessing an uninitialized slot, resolving a foreign operation, realizing
+a selected member class, or executing selected behavior never resumes lookup.</p>
+<p>Native callability is checked through exact <code>apply/N</code> methods, including
+inherited methods, or a lambda’s declared arity. Foreign values may advertise
+<code>apply/N</code> through the boundary’s effect-free operation-selection contract;
+<code>ForeignCallable</code> remains supported. No candidate is tested by executing it.
+Changing a stored value can change which invocation selectors the scope
+supplies, so a later call may select a farther lexical receiver.</p>
+<p>Bare <code>f</code> remains the ordinary <code>f/0</code> send. <code>f()</code> invokes zero-argument behavior
+exactly once: a method <code>f { 7 }</code> returns <code>7</code>, while a generated accessor returning
+<code>fun { 7 }</code> makes <code>f()</code> invoke the lambda. A method that returns a lambda returns that lambda; it is not
+implicitly invoked again. See <a href="message-sends.html#dispatch-rules">dispatch rules</a>
+and the <a href="../../design-notes/unified-callable-lookup.html">accepted design</a>.</p>
+<p>Member-class candidate selection reads declaration metadata and does not realize
+the class. Realization occurs only if final dispatch selects that member’s
+factory (or on an ordinary bare access), through the accessor’s
+receiver-and-declaration cache. It may compute mixin and
+superclass target receivers to identify the actual contributors; these
+computations are not speculative lookup effects. See
+<a href="message-sends.html#member-class-invocation">member-class invocation</a>.</p>
+<h3 id="capabilities-and-declaration-scopes"><a class="header" href="#capabilities-and-declaration-scopes">Capabilities and declaration scopes</a></h3>
+<p>The four <a href="./program-structure.html#four-sources-of-class-capabilities">class capability sources</a>
+are inheritance, mixin composition, lexical nesting, and constructor parameters;
+that list is not a replacement lookup order. Constructor parameters have
+accessors on activation objects, like other parameters. Naming a class does not
+alter these rules.
+Normal top-level classes have only an empty top activation at the lexical base,
+with no enclosing application scope. They inherit only from root <code>Object</code> and
+compose no mixins. Their external inputs are the existing objects supplied as
+constructor arguments, with no special <code>kernel</code> name or single-argument rule.
+The instantiating caller’s scope never becomes a class’s lexical scope.
+Tools may explicitly choose a richer <a href="./tooling-architecture.html#evaluation-contexts">evaluation context</a>;
+its accessors participate in ordinary lexical lookup, with no change to precedence.</p>
+<p>Constructor parameters have immutable accessors scoped to initialization. In
+<code>class(value) { value = value; }</code>, the initializer reads the argument on the
+right-hand side and stores it in the instance slot. Instance methods cannot
+resolve their own constructor parameters, even when called during initialization.
+They use their own parameters/locals, declaration-relative receiver members and
+the selected definition scope. A method may independently resolve an enclosing
+accessor with the same spelling; constructor names are not globally reserved.
+A contributed mixin method retains its own definition scope, never the receiving
+class’s initialization arguments.</p>
+<p>A member-class declaration binds to the enclosing instance and its declaration
+origin. It does not capture the instance’s constructor activation. Lambdas and
+class expressions, both named and anonymous, capture their actual evaluation
+scope normally. If deliberately created in an initializer, an escaped expression
+may therefore retain constructor parameter accessors. No parameter alone
+synthesizes an instance accessor, and no ordinary instance retains a constructor scope merely
+by having been constructed. Constructor lookup never visits the caller’s scope.
+See <a href="../../design-notes/initializer-scope-and-member-classes.html">the accepted scope decision</a>.</p>
+<p>Lexical receiver selection is declaration-relative and precedes dynamic dispatch.
+Adding an unrelated member to a subclass must not capture an inherited method’s
+existing reference to an enclosing accessor. The ordered lookup summary above
+must be read with this restriction; probing arbitrary dynamic receiver members
+first is not an equivalent implementation. Full composition support must retain
+the selected declaration and application origin.</p>
+<h2 id="self--current-receiver"><a class="header" href="#self--current-receiver"><code>self</code> — Current Receiver</a></h2>
+<p><code>self</code> retains identifier syntax, but denotes the current native receiver with
+fixed semantic meaning. It is not a lookup of an ordinary property named <code>self</code>.
+Frontend and core representations must preserve this distinction.</p>
+<pre><code class="language-vh">class Point(x, y) {
+    describe() {
+        self   // returns the current Point instance
+    }
+}
+</code></pre>
+<p>Because <code>self</code> is an identifier:</p>
+<ul>
+<li>It parses with identifier syntax, then lowers to <code>CoreSelfExpression</code>;
+its value comes from the current activation rather than ordinary selector lookup</li>
+<li>The semantic layer <strong>rejects</strong> definitions that shadow it — <code>self</code> cannot be used as a slot name, parameter name, or method name</li>
+<li>Native explicit receivers do not provide a <code>self</code> selector. For an Alien,
+<code>alien.self</code> is an ordinary foreign selector, eligible for boundary dispatch;
+it does not necessarily return that Alien. Passing the native <code>self</code> value to
+another object remains supported.</li>
+<li>It participates uniformly in message send chains as a receiver expression: <code>self.x</code>, <code>self.move(1, 2)</code></li>
+</ul>
+<h3 id="leading-dot-shorthand-for-self"><a class="header" href="#leading-dot-shorthand-for-self">Leading-Dot Shorthand for Self</a></h3>
+<p>Sending a message to <code>self</code> without naming it explicitly is possible with a leading <code>.</code> (the <code>#SelfMessageSendExp</code> grammar rule):</p>
+<pre><code class="language-vh">.x           // identical to self.x
+.move(1, 2)  // identical to self.move(1, 2)
+</code></pre>
+<p>A leading <code>..</code> (the <code>#SelfCascadeExp</code> rule) cascades all messages to <code>self</code>:</p>
+<pre><code class="language-vh">..x!(0)..y!(0)   // identical to self..x!(0)..y!(0)
+</code></pre>
+<p>Both shorthands skip the lexical chain and dispatch through the inheritance chain only — exactly as <code>self.m</code> does. <strong>Prefer the explicit <code>self.</code> and <code>self..</code> forms.</strong> Reserve the leading-dot shorthand for unambiguously scoped contexts where there are no nested classes or shadowed names.</p>
+<h2 id="outer--qualified-lexical-receiver"><a class="header" href="#outer--qualified-lexical-receiver"><code>outer</code> — Qualified Lexical Receiver</a></h2>
+<p>An outer receiver has the form <code>outer ClassName</code>, normally used in a send such
+as <code>outer ClassName.message(args)</code>. The qualifier names a class declaration that
+lexically encloses the expression, including its immediately containing class.
+It selects the ordinary receiver corresponding to that declaration; any
+subsequent message dispatches normally on that receiver. This follows Newspeak’s
+declaration-relative receiver selection with VarioHyve’s expression/send syntax.
+This is not a claim of full Newspeak compatibility: ordinary subsequent dispatch,
+runtime qualifier validation and exact captured application scopes have explicit
+differences. See the <a href="../../design-notes/outer-newspeak-comparison.html">outer comparison audit</a>,
+including the unresolved deeper repeated-parent case.</p>
+<pre><code class="language-vh">class Counter(start) {
+    n = start;
+    class Stepper {
+        step {
+            outer Counter.n!(outer Counter.n.plus(1))
+        }
+    }
+}
+</code></pre>
+<p>Inside <code>Stepper.step</code>, <code>outer Counter.n</code> sends <code>n</code> to the enclosing <code>Counter</code>
+instance. <code>outer Stepper</code> selects the current <code>Stepper</code> receiver. The qualifier
+is lexical declaration metadata, not an evaluated variable, dynamic class name
+or request to inspect the receiver’s class. Repeated class names select the
+nearest matching enclosing declaration.</p>
+<p>A lambda preserves the enclosing declaration context. Named class expressions
+can provide lexical qualifiers for code within their bodies; anonymous class
+expressions and object literals add no invented qualifier. Their enclosing
+named declarations remain eligible. Captured method/initializer parameters and locals are
+internal lexical dependencies, not activation objects exposed by <code>outer</code>.</p>
+<p>Contributed methods use their definition and application origin to select the
+appropriate lexical receiver. Applying a mixin to a class declared elsewhere
+must not substitute the receiving class’s outer scope for the mixin’s lexical
+dependencies. Member classes similarly retain their declaration origin as well
+as their bound enclosing receiver.</p>
+<p>Bare <code>outer</code> and unqualified <code>outer.message</code> are invalid. A native explicit
+receiver does not provide an <code>outer</code> selector. An Alien may support a foreign
+selector named <code>outer</code>; <code>alien.outer</code> then uses ordinary boundary dispatch.
+There is no universal native lexical-parent getter or public activation
+reification. Repeated foreign <code>.outer</code> sends have only their adapter-defined
+meaning. Holding another object alone does not
+reveal its lexical graph. Source code can deliberately return <code>outer ClassName</code>
+as an ordinary object value without exposing an activation.</p>
+<p>An unknown/non-enclosing qualifier is a semantic error. The bootstrap reports
+this through a language diagnostic during evaluation; static validation is a
+later frontend improvement. A normal top-level module still has no enclosing
+application scope: qualifying its own declaration can select its instance,
+but cannot select an instantiation service, platform bundle or empty top
+activation. Explicit tooling scopes remain separate evaluation contexts and do
+not change these rules.</p>
+<h2 id="super--lookup-redirector"><a class="header" href="#super--lookup-redirector"><code>super</code> — Lookup Redirector</a></h2>
+<p><code>super</code> is a <strong>keyword</strong>. As a receiver origin, it is not a value: it redirects
+the following send in <code>super.message(args)</code> (the <code>SuperMessageSendExp</code> rule).
+Standalone <code>super</code> or <code>x = super</code> are parse errors. In the selector position
+<code>alien.super</code>, however, the spelling denotes an ordinary foreign operation,
+not a native lookup redirector.</p>
+<pre><code class="language-vh">class Animal() {
+    speak() { "..." }
+}
+class Dog() &lt; Animal {
+    speak() { super.speak }  // starts lookup from Animal, not Dog
+}
+</code></pre>
+<p><code>super</code> is a keyword because:</p>
+<ul>
+<li>It is not a value — it cannot appear as an expression on its own</li>
+<li>It resumes lookup after the executing contribution’s exact application position,
+continuing through subsequent mixins and then the superclass while retaining <code>self</code></li>
+<li>It cannot be intercepted or overridden — that would break the inheritance contract</li>
+</ul>
+<h2 id="lexical-self-and-outer-dispatch--compared"><a class="header" href="#lexical-self-and-outer-dispatch--compared">Lexical, Self, and Outer Dispatch — Compared</a></h2>
+<p>VarioHyve distinguishes five receiver origins, each controlling where lookup starts:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Form</th><th>Name</th><th>Lookup path</th></tr>
+</thead>
+<tbody>
+<tr><td><code>m(args)</code></td><td>Implicit / lexical</td><td>Locals → lexical chain (enclosing objects) → self’s class hierarchy</td></tr>
+<tr><td><code>.m(args)</code> / <code>self.m(args)</code></td><td>Self-dispatch</td><td>Self’s class hierarchy <strong>only</strong></td></tr>
+<tr><td><code>outer C.m(args)</code></td><td>Qualified outer-dispatch</td><td>Receiver for lexically enclosing declaration <code>C</code>, then its class hierarchy</td></tr>
+<tr><td><code>super.m(args)</code></td><td>Super-dispatch</td><td>Same receiver, starting <strong>after</strong> the executing contribution’s exact application occurrence, then its superclass chain</td></tr>
+<tr><td><code>receiver.m(args)</code></td><td>Explicit receiver</td><td>Evaluate receiver once; fixed native dispatch or foreign boundary dispatch according to the resulting value</td></tr>
+</tbody>
+</table>
+</div>
+<p>These are semantic lookup origins, not a universal protocol implemented by every
+visible value. In particular, Aliens have no synthesized VarioHyve receiver,
+outer, class or mixins. See <a href="./foreign-objects.html">Foreign Semantic Values</a>.</p>
+<p>In flat, non-nested code the first two forms are usually equivalent — there is no enclosing object that could shadow <code>self</code>’s methods. The difference becomes significant in nested classes:</p>
+<pre><code class="language-vh">class Outer {
+    count = 0
+    log(msg) { ... }
+
+    class Inner {
+        count = 99
+
+        run() {
+            count            // lexical → finds Inner's own count (99)
+            self.count       // self-dispatch → Inner's count (99) same result here
+            outer Outer.count // outer-dispatch → Outer's count (0)
+            outer Outer.log("hi") // outer-dispatch → Outer's log method
+        }
+    }
+}
+</code></pre>
+<p>When the lexical chain is clear (no shadowing, no nesting), prefer the implicit form <code>m(args)</code> for brevity. Use <code>self.m</code> to be explicit about self-only dispatch. Use <code>outer C.m</code> to select a particular lexically enclosing class receiver. Use <code>super.m</code> to continue a method chain up the inheritance hierarchy.</p>
+<h2 id="lexical-receiver-syntax"><a class="header" href="#lexical-receiver-syntax">Lexical Receiver Syntax</a></h2>
+<p><code>self</code> retains identifier syntax with fixed semantic meaning. <code>outer</code> introduces
+qualified receiver syntax, like <code>super</code> introduces its lookup redirector. Neither
+form is a public structural accessor. Activation inspection, <code>thisContext</code> and
+related reflection remain outside the bootstrap.</p>
+<h2 id="reserved-words"><a class="header" href="#reserved-words">Reserved Words</a></h2>
+<p>VarioHyve has two categories of reserved words:</p>
+<h3 id="grammar-keywords"><a class="header" href="#grammar-keywords">Grammar Keywords</a></h3>
+<p>These tokens are reserved by the grammar and cannot be used as declaration
+identifiers. They are lexed as distinct token types. The spellings <code>outer</code> and
+<code>super</code> are also allowed in explicit selector position so foreign APIs do not
+lose those names; this does not allow native declarations to bind them.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Keyword</th><th>Purpose</th></tr>
+</thead>
+<tbody>
+<tr><td><code>super</code></td><td>Lookup redirector — <code>super.message(args)</code></td></tr>
+<tr><td><code>outer</code></td><td>Qualified lexical receiver — <code>outer ClassName</code></td></tr>
+<tr><td><code>class</code></td><td>Required keyword for class literal definitions</td></tr>
+<tr><td><code>var</code></td><td>Local variable declaration</td></tr>
+<tr><td><code>factory</code></td><td>Factory method declaration (targets metaclass)</td></tr>
+<tr><td><code>fun</code>, <code>λ</code></td><td>Lambda literal</td></tr>
+<tr><td><code>&lt;</code>, <code>extends</code></td><td>Superclass declaration</td></tr>
+<tr><td><code>&lt;:</code>, <code>with</code></td><td>Mixin declaration</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="semantically-reserved-identifiers"><a class="header" href="#semantically-reserved-identifiers">Semantically Reserved Identifiers</a></h3>
+<p>These are regular identifiers in the grammar (they parse as <code>IDENT</code> and participate in normal message send syntax), but the semantic layer <strong>rejects</strong> definitions that shadow them:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Identifier</th><th>Scope of reservation</th><th>Rationale</th></tr>
+</thead>
+<tbody>
+<tr><td><code>self</code></td><td>Cannot be used as a native slot, parameter or method name, or sent as a selector to a native receiver</td><td>Denotes the current native receiver. An explicit Alien’s selector <code>self</code> belongs to its foreign protocol.</td></tr>
+<tr><td><code>new</code></td><td>Cannot be used as a <code>factory</code> method name (i.e., <code>factory new(...)</code> is rejected)</td><td>Synthesized non-overridable primary factory method on source-class metaclasses and <code>Object class</code>; metamodel objects have no public construction factories. Regular instance methods named <code>new</code> are permitted — only <code>factory new</code> conflicts. See <a href="./object-model.html#the-primary-factory-new">The Primary Factory</a>.</td></tr>
+</tbody>
+</table>
+</div>
+<p>The distinction matters: grammar keywords affect parsing (they cannot appear where an <code>IDENT</code> is expected), while semantically reserved identifiers parse normally but are checked during semantic analysis. This keeps the grammar minimal and allows future pseudo-variables to be added without grammar changes.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="syntactic-sugar.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="recursion.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="syntactic-sugar.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="recursion.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-33e14e7d.js"></script>
+        <script src="book-c22b7243.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

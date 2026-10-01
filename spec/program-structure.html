@@ -1,0 +1,437 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Program Structure - VarioHyve Language Specification</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-0392ca55.css">
+        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/vh-2de7eb16.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-e880608a.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-da21433a.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">VarioHyve Language Specification</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="program-structure"><a class="header" href="#program-structure">Program Structure</a></h1>
+<p>VarioHyve is a language designed for <strong>complex heterogeneous system-of-systems</strong> — it serves as a <em>lingua franca</em> for behavioral-rich model federation. In this setting, multiple subsystems (potentially implemented in different languages, running on different runtimes, governed by different concurrency models) must compose into a coherent whole. VarioHyve provides the behavioral core: a deterministic, analyzable object model that can federate with foreign runtimes through a well-defined boundary (see <a href="./foreign-objects.html">Foreign Object Interaction</a>) and scale to concurrent compositions through a layered semantic interface (see <a href="./future.html#concurrency-and-parallelism">Future Directions — Concurrency</a>).</p>
+<h2 id="a-program-is-a-single-expression"><a class="header" href="#a-program-is-a-single-expression">A Program Is a Single Expression</a></h2>
+<p>The grammar entry point is:</p>
+<pre><code>top: expression? EOF;
+</code></pre>
+<p>A VarioHyve program is an optional single expression. A top-level class literal,
+named or anonymous, serves as a module. The service that instantiates it supplies
+the existing object instances required by its constructor; the language does not
+prescribe their number or names.</p>
+<pre><code class="language-vh">class Application(consoleService, clockService, settings) {
+    console = consoleService;
+    clock = clockService;
+    config = settings;
+
+    run { console.print(clock.now) }
+}
+</code></pre>
+<p><code>class(consoleService, clockService, settings) { ... }</code> has the same dependency
+rules. Naming the class does not create an ambient binding or change how it
+receives capabilities. The top-level expression is optional; empty input is
+represented as <code>EmptyExpression</code> and is a no-op for expression evaluation.
+The module-instantiation entry specifically requires a class literal; it rejects
+empty input and other expression forms without evaluating them.</p>
+<h2 id="four-sources-of-class-capabilities"><a class="header" href="#four-sources-of-class-capabilities">Four Sources of Class Capabilities</a></h2>
+<p>A class literal, whether named or anonymous, obtains its required capabilities
+through four mechanisms:</p>
+<ol>
+<li><strong>Superclass inheritance:</strong> inherited behavior and the capabilities available
+through that behavior.</li>
+<li><strong>Mixin composition:</strong> behavior contributed by composed mixins, preserving
+their definition scopes and the capabilities available through that behavior.</li>
+<li><strong>Lexical nesting:</strong> bindings available from the enclosing scope in which the
+class is defined.</li>
+<li><strong>Constructor parameters:</strong> existing objects supplied when an instance is
+constructed.</li>
+</ol>
+<p>These describe where capabilities come from, not a new lookup priority. The
+language’s <a href="./name-resolution.html">lookup rules</a> still distinguish lexical scope,
+composition and inheritance. Calling a class from another scope does not give it
+that caller’s lexical bindings. Constructor arguments supply object references,
+not an implicit caller environment.</p>
+<p>Constructor parameters are initializer-only bindings. Persistent behavior uses
+values explicitly bound to instance slots, or deliberate captures of expressions
+created during initialization. Member-class declarations access the enclosing
+instance and declaration origin; they do not capture its constructor parameters.
+Named and anonymous class expressions retain their actual lexical scopes.</p>
+<p>Capabilities include ordinary VarioHyve objects, callable class objects, and
+<a href="./foreign-objects.html">Aliens</a> representing foreign services. Sending messages to
+an available object may return further objects; such access derives from that
+object’s authority and is not an additional ambient acquisition mechanism.</p>
+<h2 id="top-level-classes-and-instantiation"><a class="header" href="#top-level-classes-and-instantiation">Top-Level Classes and Instantiation</a></h2>
+<p>Normal module evaluation starts in an <strong>empty top activation</strong> at the base of
+the lexical chain. This is an activation object, not a separate environment or
+an implicit platform object. It contributes no capability bindings and has no
+capability-bearing parent or receiver. Keeping this execution frame is compatible
+with saying that a top-level class has <strong>no enclosing application scope</strong>: the
+empty root supplies no interesting capabilities.</p>
+<p>Under this normal entry contract, the top-level class inherits only from the
+language root <strong><code>Object</code></strong> and <strong>composes no mixins</strong>. The empty top activation
+supplies no other superclass or mixin to resolve. The root <code>Object</code> relationship
+is part of the object model; it does not supply an ambient platform namespace or
+host services. Internal lexical links may retain the empty activation without
+making it an enclosing application object exposed through <code>outer</code>.</p>
+<p>This is VarioHyve’s Newspeak-inspired module discipline: dependencies are supplied
+as objects when a module is instantiated, rather than imported from global scope.</p>
+<p>Consequently, <strong>constructor parameters are the only way to supply external
+capabilities to a top-level module</strong>. There can be zero, one, or several
+parameters, with the normal declared arity. No name such as <code>kernel</code> or
+<code>platform</code> is reserved or required. A zero-parameter top-level module receives
+no external capabilities through construction.</p>
+<p>The instantiation service acquires or already holds the existing objects needed
+by the module, then supplies them as arguments. Those objects may come from
+previously constructed modules, explicit platform assembly, or foreign systems
+through the Alien/Expat boundary. How that service acquires them is external to
+the module’s lexical scope. The module cannot discover the service’s other
+objects, its registry, or its caller scope. Objects intentionally passed as
+arguments retain their own behavior and reachable object graphs.</p>
+<p>Constructor parameters do not make a top-level superclass or mixin clause
+legal: class structure is established before that class’s constructor receives
+arguments. A module can instead use supplied class/mixin objects when defining
+<strong>nested</strong> classes inside the constructed module:</p>
+<pre><code class="language-vh">class Module(baseClass, loggingMixin, output) {
+    Base = baseClass;
+    Logging = loggingMixin;
+    console = output;
+
+    class Worker(identifier) &lt;: Logging &lt; Base {
+        id = identifier;
+        report { console.print(id) }
+    }
+}
+</code></pre>
+<p><code>Module</code> has only root <code>Object</code> inheritance and no composition. Its nested
+<code>Worker</code> uses all four routes: <code>Base</code>, <code>Logging</code>, the enclosing <code>console</code>, and
+its own <code>identifier</code> argument. The same rules hold for anonymous class literals.</p>
+<h2 id="the-kernel-parameter"><a class="header" href="#the-kernel-parameter">The Kernel Parameter</a></h2>
+<p>A <code>kernel</code> is an <strong>optional ordinary capability bundle</strong>, not the unique
+parameter or a privileged entry mechanism. An application may choose a bundle,
+several independent service objects, or a mixture:</p>
+<pre><code class="language-vh">class(kernel, consoleService, repository) {
+    null = kernel.null;
+    true = kernel.true;
+    false = kernel.false;
+    console = consoleService;
+    records = repository;
+
+    run { console.print(records.summary) }
+}
+</code></pre>
+<p>Here <code>kernel</code> is one ordinary argument. A <code>class(kernel) { ... }</code> example is
+simply a one-argument convention. The instantiation service must honor the
+module’s declared constructor interface rather than always inserting one kernel.
+There is no global environment or implicit platform lookup.</p>
+<h3 id="consequences"><a class="header" href="#consequences">Consequences</a></h3>
+<ul>
+<li><strong>Explicit dependencies.</strong> Superclass inheritance, mixin composition, lexical
+nesting and constructor parameters are the four class capability routes.
+The top-level restrictions leave parameters as the external entry route.</li>
+<li><strong>Testability.</strong> Supply alternatives for individual arguments or for a bundle
+without changing the class’s lookup or invocation semantics.</li>
+<li><strong>Analysis boundary.</strong> An analysis must account for all supplied arguments and
+their reachable behavior. Supplying abstract input objects alone does not
+implement abstract interpretation; domains, effects and machine semantics also
+need an appropriate analysis model.</li>
+<li><strong>Isolation depends on reachability.</strong> A nested class can access its enclosing
+scope, and inherited/composed behavior retains its own capabilities. Passing a
+narrow argument does not remove those other routes. Separate top-level modules
+with appropriately restricted argument graphs provide a clearer boundary.</li>
+</ul>
+<h3 id="optional-bootstrap-bundle"><a class="header" href="#optional-bootstrap-bundle">Optional Bootstrap Bundle</a></h3>
+<p>A platform may bundle canonical null/Boolean values, library objects, collections
+and I/O capabilities for convenience. Such a bundle’s inventory is a platform
+contract, not a required module signature. Services can equally be supplied as
+separate arguments. The current bootstrap exports <code>null</code>, <code>true</code> and <code>false</code>;
+<code>nil</code> may be a platform alias for the same null object, not a second null value.</p>
+<p>The <a href="../../design-notes/bootstrap-next-steps.html#first-increment-native-canonical-protocols">implemented native Boolean protocol</a>
+uses eager <code>and</code>/<code>or</code> and thunk-taking <code>andThen</code>/<code>orElse</code>, with <code>ifTrue</code>, <code>ifFalse</code>
+and <code>not</code>. Numeric, string and collection protocols remain library milestones.
+The inventory of one bootstrap bundle must not be mistaken for the language’s
+only possible set of constructor parameters.</p>
+<h2 id="bootstrap-conformance-requirements"><a class="header" href="#bootstrap-conformance-requirements">Bootstrap Conformance Requirements</a></h2>
+<p>These requirements describe normal module entry with an empty top activation.
+The explicitly supplied tooling contexts below have a different set of available
+objects, while using the same language lookup and invocation rules.</p>
+<p>The visitor bootstrap implements this entry through
+<code>BootstrapRuntime.instantiateModule(source, maxSteps, arguments...)</code>. It accepts
+named and anonymous class literals with zero, one or multiple constructor
+parameters, preserves argument identity/sharing through the ordinary boundary,
+and rejects arity mismatches. It creates an empty top activation with no
+platform/service bindings, parent or receiver, uses only structural root <code>Object</code>
+inheritance, and rejects every explicit top-level superclass or mixin clause.
+Constructor arguments do not make such clauses legal.</p>
+<p>The result is the constructed module instance as an Expat. The host explicitly
+chooses any subsequent entry message; the service does not guess <code>main</code> or <code>run</code>.
+Definition, construction and synchronous callbacks share one transition budget.
+Supplied objects retain their reachable capabilities and lexical captures.
+See the <a href="../../design-notes/isolated-module-entry.html">entry contract</a>.</p>
+<p><code>BootstrapRuntime.evaluate</code> remains a distinct tooling expression context with
+the assembled kernel as its lexical parent and receiver. It does not enrich the
+empty module root. Nested classes can use explicitly available superclass and
+direct mixin definitions, with initializer arguments routed from their own
+constructor bindings. See the <a href="../../design-notes/class-composition-bootstrap.html">implemented construction contract</a>
+for composition limits and the <a href="../../design-notes/bootstrap-next-steps.html">bootstrap roadmap</a>.</p>
+<h2 id="development-and-debugging-contexts"><a class="header" href="#development-and-debugging-contexts">Development and Debugging Contexts</a></h2>
+<p>Tools may explicitly supply capabilities for development, debugging and
+design-time expression evaluation. For example, an evaluator can provide a
+console, test objects or a mirror service through its evaluation activation or
+an enclosing tooling object. A debugger can evaluate in an explicitly selected
+activation, using that activation’s existing lexical bindings. These contexts
+need not be empty.</p>
+<p>This uses the same object-based lexical scope, lookup, invocation and Alien/Expat
+protocol as ordinary execution. It is not an ambient global registry or a fifth
+capability mechanism: the tool explicitly supplies objects to the evaluation
+context. It must distinguish this context from normal module entry and must not
+silently enrich the empty root used by ordinary modules.</p>
+<p>Objects, closures and classes created in a tooling context retain their actual
+definition scopes. A class evaluated with tool-supplied lexical bindings may
+resolve superclass or mixin objects from that scope under the usual rules; it
+is not an isolated module defined over an empty top activation. Moving such a
+class to normal module entry requires making its dependencies explicit, rather
+than silently dropping captured references or preserving hidden tool authority.
+See <a href="./tooling-architecture.html#evaluation-contexts">Tooling Architecture</a>.</p>
+<h2 id="error-handling"><a class="header" href="#error-handling">Error Handling</a></h2>
+<p><strong>Status:</strong> v1 design is intentionally minimal.</p>
+<p>The bootstrap reports fatal runtime errors, including:</p>
+<ul>
+<li><strong>Missing selector</strong> — an ordinary send finds no exact selector, or invocation
+exhausts exact operations and eligible generated callable bindings at the
+requested arity. The bootstrap reports a diagnostic; it does not invoke a
+language-level <code>doesNotUnderstand:</code> handler.</li>
+<li><strong>Dead context</strong> — a <code>^</code> return targets a method or initializer home that has
+retired. See <a href="./literals.html#early-return-with-">Literals — Early Return</a>.</li>
+<li><strong>Premature initializer completion</strong> — a return targets an initializer whose
+slot phase has not completed, including its final slot expression. See
+<a href="./literals.html#initializer-completion">Initializer completion</a>.</li>
+</ul>
+<p>These are <strong>fatal language failures</strong> with diagnostic messages, not recoverable
+language exception values in the current bootstrap. Public failures do not
+expose raw activation addresses or host exceptions. Boundary failures preserve
+their defined kinds; see <a href="./foreign-objects.html">Foreign Objects</a>.
+See <a href="./future.html">Future Directions</a> for DNU plans.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="sos-design.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="literals.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="sos-design.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="literals.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-33e14e7d.js"></script>
+        <script src="book-c22b7243.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

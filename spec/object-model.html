@@ -1,0 +1,1055 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Object Model - VarioHyve Language Specification</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-0392ca55.css">
+        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/vh-2de7eb16.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-e880608a.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-da21433a.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">VarioHyve Language Specification</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="object-model"><a class="header" href="#object-model">Object Model</a></h1>
+<p>This section defines the semantic relationships and the current backend model of
+objects, classes, mixins, metaclasses and activations. The field diagrams are
+backend sketches, not a public reflection contract. In particular, activation
+objects and structural <code>outer</code> links are not publicly reified; source
+<code>outer ClassName</code> uses <a href="./name-resolution.html#outer--qualified-lexical-receiver">qualified lexical receiver selection</a>.</p>
+<p>Named and anonymous class literals have the same four capability sources:
+superclass inheritance, mixin composition, lexical nesting, and constructor
+parameters. A normal top-level class has an empty top activation as its lexical
+base, no enclosing application scope, only root <code>Object</code> inheritance, and no
+mixins; an instantiation service supplies its external dependencies as
+existing object arguments of the declared arity. <code>kernel</code> is only an optional
+bundle convention. See <a href="./program-structure.html#four-sources-of-class-capabilities">Program Structure</a>.
+Examples with custom superclass/mixin names assume an enclosing definition scope.</p>
+<h2 id="core-structures"><a class="header" href="#core-structures">Core Structures</a></h2>
+<p>The backend stores runtime values in the explicit
+<a href="./interpreter-design.html#explicit-store-the-key-commitment">Store</a>. The following
+structures describe <strong>native VarioHyve objects</strong>, related by an additive
+hierarchy, and their reified contributions. They do not define the structure of
+every visible value: an
+<a href="./foreign-objects.html">Alien</a> has no VarioHyve class, mixins or lexical outer
+merely because it is represented in the same store.</p>
+<pre><code>Object    = { slots: Map&lt;Name, Addr&gt;, class: Addr, outer: Addr }
+Mixin     = { definitionScope, methods, slots, members, formals, initializer }
+Class     = Object + { ownedMixin, applications, super, initializationEdges, layout, initializer }
+Metaclass = Class                         // owns its class's class-side mixin
+</code></pre>
+<p>A class <strong>is</strong> an object; a metaclass <strong>is</strong> a class. The <code>+</code> notation means
+“all fields of the parent, plus these new ones.” A metaclass owns only its class’s
+class-side contribution and has direct superclass <code>Class</code>; it does not import
+factories from instance-side superclass or mixin contributions.</p>
+<p>For an instance of <code>C</code>, the structural <code>class</code> field reaches a two-object cycle:</p>
+<pre><code>instance → C → C class → Metaclass → Metaclass class → Metaclass → …
+</code></pre>
+<p><code>C class</code> denotes <code>C</code>’s distinct metaclass, not source syntax. These arrows do
+not introduce a public <code>class</code> selector. <code>Metaclass</code> and <code>Metaclass class</code> are
+distinct shared bootstrap identities; an ordinary metaclass is not self-classed.</p>
+<p>Each reified instance mixin owns its constructor formals and anonymous
+slot/post-slot initializer. The realized class owns its initialization edges
+and cached complete storage layout. A mixin edge refers directly to the selected
+owned mixin; a superclass edge refers to the complete superclass. Their ordering
+and routes define the class’s generated private initialization coordinator.</p>
+<p>Primary <code>new</code> is an ordinary generated method in the owned class-side mixin,
+specialized for the realized class. Contribution initializers and the class
+coordinator are private functions evaluated through the same expression and
+activation machinery. They are bound by identity and never entered through
+selector lookup. The metaclass has no separate primary arity, initializer or
+routing metadata. See <a href="../../design-notes/flat-metaclasses-and-construction.html">the construction decision</a>.</p>
+<p><strong>Arrow conventions in this document:</strong> <code>→</code> denotes a structural pointer (class, super, outer fields; initialization order); <code>⇒</code> denotes method lookup traversal.</p>
+<h3 id="objects"><a class="header" href="#objects">Objects</a></h3>
+<p>An object holds:</p>
+<ul>
+<li><strong>Slots</strong> — storage for the logical slots supplied by contribution occurrences. The class’s complete layout maps those logical slots to physical storage locations; under the current policy, equal names share a location. Slots hold data values. Slot names are plain identifiers and must not end in <code>!</code>. Every slot automatically gets a synthesized getter (<code>x</code>, 0-arg) and setter (<code>x!</code>, 1-arg). The <code>!</code> suffix keeps setter names separate from getter names, leaving the getter name available for <a href="./slots.html#interaction-with-the-apply-protocol">callable invocation</a>. See <a href="./slots.html">Slots and Accessors</a>.</li>
+<li><strong>Class</strong> — an address pointing to the object’s class. The class holds the object’s methods.</li>
+<li><strong>Definition scope</strong> — internal links used for lexical lookup. Class/object expressions may capture activation objects; member classes bind to their enclosing receiver and declaration origin. Diagrams abbreviate these relationships as <code>outer</code>, but no universal <code>obj.outer</code> getter exists.</li>
+</ul>
+<p>Objects have <strong>no methods</strong>. All method lookup goes through the class.</p>
+<h3 id="classes"><a class="header" href="#classes">Classes</a></h3>
+<p>A class <strong>is</strong> an object with additional fields. It has all the Object fields (<code>slots</code>, <code>class</code>, <code>outer</code>) plus:</p>
+<ul>
+<li><strong>Owned mixin</strong> — the directly declared contribution, with its method map,
+slot declarations, member declarations, constructor formals, anonymous
+initializer and definition scope. A member accessor lazily binds and caches
+its class per enclosing receiver and declaration occurrence.</li>
+<li><strong>Super</strong> — a reference to the declared superclass, defaulting to root <code>Object</code>
+when no <code>&lt;</code> clause is specified.</li>
+<li><strong>Mixin applications</strong> — an ordered sequence of references to selected owned
+mixins, populated from <code>&lt;:</code>. Definition scopes and application positions survive
+composition. The backend lookup list places the owned mixin at position zero.</li>
+<li><strong>Initialization edges</strong> — the resolved superclass or owned-mixin targets and
+delayed argument expressions, retaining their application positions.</li>
+<li><strong>Layout</strong> — the immutable complete instance storage declarations and mapping
+from contribution occurrence/local slot number to physical location, computed
+at class realization. Allocation reserves fresh uninitialized locations from
+this cached layout. Same-named declarations currently share one location,
+while retaining their distinct logical identities.</li>
+<li><strong>Initializer</strong> — a private generated function coordinating superclass and
+applied-mixin initialization, then executing the owned contribution’s body in
+the coordinator’s existing initializer activation and return home.</li>
+</ul>
+<p>For a normal top-level class, <code>outer</code> records the absence of an enclosing
+application object, <code>super</code> denotes root <code>Object</code>, and <code>applications</code> is empty.
+Internal definition-scope links may retain the empty top activation. That
+activation supplies no capability bindings or capability-bearing parent/receiver;
+the class and its metaclass must not capture the instantiation service or its
+platform as an outer object.
+Root inheritance supplies no ambient host capabilities. Constructor arguments
+are bound when an instance is constructed; they cannot change this class’s
+already established superclass or mixin structure.</p>
+<p>The bootstrap defines capability-free <code>Object</code>, <code>Class</code> and <code>Metaclass</code> classes,
+and one distinct metaclass for each, per runtime. <code>Object</code> has no superclass;
+<code>Class</code> extends <code>Object</code>; <code>Metaclass</code> extends <code>Class</code>. Every metaclass has direct
+superclass <code>Class</code> and is an instance of <code>Metaclass</code>, including <code>Metaclass class</code>.
+These roots have no lexical parent. <code>Object</code> has an empty zero-argument initializer
+and retains <code>new/0</code> and default <code>apply/0</code>. <code>Class</code>, <code>Metaclass</code> and metaclass objects
+have no public construction factories. Implicit root inheritance is structural:
+it does not look up the source name <code>Object</code>. A platform may supply
+that class under an ordinary <code>Object</code> binding for expression tools; no such binding
+is added to the empty top activation used by normal module entry. General root
+protocols such as equality and hashing remain library work beyond this increment.</p>
+<p>A class records the instance-side composition: its owned mixin, ordered mixin
+applications and declared superclass. Its metaclass holds the class-side
+contribution. The link from a class to its metaclass is the standard object→class
+relationship: the class <em>object</em> has <code>class = &lt;its metaclass&gt;</code>, just like any other
+object. Neither relationship manufactures intermediate classes for composition.</p>
+<p>By convention, classes do not have value slots — only methods. Methods and slots are distinct concepts: a method is defined by the <code>methodDecl</code> grammar rule and lives in the class; a slot is defined by <code>slotDecl</code> and lives in the object. A slot may hold a lambda as its value, but it remains a slot — it can be reassigned to any value later. A method cannot be reassigned (at least without reflection support, but that is out of scope in v1 for now).</p>
+<h3 id="store-entries"><a class="header" href="#store-entries">Store Entries</a></h3>
+<p>A <strong>class expression</strong> creates a class/metaclass pair when evaluated. A member declaration creates its pair on first accessor realization, cached for its enclosing receiver and declaration occurrence:</p>
+<ol>
+<li>The <strong>class</strong> — a Class object retaining its reified instance contributions,
+superclass, initialization edges, layout and private coordinator. Its <code>class</code>
+field points to its metaclass.</li>
+<li>Its <strong>metaclass</strong> — a class containing its owned class-side contribution, with
+direct superclass <code>Class</code> and <code>class</code> field pointing to shared <code>Metaclass</code>.</li>
+</ol>
+<p>Each <strong>instantiation</strong> creates an Object whose <code>class</code> points to the class.
+These counts describe the object/class/metaclass relationships, not total
+backend allocations: activations, reified mixins and continuations need their
+own representation. Instances do not acquire a lexical link to their own
+constructor activation.</p>
+<p>A <strong>singleton object literal</strong> (<code>{ ... }</code> without the <code>class</code> keyword) creates <strong>three</strong> entries: the instance, its anonymous class, and its anonymous metaclass.</p>
+<pre><code class="language-vh">class Counter(start) &lt;: Logging &lt; Base {
+    count = start       // slot — lives in instances
+    increment() {       // method — lives in the class
+        count!(count.plus(1))
+    }
+}
+</code></pre>
+<p>Produces this class/metaclass pair and reified contributions at definition time
+(<code>M(X)</code> denotes the owned instance mixin of <code>X</code>):</p>
+<pre><code>CounterOwned = {
+    definitionScope = enclosing, formals = [start],
+    slots = [count], members = [], methods = {(increment, 0): ...},
+    initializer = { initializeSlot(localSlot = 0, start) }
+}
+Counter = {
+    slots = {}, class = CounterMeta, outer = enclosing,
+    ownedMixin = CounterOwned, applications = [M(Logging)], super = Base,
+    initializationEdges = [Base(), M(Logging)()],
+    layout = sharedNameLayout(Counter, Base.layout, [CounterOwned, M(Logging)]),
+    initializer = coordinate(Base, M(Logging), CounterOwned)
+}
+CounterMeta = {
+    slots = {}, class = Metaclass, outer = enclosing,
+    ownedMixin = {(new, 1): ..., (apply, 1): ...},
+    super = Class, applications = []
+}
+</code></pre>
+<p>Primary <code>new</code> is an installed generated method. <code>initializeSlot</code>, <code>coordinate</code>
+and layout calculation in these sketches describe backend operations, not source
+sends. Accessors are derived from the selected contribution’s slot declarations.
+The active initializer supplies its occurrence when resolving a local slot
+through the actual receiver’s layout. Selected generated accessors use the same
+mapping. Private initializer functions have no message selector. See
+<a href="../../design-notes/occurrence-slot-layout.html">occurrence-aware slot layouts</a>.</p>
+<p>Then <code>Counter(5)</code> adds one more entry — the instance:</p>
+<pre><code>instance = { slots = {count: addr₁}, class = Counter, outer = enclosingObj }
+</code></pre>
+<p>Class chain: <code>instance → Counter → CounterMeta → Metaclass → Metaclass class → Metaclass → …</code>.</p>
+<h3 id="detailed-example-point"><a class="header" href="#detailed-example-point">Detailed Example: Point</a></h3>
+<p>Given:</p>
+<pre><code class="language-vh">class Point(ax, ay) {
+    x = ax
+    y = ay
+    move(dx, dy) {
+        x!(x.plus(dx))
+        y!(y.plus(dy))
+    }
+}
+aPoint = Point(2, 3)
+</code></pre>
+<p>The class definition creates a class/metaclass pair and its reified
+contributions; instantiation adds the receiver and its fresh slot storage:</p>
+<pre><code>PointOwned = {
+    definitionScope = enclosing,
+    formals = [ax, ay],
+    slots = [x, y], members = [],
+    methods = {
+        (move, 2): fun(dx, dy) { x!(x.plus(dx)); y!(y.plus(dy)) }
+    },
+    initializer = {
+        initializeSlot(x, ax);               // internal writes, not setter sends
+        initializeSlot(y, ay)
+    }
+}
+Point = {
+    slots = {}, class = PointMeta, outer = enclosing,
+    ownedMixin = PointOwned, applications = [], super = Object,
+    initializationEdges = [Object()], layout = [x, y],
+    initializer = coordinate(Object, PointOwned)
+}
+PointMeta = {
+    slots = {}, class = Metaclass, outer = enclosing,
+    ownedMixin = {
+        (new, 2): primaryFactory(Point),      // specialized for Point's layout/plan
+        (apply, 2): fun(ax, ay) { self.new(ax, ay) }
+    },
+    super = Class, applications = []
+}
+aPoint = {
+    slots = { x = 2, y = 3 }, class = Point, outer = enclosing
+}
+</code></pre>
+<p><code>Point(2, 3)</code> obtains the class through the <code>Point/0</code> getter, then invokes
+<code>apply/2</code>, which sends <code>new/2</code>. Primary construction allocates from <code>Point.layout</code>,
+initializes the empty root contribution and then <code>PointOwned</code>, and returns that
+receiver. Getter and mutable-setter lookup uses <code>PointOwned.slots</code>; initialization
+writes bypass those ordinary accessors.</p>
+<p>Class chain: <code>aPoint → Point → PointMeta → Metaclass → Metaclass class → Metaclass → …</code>.</p>
+<h2 id="mixins"><a class="header" href="#mixins">Mixins</a></h2>
+<p>A mixin is a <strong>reified contribution</strong>, retaining its definition identity and
+lexical scope. Each class owns the contribution declared directly in its body:
+methods, slot declarations, member-class declarations, constructor formals and
+its own slot/post-slot initializer. Denote this contribution by <code>M(Class)</code>.
+A class object and its owned mixin are distinct; the class additionally records
+applied mixins, a superclass and metaclass behavior. Backend representation
+classes are not thereby public language classes.</p>
+<p>A class body defines its owned mixin’s methods normally:</p>
+<pre><code class="language-vh">class Logging {
+    log(msg) { console.print(msg) }
+    logError(msg) { log("ERROR: ".concat(msg)) }
+}
+</code></pre>
+<p><code>Logging</code> is a class literal with zero constructor parameters. Its owned mixin
+contains <code>log</code> and <code>logError</code>. Referencing <code>Logging</code> in a <code>&lt;:</code> clause selects
+that owned mixin for application.</p>
+<h3 id="mixin-application"><a class="header" href="#mixin-application">Mixin Application</a></h3>
+<p>When a class declares mixins:</p>
+<pre><code class="language-vh">class Server(port) &lt;: Logging, Caching &lt; Base { ... }
+</code></pre>
+<p>The class retains its own contribution and the applied owned mixins in order,
+with a separate superclass link. In schematic notation:</p>
+<pre><code>Server = { own: M(Server), super: Base, applied: [M(Logging), M(Caching)], ... }
+</code></pre>
+<p>A mixin application imports only the target class’s owned contribution, whether
+or not the target itself inherits or composes other classes. It does not import
+the target’s superclass, applied mixins, or factories. A superclass application,
+in contrast, retains the entire existing chain of its target.</p>
+<p>For <code>class A &lt;: M1, M2 &lt; S1</code>, <code>class B &lt;: M3, M4 &lt; S2</code> and
+<code>class C &lt;: A &lt; B</code>, the linear lookup structure is:</p>
+<pre><code>M(C) → M(A) → M(B) → M(M3) → M(M4) → full S2 chain
+</code></pre>
+<p><code>M1</code>, <code>M2</code> and <code>S1</code> are absent from this structure. They contribute no storage,
+accessors or initialization through the application of <code>A</code>. The owned <code>A</code>
+initializer receives its own formals from <code>C</code>’s <code>&lt;: A(args)</code> clause and runs its
+own slots and post-slot body only. <code>A</code>’s original dependency argument expressions
+are not evaluated by this application. They still run when constructing <code>A</code>
+normally or initializing it as a superclass.</p>
+<p>The selected definition keeps its original lexical scope, so structural
+exclusion does not erase captured references to capabilities or classes. Class
+realization still resolves <code>A</code>’s own clause targets normally before it can be
+used as a target. <code>super</code> in <code>M(A)</code> resumes at the next contribution in its new
+application, here <code>M(B)</code>, rather than returning to <code>A</code>’s original chain.</p>
+<p>No intermediate anonymous classes are created. Applications share the same
+owned reified definition, while each applying class/list position remains a
+distinct occurrence. Repeated applications initialize separately and retain
+their own return homes. Root <code>Object</code> supplies an empty owned mixin.</p>
+<h3 id="mixin-identity"><a class="header" href="#mixin-identity">Mixin Identity</a></h3>
+<p>Reified definitions preserve identity and sharing independently of their
+application occurrences. Source <code>&lt;:</code> selects an owned mixin from a native class.
+The bootstrap does not yet expose a public mixin extraction or reflection API;
+future mirrors can expose this structure without changing composition semantics.</p>
+<h2 id="object-construction"><a class="header" href="#object-construction">Object Construction</a></h2>
+<p>When a class with parameters is called — e.g., <code>Server('localhost', 80, #info)</code> — the runtime constructs a single object by running a chain of initializers.</p>
+<h3 id="construction-example"><a class="header" href="#construction-example">Construction Example</a></h3>
+<pre><code class="language-vh">class Base(port) { sPort = port }
+class Logging(level) {
+    sLoggingLevel = level
+    log(msg, lvl) { self.sLoggingLevel.gte(lvl).ifTrue(fun { console.print(msg) }) }
+}
+class Server(address, port, level) &lt;: Logging(level) &lt; Base(port) {
+    sAddress = address
+}
+</code></pre>
+<p><code>Server('localhost', 80, #info)</code> produces:</p>
+<pre><code>obj = { slots: {sPort: 80, sLoggingLevel: #info, sAddress: 'localhost'},
+        class: Server, outer: enclosing }
+</code></pre>
+<p>All slots live flat on the single instance. Methods are dispatched through the class chain.</p>
+<h3 id="initializer-scope-and-persistent-state"><a class="header" href="#initializer-scope-and-persistent-state">Initializer Scope and Persistent State</a></h3>
+<p>Constructor parameters are immutable bindings local to initialization. An
+initializer can store selected values in slots, invoke behavior, or deliberately
+create lambdas and class expressions that capture its lexical scope. Ordinary
+instance methods cannot resolve their own constructor parameters, including
+when called during initialization. A member-class declaration uses the enclosing
+instance and its origin, not its constructor activation. Named and anonymous
+class expressions share ordinary lexical capture behavior.</p>
+<p>Each invoked superclass/mixin initializer has its own argument bindings. Do not
+install all arguments in a shared persistent
+scope or rebind a contributed method’s definition dependencies. Captured
+expressions may retain internal activations, but no activation accessor/mirror
+is implied. See <a href="../../design-notes/initializer-scope-and-member-classes.html">the accepted decisions and modification sequence</a>.</p>
+<h3 id="construction-order"><a class="header" href="#construction-order">Construction Order</a></h3>
+<p>Construction creates <strong>one</strong> object and follows the class’s instance-side composition in this order:</p>
+<ol>
+<li>Allocate a new object with class <code>C</code> and fresh uninitialized storage for every
+location in <code>C.layout</code>. The cached layout accounts for the complete composition
+and current shared-name slot policy.</li>
+<li>Run <strong>super initialization</strong>: <code>Base</code>’s complete chain initializes with <code>self = obj</code> and the arguments from the <code>&lt; Base(port)</code> expression, following its own routed dependency schedule.</li>
+<li>Run <strong>owned mixin initializers, right to left</strong> (rightmost in the <code>&lt;:</code> list first): each selected owned initializer runs with <code>self = obj</code> and its routed arguments. Its source class’s superclass/mixin routes do not run.</li>
+<li>Run <strong>own initializer</strong>: the class’s owned contribution runs with <code>self = obj</code>.</li>
+</ol>
+<p>The argument expressions in <code>&lt; Base(port)</code> and <code>&lt;: Logging(level)</code> are evaluated in the declaring contribution’s initializer activation, where its constructor parameters are bound. For example, in <code>Server('localhost', 80, #info)</code>:</p>
+<pre><code class="language-vh">class Server(address, port, level) &lt;: Logging(level) &lt; Base(port) { ... }
+//                                            ^^^^^         ^^^^
+//                   `level` and `port` refer to the class parameters
+//                   passed to `new` — i.e. level=#info, port=80
+</code></pre>
+<p>This means the super and mixin constructor arguments can be arbitrary expressions involving the class parameters:</p>
+<pre><code class="language-vh">class Grid(rows, cols) &lt; Matrix(rows.times(cols)) {
+    // Matrix receives rows*cols as its argument
+}
+</code></pre>
+<p>In pseudocode for <code>Server('localhost', 80, #info)</code>:</p>
+<pre><code>Server.new('localhost', 80, #info):
+    obj = allocate(Server, Server.layout)
+    Server.initialize(obj, 'localhost', 80, #info)
+    obj                                            // return the fresh receiver
+
+Server.initialize(obj, address, port, level):
+    Base.initialize(obj, port)                     // complete superclass schedule
+    M(Logging).initialize(obj, level)               // only the selected owned mixin
+    execute M(Server).initializer.body              // same activation and home
+</code></pre>
+<p>The <code>.initialize</code> notation denotes private initialization entry points, not
+ordinary message selectors. Generated function bodies sequence the private calls
+using ordinary core expressions and explicit machine continuations. Executing the
+owned contribution body directly preserves the logical home shared with its route
+expressions; a superclass or applied-mixin invocation establishes a fresh home.
+Rightmost mixins initialize first; leftmost mixins initialize last (among mixins).
+The class’s own initializer always runs last.</p>
+<h3 id="initializer-return-homes-and-completion"><a class="header" href="#initializer-return-homes-and-completion">Initializer Return Homes and Completion</a></h3>
+<p>Each invocation of each initializer contribution has a fresh private return home.
+A contribution executes its ordered slots and then its optional final <code>|</code>
+statement section. Each contribution finishes both phases before the next
+contribution runs. This applies to member classes, named/anonymous class
+expressions and object literals, including superclass and direct mixin execution.
+Captured definition-time bindings do not supply an old return home, and the
+instantiating caller does not lend its home to construction.</p>
+<p>A <code>^</code> targeting the initializer during its slot phase fails construction. This
+includes a return from a lambda in the final slot expression, before assignment
+completes. Methods invoked by initialization have their own homes and can return
+normally. After all of this contribution’s slot declarations have completed,
+<code>^ value</code> may complete the contribution early. Its expression is evaluated
+normally, its resulting value is ignored, and the next contribution executes.
+The ordinary value of the post-slot body is likewise ignored. Primary <code>new</code>
+always returns the allocated receiver on successful completion; custom factory
+results follow their separate factory contract.</p>
+<p>Initializer homes retire on normal/early completion, failure and unwind. Captured
+data may survive; returning to a retired home is an error. An outside lambda
+keeps its original home and can unwind construction to that home if live. The
+active Alien-call barrier still applies. Failure does not roll back effects or
+retract an escaped <code>self</code>. See <a href="./literals.html#initializer-completion">Literals — Initializer completion</a>
+for source syntax and <a href="../../design-notes/initializer-return-homes.html">the accepted policy</a>
+for implementation scope and the deliberate differences from Newspeak.</p>
+<h3 id="ordered-overrides-and-their-limits"><a class="header" href="#ordered-overrides-and-their-limits">Ordered Overrides and Their Limits</a></h3>
+<p>The initial policy is ordered overriding: own contributions take precedence,
+then composed contributions in declaration order (leftmost first), then the
+superclass. Duplicate names within a single declaration body remain errors;
+overriding a contribution from composition/inheritance is a separate operation.
+For member classes, overriding selects the complete declaration and its origin,
+not an automatic deep merge or mutation of an existing class value.</p>
+<p>The existing initialization schedule is superclass, mixins right-to-left, then
+own initializer. Under the initial shared-name slot policy, later initializer
+writes overwrite earlier values. This is deterministic, but does <strong>not</strong> make
+stateful mixins independent. If two surviving methods use the same slot name
+for unrelated state, both still observe one shared location. Matching method
+precedence does not remove the collision or its order dependence.</p>
+<p>Keep declaration and application origin information in the semantic model.
+Deep family composition with state in members is a planned later increment;
+explicit state mapping, renaming, hiding, aliasing and more general ordering
+need separate rules before they can be implemented safely. A physically flat
+slot array does not require shared logical state identities. Effectful
+initialization also requires an explicit schedule; structural composition does
+not make foreign effects commute or roll back failed construction.</p>
+<p>The bootstrap implements superclass chains and owned-mixin application using
+these ordered rules. An inherited or composed class supplies only its owned
+contribution when used as a mixin. This does not implement the future composition
+algebra; see <a href="../../design-notes/class-composition-bootstrap.html">the construction contract</a>.</p>
+<h3 id="what--mixinargs-and--baseargs-mean"><a class="header" href="#what--mixinargs-and--baseargs-mean">What <code>&lt;: Mixin(args)</code> and <code>&lt; Base(args)</code> Mean</a></h3>
+<p>The <code>&lt;:</code> and <code>&lt;</code> expressions serve dual roles:</p>
+<ul>
+<li><strong>At class creation time</strong>: they establish the mixin and super chain (method lookup structure).</li>
+<li><strong>At construction time</strong>: their arguments are passed to the mixin/super initializer, which runs on the new object.</li>
+</ul>
+<p><code>Base(port)</code> in <code>&lt; Base(port)</code> does not create a separate Base instance — it invokes Base’s initialization logic on the object being constructed.</p>
+<p><strong>Important — special constructor semantics:</strong> Although <code>superclassExpr</code> and <code>mixinExpr</code> are syntactically ordinary expressions in the grammar, they have <strong>special semantics</strong> at construction time. When <code>&lt; Base(port)</code> or <code>&lt;: Logging(level)</code> appears in a class definition, the runtime does <strong>not</strong> invoke their terminal application as an ordinary factory call that creates a separate instance. Instead:</p>
+<ol>
+<li>At class realization, resolve the <strong>target definition</strong> (e.g., <code>Base</code>, <code>Logging</code>)
+once, evaluating mixin targets left-to-right and then the superclass target.
+The terminal parenthesized application is split into a pure zero-argument
+target send and delayed argument expressions. It does not call a factory.</li>
+<li>On each construction, evaluate each <strong>argument list</strong> left-to-right in the
+declaring initializer’s activation immediately before its contribution runs:
+superclass first, direct mixins right-to-left. Constructor bindings are local
+to that declaring initializer; supplied initializers receive their own formals.</li>
+<li>Initialize on the same allocated receiver. A superclass target runs its
+complete dependency schedule, slots and post-slot section. A mixin target
+runs only its owned slots and post-slot section, without following its source
+class’s dependency routes. Then resume the pending contribution. Routing
+occurs before slot completion and cannot return early to the declaring
+initializer’s home.</li>
+</ol>
+<p>The core AST represents this distinction as <code>CoreConstructorApplication(target, arguments)</code>. Receiver subexpressions within the target still evaluate normally.
+Targets are fixed for the resulting class; routed argument expressions execute
+again for each construction. Bare targets route no arguments. Native <code>super</code>
+cannot be a clause target. In the bootstrap, both superclass and direct mixin
+targets must be native classes; Aliens require explicit adaptation.</p>
+<p>Computed target receivers are explicitly allowed, including for member classes.
+For example, in an enclosing declaration:</p>
+<pre><code class="language-vh">class Host(provider) {
+    families = provider;
+    class Member(x)
+        &lt;: families.choose("mixins").Mixin(x)
+         &lt; families.choose("base").Base(x) { }
+}
+</code></pre>
+<p>Realizing <code>Member</code> evaluates <code>families.choose("mixins")</code>, reads its <code>Mixin</code>
+class, then evaluates <code>families.choose("base")</code> and reads its <code>Base</code> class.
+These ordinary receiver computations may invoke methods or foreign operations;
+their results determine the contributors. Only the <strong>terminal</strong> <code>.Mixin(x)</code>
+and <code>.Base(x)</code> applications route <code>x</code> to initialization. The calls to <code>choose</code>
+are ordinary invocation, not constructor routes. Parenthesizing a terminal
+application does not turn it into an ordinary factory call.</p>
+<p>A member accessor caches the realized class or realization failure for its
+bound enclosing receiver and declaration occurrence. Bare member access realizes
+it; invocation first checks the declaration’s factory signatures and realizes
+only a selected matching candidate. Rejected arities execute none of these
+computations. Once realized, the contributor choices remain fixed for that
+class, while routed arguments are reevaluated for each new instance. A selected
+realization failure is an error, never a reason to try a farther declaration.
+See <a href="./message-sends.html#member-class-invocation">member-class invocation</a>.</p>
+<p>The syntactic order <code>&lt;: Mixins &lt; Super</code> matches the lookup priority: the class itself is checked first, then mixins left to right, then the superclass. Reading left to right in the declaration mirrors left to right in the lookup chain.</p>
+<h3 id="synthesized-getters-and-setters"><a class="header" href="#synthesized-getters-and-setters">Synthesized Getters and Setters</a></h3>
+<p>Each class that declares a slot also holds the synthesized getter and setter for that slot in its methods:</p>
+<ul>
+<li><strong>Getter</strong>: <code>(name, 0)</code> — reads <code>self.slots[name]</code></li>
+<li><strong>Setter</strong>: <code>(name!, 1)</code> — writes <code>self.slots[name]</code>, returns the new value</li>
+</ul>
+<p>The getter and setter operate on <code>self.slots[name]</code>, so they work correctly regardless of which object <code>self</code> is — the slot lives on the instance.</p>
+<p>When <code>obj.sLoggingLevel</code> is called, lookup walks the class chain and finds the getter in <code>Logging</code>’s class. The getter reads <code>self.slots["sLoggingLevel"]</code> — which is on <code>obj</code>. To mutate: <code>obj.sLoggingLevel!(newLevel)</code>. This is why methods and getters/setters work uniformly through dispatch.</p>
+<h3 id="the-apply-protocol"><a class="header" href="#the-apply-protocol">The <code>apply</code> Protocol</a></h3>
+<p>A value is callable at arity <code>N</code> when it provides the exact <code>apply/N</code> capability:</p>
+<ul>
+<li><strong>Class objects</strong> have owned class-side <code>apply/N</code> methods, delegating to <code>new/N</code>
+by default or implementing a declared custom factory.</li>
+<li><strong>Lambdas</strong> provide invocation at their declared parameter count.</li>
+<li><strong>Native user objects</strong> can define or inherit an <code>apply/N</code> method.</li>
+<li><strong>Foreign values</strong> may advertise <code>apply/N</code> through effect-free boundary
+selection, including <code>ForeignCallable</code>.</li>
+</ul>
+<p>Invocation <code>name(args)</code> tests candidates at each scope or hierarchy contribution:
+prefer an exact operation, then an eligible generated accessor supplying a
+callable of the required arity. Stored values are read without executing user
+getters. Member-class accessors advertise their selected declaration’s constructor
+arity and owned <code>factory apply</code> arities without realizing the class. Continue
+searching on a genuine miss, never after a selected failure.</p>
+<p>The rule includes arity zero. A method <code>f { 7 }</code> makes <code>f()</code> return <code>7</code> once;
+a slot containing <code>fun { 7 }</code> supplies the lambda’s <code>apply/0</code>. Bare <code>f</code> remains
+an ordinary <code>f/0</code> send. Generated getters are not themselves invocation matches
+at arity zero, and computed getters are not executed to discover callables at
+other arities. Overridden getters mask backing storage throughout lookup.</p>
+<pre><code class="language-vh">{
+    Point = class(x, y) { };
+    handler = fun(req) { req };
+    test(request) {
+        Point(2, 3);               // stored class's apply/2 constructs an instance
+        handler(request)           // stored lambda's apply/1
+    }
+}
+</code></pre>
+<p>The separate setter name <code>handler!</code> leaves <code>handler</code> available for callable
+invocation. See <a href="./message-sends.html#dispatch-rules">Message Sends</a> for the full
+selection order, failures, zero-arity behavior and Alien dispatch distinctions.</p>
+<h2 id="method-lookup"><a class="header" href="#method-lookup">Method Lookup</a></h2>
+<p>For an explicit native invocation <code>m(args)</code>, the runtime searches for applicable
+behavior at selector <code>(m, arity)</code> in this contribution order:</p>
+<ol>
+<li><strong>The object’s class</strong> — its own methods.</li>
+<li><strong>Applied owned mixins, left to right</strong> — <code>applications[0]</code>, then <code>applications[1]</code>, etc. Lookup checks each selected owned contribution, without traversing its source class’s original dependencies.</li>
+<li><strong>The superclass</strong> — recursively, which walks the super’s own methods, then the super’s mixins, then the super’s super, etc.</li>
+</ol>
+<p>At each contribution, an exact operation precedes an eligible callable binding.
+A nearer callable can therefore win over a farther exact method. The first
+applicable candidate wins; exhaustion produces a missing-selector diagnostic.
+Ordinary bare sends perform exact zero-arity lookup.</p>
+<pre><code class="language-vh">class Server(port) &lt;: Logging, Caching &lt; Base { ... }
+</code></pre>
+<p>Lookup order for a message sent to a <code>Server</code> instance:</p>
+<pre><code>Server's class methods
+  ⇒ Logging's class methods
+    ⇒ Caching's class methods
+      ⇒ Base's class methods
+        ⇒ Base's mixins (if any)
+          ⇒ Base's super (recursively)
+</code></pre>
+<h3 id="super-dispatch"><a class="header" href="#super-dispatch">Super Dispatch</a></h3>
+<p><code>super.m(args)</code> starts lookup at the <strong>next position in the chain</strong> relative to where the currently executing method was found. The receiver remains <code>self</code>.</p>
+<ul>
+<li>If the current method is in <code>Server</code>’s class → <code>super</code> starts at <code>Logging</code>.</li>
+<li>If the current method is in <code>Logging</code> → <code>super</code> starts at <code>Caching</code>.</li>
+<li>If the current method is in <code>Caching</code> → <code>super</code> starts at <code>Base</code>’s class.</li>
+<li>If the current method is in <code>Base</code>’s class → <code>super</code> starts at <code>Base</code>’s first mixin (if any), or <code>Base</code>’s super.</li>
+</ul>
+<p>To implement this, method activations track the <strong>dispatch origin</strong>: which class or mixin provided the currently executing method, and its position in the mixin list. This is the only additional bookkeeping beyond standard dispatch.</p>
+<h3 id="super-in-mixin-methods"><a class="header" href="#super-in-mixin-methods">Super in Mixin Methods</a></h3>
+<p>A mixin method that calls <code>super</code> does not know at definition time what <code>super</code> will resolve to — it depends on the application site:</p>
+<pre><code class="language-vh">class Logging {
+    process(data) {
+        log("processing")
+        super.process(data)   // goes to whatever is next in the chain
+    }
+}
+
+// Here, super.process() in Logging goes to Caching
+class App &lt;: Logging, Caching &lt; Base { ... }
+
+// Here, super.process() in Logging goes to Base directly
+class Simple &lt;: Logging &lt; Base { ... }
+</code></pre>
+<p>This dynamic dispatch of <code>super</code> is essential for mixin compositionality. The mixin’s implicit contract is: “I assume <code>super</code> responds to <code>process(data)</code>.” If the application site does not satisfy the contract, a runtime error occurs. See <a href="./future.html#mixin-contract-verification">Future Directions</a> for planned static verification.</p>
+<h2 id="metaclass-details"><a class="header" href="#metaclass-details">Metaclass Details</a></h2>
+<p>A metaclass <strong>is</strong> a class (which <strong>is</strong> an object), containing its class’s owned
+class-side contribution. This section covers primary construction (<code>new</code>), the
+callable protocol (<code>apply</code>), named factory methods and the flat metaclass hierarchy.
+See <a href="#core-structures">Core Structures</a> for the representation.</p>
+<h3 id="the-primary-factory-new"><a class="header" href="#the-primary-factory-new">The Primary Factory (<code>new</code>)</a></h3>
+<p>Every source class and root <code>Object</code> gets an automatically synthesized, <strong>non-overridable</strong> <code>new</code> method on its metaclass. This is the <strong>primary factory</strong> — the standard construction path that always produces a fresh instance:</p>
+<pre><code class="language-vh">class Point(ax, ay) {
+    x = ax
+    y = ay
+}
+Point.new(2, 3)    // always allocates + initializes → fresh Point
+</code></pre>
+<p><code>new</code> follows the full <a href="#construction-order">construction order</a>: allocate → run
+<code>&lt; Base(args)</code> contribution → run <code>&lt;: Mixin(args)</code> contributions (R→L) → run own
+contribution → return the new object. Each contribution has a fresh return home,
+ordered slot initialization and optional post-slot code; permitted early
+completion ends only that contribution. Its generated method body uses private
+allocation and identity-bound initializer invocation operations; message lookup
+and method invocation have no special primary-construction target. Object literals
+use this same generated construction path after realizing their anonymous class.</p>
+<p><code>new</code> is never written explicitly and cannot be overridden. Its arity always matches the class parameter list. It is the one reliable way to create a guaranteed fresh instance.</p>
+<p>Synthesized <code>new</code> and default <code>apply</code> belong to each class’s own constructor
+signature. In particular, inheriting from root <code>Object</code> does not add its
+zero-argument construction signature to a class with parameters. User-defined
+factories also belong only to their declaring class: neither superclass inheritance
+nor mixin application imports them. <code>Class</code>, <code>Metaclass</code> and metaclass objects
+have no public <code>new</code> or default <code>apply</code> construction entry points.</p>
+<p>Like <code>self</code>, <code>new</code> is <strong>semantically reserved</strong> — it is a regular identifier in the grammar (not a keyword), but the semantic layer rejects any <code>factory new(...)</code> declaration. This is the precise check: only <code>factory new</code> conflicts with the synthesized <code>new</code> (which lives on the metaclass). A regular instance method named <code>new</code> on a non-class object (e.g., a builder or pool) does not conflict and is permitted. See <a href="./name-resolution.html#reserved-words">Reserved Words</a> for the full list.</p>
+<h3 id="the-callable-protocol-apply"><a class="header" href="#the-callable-protocol-apply">The Callable Protocol (<code>apply</code>)</a></h3>
+<p>By default, the metaclass synthesizes an <code>apply</code> method that simply delegates to <code>new</code>:</p>
+<pre><code>synthesized apply(ax, ay) { new(ax, ay) }
+</code></pre>
+<p>This supplies the callable capability for <code>Point(2, 3)</code>: select its class
+<code>apply/2</code>, which delegates to <code>new/2</code> and returns a fresh instance. A generated
+member-class accessor can advertise this arity before the class is realized.</p>
+<p>A class can define <strong>one or more</strong> <code>factory apply</code> methods to <strong>fully replace</strong> the synthesized apply at a given arity. User-defined applies have <strong>full control</strong> — no automatic slot initialization runs through <code>apply</code>, no forced return value. The user may call <code>new</code> inside the body (to get standard construction) or do anything else:</p>
+<pre><code class="language-vh">class Point(ax, ay) {
+    x = ax
+    y = ay
+
+    // Same-arity apply — wraps standard construction with validation:
+    factory apply(ax, ay) {
+        validate(ax, ay)
+        var obj = new(ax, ay)     // calls the standard construction chain
+        obj.register
+        obj                       // full return-value control
+    }
+
+    // Different-arity apply — zero-arg constructor:
+    factory apply() {
+        new(0, 0)                 // delegates to new with defaults
+    }
+}
+</code></pre>
+<p>With this definition:</p>
+<pre><code class="language-vh">Point(2, 3)        // → (apply, 2)(2, 3) → validated, registered instance
+Point.apply        // → (apply, 0) → Point at origin
+Point.new(2, 3)    // → always raw construction, no validation, no registration
+</code></pre>
+<p><strong>Key principle:</strong> <code>apply</code> is the callable protocol — <strong>homogeneous across all callable objects</strong>:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Callable</th><th>Default <code>apply</code></th><th>Overridable?</th></tr>
+</thead>
+<tbody>
+<tr><td>Lambda</td><td>Invoke body</td><td>No (intrinsic)</td></tr>
+<tr><td>Class</td><td><code>new(args)</code></td><td>Yes, via <code>factory apply(...)</code></td></tr>
+<tr><td>User object</td><td>Whatever user wrote</td><td>Yes (it’s a regular method)</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="multiple-constructors-via-multiple-apply-arities"><a class="header" href="#multiple-constructors-via-multiple-apply-arities">Multiple Constructors via Multiple <code>apply</code> Arities</a></h3>
+<p>A class can define <code>factory apply</code> at multiple arities, providing multiple construction signatures:</p>
+<pre><code class="language-vh">class Color(r, g, b) {
+    red = r
+    green = g
+    blue = b
+
+    factory apply(r, g, b) {
+        validate(r, g, b)
+        new(r, g, b)
+    }
+
+    factory apply(hex) {
+        new(hex.extractRed, hex.extractGreen, hex.extractBlue)
+    }
+
+    factory apply() {
+        new(0, 0, 0)    // black
+    }
+}
+</code></pre>
+<pre><code class="language-vh">Color(255, 0, 0)      // 3-arg apply → validated red
+Color(0xFF0000)        // 1-arg apply → from hex
+Color.apply            // 0-arg apply → black
+Color.new(255, 0, 0)   // raw — always the 3-arg primary factory
+</code></pre>
+<p>The synthesized <code>apply</code> (the one that delegates to <code>new</code>) is only generated if the user does not define a <code>factory apply</code> at that arity. User-defined applies at other arities coexist without affecting the synthesized default.</p>
+<h3 id="caching-pooling-and-abstract-factories"><a class="header" href="#caching-pooling-and-abstract-factories">Caching, Pooling, and Abstract Factories</a></h3>
+<p>Because user-defined <code>apply</code> has full return-value control, patterns that return non-fresh objects work naturally:</p>
+<pre><code class="language-vh">class CachedPoint(ax, ay) {
+    x = ax
+    y = ay
+
+    factory apply(ax, ay) {
+        cache.getOrPut(ax, ay, fun { new(ax, ay) })
+    }
+}
+</code></pre>
+<pre><code class="language-vh">CachedPoint(2, 3)        // may return cached instance
+CachedPoint.new(2, 3)    // always fresh — bypasses cache
+</code></pre>
+<p>The guarantee: <code>ClassName.new(args)</code> = always fresh. <code>ClassName(args)</code> = goes through <code>apply</code>, which the class author controls. The primary factory provides fresh construction while the callable protocol remains customizable.</p>
+<h3 id="named-factory-methods-factory"><a class="header" href="#named-factory-methods-factory">Named Factory Methods (<code>factory</code>)</a></h3>
+<p>The <code>factory</code> keyword also declares <strong>named factory methods</strong> on the metaclass — alternate construction entry points:</p>
+<pre><code class="language-vh">class Counter(start) &lt; Base {
+    count = start
+
+    factory create() { new(0) }
+    factory fromList(items) { new(items.size) }
+}
+</code></pre>
+<p>Named factory methods are invoked on the class object:</p>
+<pre><code class="language-vh">Counter(5)                // class apply/1 delegates to new/1
+Counter.create            // named factory → new(0)
+Counter.fromList(myList)  // named factory → new(myList.size)
+Counter.new(5)            // direct construction — always
+</code></pre>
+<p>Named factory methods are ordinary methods that live on the metaclass. They have full access to <code>new</code> and to other factory methods. Like user-defined <code>apply</code>, they control their own return value.</p>
+<p>Produces:</p>
+<pre><code>Counter = {
+    slots = {}, class = CounterMeta, outer = enclosing,
+    ownedMixin = {formals: [start], slots: [count], initializer: {count = start}, ...},
+    super = Object, applications = [], initializationEdges = [Object()],
+    layout = [count], initializer = coordinate(Object, ownedMixin)
+}
+CounterMeta = {
+    slots = {}, class = Metaclass, outer = enclosing,
+    ownedMixin = {(new, 1): ..., (apply, 1): ..., (create, 0): ..., (fromList, 1): ...},
+    super = Class, applications = []
+}
+</code></pre>
+<h3 id="why-factory-is-a-separate-keyword"><a class="header" href="#why-factory-is-a-separate-keyword">Why <code>factory</code> Is a Separate Keyword</a></h3>
+<p>Without <code>factory</code>, a method <code>create()</code> defined inside the class body becomes an instance method — it lives on the class and is dispatched to instances. With <code>factory</code>, the same method lives on the metaclass and is dispatched to the class itself.</p>
+<p>This is the only semantic effect of <code>factory</code>: <strong>it changes which object holds the method</strong> (metaclass instead of class). Everything else — method bodies, dispatch, <code>super</code> — works identically.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Declaration</th><th>Lives on</th><th>Dispatched via</th><th>Invoked as</th></tr>
+</thead>
+<tbody>
+<tr><td><code>increment() { ... }</code></td><td>Class</td><td>instance.increment</td><td><code>counter.increment</code></td></tr>
+<tr><td><code>factory create() { ... }</code></td><td>Metaclass</td><td>class.create</td><td><code>Counter.create</code></td></tr>
+<tr><td><code>factory apply(start) { ... }</code></td><td>Metaclass</td><td>Class invocation at arity one</td><td><code>Counter(5)</code></td></tr>
+<tr><td><em>(synthesized)</em> <code>new(start)</code></td><td>Metaclass</td><td>class.new(5)</td><td><code>Counter.new(5)</code></td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="factory-method-lexical-environment"><a class="header" href="#factory-method-lexical-environment">Factory Method Lexical Environment</a></h3>
+<p>Factory methods (including <code>factory apply</code>) live on the metaclass and are dispatched when a message is sent to the <strong>class object</strong>. Within a factory method:</p>
+<ul>
+<li><strong><code>self</code></strong> resolves to the <strong>class object</strong> — the metaclass’s instance. This is the object the factory was dispatched on.</li>
+<li><strong>Qualified lexical receivers</strong> use the factory’s declaration origin and its class definition scope. <code>outer X</code> selects the receiver of the lexically enclosing class <code>X</code>; no public metaclass parent accessor is involved.</li>
+</ul>
+<p>This means factory methods have lexical access to the environment where the class was defined. For inner classes, this environment varies per instance of the enclosing class:</p>
+<pre><code class="language-vh">class X(n) {
+    m = n
+
+    class Y() {
+        factory toto() {
+            var z = outer X.m    // X instance that contains this Y
+            new
+        }
+    }
+}
+
+o1 = X(3)
+o2 = X(4)
+o1.Y.toto       // outer X.m → 3 (o1's slot m)
+o2.Y.toto       // outer X.m → 4 (o2's slot m)
+</code></pre>
+<p>Each <code>X</code> instance gets its own cached <code>Y</code> member class bound to that receiver.
+When <code>toto</code> executes, <code>outer X</code> uses the member declaration’s origin to select
+that enclosing <code>X</code> instance. Since <code>o1</code> and <code>o2</code> have different <code>m</code> values, the
+factory method sees different values. Custom factories and this lexical behavior
+are implemented in the current bootstrap.</p>
+<p>An <code>outer</code> link captures an enclosing scope only when one exists at definition
+time. A normal top-level class and its metaclass retain at most the empty top
+activation, with no enclosing application scope; invoking a factory
+does not capture the caller or instantiation service. Nested factory methods
+follow their class’s definition scope through the standard <code>outer</code> chain.
+Classes evaluated in an explicitly supplied tooling context retain that context
+under the same rule; see <a href="./tooling-architecture.html#evaluation-contexts">Evaluation Contexts</a>.</p>
+<h3 id="bootstrap-metaclasses"><a class="header" href="#bootstrap-metaclasses">Bootstrap Metaclasses</a></h3>
+<p>VarioHyve uses a Newspeak-like flat metaclass hierarchy while retaining explicit
+reified mixin composition inside each class. Every ordinary class <code>C</code> has a
+distinct <code>C class</code> containing only <code>C</code>’s owned class-side contribution, specialized
+for that realized class. Its superclass is shared <code>Class</code>, independently of
+<code>C</code>’s instance-side superclass and applied mixins. The common instance protocol
+of <code>Class</code> is initially empty; no contributor factories enter through it.</p>
+<p>The seeded relationships are:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Object</th><th>Structural class</th><th>Direct superclass</th></tr>
+</thead>
+<tbody>
+<tr><td><code>Object</code></td><td><code>Object class</code></td><td>none</td></tr>
+<tr><td><code>Class</code></td><td><code>Class class</code></td><td><code>Object</code></td></tr>
+<tr><td><code>Metaclass</code></td><td><code>Metaclass class</code></td><td><code>Class</code></td></tr>
+<tr><td><code>Object class</code></td><td><code>Metaclass</code></td><td><code>Class</code></td></tr>
+<tr><td><code>Class class</code></td><td><code>Metaclass</code></td><td><code>Class</code></td></tr>
+<tr><td><code>Metaclass class</code></td><td><code>Metaclass</code></td><td><code>Class</code></td></tr>
+<tr><td>Ordinary <code>C</code></td><td><code>C class</code></td><td>its declared superclass, or <code>Object</code></td></tr>
+<tr><td>Ordinary <code>C class</code></td><td><code>Metaclass</code></td><td><code>Class</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>If <code>Counter &lt; Base</code>, instance lookup reaches <code>Base</code> normally. A factory declared
+by <code>Base</code> is available on <code>Base</code>, but is not thereby available on <code>Counter</code>.
+Factory <code>super</code> continues into <code>Class</code>, not <code>Base class</code>. An explicit lexical
+reference to <code>Base</code> may still invoke its factories normally.</p>
+<p><code>Object</code> is the only null-superclass root. The seeded classes and their metaclasses
+have no capability-bearing lexical parent. Seeding these identities creates no
+ambient source bindings, reflection selectors or public metaclass constructors.
+The existing explicit kernel <code>Object</code> export remains optional for expression tools.
+See <a href="../../design-notes/flat-metaclasses-and-construction.html">Flat metaclasses and class-owned construction</a>
+for migration and construction ownership.</p>
+<h2 id="method-activations"><a class="header" href="#method-activations">Method Activations</a></h2>
+<p>When a method is called, the runtime creates an <strong>activation object</strong> in the store. It uses the internal object representation for scope, without exposing activation reflection or general public activation access:</p>
+<ul>
+<li><strong>Slots</strong> — one per <code>var</code> local declaration, with getter/setter access. Local names must not end in <code>!</code>.</li>
+<li><strong>Parameters</strong> — read-only entries; no setter synthesized, and parameter names must not end in <code>!</code>.</li>
+<li><strong>Class</strong> — points to a class holding the method body (for potential inner method calls).</li>
+<li><strong>Outer</strong> — points to the receiver object (for lexical lookup from within the method body).</li>
+</ul>
+<h3 id="lambda-activations"><a class="header" href="#lambda-activations">Lambda Activations</a></h3>
+<p>A lambda activation differs in one critical way: its <strong><code>outer</code> points to the enclosing activation</strong> (the activation that created the lambda), not to an object. This is what makes closures work — a lambda captures the lexical environment of its definition site.</p>
+<pre><code class="language-vh">class Counter(start) {
+    count = start
+    makeIncrementer() {                    // method activation: outer → Counter instance
+        var step = 1
+        fun() {                            // lambda activation: outer → makeIncrementer's activation
+            count!(count.plus(step))       // `step` resolved via outer → makeIncrementer's activation
+            count                          // `count` resolved via outer chain → Counter instance
+        }
+    }
+}
+</code></pre>
+<p>In this example:</p>
+<ul>
+<li>The method activation for <code>makeIncrementer</code> has <code>outer → Counter instance</code> (the receiver).</li>
+<li>The lambda activation has <code>outer → makeIncrementer's activation</code>, which gives it access to <code>step</code>.</li>
+<li><code>count</code> is not found in the lambda’s locals or in <code>makeIncrementer</code>’s locals, so lookup continues through <code>makeIncrementer</code>’s <code>outer</code> to the <code>Counter</code> instance.</li>
+</ul>
+<p>This activation-as-object model is what makes closures work naturally: a lambda captures a reference to the enclosing activation’s address, and the activation survives in the store as long as any lambda holds a reference to it. See <a href="./recursion.html#passing-recursive-lambdas-as-arguments">Recursion — Passing Recursive Lambdas as Arguments</a>.</p>
+<h2 id="dispatch-origin-tracking"><a class="header" href="#dispatch-origin-tracking">Dispatch Origin Tracking</a></h2>
+<p>Each activation records the <strong>dispatch origin</strong>: the applying class and exact
+contribution position that supplied the method. Definition scope remains on the
+selected reified mixin. This distinguishes two applications of the same definition
+and tells <code>super</code> where to resume lookup.</p>
+<pre><code>Activation = { slots, class, outer, dispatchOrigin: (applyingClass, contributionIndex) }
+</code></pre>
+<p>The backend contribution list starts with the owned mixin at index zero, followed
+by explicit applications at indices one through N. <code>super</code> resumes at the next
+contribution, then continues into the superclass after the last application.
+A direct initializer uses the same applying-class/index origin as its methods;
+it does not recover an origin through the mixin’s source class.</p>
+<h2 id="design-summary"><a class="header" href="#design-summary">Design Summary</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Concern</th><th>Mechanism</th></tr>
+</thead>
+<tbody>
+<tr><td>Object structure</td><td><code>{ slots, class, outer }</code> — base of the additive hierarchy</td></tr>
+<tr><td>Class structure</td><td>Object + owned mixin, ordered applications, superclass, initialization edges, cached layout and private coordinator</td></tr>
+<tr><td>Metaclass structure</td><td>Class with only its owned class-side contribution; superclass <code>Class</code>, class <code>Metaclass</code></td></tr>
+<tr><td>Object state</td><td>Slots flat on the instance, methods in the class chain</td></tr>
+<tr><td>Construction</td><td>Generated ordinary <code>new</code> method: allocate → private class coordinator → return receiver; coordinator runs super → mixins (R→L) → own body</td></tr>
+<tr><td><code>apply</code> protocol</td><td>Callable protocol; default delegates to <code>new</code>; overridable via <code>factory apply(...)</code></td></tr>
+<tr><td><code>&lt; Super(args)</code></td><td>Initialize the complete superclass chain on <code>self</code> with these args</td></tr>
+<tr><td><code>&lt;: Mixin(args)</code></td><td>Initialize only the target class’s owned contribution on <code>self</code> with these args</td></tr>
+<tr><td>Method lookup</td><td>Class ⇒ mixins (L⇒R) ⇒ super (recursive) — leftmost wins</td></tr>
+<tr><td>Slot overlap (initial policy)</td><td>Shared names are overwritten in initialization order; deterministic but not independent state</td></tr>
+<tr><td>Setter naming</td><td><code>x!</code> (distinct from getter <code>x</code>) — no arity clash</td></tr>
+<tr><td>Callable invocation</td><td>At each scope/contribution prefer an exact operation, then an eligible generated binding with exact <code>apply/N</code>; member classes advertise owned factory arities</td></tr>
+<tr><td>Mixin representation</td><td>Owned methods, slots, members, formals and anonymous initializer; preserved definition scope and separate application positions</td></tr>
+<tr><td>Mixin sharing</td><td>All classes referencing a mixin share the same mixin object</td></tr>
+<tr><td><code>super</code> dispatch</td><td>Next in chain, tracked via dispatch origin</td></tr>
+<tr><td>Factory methods</td><td>Only the declaring class’s class-side mixin; all metaclasses directly extend <code>Class</code></td></tr>
+<tr><td>Activations</td><td>Internal scope objects; expressions can capture them, ordinary instances do not retain their own constructor frame</td></tr>
+<tr><td>Conflict resolution (v1)</td><td>First match wins (leftmost mixin) for both methods and slots</td></tr>
+<tr><td>Composition (future)</td><td>Deep member families and explicit adaptation/state rules — see <a href="./future.html#deep-family-and-mixin-composition">Future Directions</a></td></tr>
+</tbody>
+</table>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="descriptors.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="interpreter-design.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="descriptors.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="interpreter-design.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-33e14e7d.js"></script>
+        <script src="book-c22b7243.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

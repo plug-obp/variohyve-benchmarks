@@ -1,0 +1,491 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Foreign Object Interaction - VarioHyve Language Specification</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-0392ca55.css">
+        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/vh-2de7eb16.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-e880608a.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-da21433a.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">VarioHyve Language Specification</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="foreign-semantic-values-and-the-alienexpat-boundary"><a class="header" href="#foreign-semantic-values-and-the-alienexpat-boundary">Foreign Semantic Values and the Alien/Expat Boundary</a></h1>
+<p>VarioHyve programs interact with values and entities governed by other semantic
+domains: Python, Java, C, simulation engines, databases, hardware interfaces,
+other VarioHyve runtimes, and the implementation VM itself. This section defines
+the boundary model. Foreign systems retain their own semantics and execution
+mechanisms; federation does not require a shared object model.</p>
+<h2 id="design-principles"><a class="header" href="#design-principles">Design Principles</a></h2>
+<p>The boundary follows these constraints:</p>
+<ol>
+<li><strong>Foreign semantic sovereignty.</strong> Alienation makes a foreign value reachable;
+it does not supply a VarioHyve class, mixins, lexical receiver structure, or
+methods. The foreign adapter determines the operations it supports.</li>
+<li><strong>Native semantic sovereignty.</strong> VarioHyve lexical lookup, <code>self</code>, qualified
+<code>outer ClassName</code>, <code>super</code>, and native dispatch have fixed language semantics.
+Crossing to an Alien leaves that semantic domain; it does not customize lookup.</li>
+<li><strong>Symmetric crossing.</strong> Arguments, results, failures, identity and callbacks
+obey the Alien/Expat contract in both directions, including VM services.</li>
+<li><strong>Explicit adaptation.</strong> Ordinary VarioHyve wrappers supply VarioHyve behavior
+around foreign values. Alienation preserves foreign semantics; wrapping
+constructs a VarioHyve abstraction.</li>
+</ol>
+<h2 id="aliens--foreign-semantic-values-inside-variohyve"><a class="header" href="#aliens--foreign-semantic-values-inside-variohyve">Aliens — Foreign Semantic Values Inside VarioHyve</a></h2>
+<p>An <strong>Alien</strong> is a VarioHyve-visible reference to a value or entity governed by a
+foreign semantic domain. Examples include a Python object, C pointer, function,
+struct value, opaque resource handle, simulator model or remote endpoint.
+An Alien need not support any direct operation. Its presence in an object slot
+does not make that containing object its lexical outer.</p>
+<p>When VarioHyve code sends a message to an Alien:</p>
+<pre><code>aServer.start(port)        // aServer is an Alien wrapping a Python object
+</code></pre>
+<p>The boundary performs the following protocol when its adapter supports that
+operation:</p>
+<ol>
+<li><strong>Expatriate the arguments</strong> — each VarioHyve argument is converted (or wrapped) into a foreign representation suitable for the target runtime. VarioHyve objects become Expats; primitive values are marshalled.</li>
+<li><strong>Invoke foreign behavior</strong> — the adapter interprets the <code>(name, arity)</code>
+request according to its foreign contract. OO forwarding is one policy;
+capability operations on otherwise opaque handles are another.</li>
+<li><strong>Alienate the result</strong> — the foreign return value is converted (or wrapped) back into a VarioHyve value. Foreign objects become Aliens; primitive values are unmarshalled.</li>
+</ol>
+<pre><code>┌─────────────────┐         ┌──────────────────┐
+│   VarioHyve     │         │  Foreign Runtime  │
+│                 │         │                   │
+│  msg(args)  ──────►  Alien  ──────►  foreign.msg(expatriate(args))
+│                 │         │                   │
+│  alienate(r) ◄──────  Alien  ◄──────  r = result
+│                 │         │                   │
+└─────────────────┘         └──────────────────┘
+</code></pre>
+<h3 id="alien-dispatch"><a class="header" href="#alien-dispatch">Alien Dispatch</a></h3>
+<p>After evaluating an explicit receiver, the evaluator distinguishes native values
+from Aliens. Native values use fixed VarioHyve lookup. An Alien uses its boundary
+adapter; native class and mixin lookup does not continue through the Alien.
+Selector/arity transport does not imply that the foreign entity intrinsically
+has methods or a VarioHyve class. The adapter may return a genuine selector miss.</p>
+<p>An explicit Alien invocation selects exactly its requested name/arity. A foreign
+getter is not a generated native accessor and is not executed to discover a
+callable; write <code>alien.f.apply(args)</code> to invoke its returned value explicitly.
+A stored Alien can supply callable behavior if its adapter advertises exact
+<code>apply/N</code>, including through <code>ForeignCallable</code>. Candidate selection retains the
+operation and does not resolve it a second time before execution.</p>
+<p>The adapter must distinguish absence before operation entry from failure after
+selection. Resolution must not execute operations or call back into the language.
+A resolution or execution failure never resumes lookup or replays effects.
+Receiver and arguments are evaluated once. See <a href="./message-sends.html">Message Sends</a>.</p>
+<p>Explicit foreign selectors named <code>self</code>, <code>outer</code> or <code>super</code> are eligible for
+ordinary boundary dispatch: <code>alien.outer</code> requests the foreign operation named
+<code>outer</code>. It does not navigate a VarioHyve scope. The receiver forms <code>self</code>,
+<code>outer ClassName</code> and <code>super.message</code> retain their separate native meanings.
+Native declarations do not acquire those reserved names through this exception.</p>
+<h3 id="alien-identity"><a class="header" href="#alien-identity">Alien Identity</a></h3>
+<p>For identity-bearing values, a boundary defines foreign identity and preserves
+sharing across repeated crossings. The current in-process Java adapter
+canonicalizes by Java object identity. This is an adapter policy, not a universal
+identity law for all domains, and does not synthesize an <code>eq</code> method on Aliens.</p>
+<p>For C, numeric address equality, allocation identity, pointer provenance and
+value equality are distinct concerns. Reused addresses must not automatically
+identify the same semantic entity. A future C adapter must define its lifetime
+and identity policy explicitly; no C FFI is implemented by this specification.</p>
+<h2 id="expats--variohyve-objects-outside-variohyve"><a class="header" href="#expats--variohyve-objects-outside-variohyve">Expats — VarioHyve Objects Outside VarioHyve</a></h2>
+<p>An <strong>Expat</strong> exposes a native VarioHyve value’s behavior to a foreign domain. It
+may present that behavior in the foreign runtime’s idiom, but its public contract
+does not expose a store, address, activation or VM representation. Invocation
+reenters fixed VarioHyve semantics. Backend adapters may privately retain the
+information required to do so.</p>
+<p>The bootstrap’s <code>VHExpat.send</code> API performs exact selector dispatch, including
+zero-argument access. It does not apply source invocation’s generated-binding
+selection: read a callable binding, then send <code>apply/N</code> to that result explicitly.</p>
+<p>When foreign code sends a message to an Expat:</p>
+<pre><code class="language-python"># Python side — server is an Expat wrapping a VarioHyve object
+server.start(8080)
+</code></pre>
+<p>The Expat performs the mirror-image protocol:</p>
+<ol>
+<li><strong>Alienate the arguments</strong> — each foreign argument is converted (or wrapped) into a VarioHyve value. Foreign objects become Aliens; primitive values are unmarshalled.</li>
+<li><strong>Forward the message</strong> — the foreign call is translated into a VarioHyve <code>(name, arity)</code> dispatch and sent to the wrapped VarioHyve object.</li>
+<li><strong>Expatriate the result</strong> — the VarioHyve return value is converted (or wrapped) back into a foreign representation. VarioHyve objects become Expats; primitive values are marshalled.</li>
+</ol>
+<pre><code>┌──────────────────┐         ┌─────────────────┐
+│  Foreign Runtime  │         │    VarioHyve     │
+│                   │         │                  │
+│  msg(args)  ──────►  Expat  ──────►  vh_obj.msg(alienate(args))
+│                   │         │                  │
+│  expatriate(r) ◄──  Expat  ◄──────  r = result
+│                   │         │                  │
+└──────────────────┘         └─────────────────┘
+</code></pre>
+<h3 id="expat-surface"><a class="header" href="#expat-surface">Expat Surface</a></h3>
+<p>An Expat exposes the VarioHyve object’s <strong>full behavioral interface</strong> — every method the VarioHyve object can respond to is available through the Expat. In v1 (no access control), this means all methods. When access control is introduced (see <a href="./future.html#access-control">Future Directions — Access Control</a>), Expats will expose only the <strong>export surface</strong> — the same contract that any external VarioHyve caller sees.</p>
+<h3 id="expat-identity"><a class="header" href="#expat-identity">Expat Identity</a></h3>
+<p>Each VarioHyve object has at most one Expat proxy per foreign runtime. If the same VarioHyve object is expatriated through multiple paths, the runtime returns the same Expat. This preserves identity across the boundary.</p>
+<h2 id="the-symmetry"><a class="header" href="#the-symmetry">The Symmetry</a></h2>
+<p>The Alien/Expat model is symmetric:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th></th><th>Alien</th><th>Expat</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>What it represents</strong></td><td>Foreign semantic value/entity</td><td>Native VarioHyve value</td></tr>
+<tr><td><strong>Lives in</strong></td><td>VarioHyve store</td><td>Foreign runtime</td></tr>
+<tr><td><strong>On message receive</strong></td><td>Expatriate args → forward → alienate result</td><td>Alienate args → forward → expatriate result</td></tr>
+<tr><td><strong>Proxy for</strong></td><td>Foreign → VarioHyve</td><td>VarioHyve → Foreign</td></tr>
+</tbody>
+</table>
+</div>
+<p>The two operations preserve compatible reference round trips:</p>
+<ul>
+<li><strong>Alienate</strong>: foreign value → VarioHyve value (wrap foreign objects as Aliens, unmarshall primitives)</li>
+<li><strong>Expatriate</strong>: VarioHyve value → foreign value (wrap VarioHyve objects as Expats, marshall primitives)</li>
+</ul>
+<p>For a native reference <code>v</code> and an identity-bearing foreign value <code>f</code> within a
+compatible runtime pair:</p>
+<pre><code>alienate(expatriate(v)) = v
+expatriate(alienate(f)) = f
+</code></pre>
+<p>An Expat owned by the importing runtime recovers the original native value;
+an Alien exported to its originating adapter recovers the foreign value.
+Cross-runtime references require an explicit bridge, not a guessed identity.
+By-value conversions instead follow their declared value semantics and may
+normalize host types; these equations do not promise host representation identity
+for marshalled primitives.</p>
+<h2 id="explicit-wrappers"><a class="header" href="#explicit-wrappers">Explicit Wrappers</a></h2>
+<p>A native wrapper can combine several foreign capabilities and supply its own
+identity, methods, invariants and lifecycle policy. Constructor parameters remain
+initializer-only, so persistent dependencies are bound into slots:</p>
+<pre><code class="language-vh">class Device(deviceHandle, reader, writer, closer) {
+    handle = deviceHandle;
+    readFn = reader;
+    writeFn = writer;
+    closeFn = closer;
+
+    read(buffer) { readFn(handle, buffer) }
+    write(buffer) { writeFn(handle, buffer) }
+    close { closeFn(handle) }
+}
+</code></pre>
+<p>The function capabilities can support <code>apply/n</code>, while the handle itself remains
+opaque and supports no messages. This illustrates an adapter contract, not a
+built-in C calling convention. Multiple wrappers may share the same Alien while
+having distinct native identities, lexical scopes and behavior.</p>
+<h2 id="vm-services-and-the-trusted-seed"><a class="header" href="#vm-services-and-the-trusted-seed">VM Services and the Trusted Seed</a></h2>
+<p>Language-visible VM services are foreign capabilities and use the same membrane.
+There is no separate privileged native-function invocation ontology. A finite
+trusted seed may privately allocate values, maintain stores, and implement
+lookup and continuations; those internal operations are not language services.</p>
+<p>A VM service constructing a native object must return its Expat so import
+recovers the native value. Returning a Java <code>VMObject</code> representation as an
+ordinary foreign result is invalid. Representation-sensitive capabilities, if
+ever exposed, require explicit authority and backend-private Expat unwrapping;
+public Expats provide no raw-world or address access. See
+<a href="../../design-notes/vm-lang-boundary.html">The VarioHyve–VM Boundary</a>.</p>
+<h2 id="constructor-arguments-and-optional-bundles"><a class="header" href="#constructor-arguments-and-optional-bundles">Constructor Arguments and Optional Bundles</a></h2>
+<p>The instantiation service can supply Aliens directly as any of a top-level
+module’s <a href="./program-structure.html#top-level-classes-and-instantiation">constructor arguments</a>.
+It can also assemble an ordinary bundle conventionally called a <code>kernel</code>.
+The parameter name, number of arguments, and use of a bundle are application
+choices, not requirements of the foreign protocol:</p>
+<pre><code class="language-vh">class(consoleService, fileSystemService) {
+    // Each argument may be an Alien or an ordinary VarioHyve object.
+    console = consoleService;
+    fs = fileSystemService;
+}
+</code></pre>
+<p>An optional bundle may itself be an Alien or a VarioHyve object holding Aliens.
+Objects already belonging to VarioHyve retain their identity through the normal
+Expat round trip. The service passes existing objects without exposing its other
+capabilities as a lexical scope. Normal module evaluation has only an empty top
+activation at its base, with no enclosing application scope; the class inherits
+only from root <code>Object</code> and composes no mixins. Its
+constructor inputs are its only external capability entry route.</p>
+<p>Tools may explicitly supply Aliens or native objects in development/debugging
+evaluation contexts. The same boundary contract applies there; those bindings
+must not silently become capabilities of normal modules’ empty top activations.</p>
+<h2 id="primitive-marshalling"><a class="header" href="#primitive-marshalling">Primitive Marshalling</a></h2>
+<p>Certain values cross the boundary without proxying — they are <strong>marshalled</strong> (converted by value) rather than wrapped:</p>
+<ul>
+<li><strong>Numbers</strong> — VarioHyve numbers ↔ host numeric types</li>
+<li><strong>Strings</strong> — VarioHyve strings ↔ host strings</li>
+<li><strong>Booleans</strong> — <code>true</code>/<code>false</code> ↔ host booleans</li>
+<li><strong>Null</strong> — canonical <code>null</code> ↔ host null/None/nil (<code>nil</code> is only a possible platform alias)</li>
+</ul>
+<p>Conversions must have explicit value semantics and reject unsupported values.
+The current Java adapter supports strings, Booleans, null and signed 64-bit
+integers; it normalizes Java integral representations to <code>Long</code> and rejects
+unsupported numeric forms. A foreign pointer must not be passed as an integer
+and expected to retain pointer identity or provenance. Use an explicit handle
+whose interpretation belongs to its adapter.</p>
+<p>Canonical null and booleans are ordinary native objects inside VarioHyve, with
+language-defined methods and thunk-based control flow. Their Java representation
+at the boundary is <code>null</code>, <code>Boolean.TRUE</code> or <code>Boolean.FALSE</code>, never an Expat.
+Incoming Java values map back to the corresponding canonical object in that
+runtime. This applies equally to results, arguments and callbacks.</p>
+<p>Conversion recognizes the canonical identities; it does not call <code>toString</code>,
+<code>isNull</code>, <code>not</code> or a truth-testing protocol to classify an arbitrary object.
+Another native object with similar behavior retains its own identity and uses
+the ordinary Expat route. Core null and empty expressions select the native
+canonical null directly, without a trip through Java conversion.</p>
+<h2 id="design-considerations"><a class="header" href="#design-considerations">Design Considerations</a></h2>
+<h3 id="arity-mismatch"><a class="header" href="#arity-mismatch">Arity Mismatch</a></h3>
+<p>Foreign runtimes may not have a native concept of <code>(name, arity)</code> dispatch. The Alien/Expat layer must map between VarioHyve’s arity-based dispatch and the foreign runtime’s calling convention:</p>
+<ul>
+<li><strong>Python/Ruby</strong> — keyword arguments, <code>*args</code>, default parameters. The mapping is name-based; arity mismatch may surface as a TypeError on the foreign side.</li>
+<li><strong>Java</strong> — selector and arity may participate in an explicit adaptation policy;
+Java overload resolution can also depend on types. Automatic reflection is
+not required and is not supplied by the bootstrap adapter.</li>
+<li><strong>C</strong> — a pointer or struct need not receive messages. Explicit capabilities
+can instead provide <code>call</code>, <code>read</code>, <code>write</code>, <code>field</code> or <code>dereference</code>, subject
+to a defined ABI, layout, ownership and lifetime contract.</li>
+</ul>
+<h3 id="concurrency-boundary"><a class="header" href="#concurrency-boundary">Concurrency Boundary</a></h3>
+<p>A future Semantic Language Interface (SLI) may govern scheduling between a
+sequential VarioHyve VM and concurrent foreign domains. The current boundary
+implements synchronous same-thread callbacks, not an SLI scheduler. See <a href="./future.html#concurrency-and-parallelism">Future Directions — Concurrency and Parallelism</a>.</p>
+<h3 id="error-propagation"><a class="header" href="#error-propagation">Error Propagation</a></h3>
+<p>Selector absence and an operation’s raised failure are different outcomes.
+Foreign failures become defined language failures; native failures crossing an
+Expat become defined foreign diagnostics. Concrete host exception classes must
+not define language control flow or leak as ordinary language values. The
+bootstrap preserves <code>FOREIGN_FAILURE</code>, <code>CONVERSION</code>, <code>OWNERSHIP</code> and
+<code>EXECUTION_POLICY</code> through machine execution and callback failure propagation.
+Native missing-selector and control failures remain <code>LANGUAGE_FAILURE</code>. These
+are defined diagnostic categories, not retained Java exception types or causes.
+The runtime does not implement resumable conditions or asynchronous callbacks.</p>
+<h3 id="lifecycle-and-garbage-collection"><a class="header" href="#lifecycle-and-garbage-collection">Lifecycle and Garbage Collection</a></h3>
+<p>Ownership and lifetime belong to the boundary contract for the foreign domain.
+The current Java adapter retains strong proxy references for the runtime’s
+lifetime. Future adapters must account for resources without a GC, callback
+lifetime, and cross-boundary cycles. No universal reclamation protocol is yet
+defined; exposing raw addresses is not a solution.</p>
+<h3 id="foreign-kinds-and-capability-contracts"><a class="header" href="#foreign-kinds-and-capability-contracts">Foreign Kinds and Capability Contracts</a></h3>
+<p>An adapter may classify values as callable, pointer, struct, remote endpoint or
+semantic model. Such classifications are foreign contracts, not VarioHyve
+classes. Future analysis can consume explicit contracts for effects, callbacks,
+blocking, determinism or state transitions; unknown behavior remains opaque.
+The bootstrap has no general contract metadata system, provenance registry or
+foreign reflection API. Those additions must preserve this semantic boundary.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="interpreter-design.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="tooling-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="interpreter-design.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="tooling-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-33e14e7d.js"></script>
+        <script src="book-c22b7243.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>
