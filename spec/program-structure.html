@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-e880608a.js";
+            window.path_to_searchindex_js = "searchindex-0458d790.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-da21433a.js"></script>
+        <script src="toc-45e5eade.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -176,7 +176,13 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="program-structure"><a class="header" href="#program-structure">Program Structure</a></h1>
-<p>VarioHyve is a language designed for <strong>complex heterogeneous system-of-systems</strong> — it serves as a <em>lingua franca</em> for behavioral-rich model federation. In this setting, multiple subsystems (potentially implemented in different languages, running on different runtimes, governed by different concurrency models) must compose into a coherent whole. VarioHyve provides the behavioral core: a deterministic, analyzable object model that can federate with foreign runtimes through a well-defined boundary (see <a href="./foreign-objects.html">Foreign Object Interaction</a>) and scale to concurrent compositions through a layered semantic interface (see <a href="./future.html#concurrency-and-parallelism">Future Directions — Concurrency</a>).</p>
+<p>VarioHyve explores behavioral federation for systems-of-systems and modeling
+environments. This chapter defines how programs receive capabilities and how
+module entry differs from tooling evaluation. The current sequential core
+interacts with foreign participants through the
+<a href="./foreign-objects.html">Alien/Expat boundary</a>; analysis and concurrent coordination
+remain research directions, including the proposed
+<a href="./future.html#concurrency-and-parallelism">semantic language interface</a>.</p>
 <h2 id="a-program-is-a-single-expression"><a class="header" href="#a-program-is-a-single-expression">A Program Is a Single Expression</a></h2>
 <p>The grammar entry point is:</p>
 <pre><code>top: expression? EOF;

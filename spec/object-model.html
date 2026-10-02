@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-e880608a.js";
+            window.path_to_searchindex_js = "searchindex-0458d790.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-da21433a.js"></script>
+        <script src="toc-45e5eade.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -188,7 +188,18 @@ base, no enclosing application scope, only root <code>Object</code> inheritance,
 mixins; an instantiation service supplies its external dependencies as
 existing object arguments of the declared arity. <code>kernel</code> is only an optional
 bundle convention. See <a href="./program-structure.html#four-sources-of-class-capabilities">Program Structure</a>.
-Examples with custom superclass/mixin names assume an enclosing definition scope.</p>
+Examples with custom superclass/mixin names assume an enclosing definition scope.
+Examples using <code>plus</code>, numeric comparisons, collection services or other library
+messages illustrate protocols supplied by that scope. The bootstrap’s integer
+and string literals do not yet have native class dispatch; those examples are
+not claims that the corresponding libraries already execute.</p>
+<p>The implementation anchors are
+<a href="../../../vh-core/src/main/java/vh/vm/values/VMObject.java">VMObject and its related value types</a>,
+<a href="../../../vh-core/src/main/java/vh/vm/ObjectProtocol.java">ObjectProtocol</a> and
+<a href="../../../vh-core/src/main/java/vh/vm/ClassConstruction.java">ClassConstruction</a>.
+The descriptions below follow the accepted
+<a href="../../design-notes/flat-metaclasses-and-construction.html">construction ownership</a>
+and <a href="../../design-notes/occurrence-slot-layout.html">slot-layout</a> decisions.</p>
 <h2 id="core-structures"><a class="header" href="#core-structures">Core Structures</a></h2>
 <p>The backend stores runtime values in the explicit
 <a href="./interpreter-design.html#explicit-store-the-key-commitment">Store</a>. The following
@@ -197,11 +208,21 @@ hierarchy, and their reified contributions. They do not define the structure of
 every visible value: an
 <a href="./foreign-objects.html">Alien</a> has no VarioHyve class, mixins or lexical outer
 merely because it is represented in the same store.</p>
-<pre><code>Object    = { slots: Map&lt;Name, Addr&gt;, class: Addr, outer: Addr }
+<pre><code>Object    = { slots: ValueRef[], slotLayout, class: ValueRef?, outer: ValueRef?, memberCache }
 Mixin     = { definitionScope, methods, slots, members, formals, initializer }
 Class     = Object + { ownedMixin, applications, super, initializationEdges, layout, initializer }
 Metaclass = Class                         // owns its class's class-side mixin
 </code></pre>
+<p>Here <code>slots</code> is the object’s physical array of value references. <code>slotLayout</code>
+contains declaration metadata, and <code>memberCache</code> retains member-class realization
+results or failures keyed by declaration and application occurrence. <code>outer</code>
+abbreviates a private lexical-parent reference; it need not name an ordinary
+enclosing receiver. A missing backend reference is distinct from the language’s
+canonical null object.</p>
+<p><code>Mixin</code> denotes a dedicated <code>VMMixinClosure</code>, derived from <code>VMClosure</code>, not from
+<code>VMObject</code>. It is a reified semantic contribution without a public class or
+reflection protocol. Method and lambda closures likewise use dedicated backend
+values. These representations do not add source-level categories of invocation.</p>
 <p>A class <strong>is</strong> an object; a metaclass <strong>is</strong> a class. The <code>+</code> notation means
 “all fields of the parent, plus these new ones.” A metaclass owns only its class’s
 class-side contribution and has direct superclass <code>Class</code>; it does not import
@@ -227,13 +248,18 @@ routing metadata. See <a href="../../design-notes/flat-metaclasses-and-construct
 <h3 id="objects"><a class="header" href="#objects">Objects</a></h3>
 <p>An object holds:</p>
 <ul>
-<li><strong>Slots</strong> — storage for the logical slots supplied by contribution occurrences. The class’s complete layout maps those logical slots to physical storage locations; under the current policy, equal names share a location. Slots hold data values. Slot names are plain identifiers and must not end in <code>!</code>. Every slot automatically gets a synthesized getter (<code>x</code>, 0-arg) and setter (<code>x!</code>, 1-arg). The <code>!</code> suffix keeps setter names separate from getter names, leaving the getter name available for <a href="./slots.html#interaction-with-the-apply-protocol">callable invocation</a>. See <a href="./slots.html">Slots and Accessors</a>.</li>
-<li><strong>Class</strong> — an address pointing to the object’s class. The class holds the object’s methods.</li>
+<li><strong>Slots</strong> — storage for the logical slots supplied by contribution occurrences. The class’s complete layout maps those logical slots to physical storage locations; under the current policy, equal names share a location. Physical slots hold references to stored values. Slot names are plain identifiers and must not end in <code>!</code>. A slot supplies a generated getter (<code>x</code>, 0-arg), and a mutable slot also supplies a setter (<code>x!</code>, 1-arg). The <code>!</code> suffix keeps setter names separate from getter names, leaving the getter name available for <a href="./slots.html#interaction-with-the-apply-protocol">callable invocation</a>. See <a href="./slots.html">Slots and Accessors</a>.</li>
+<li><strong>Class</strong> — a reference to the object’s class. Its reified contributions supply the object’s methods and accessor declarations.</li>
 <li><strong>Definition scope</strong> — internal links used for lexical lookup. Class/object expressions may capture activation objects; member classes bind to their enclosing receiver and declaration origin. Diagrams abbreviate these relationships as <code>outer</code>, but no universal <code>obj.outer</code> getter exists.</li>
 </ul>
-<p>Objects have <strong>no methods</strong>. All method lookup goes through the class.</p>
+<p>An ordinary instance has no per-instance method table. Its class’s contributions
+supply method behavior. Backend activations are a special use of the same slot
+representation: they have no class reference, and their parameter/local accessors
+are selected directly from their layout. This preserves message semantics
+without exposing activation objects to source programs.</p>
 <h3 id="classes"><a class="header" href="#classes">Classes</a></h3>
-<p>A class <strong>is</strong> an object with additional fields. It has all the Object fields (<code>slots</code>, <code>class</code>, <code>outer</code>) plus:</p>
+<p>A class <strong>is</strong> an object with additional fields. It has the Object storage,
+class, lexical-parent and cache fields, plus:</p>
 <ul>
 <li><strong>Owned mixin</strong> — the directly declared contribution, with its method map,
 slot declarations, member declarations, constructor formals, anonymous
@@ -280,7 +306,13 @@ applications and declared superclass. Its metaclass holds the class-side
 contribution. The link from a class to its metaclass is the standard object→class
 relationship: the class <em>object</em> has <code>class = &lt;its metaclass&gt;</code>, just like any other
 object. Neither relationship manufactures intermediate classes for composition.</p>
-<p>By convention, classes do not have value slots — only methods. Methods and slots are distinct concepts: a method is defined by the <code>methodDecl</code> grammar rule and lives in the class; a slot is defined by <code>slotDecl</code> and lives in the object. A slot may hold a lambda as its value, but it remains a slot — it can be reassigned to any value later. A method cannot be reassigned (at least without reflection support, but that is out of scope in v1 for now).</p>
+<p>The current <code>VMClass</code> objects have empty value-slot arrays. Instance slot
+<em>declarations</em> belong to their owned reified mixins, and the complete layout
+belongs to the realized class; slot <em>values</em> belong to constructed instances.
+Methods are retained as syntax in the reified contributions and selected by the
+object protocol. A mutable slot may hold and later replace a lambda value;
+that does not turn it into a method declaration. Public method replacement is
+outside the bootstrap.</p>
 <h3 id="store-entries"><a class="header" href="#store-entries">Store Entries</a></h3>
 <p>A <strong>class expression</strong> creates a class/metaclass pair when evaluated. A member declaration creates its pair on first accessor realization, cached for its enclosing receiver and declaration occurrence:</p>
 <ol>
@@ -295,7 +327,11 @@ These counts describe the object/class/metaclass relationships, not total
 backend allocations: activations, reified mixins and continuations need their
 own representation. Instances do not acquire a lexical link to their own
 constructor activation.</p>
-<p>A <strong>singleton object literal</strong> (<code>{ ... }</code> without the <code>class</code> keyword) creates <strong>three</strong> entries: the instance, its anonymous class, and its anonymous metaclass.</p>
+<p>A <strong>singleton object literal</strong> (<code>{ ... }</code> without the <code>class</code> keyword) creates
+an instance, its anonymous class and its anonymous metaclass, as well as the
+associated backend values. The sketches below display named slot contents for
+readability; these are logical views of the physical slot array, not runtime
+name-to-address maps or complete allocation counts.</p>
 <pre><code class="language-vh">class Counter(start) &lt;: Logging &lt; Base {
     count = start       // slot — lives in instances
     increment() {       // method — lives in the class
@@ -330,7 +366,8 @@ The active initializer supplies its occurrence when resolving a local slot
 through the actual receiver’s layout. Selected generated accessors use the same
 mapping. Private initializer functions have no message selector. See
 <a href="../../design-notes/occurrence-slot-layout.html">occurrence-aware slot layouts</a>.</p>
-<p>Then <code>Counter(5)</code> adds one more entry — the instance:</p>
+<p>Then <code>Counter(5)</code> constructs a fresh instance, with additional temporary
+activation and continuation allocations:</p>
 <pre><code>instance = { slots = {count: addr₁}, class = Counter, outer = enclosingObj }
 </code></pre>
 <p>Class chain: <code>instance → Counter → CounterMeta → Metaclass → Metaclass class → Metaclass → …</code>.</p>
@@ -363,8 +400,8 @@ contributions; instantiation adds the receiver and its fresh slot storage:</p>
 Point = {
     slots = {}, class = PointMeta, outer = enclosing,
     ownedMixin = PointOwned, applications = [], super = Object,
-    initializationEdges = [Object()], layout = [x, y],
-    initializer = coordinate(Object, PointOwned)
+    initializationEdges = [], layout = [x, y],
+    initializer = coordinate(PointOwned)
 }
 PointMeta = {
     slots = {}, class = Metaclass, outer = enclosing,
@@ -380,8 +417,10 @@ aPoint = {
 </code></pre>
 <p><code>Point(2, 3)</code> obtains the class through the <code>Point/0</code> getter, then invokes
 <code>apply/2</code>, which sends <code>new/2</code>. Primary construction allocates from <code>Point.layout</code>,
-initializes the empty root contribution and then <code>PointOwned</code>, and returns that
-receiver. Getter and mutable-setter lookup uses <code>PointOwned.slots</code>; initialization
+runs <code>PointOwned</code>, and returns that receiver. The implicit root <code>Object</code> has
+an empty initializer, so the current backend omits an initialization edge for
+that implicit inheritance. An explicit superclass clause retains its edge.
+Getter and mutable-setter lookup uses <code>PointOwned.slots</code>; initialization
 writes bypass those ordinary accessors.</p>
 <p>Class chain: <code>aPoint → Point → PointMeta → Metaclass → Metaclass class → Metaclass → …</code>.</p>
 <h2 id="mixins"><a class="header" href="#mixins">Mixins</a></h2>
@@ -609,13 +648,27 @@ realization failure is an error, never a reason to try a farther declaration.
 See <a href="./message-sends.html#member-class-invocation">member-class invocation</a>.</p>
 <p>The syntactic order <code>&lt;: Mixins &lt; Super</code> matches the lookup priority: the class itself is checked first, then mixins left to right, then the superclass. Reading left to right in the declaration mirrors left to right in the lookup chain.</p>
 <h3 id="synthesized-getters-and-setters"><a class="header" href="#synthesized-getters-and-setters">Synthesized Getters and Setters</a></h3>
-<p>Each class that declares a slot also holds the synthesized getter and setter for that slot in its methods:</p>
-<ul>
-<li><strong>Getter</strong>: <code>(name, 0)</code> — reads <code>self.slots[name]</code></li>
-<li><strong>Setter</strong>: <code>(name!, 1)</code> — writes <code>self.slots[name]</code>, returns the new value</li>
-</ul>
-<p>The getter and setter operate on <code>self.slots[name]</code>, so they work correctly regardless of which object <code>self</code> is — the slot lives on the instance.</p>
-<p>When <code>obj.sLoggingLevel</code> is called, lookup walks the class chain and finds the getter in <code>Logging</code>’s class. The getter reads <code>self.slots["sLoggingLevel"]</code> — which is on <code>obj</code>. To mutate: <code>obj.sLoggingLevel!(newLevel)</code>. This is why methods and getters/setters work uniformly through dispatch.</p>
+<p>A slot declaration contributes a getter <code>(name, 0)</code> and, when mutable, a setter
+<code>(name!, 1)</code>. They are language messages. The backend derives accessor targets
+from the selected reified contribution’s declarations during lookup; it does
+not install ordinary getter/setter method bodies into a class method map.
+Explicit methods can override accessors under the usual precedence rules.</p>
+<p>For a class-bearing receiver, the selected declaration identifies a logical slot:</p>
+<pre><code class="language-text">logicalSlot = (applyingClass, contributionIndex, localSlotNumber)
+physicalIndex = actualReceiverClass.layout(logicalSlot)
+getter: return receiver.slots[physicalIndex]
+setter(value): receiver.slots[physicalIndex] = value; return value
+</code></pre>
+<p>The layout belongs to the receiver’s actual class, including when selection
+finds an inherited accessor. Same-named contributions currently map to shared
+storage, but getter/setter eligibility and mutability come from the selected
+declaration. Initialization uses the same occurrence mapping and bypasses
+ordinary setters. Reads of uninitialized storage fail explicitly.</p>
+<p>Activation accessors use their own slot layout directly, without a class
+contribution occurrence. Parameters have getters but no setters; lowered locals
+have mutable accessors. Neither path creates a separate variable namespace.
+See <a href="./slots.html">Slots and Accessors</a> and
+<a href="../../design-notes/occurrence-slot-layout.html">occurrence-aware layouts</a>.</p>
 <h3 id="the-apply-protocol"><a class="header" href="#the-apply-protocol">The <code>apply</code> Protocol</a></h3>
 <p>A value is callable at arity <code>N</code> when it provides the exact <code>apply/N</code> capability:</p>
 <ul>
@@ -650,10 +703,10 @@ other arities. Overridden getters mask backing storage throughout lookup.</p>
 invocation. See <a href="./message-sends.html#dispatch-rules">Message Sends</a> for the full
 selection order, failures, zero-arity behavior and Alien dispatch distinctions.</p>
 <h2 id="method-lookup"><a class="header" href="#method-lookup">Method Lookup</a></h2>
-<p>For an explicit native invocation <code>m(args)</code>, the runtime searches for applicable
+<p>For an explicit native invocation <code>receiver.m(args)</code>, the runtime searches for applicable
 behavior at selector <code>(m, arity)</code> in this contribution order:</p>
 <ol>
-<li><strong>The object’s class</strong> — its own methods.</li>
+<li><strong>The object’s class</strong> — its owned contribution.</li>
 <li><strong>Applied owned mixins, left to right</strong> — <code>applications[0]</code>, then <code>applications[1]</code>, etc. Lookup checks each selected owned contribution, without traversing its source class’s original dependencies.</li>
 <li><strong>The superclass</strong> — recursively, which walks the super’s own methods, then the super’s mixins, then the super’s super, etc.</li>
 </ol>
@@ -664,10 +717,10 @@ Ordinary bare sends perform exact zero-arity lookup.</p>
 <pre><code class="language-vh">class Server(port) &lt;: Logging, Caching &lt; Base { ... }
 </code></pre>
 <p>Lookup order for a message sent to a <code>Server</code> instance:</p>
-<pre><code>Server's class methods
-  ⇒ Logging's class methods
-    ⇒ Caching's class methods
-      ⇒ Base's class methods
+<pre><code>Server's owned contribution
+  ⇒ Logging's owned contribution
+    ⇒ Caching's owned contribution
+      ⇒ Base's owned contribution
         ⇒ Base's mixins (if any)
           ⇒ Base's super (recursively)
 </code></pre>
@@ -679,7 +732,7 @@ Ordinary bare sends perform exact zero-arity lookup.</p>
 <li>If the current method is in <code>Caching</code> → <code>super</code> starts at <code>Base</code>’s class.</li>
 <li>If the current method is in <code>Base</code>’s class → <code>super</code> starts at <code>Base</code>’s first mixin (if any), or <code>Base</code>’s super.</li>
 </ul>
-<p>To implement this, method activations track the <strong>dispatch origin</strong>: which class or mixin provided the currently executing method, and its position in the mixin list. This is the only additional bookkeeping beyond standard dispatch.</p>
+<p>To implement this, method activations track the <strong>dispatch origin</strong>: which class or mixin provided the currently executing method, and its position in the mixin list. The origin is retained independently of the contribution’s definition scope.</p>
 <h3 id="super-in-mixin-methods"><a class="header" href="#super-in-mixin-methods">Super in Mixin Methods</a></h3>
 <p>A mixin method that calls <code>super</code> does not know at definition time what <code>super</code> will resolve to — it depends on the application site:</p>
 <pre><code class="language-vh">class Logging {
@@ -716,8 +769,11 @@ ordered slot initialization and optional post-slot code; permitted early
 completion ends only that contribution. Its generated method body uses private
 allocation and identity-bound initializer invocation operations; message lookup
 and method invocation have no special primary-construction target. Object literals
-use this same generated construction path after realizing their anonymous class.</p>
-<p><code>new</code> is never written explicitly and cannot be overridden. Its arity always matches the class parameter list. It is the one reliable way to create a guaranteed fresh instance.</p>
+use the same private allocation and coordinator operations after realizing their
+anonymous class, without dispatching a public <code>new</code> message.</p>
+<p><code>factory new</code> cannot be declared or overridden; programs invoke the generated
+<code>new</code> method normally. Its arity always matches the class parameter list. It
+creates a fresh instance whenever construction succeeds.</p>
 <p>Synthesized <code>new</code> and default <code>apply</code> belong to each class’s own constructor
 signature. In particular, inheriting from root <code>Object</code> does not add its
 zero-argument construction signature to a class with parameters. User-defined
@@ -727,9 +783,11 @@ have no public <code>new</code> or default <code>apply</code> construction entry
 <p>Like <code>self</code>, <code>new</code> is <strong>semantically reserved</strong> — it is a regular identifier in the grammar (not a keyword), but the semantic layer rejects any <code>factory new(...)</code> declaration. This is the precise check: only <code>factory new</code> conflicts with the synthesized <code>new</code> (which lives on the metaclass). A regular instance method named <code>new</code> on a non-class object (e.g., a builder or pool) does not conflict and is permitted. See <a href="./name-resolution.html#reserved-words">Reserved Words</a> for the full list.</p>
 <h3 id="the-callable-protocol-apply"><a class="header" href="#the-callable-protocol-apply">The Callable Protocol (<code>apply</code>)</a></h3>
 <p>By default, the metaclass synthesizes an <code>apply</code> method that simply delegates to <code>new</code>:</p>
-<pre><code>synthesized apply(ax, ay) { new(ax, ay) }
+<pre><code>synthesized apply(ax, ay) { self.new(ax, ay) }
 </code></pre>
-<p>This supplies the callable capability for <code>Point(2, 3)</code>: select its class
+<p>The generated body uses an exact send to <code>self.new</code>, so it cannot capture an
+outer binding named <code>new</code> or apply the resulting instance a second time.
+This supplies the callable capability for <code>Point(2, 3)</code>: select its class
 <code>apply/2</code>, which delegates to <code>new/2</code> and returns a fresh instance. A generated
 member-class accessor can advertise this arity before the class is realized.</p>
 <p>A class can define <strong>one or more</strong> <code>factory apply</code> methods to <strong>fully replace</strong> the synthesized apply at a given arity. User-defined applies have <strong>full control</strong> — no automatic slot initialization runs through <code>apply</code>, no forced return value. The user may call <code>new</code> inside the body (to get standard construction) or do anything else:</p>
@@ -781,8 +839,8 @@ Point.new(2, 3)    // → always raw construction, no validation, no registratio
         new(r, g, b)
     }
 
-    factory apply(hex) {
-        new(hex.extractRed, hex.extractGreen, hex.extractBlue)
+    factory apply(channels) {
+        new(channels.red, channels.green, channels.blue)
     }
 
     factory apply() {
@@ -791,7 +849,7 @@ Point.new(2, 3)    // → always raw construction, no validation, no registratio
 }
 </code></pre>
 <pre><code class="language-vh">Color(255, 0, 0)      // 3-arg apply → validated red
-Color(0xFF0000)        // 1-arg apply → from hex
+Color(rgbChannels)     // 1-arg apply → supplied object with red/green/blue getters
 Color.apply            // 0-arg apply → black
 Color.new(255, 0, 0)   // raw — always the 3-arg primary factory
 </code></pre>
@@ -831,8 +889,9 @@ Counter.new(5)            // direct construction — always
 <pre><code>Counter = {
     slots = {}, class = CounterMeta, outer = enclosing,
     ownedMixin = {formals: [start], slots: [count], initializer: {count = start}, ...},
-    super = Object, applications = [], initializationEdges = [Object()],
-    layout = [count], initializer = coordinate(Object, ownedMixin)
+    super = Base, applications = [], initializationEdges = [Base()],
+    layout = sharedNameLayout(Counter, Base.layout, [ownedMixin]),
+    initializer = coordinate(Base, ownedMixin)
 }
 CounterMeta = {
     slots = {}, class = Metaclass, outer = enclosing,
@@ -927,45 +986,82 @@ The existing explicit kernel <code>Object</code> export remains optional for exp
 See <a href="../../design-notes/flat-metaclasses-and-construction.html">Flat metaclasses and class-owned construction</a>
 for migration and construction ownership.</p>
 <h2 id="method-activations"><a class="header" href="#method-activations">Method Activations</a></h2>
-<p>When a method is called, the runtime creates an <strong>activation object</strong> in the store. It uses the internal object representation for scope, without exposing activation reflection or general public activation access:</p>
-<ul>
-<li><strong>Slots</strong> — one per <code>var</code> local declaration, with getter/setter access. Local names must not end in <code>!</code>.</li>
-<li><strong>Parameters</strong> — read-only entries; no setter synthesized, and parameter names must not end in <code>!</code>.</li>
-<li><strong>Class</strong> — points to a class holding the method body (for potential inner method calls).</li>
-<li><strong>Outer</strong> — points to the receiver object (for lexical lookup from within the method body).</li>
-</ul>
+<p>A selected method runs in a <code>MethodActivation</code>, an internal <code>VMObject</code> stored
+by value reference. Its parameter slots are immutable. The method body is held
+by the selected <code>VMMethodClosure</code>; the activation’s <code>classRef</code> is absent. There
+is no synthetic activation class containing the method body.</p>
+<p>The activation records the receiver, applying class, selected method origin,
+caller continuation and its own return-home reference. Its lexical parent is a
+<code>LexicalObjectScope</code> for the receiver and selected contribution occurrence.
+That scope records the contribution’s declaration origin and links to its
+captured definition scope. It is not equivalent to following the receiver’s
+arbitrary physical lexical parent. This distinction prevents applying a mixin
+from substituting the application’s lexical dependencies for its own.</p>
+<p>A lowered <code>CoreLetExpression</code> creates a separate <code>Activation</code> for local slots.
+All its locals are reserved before initializer evaluation; bind steps then run
+in source order. The let activation links to its enclosing activation and keeps
+the same receiver and return home. It supplies generated local getters/setters
+without a separate environment map.</p>
+<p>An <code>InitializerActivation</code> has its own immutable parameter slots and a fresh
+private home with slot/post-slot phase tracking. Its lexical parent is likewise
+a declaration-relative receiver scope. Methods called during initialization
+receive their own method scopes, so they cannot reach those constructor
+parameters. An ordinary lambda or class expression evaluated in the initializer
+can deliberately capture them.</p>
 <h3 id="lambda-activations"><a class="header" href="#lambda-activations">Lambda Activations</a></h3>
-<p>A lambda activation differs in one critical way: its <strong><code>outer</code> points to the enclosing activation</strong> (the activation that created the lambda), not to an object. This is what makes closures work — a lambda captures the lexical environment of its definition site.</p>
-<pre><code class="language-vh">class Counter(start) {
-    count = start
-    makeIncrementer() {                    // method activation: outer → Counter instance
-        var step = 1
-        fun() {                            // lambda activation: outer → makeIncrementer's activation
-            count!(count.plus(step))       // `step` resolved via outer → makeIncrementer's activation
-            count                          // `count` resolved via outer chain → Counter instance
+<p>A <code>VMLambdaClosure</code> captures the current scope reference, receiver, applying
+class and lexical return target. Invocation creates an <code>Activation</code> with the
+lambda’s own parameter slots and its captured scope as lexical parent. It
+restores the caller on completion but does not establish a fresh return home.
+The captured scope may be a let, method or initializer activation, or a lexical
+object scope; it is not necessarily the defining method activation directly.</p>
+<pre><code class="language-vh">class Holder(initial) {
+    value = initial;
+    capture(input) {
+        var saved = input;
+        fun {
+            value!(saved);
+            value
         }
     }
 }
 </code></pre>
-<p>In this example:</p>
-<ul>
-<li>The method activation for <code>makeIncrementer</code> has <code>outer → Counter instance</code> (the receiver).</li>
-<li>The lambda activation has <code>outer → makeIncrementer's activation</code>, which gives it access to <code>step</code>.</li>
-<li><code>count</code> is not found in the lambda’s locals or in <code>makeIncrementer</code>’s locals, so lookup continues through <code>makeIncrementer</code>’s <code>outer</code> to the <code>Counter</code> instance.</li>
-</ul>
-<p>This activation-as-object model is what makes closures work naturally: a lambda captures a reference to the enclosing activation’s address, and the activation survives in the store as long as any lambda holds a reference to it. See <a href="./recursion.html#passing-recursive-lambdas-as-arguments">Recursion — Passing Recursive Lambdas as Arguments</a>.</p>
+<p>For the returned lambda, the relevant scope chain is:</p>
+<pre><code class="language-text">lambda invocation: parameters
+  → captured let activation: saved
+    → capture method activation: input, retired method home
+      → lexical object scope: Holder receiver + declaring occurrence
+        → Holder's definition scope
+</code></pre>
+<p>The generated <code>saved/0</code> accessor selects the let activation. <code>value</code> and
+<code>value!</code> select the declaring receiver under ordinary lexical and dynamic
+dispatch rules. Calling the lambda after <code>capture</code> returns still permits these
+data accesses. A <code>^</code> targeting the retired method home would instead fail.
+Retaining captured data does not retain return authority.</p>
+<p>The concrete store retains allocated activations even when no lambda refers to
+them; language garbage collection is not implemented. Capture and home-liveness
+semantics must be preserved when reclamation is later introduced. See
+<a href="./recursion.html#passing-recursive-lambdas-as-arguments">Recursion</a>.</p>
 <h2 id="dispatch-origin-tracking"><a class="header" href="#dispatch-origin-tracking">Dispatch Origin Tracking</a></h2>
-<p>Each activation records the <strong>dispatch origin</strong>: the applying class and exact
-contribution position that supplied the method. Definition scope remains on the
-selected reified mixin. This distinguishes two applications of the same definition
-and tells <code>super</code> where to resume lookup.</p>
-<pre><code>Activation = { slots, class, outer, dispatchOrigin: (applyingClass, contributionIndex) }
+<p>A selected <code>VMMethodClosure</code> retains its definition scope and the pair
+<code>(applyingClass, contributionIndex)</code>. <code>MethodActivation.methodOrigin</code> retains
+that selection, while <code>LexicalObjectScope</code> supplies the origin to lexical lookup,
+qualified <code>outer</code> and <code>super</code>. The relevant backend relationships are:</p>
+<pre><code class="language-text">MethodActivation
+  methodOrigin → VMMethodClosure(definitionScope, function, applyingClass, contributionIndex)
+  lexicalParent → LexicalObjectScope(receiver, applyingClass, contributionIndex, ownedDefinition)
+                    lexicalParent → ownedDefinition.definitionScope
 </code></pre>
 <p>The backend contribution list starts with the owned mixin at index zero, followed
 by explicit applications at indices one through N. <code>super</code> resumes at the next
 contribution, then continues into the superclass after the last application.
-A direct initializer uses the same applying-class/index origin as its methods;
-it does not recover an origin through the mixin’s source class.</p>
+The occurrence distinguishes repeated applications of one definition on the
+same receiver; definition identity alone cannot determine where to resume.</p>
+<p>Let and lambda activations retain access to the relevant origin through their
+lexical scope chain. Initializer invocations establish a receiver scope for
+their own occurrence. Origins are not a field duplicated on every activation,
+nor are they inferred from the source class of an applied mixin. These structures
+remain private backend metadata.</p>
 <h2 id="design-summary"><a class="header" href="#design-summary">Design Summary</a></h2>
 <div class="table-wrapper">
 <table>
@@ -973,10 +1069,10 @@ it does not recover an origin through the mixin’s source class.</p>
 <tr><th>Concern</th><th>Mechanism</th></tr>
 </thead>
 <tbody>
-<tr><td>Object structure</td><td><code>{ slots, class, outer }</code> — base of the additive hierarchy</td></tr>
+<tr><td>Object structure</td><td>Physical slot array and layout metadata, class and lexical-parent references, member-class cache</td></tr>
 <tr><td>Class structure</td><td>Object + owned mixin, ordered applications, superclass, initialization edges, cached layout and private coordinator</td></tr>
 <tr><td>Metaclass structure</td><td>Class with only its owned class-side contribution; superclass <code>Class</code>, class <code>Metaclass</code></td></tr>
-<tr><td>Object state</td><td>Slots flat on the instance, methods in the class chain</td></tr>
+<tr><td>Object state</td><td>Slot references flat on the instance; methods in reified class contributions</td></tr>
 <tr><td>Construction</td><td>Generated ordinary <code>new</code> method: allocate → private class coordinator → return receiver; coordinator runs super → mixins (R→L) → own body</td></tr>
 <tr><td><code>apply</code> protocol</td><td>Callable protocol; default delegates to <code>new</code>; overridable via <code>factory apply(...)</code></td></tr>
 <tr><td><code>&lt; Super(args)</code></td><td>Initialize the complete superclass chain on <code>self</code> with these args</td></tr>
@@ -986,10 +1082,10 @@ it does not recover an origin through the mixin’s source class.</p>
 <tr><td>Setter naming</td><td><code>x!</code> (distinct from getter <code>x</code>) — no arity clash</td></tr>
 <tr><td>Callable invocation</td><td>At each scope/contribution prefer an exact operation, then an eligible generated binding with exact <code>apply/N</code>; member classes advertise owned factory arities</td></tr>
 <tr><td>Mixin representation</td><td>Owned methods, slots, members, formals and anonymous initializer; preserved definition scope and separate application positions</td></tr>
-<tr><td>Mixin sharing</td><td>All classes referencing a mixin share the same mixin object</td></tr>
+<tr><td>Mixin sharing</td><td>Applications share a reified definition while retaining distinct occurrence identities</td></tr>
 <tr><td><code>super</code> dispatch</td><td>Next in chain, tracked via dispatch origin</td></tr>
 <tr><td>Factory methods</td><td>Only the declaring class’s class-side mixin; all metaclasses directly extend <code>Class</code></td></tr>
-<tr><td>Activations</td><td>Internal scope objects; expressions can capture them, ordinary instances do not retain their own constructor frame</td></tr>
+<tr><td>Activations</td><td>Classless backend scope objects; immutable parameters and separate let locals; captured data and return-home liveness are distinct</td></tr>
 <tr><td>Conflict resolution (v1)</td><td>First match wins (leftmost mixin) for both methods and slots</td></tr>
 <tr><td>Composition (future)</td><td>Deep member families and explicit adaptation/state rules — see <a href="./future.html#deep-family-and-mixin-composition">Future Directions</a></td></tr>
 </tbody>

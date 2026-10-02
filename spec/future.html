@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-e880608a.js";
+            window.path_to_searchindex_js = "searchindex-0458d790.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-da21433a.js"></script>
+        <script src="toc-45e5eade.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -562,72 +562,92 @@ class MissionCoordinator(sensors, kernel) {
 </table>
 </div>
 <h2 id="tail-call-optimization"><a class="header" href="#tail-call-optimization">Tail-Call Optimization</a></h2>
-<p><strong>Status:</strong> Not in v1.</p>
-<p>The v1 CESK interpreter is stack-safe — continuations are heap-allocated, so deep recursion cannot crash the host runtime (see <a href="./interpreter-design.html#stack-safety">Interpreter Design — Stack Safety</a>). However, without TCO, each recursive call allocates a continuation frame on the heap, consuming O(n) memory for n-deep recursion. TCO is a <strong>space efficiency</strong> optimization: tail calls reuse the current frame instead of allocating a new one, reducing heap usage to O(1) for tail-recursive loops.</p>
-<h3 id="implementation-layers"><a class="header" href="#implementation-layers">Implementation Layers</a></h3>
-<p>TCO is introduced incrementally. Each layer builds on the previous one; all layers are local changes to the <code>step</code> function’s frame-push logic.</p>
-<h4 id="layer-0-no-tco-v1-bootstrap"><a class="header" href="#layer-0-no-tco-v1-bootstrap">Layer 0: No TCO (v1 bootstrap)</a></h4>
-<p>The v1 interpreter allocates a continuation frame for every call. Programs run correctly — the CESK machine is stack-safe — but deep recursion consumes O(n) heap. This is the simplest correct implementation and the starting point.</p>
-<p><strong>What works:</strong> everything. <strong>What’s expensive:</strong> any loop expressed as recursion (which, without operators or control structures, is <em>all</em> loops).</p>
-<h4 id="layer-1-direct-tail-calls"><a class="header" href="#layer-1-direct-tail-calls">Layer 1: Direct tail calls</a></h4>
-<p>Detect <strong>syntactic tail position</strong> in method and lambda bodies: the last expression before the implicit return. When <code>step</code> is about to dispatch a message send in tail position, it pops the current <code>ReturnFrame</code> before pushing the callee’s frame. This is a one-pass AST check and ~20 lines in <code>step</code>.</p>
-<p><strong>Covers:</strong></p>
-<pre><code class="language-vh">// the recursive call is the last expression — tail position
-loop(n, acc) {
-    ^ loop(n.minus(1), n.mul(acc))
-}
-
-// generalized — the tail call resolves to any method, not just self
-process(data) {
-    ^ transform(data).process(next(data))
-}
+<p><strong>Status:</strong> proposed investigation; no TCO is implemented in the bootstrap.</p>
+<h3 id="motivation-and-scope"><a class="header" href="#motivation-and-scope">Motivation and Scope</a></h3>
+<p>Recursive methods, mutually recursive state transitions and recursive lambdas
+are useful ways to express repeated native behavior. Tail calls offer an
+opportunity to avoid retaining control state whose only remaining job is to
+forward the callee’s result. Supporting delegation and mutual recursion is a
+useful objective alongside direct self-recursion; late binding does not prevent
+identifying the selected receiver and operation at dispatch.</p>
+<p>The visitor already schedules native calls through explicit continuations, so
+native recursion does not consume one Java evaluator frame per call. This is
+separate from space efficiency: the concrete store retains allocated frames,
+activations and other values, and synchronous foreign callbacks use the host
+stack. Neither the current machine nor a future TCO increment guarantees
+unlimited execution. See <a href="./interpreter-design.html#stack-safety">Stack Safety</a>.</p>
+<p>The initial objective is to investigate <strong>bounded control-space overhead for
+eligible tail-call chains</strong>, while preserving observable behavior. Bounded
+continuation depth alone would not establish bounded heap use. Reclamation,
+captured scopes, boundary caches and intentionally retained program data must
+be accounted for separately. Proper tail recursion would be a stronger,
+precisely specified space guarantee; it is not yet a language commitment.</p>
+<h3 id="semantic-obligations"><a class="header" href="#semantic-obligations">Semantic Obligations</a></h3>
+<p>A syntactically final send is a candidate, not sufficient evidence that its
+caller’s frame can be discarded. A method’s completion retires its lexical
+return home. A callee can invoke a lambda that still returns to that home:</p>
+<pre><code class="language-vh">caller() { invoke(fun { ^ "escaped" }) }
+invoke(block) { block(); "unreachable" }
 </code></pre>
-<p><strong>Does not cover:</strong> <code>^</code> inside lambdas passed to control-flow methods (the common <code>ifTrue</code>/<code>ifFalse</code> pattern).</p>
-<p>Note: Layer 1 already provides <strong>generalized</strong> TCO for direct tail calls — any message send in tail position is optimized, not just self-recursive ones. Because all names are late-bound, the runtime cannot distinguish self-recursion from mutual recursion or delegation at the call site. The optimization is purely structural: “is this call the last thing the method does?” This generality comes for free — there is no implementation difference between optimizing a self-call and optimizing a call to an unknown method.</p>
-<h4 id="layer-2-non-local-return-as-tail-return"><a class="header" href="#layer-2-non-local-return-as-tail-return">Layer 2: Non-local return as tail return</a></h4>
-<p>When <code>^</code> fires inside a lambda, it unwinds the continuation to the enclosing method’s <code>ReturnFrame</code>. If that <code>ReturnFrame</code> is the topmost frame — i.e., the method had nothing left to do after the call that invoked the lambda — then <code>^</code> is effectively a tail return. The runtime detects this dynamically: after unwinding, check whether the continuation was about to return anyway.</p>
-<p>This requires no knowledge of <code>ifTrue</code> or <code>ifFalse</code> — it is a purely structural check on the continuation. It handles any control-flow pattern, including user-defined ones.</p>
-<p><strong>Covers the common VarioHyve idiom:</strong></p>
-<pre><code class="language-vh">factorial(n, acc) {
-    n.eq(0).ifTrue(fun { ^ acc }).ifFalse(fun { ^ factorial(n.minus(1), n.mul(acc)) })
-}
-</code></pre>
-<p>Here, <code>^ factorial(...)</code> inside the <code>ifFalse</code> lambda unwinds to <code>factorial</code>’s <code>ReturnFrame</code>. With Layer 2, the runtime recognizes that <code>factorial</code> had nothing left to do, and reuses the frame — O(1) space for the recursion.</p>
-<p><strong>Key property:</strong> This is a <em>dynamic</em> check, not a static one. Whether <code>^</code> lands in tail position depends on the continuation shape at runtime. But for a CESK machine, the continuation <em>is</em> runtime data, so the check is natural and cheap — inspect the top of K after unwinding.</p>
-<p><strong>Implementation:</strong> When <code>^</code> fires and unwinds to a <code>ReturnFrame</code>, before delivering the return value, check if the next frame in the continuation is another <code>ReturnFrame</code> or a frame that would immediately pass the value through. If so, collapse the frames. This is the <code>^</code>-as-tail-return optimization.</p>
-<h4 id="layer-3-and-beyond-if-needed"><a class="header" href="#layer-3-and-beyond-if-needed">Layer 3 and beyond (if needed)</a></h4>
-<p>Further sophistication is possible but that is left for future work:</p>
-<ul>
-<li><strong>Continuation marks</strong> (à la Racket, following Clinger and Flatt) — annotate tail-position boundaries on the continuation itself, enabling O(1) tail-position detection without post-hoc unwinding checks. More principled than Layer 2 but adds continuation mark infrastructure.</li>
-<li><strong>Known-method inlining</strong> — recognize <code>ifTrue</code>, <code>ifFalse</code>, <code>and</code>, <code>or</code> as known control-flow patterns and inline their dispatch, turning the lambda bodies into direct tail positions. Philosophically compromised (“no special forms” principle) but potentially faster. Only worth considering if profiling shows Layer 2’s dynamic check is a bottleneck.</li>
-<li><strong>Static tail-position analysis across lambda boundaries</strong> — a compile-time analysis that determines when a <code>^</code> in a lambda is guaranteed to land in tail position. This would let the runtime skip the dynamic check of Layer 2. Requires flow analysis of which methods always invoke their lambda arguments in tail position, which is complex to do in general, we will see if the VarioHyve support for abstract interpretation makes this easier.</li>
-</ul>
-<h3 id="does-generalized-tco-matter"><a class="header" href="#does-generalized-tco-matter">Does Generalized TCO Matter?</a></h3>
-<p>In most languages, generalized TCO (optimizing tail calls to <em>any</em> method, not just self) is a nice-to-have — most loops are self-recursive. In VarioHyve, generalized TCO is <strong>essential</strong>:</p>
-<ul>
-<li>All names are late-bound. The runtime cannot determine at the call site whether <code>process(data)</code> will resolve to <code>self.process</code> (self-recursion), <code>OtherClass.process</code> (delegation), or something else entirely. Restricting TCO to self-calls would require runtime self-call detection, which is more complex than simply optimizing all tail calls.</li>
-<li>State machine patterns — where each state dispatches to the next — are naturally expressed as mutual tail calls between methods. Without generalized TCO, these patterns leak memory.</li>
-<li>The Clinger formalization is inherently generalized — it defines tail position structurally, independent of the callee’s identity.</li>
-</ul>
-<p>The good news: generalized TCO is not harder to implement than self-only TCO in a CESK machine. The optimization is “pop the current frame before pushing the new one” — the callee’s identity is irrelevant. Layers 1 and 2 are already fully generalized.</p>
-<h3 id="design-summary"><a class="header" href="#design-summary">Design Summary</a></h3>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>Layer</th><th>What it optimizes</th><th>Cost</th><th>When</th></tr>
-</thead>
-<tbody>
-<tr><td>0</td><td>Nothing — O(n) heap per recursion depth</td><td>Zero</td><td>v1 bootstrap</td></tr>
-<tr><td>1</td><td>Direct tail calls (last expression in method/lambda)</td><td>~1 day</td><td>Immediately after v1 runs</td></tr>
-<tr><td>2</td><td><code>^</code> in lambdas that land in tail position (dynamic check)</td><td>~2-3 days</td><td>Shortly after Layer 1</td></tr>
-<tr><td>3+</td><td>Continuation marks, inlining, static analysis</td><td>Significant</td><td>Only if profiling demands</td></tr>
-</tbody>
-</table>
-</div>
-<p>Layers 1+2 together cover the vast majority of real recursive patterns in VarioHyve, including all <code>ifTrue</code>/<code>ifFalse</code> control flow. Layer 3+ is unlikely to be needed unless the language acquires deeply nested control-flow combinators.</p>
-<p><strong>Implementation basis:</strong> The layered approach follows Clinger (1998), <em>Proper tail recursion and space efficiency</em>, which formalizes proper tail recursion as an asymptotic space complexity property. Clinger defines tail position inductively over expression forms and proves that an implementation is properly tail-recursive if and only if it evaluates tail expressions in bounded space regardless of recursion depth. For the CESK machine, this translates directly: a tail call pops the current <code>ReturnFrame</code> before pushing the callee’s frame, keeping the continuation at constant depth for tail-recursive loops.</p>
-<p><strong>Debugging:</strong> TCO eliminates continuation frames, which can make traces less informative. This is a <strong>tooling concern</strong>, not a language concern — the debugger and profiler should reconstruct the logical call chain when needed, without compromising the runtime guarantee of bounded heap usage.</p>
-<p><strong>Reference:</strong> William D. Clinger. 1998. <em>Proper tail recursion and space efficiency.</em> In Proceedings of the ACM SIGPLAN 1998 conference on Programming language design and implementation (PLDI ’98), 174–185. <a href="https://doi.org/10.1145/277650.277719">https://doi.org/10.1145/277650.277719</a></p>
+<p>The lambda must be able to exit <code>caller</code> while <code>invoke</code> runs. Captured data can
+outlive method completion, but return authority cannot. Lambda invocations do
+not create fresh homes. Any optimization must preserve these distinctions,
+including dead-context errors and retirement on failure or unwind.</p>
+<p>For <code>^ recurse()</code>, the operand is evaluated before the return is delivered.
+Collapsing frames only after the return unwinds cannot reduce the peak space
+used by that recursive evaluation. Moving work across that boundary requires
+an argument about evaluation order, home liveness and effects; it is not a
+post-return frame check.</p>
+<p>Further obligations include initializer slot-phase checks, completion of later
+contributions, primary construction’s receiver result, member-class cache
+completion, and the Alien callback barrier. Receiver and argument expressions
+must retain their order and execute once. Method dispatch and generated
+accessor-to-<code>apply</code> invocation must keep their existing selection rules.
+Native and foreign calls need separate eligibility analysis.</p>
+<h3 id="proposed-investigation"><a class="header" href="#proposed-investigation">Proposed Investigation</a></h3>
+<ol>
+<li><strong>Establish a measured baseline.</strong> Exercise direct and mutual method calls,
+local and slot-bound lambdas, branch methods, pending work, escaped closures,
+initializer returns and callbacks. Record semantic outcomes, continuation
+depth and allocations separately. The executable
+<a href="../../catalog/06-recursion-stress.html">recursion stress catalog</a> starts this
+investigation; its measurements are observations, not required growth rates.</li>
+<li><strong>Define candidate tail contexts and completion obligations.</strong> Work from
+the lowered core and actual continuation frames, including scope restoration
+around let expressions. Distinguish ordinary result delivery from lexical
+non-local return. State which calls remain ineligible and why.</li>
+<li><strong>Prototype a conservative native optimization.</strong> Compare results, ordered
+effects, identity and failure behavior with the reference execution. Preserve
+live return homes explicitly or prove that an omitted home cannot be used.
+Simply replacing a frame with a growing list of pending homes would not
+establish bounded control space.</li>
+<li><strong>Investigate reclamation and retention.</strong> Determine which activations,
+continuations and captured links remain semantically necessary. Measure
+reachable state and retained storage; reducing one chain’s depth is not a
+substitute for this analysis. Do not reuse captured parameter/local storage
+in a way that changes closures’ observations.</li>
+<li><strong>Specify the supported guarantee.</strong> Broaden coverage only with evidence,
+including user-defined control-flow methods and the interaction with future
+exception/condition mechanisms. Estimates should follow the selected design
+and regression obligations; no line count or delivery schedule is assumed.</li>
+</ol>
+<p>Continuation marks, guarded inlining and static analysis are possible tools,
+not prerequisites or established solutions. Inlining must depend on the actual
+selected behavior or a justified guard, not on selector spellings such as
+<code>ifTrue</code>. Abstract interpretation is itself proposed work and supplies no
+current shortcut to a sound tail-context analysis.</p>
+<p>Debugging also needs an explicit policy. Bounded summaries, optional recorded
+history and replay have different costs. Arbitrary eliminated call histories
+cannot be assumed reconstructible exactly at no space cost.</p>
+<h3 id="research-basis"><a class="header" href="#research-basis">Research Basis</a></h3>
+<p>Clinger’s <em>Proper tail recursion and space efficiency</em> provides an
+implementation-independent space model and distinguishes proper tail recursion
+from ad hoc call optimizations. Its reference semantics accounts for storage
+reachability and garbage collection. It motivates this investigation; it does
+not establish a frame-removal algorithm for VarioHyve’s lexical return homes or
+promise constant total memory for programs that retain growing data.</p>
+<p><strong>Reference:</strong> William D. Clinger. 1998. <em>Proper tail recursion and space
+efficiency.</em> PLDI ’98, 174–185. <a href="https://doi.org/10.1145/277650.277719">https://doi.org/10.1145/277650.277719</a></p>
 <h2 id="mirror-based-reflection-api"><a class="header" href="#mirror-based-reflection-api">Mirror-Based Reflection API</a></h2>
 <p><strong>Status:</strong> Not in v1.</p>
 <p>v1 provides no runtime reflection — objects cannot inspect their own class, list methods, or introspect slot names programmatically.</p>

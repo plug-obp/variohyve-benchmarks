@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-e880608a.js";
+            window.path_to_searchindex_js = "searchindex-0458d790.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-da21433a.js"></script>
+        <script src="toc-45e5eade.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -259,13 +259,24 @@ module.ClassName.methodName.paramName
 </code></pre>
 <p>The exact path format is a tooling convention, not a language-level concern. The language provides the names (intrinsic or via descriptors); tools define how to compose them into unambiguous references.</p>
 <h2 id="connection-to-abstract-interpretation"><a class="header" href="#connection-to-abstract-interpretation">Connection to Abstract Interpretation</a></h2>
-<p>The v1 interpreter is an <strong>AAM-style CESK machine</strong> — a small-step abstract machine whose store and allocation are explicit and parameterized. By swapping the concrete allocator for an abstract one (k-CFA), the same interpreter core becomes a sound abstract machine capable of type checking, interval analysis, or other static analyses. See <a href="./interpreter-design.html">Interpreter Design</a> for the full machine specification.</p>
+<p>The current visitor interpreter is a CESK-inspired small-step machine with
+explicit storage and continuations; lexical scope uses activation objects.
+This is a basis for analysis experiments, not an implemented abstract
+interpreter. Changing allocation alone cannot establish soundness: abstract
+values, stores, control, transition rules and foreign-effect models must be
+related to reference execution. See <a href="./interpreter-design.html">Interpreter Design</a>.</p>
 <p>This follows two complementary approaches:</p>
 <ul>
-<li><strong>AAM</strong> (Van Horn and Might, 2010) — systematically derive abstract interpreters from concrete CESK machines by bounding address allocation.</li>
-<li><strong>ADI</strong> (Darais, Labich, Nguyen, and Van Horn, 2017) — parameterize a definitional interpreter over monadic operations; swap concrete monads for abstract ones.</li>
+<li><strong>AAM</strong> (Van Horn and Might, 2010) — refactor concrete abstract machines into
+a form suitable for systematic abstraction, including bounded stores.</li>
+<li><strong>ADI</strong> (Darais, Labich, Nguyen, and Van Horn, 2017) — derive analyses from
+definitional interpreters using suitable monadic abstractions.</li>
 </ul>
-<p>Both converge at the same insight: the store and allocation function are the parameterization points. The CESK machine is the v1 choice because it maps naturally to Java (explicit states, no higher-kinded types).</p>
+<p>These are research approaches to relating execution and analysis, not automatic
+consequences of a configurable allocator. VarioHyve currently uses explicit
+machine states and continuations; it has not implemented either analysis
+derivation. Tool-specific assumptions and foreign behavior remain part of the
+proof obligations.</p>
 <p>The descriptor-based naming layer provides the bridge between any abstract analysis and the programmer’s intent. External annotation files tell the abstract instantiation what abstract domains, type assumptions, or invariants to apply to each named element — without those assumptions being embedded in the source.</p>
 <p>Because descriptor names are stable across interpreter instantiations (the AST is the same whether run concretely or abstractly), a single annotation file can serve any abstract instantiation that understands its format.</p>
 <h2 id="design-summary"><a class="header" href="#design-summary">Design Summary</a></h2>
@@ -282,7 +293,7 @@ module.ClassName.methodName.paramName
 <tr><td>Interactive evaluation</td><td>Explicit tool-supplied or selected activation context; ordinary lookup and Alien/Expat rules</td></tr>
 <tr><td>Tool independence</td><td>Each tool has its own view; no shared annotation format required</td></tr>
 <tr><td>Source cleanliness</td><td>Descriptors are optional; most elements need no explicit naming</td></tr>
-<tr><td>Interpreter design</td><td>AAM-style CESK — parameterized store/allocator enables concrete and abstract execution</td></tr>
+<tr><td>Interpreter design</td><td>Concrete visitor machine with explicit state; abstract interpretation remains research work</td></tr>
 </tbody>
 </table>
 </div>

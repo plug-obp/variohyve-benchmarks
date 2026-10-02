@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-e880608a.js";
+            window.path_to_searchindex_js = "searchindex-0458d790.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-da21433a.js"></script>
+        <script src="toc-45e5eade.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -176,22 +176,32 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="interpreter-design"><a class="header" href="#interpreter-design">Interpreter Design</a></h1>
-<p>The v1 interpreter is an <strong>AAM-style CESK machine</strong> — a small-step abstract machine with four components:</p>
+<p>The v1 interpreter is a <strong>CESK-inspired small-step machine</strong> and a starting
+point for experiments with Abstracting Abstract Machines (AAM). Its components
+are:</p>
 <ul>
-<li><strong>C</strong>ontrol — the current AST node being evaluated</li>
-<li><strong>E</strong>nvironment — a mapping from names to store addresses</li>
-<li><strong>S</strong>tore — a mapping from addresses to values</li>
-<li><strong>K</strong>ontinuation — a stack of frames representing what to do next</li>
+<li><strong>C</strong>ontrol — the current evaluation, send, value or error</li>
+<li><strong>E</strong>nvironment — lexical scope represented by activation and enclosing objects,
+using the object protocol rather than a separate name-to-address namespace</li>
+<li><strong>S</strong>tore — a mapping from addresses to values and continuation frames</li>
+<li><strong>K</strong>ontinuation — a linked chain of frames representing what to do next</li>
 </ul>
-<p>The interpreter runs by repeatedly applying a transition function <code>step : State → State</code> until a final state is reached.</p>
-<p><strong>Current implementation note:</strong> The visitor machine represents lexical scope
-with activation objects, not a separate <code>Environment</code> class. Method and
-initializer invocations establish private return homes. <code>CallReturnFrame</code>
-implements method completion; <code>InitializerReturnFrame</code> completes one initializer
-contribution, discarding its value and preserving the construction receiver.
-<code>ReturnFrame</code> below is a design-level name from an earlier interpreter sketch,
-not a current Java class. Configurable allocation alone does
-not provide the abstract interpretation described as a goal in this chapter.</p>
+<p><code>VisitorSemanticsVM</code> executes a <code>Configuration(control, environmentRef, runtimeWorld, continuationRef)</code>. The environment reference identifies an
+activation or lexical object scope, and the runtime world supplies the store
+and boundary. <code>Control</code> distinguishes expression evaluation, an exact send,
+a selected foreign call, a returned value and a terminal error.</p>
+<p>The Java <code>step</code> API returns a set of successors. The concrete driver requires
+exactly one successor for every nonterminal configuration and stops at an error
+or a value with <code>HaltFrame</code>. That API shape does not implement nondeterministic
+or abstract execution. Configurations share a mutable runtime world; keeping
+an earlier configuration does not create a snapshot of its store.</p>
+<p>The implementation anchors are
+<a href="../../../vh-core/src/main/java/vh/vm/VisitorSemanticsVM.java">VisitorSemanticsVM</a>,
+<a href="../../../vh-core/src/main/java/vh/vm/EvaluateStepVisitor.java">EvaluateStepVisitor</a>
+and <a href="../../../vh-core/src/main/java/vh/vm/ContinuationStepVisitor.java">ContinuationStepVisitor</a>.
+Method and initializer invocations establish private return homes. Scope and
+continuation representations are backend-private, not public language objects
+or reflection APIs.</p>
 <h2 id="module-instantiation-requirements"><a class="header" href="#module-instantiation-requirements">Module Instantiation Requirements</a></h2>
 <p>Named and anonymous class literals receive capabilities through inheritance,
 mixin composition, lexical nesting and constructor parameters. Normal module
@@ -231,53 +241,96 @@ Expat, and its entry method is invoked explicitly by the host. See
 <tr><th>VarioHyve property</th><th>CESK benefit</th></tr>
 </thead>
 <tbody>
-<tr><td>Everything is a message send</td><td>One dispatch rule to implement, not dozens of special forms</td></tr>
+<tr><td>Source access and invocation use messages</td><td>Shared dispatch rules for methods and generated accessors; literals, scope and returns still have dedicated transitions</td></tr>
 <tr><td>No operators or control structures</td><td><code>ifTrue</code>/<code>ifFalse</code> are message sends — no special-case evaluation</td></tr>
-<tr><td>No globals</td><td>No global store partition — only lexical environments + object slots</td></tr>
-<tr><td>Few AST node types</td><td>Small <code>step</code> function</td></tr>
+<tr><td>No globals</td><td>Lexical activation and enclosing objects supply bindings without a global namespace</td></tr>
+<tr><td>Explicit core expressions</td><td>Evaluation and completion are separated into two visitors</td></tr>
 <tr><td>Uniform object model</td><td>Objects, classes, and activations share the same store representation</td></tr>
 </tbody>
 </table>
 </div>
 <h2 id="machine-components"><a class="header" href="#machine-components">Machine Components</a></h2>
 <h3 id="addresses-and-allocation"><a class="header" href="#addresses-and-allocation">Addresses and Allocation</a></h3>
-<p>Every binding goes through the store via an explicit address. Values are never stored directly in the environment.</p>
-<pre><code>Env   = Map&lt;Name, Addr&gt;
-Store = Map&lt;Addr, Value&gt;
-Alloc : Context → Addr
+<p>The concrete machine uses an explicit store and allocator. Parameters and locals
+belong to activation objects; source access follows generated accessor messages.
+The following notation describes backend storage, not a separate language
+environment or a public address API:</p>
+<pre><code class="language-text">ValueRef        = value address with a long identifier
+ContinuationRef = continuation address with a long identifier
+Entry           = Value(VMValue) | Continuation(ContinuationFrame)
+ConcreteStore   = Map&lt;Address, Entry&gt;
+Allocator.next(environmentRef, continuationRef) -&gt; long
 </code></pre>
-<p>The <code>Alloc</code> function is the single parameterization point:</p>
+<p>The <a href="../../../vh-core/src/main/java/vh/vm/cesk/Store.java">store interface</a>
+provides set-valued reads, while <code>ConcreteStore</code> holds exactly one entry per
+allocated address. The concrete allocator returns fresh increasing identifiers.
+Concrete singleton reads reject multiple entries; <code>join</code> rejects conflicting
+entries. Reusing addresses is therefore not an available abstract execution mode.</p>
+<p>Allocation is one part of a possible abstraction:</p>
 <ul>
 <li><strong>Concrete allocation</strong> — returns a fresh integer on every call. This is the v1 interpreter.</li>
-<li><strong>Abstract allocation</strong> — returns a bounded address derived from the call site and a prefix of the environment (k-CFA). This enables finite-state analysis.</li>
+<li><strong>Abstract allocation (proposed)</strong> — may return a bounded address based on
+program location and calling context. Reusing addresses requires an abstract
+store that safely combines the represented values.</li>
 </ul>
-<p>The interpreter core is written once; swapping <code>Alloc</code> switches between concrete execution and abstract analysis.</p>
+<p>Changing the allocator alone does not produce an analyzer. Abstract values, store
+updates, control representation, transition rules and foreign effects must all
+be accounted for, with a soundness argument relating the analysis to concrete
+execution. A finite-state analysis also needs to bound all relevant state
+components, not just allocation. These are future obligations.</p>
 <h3 id="values"><a class="header" href="#values">Values</a></h3>
-<p>All runtime values live in the store. The full runtime representation — objects, classes, mixins, metaclasses, method activations, and dispatch origin tracking — is defined in the <a href="./object-model.html">Object Model</a>.</p>
-<p>The key points for the CESK machine:</p>
+<p>Value references resolve to <code>VMValue</code> entries. Continuations occupy separately
+typed store entries; method syntax and construction metadata can be retained
+inside those values without their own store addresses. See
+<a href="./object-model.html">Object Model</a> for the semantic relationships.</p>
 <ul>
-<li><strong>Objects</strong> hold slots and point to their class and internal definition scope. Public <code>outer ClassName</code> is declaration-relative, not a lexical-parent getter.</li>
-<li><strong>Classes</strong> hold methods and point to their super, mixin list, and metaclass.</li>
-<li><strong>Mixins</strong> are regular objects — no special runtime type.</li>
-<li><strong>Method activations</strong> are objects in the store — their <code>var</code> locals are slots, their parameters are read-only entries. This uniformity is what makes activation-as-object semantics (and closure capture) fall out naturally.</li>
-<li><strong>Dispatch origin</strong> is tracked per activation so <code>super</code> knows where to resume in the class/mixin chain.</li>
+<li><strong><code>VMObject</code></strong> holds a mutable array of value references, slot declarations,
+a class reference, a lexical parent and a hidden member-class cache.</li>
+<li><strong><code>VMClass</code> and <code>VMMetaclass</code></strong> extend that representation. A class retains
+references to reified contributions, its superclass, initialization edges,
+complete layout and private coordinator.</li>
+<li><strong><code>VMMixinClosure</code></strong> is a dedicated closure value retaining the contribution’s
+syntax, definition scope, formals and generated initializer. It is not a
+<code>VMObject</code> with a public class or method protocol.</li>
+<li><strong>Activations</strong> extend <code>VMObject</code> internally, with no class reference in the
+bootstrap. Method/lambda parameters are immutable slots; lowered <code>var</code> locals
+occupy separate let activations. A <code>LexicalObjectScope</code> associates a receiver
+with a particular declaration/application origin and its definition scope.</li>
+<li><strong><code>VMLambdaClosure</code></strong> retains its function, captured scope, receiver and return
+home. Its exact <code>apply/N</code> operation is intrinsic to dispatch.</li>
+<li><strong>Canonical null and booleans</strong> are native objects with ordinary methods.
+Integer and string literals currently use private <code>VMPrimitiveValue</code> entries
+without native class dispatch. Aliens retain foreign semantics through the
+boundary; they do not acquire a native class or lexical outer.</li>
 </ul>
 <h3 id="continuations"><a class="header" href="#continuations">Continuations</a></h3>
-<p>The continuation is an explicit linked list of frames. Each frame records what work remains after the current sub-evaluation completes:</p>
-<ul>
-<li><strong>MessageFrame</strong> — receiver evaluated, waiting for arguments; then dispatch</li>
-<li><strong>ArgFrame</strong> — evaluating argument list left to right</li>
-<li><strong>SeqFrame</strong> — statement list; evaluate next statement</li>
-<li><strong>ReturnFrame</strong> — conceptual method boundary; the current visitor uses
-<code>CallReturnFrame</code> and a private activation that tracks home liveness</li>
-<li><strong>InitializerReturnFrame</strong> — ends one initializer contribution and resumes its
-continuation with the allocated receiver, ignoring the body’s result</li>
-<li><strong>Private initializer-call frame</strong> — evaluates the receiver and arguments of
-an identity-bound invocation before entering a fresh initializer activation</li>
-<li><strong>Private slot-write frame</strong> — completes an initializer expression, writes its
-value through the receiver’s complete storage layout, then resumes ordinary
-expression sequencing</li>
-</ul>
+<p>Continuation frames are stored by <code>ContinuationRef</code>. Linked frames retain the
+reference of the next frame and the state needed to resume work. The current
+frame types are:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Frame</th><th>Work resumed when a value arrives</th></tr>
+</thead>
+<tbody>
+<tr><td><code>ReceiverFrame</code></td><td>Evaluate a send’s arguments after its explicit receiver</td></tr>
+<tr><td><code>ArgFrame</code></td><td>Continue evaluating arguments left-to-right, then dispatch</td></tr>
+<tr><td><code>LetFrame</code></td><td>Bind a local or complete a sequence step, then advance the lowered let expression</td></tr>
+<tr><td><code>CallReturnFrame</code></td><td>Restore the caller’s scope; retire a method home when present</td></tr>
+<tr><td><code>DoReturnFrame</code></td><td>Deliver the evaluated return expression to its captured home</td></tr>
+<tr><td><code>ClassTargetFrame</code></td><td>Retain a resolved contributor and continue class realization</td></tr>
+<tr><td><code>MemberClassReturnFrame</code></td><td>Cache a realized member class and restore its caller</td></tr>
+<tr><td><code>ApplyFrame</code></td><td>Invoke a selected, newly realized member class with the saved arguments</td></tr>
+<tr><td><code>InitializerCallFrame</code></td><td>Evaluate a private initializer call’s receiver and arguments</td></tr>
+<tr><td><code>InitializationWriteFrame</code></td><td>Write a slot value at the already resolved physical index</td></tr>
+<tr><td><code>InitializerReturnFrame</code></td><td>Retire one initializer home and deliver the allocated receiver, ignoring the body’s value</td></tr>
+<tr><td><code>HaltFrame</code></td><td>Mark final value delivery</td></tr>
+</tbody>
+</table>
+</div>
+<p>Sequence evaluation uses lowered <code>CoreLetExpression</code> steps and <code>LetFrame</code>;
+there is no separate <code>SeqFrame</code>. <code>CallReturnFrame</code> is also used to restore scope
+after lambda calls and let expressions, without creating a new return home.</p>
 <p><code>^</code> targets its lexically captured method or initializer home. Each initializer
 invocation has a fresh home even when its class captures an earlier activation.
 When <code>^</code> is evaluated, the continuation chain is scanned for that exact home; it
@@ -322,7 +375,8 @@ invokes the private coordinator, and returns that receiver. The coordinator
 sequences superclass and applied-owned-mixin invocations with ordinary core
 expressions, then executes its own initializer body in the same activation/home.
 An applied mixin never follows its source class’s original dependency routes.
-Object literals run this same generated construction path.</p>
+Object literals allocate their receiver and enter the same private coordinator
+directly; they do not dispatch a public <code>new</code> selector.</p>
 <p>Backend-private <code>ConstructionCode</code> operations provide bound-class allocation,
 identity-bound initializer invocation, direct slot writes and an explicit
 slots-complete marker. A slot write resolves its contribution-local number using
@@ -337,56 +391,91 @@ No source or Expat selector selects a private initializer.</p>
 initialization does not recurse on the host stack. Failure or unwind retires
 initializer homes and caches in-progress member realization as a defined failure.
 See <a href="../../design-notes/flat-metaclasses-and-construction.html#private-core-operations">the construction operation contracts</a>.</p>
-<p>The <code>step</code> function pattern-matches on Control × Kontinuation:</p>
+<p>The machine dispatches evaluation to <code>EvaluateStepVisitor</code>, value completion to
+<code>ContinuationStepVisitor</code>, and message selection/invocation to <code>ObjectProtocol</code>.
+The following table summarizes their effects; cascades and local declarations
+are lowered before execution:</p>
 <div class="table-wrapper">
 <table>
 <thead>
 <tr><th>Control</th><th>Action</th></tr>
 </thead>
 <tbody>
-<tr><td>Literal (number, string)</td><td>Allocate value in store, pass to continuation</td></tr>
-<tr><td>Hole Expression (?)</td><td>Delegate to the active hole-resolution policy. The policy may suspend execution, raise UnresolvedHole, produce an abstract unknown value, branch nondeterministically, or invoke a synthesis / interactive completion mechanism</td></tr>
+<tr><td>Literal (number, string)</td><td>Validate signed 64-bit integer syntax or take the frontend string value; obtain a primitive reference through boundary conversion and pass it to the continuation</td></tr>
+<tr><td>Null or empty expression</td><td>Deliver the native canonical null reference directly</td></tr>
+<tr><td>Hole expression (<code>?</code>)</td><td>Stop with <code>unresolved hole (?)</code>; no configurable hole policy is implemented</td></tr>
 <tr><td>Class expression (named or anonymous)</td><td>Capture definition scope in owned contributions; create class with resolved edges/layout and metaclass with owned factories</td></tr>
 <tr><td>Member-class accessor</td><td>Bind declaration to enclosing receiver and origin; cache class/metaclass per receiver and occurrence</td></tr>
 <tr><td><code>outer ClassName</code></td><td>Select receiver by lexical declaration origin; never expose an activation</td></tr>
-<tr><td>Object literal</td><td>Realize anonymous class + metaclass; use their generated construction path and deliver the receiver</td></tr>
-<tr><td>Lambda literal</td><td>Capture current environment, allocate closure in store</td></tr>
+<tr><td>Object literal</td><td>Realize anonymous class + metaclass; allocate and enter the private coordinator, then deliver the receiver</td></tr>
+<tr><td>Lambda literal</td><td>Capture lexical scope and return home, allocate closure in store</td></tr>
 <tr><td>Implicit message send — bare (<code>name</code>)</td><td>Look up <code>name</code> via lexical chain; dispatch <code>(name, 0)</code> → return result (invoke only)</td></tr>
 <tr><td>Implicit message send — with parens (<code>name(args)</code>)</td><td>Evaluate args once; at each lexical scope prefer exact <code>name/N</code>, then an eligible generated callable binding, before self invocation. Arity zero executes selected behavior once. See <a href="./message-sends.html#dispatch-rules">invocation rules</a>.</td></tr>
 <tr><td>Explicit message send — bare (<code>e.name</code>)</td><td>Evaluate receiver <code>e</code>, dispatch <code>(name, 0)</code> on receiver → return result</td></tr>
 <tr><td>Explicit message send — with parens (<code>e.name(args)</code>)</td><td>Evaluate receiver and args once; native lookup tests exact operations and eligible generated callable bindings per contribution. Alien lookup selects exact foreign name/arity. Arity zero executes selected behavior once.</td></tr>
-<tr><td>Cascade (<code>e..m1..m2</code>)</td><td>Evaluate receiver once, dispatch each message to that receiver, pass last result to continuation</td></tr>
+<tr><td>Cascade (<code>e..m1..m2</code>)</td><td>Lower to a let-bound receiver and sequential sends; evaluate the receiver once and deliver the last result</td></tr>
 <tr><td><code>super</code></td><td>Resume lookup from dispatch origin’s next position — see <a href="./object-model.html#super-dispatch">Object Model — Super Dispatch</a></td></tr>
-<tr><td><code>var</code> declaration</td><td>Allocate address in store, bind in current environment</td></tr>
+<tr><td><code>var</code> declaration</td><td>Lower to a bind step in a let activation; reserve all its local slots before evaluating initializers, then bind in source order</td></tr>
 <tr><td><code>^</code> return</td><td>Find the captured lexical home; enforce initializer phase and foreign-call barriers, retire intervening homes and resume its completion frame</td></tr>
 </tbody>
 </table>
 </div>
 <h2 id="explicit-store-the-key-commitment"><a class="header" href="#explicit-store-the-key-commitment">Explicit Store: The Key Commitment</a></h2>
-<p>The one structural decision that enables the AAM path: <strong>the store and allocation are explicit from day one</strong>. Objects live in the interpreter’s own <code>Store</code>, not on the Java heap.</p>
-<p>This costs almost nothing in v1:</p>
-<ul>
-<li>A <code>HashMap&lt;Integer, VHObject&gt;</code> with an incrementing counter is a concrete store.</li>
-<li>Slot reads and writes go through <code>store.get(addr)</code> / <code>store.put(addr, value)</code> instead of direct field access.</li>
-</ul>
-<p>But it unlocks the full AAM abstraction path later: replace the concrete store with a store that joins on write, replace <code>Alloc</code> with a k-CFA allocator, and the interpreter becomes a sound abstract machine — without rewriting the core <code>step</code> function.</p>
+<p>Language values and continuation frames are addressed through the explicit
+store. The concrete backend implements that store with Java heap objects:
+<code>ConcreteStore</code> contains a <code>Map&lt;Address, Entry&gt;</code>, and a <code>VMObject</code> contains a
+mutable array of <code>ValueRef</code>s. A slot is an array location holding a value
+reference, not a separately allocated binding cell. A getter reads that
+reference; a setter replaces it after ordinary accessor selection.</p>
+<p>Initialization, local binding, member-cache updates and home retirement also
+mutate backend objects. The explicit store makes references and allocation
+visible to the interpreter, but does not make transitions pure or configurations
+persistent. There is no implemented language garbage collector; retained store
+entries and proxy caches can keep otherwise unreachable values alive.</p>
+<p>This explicit representation supports investigation of an AAM derivation.
+An abstract store with joins and a bounded allocator would be parts of that
+derivation, alongside abstractions of values and control and models of foreign
+operations. The objective is to preserve a justified relationship to the
+reference transitions, not to assume that an unchanged concrete <code>step</code> function
+already supplies a sound analysis.</p>
 <h2 id="connection-to-analysis-tools"><a class="header" href="#connection-to-analysis-tools">Connection to Analysis Tools</a></h2>
 <p>The CESK design connects directly to the <a href="./tooling-architecture.html">Tooling Architecture</a>:</p>
 <ol>
-<li><strong>Concrete CESK</strong> → v1 interpreter. Deterministic, one successor state per step.</li>
-<li><strong>Abstract CESK</strong> → static analysis tool. Non-deterministic, returns a set of successor states per step. Explores all reachable abstract states to compute program properties.</li>
-<li><strong>External annotations</strong> (via descriptor names) tell the abstract instantiation what abstract values to assume for named elements — e.g., type constraints, intervals, or contract pre/post-conditions.</li>
+<li><strong>Concrete execution</strong> → the current sequential interpreter. Native
+transitions follow fixed rules; observable determinism also depends on the
+supplied foreign capabilities.</li>
+<li><strong>Abstract execution (proposed)</strong> → an analysis with sound abstract transitions
+and a state-exploration or fixed-point strategy appropriate to its domains.</li>
+<li><strong>External annotations (proposed)</strong> → named assumptions, abstract domains or
+properties interpreted by a particular analysis tool. Descriptors alone do
+not implement those checks.</li>
 </ol>
-<p>This follows the approach of Van Horn and Might (2010), <em>Abstracting Abstract Machines</em>: a systematic method for deriving sound abstract interpreters from concrete machines by parameterizing over address allocation.</p>
+<p>Van Horn and Might (2010), <em>Abstracting Abstract Machines</em>, provides the research
+inspiration: refactor a concrete machine into a form amenable to systematic
+abstraction. A corresponding derivation and validation for VarioHyve remain
+future work.</p>
 <h2 id="tco-and-continuations"><a class="header" href="#tco-and-continuations">TCO and Continuations</a></h2>
-<p>Because continuations are explicit, tail-call optimization is a natural extension: a tail call in tail position pops the current <code>ReturnFrame</code> before pushing the callee’s frame. TCO is introduced incrementally in layers — from no optimization (v1 bootstrap) through direct tail calls to non-local-return-as-tail-return — all as local changes to the <code>step</code> function’s frame-push logic. See <a href="./future.html#tail-call-optimization">Future Directions</a> for the full layered design.</p>
+<p>Tail-call optimization is not implemented. Explicit continuations make it
+possible to study continuation reuse, but replacing a call frame must preserve
+captured return homes, their liveness, initializer completion and foreign-call
+barriers. Popping the current method frame unconditionally would not meet those
+requirements. See <a href="./future.html#tail-call-optimization">Future Directions</a> for the
+proposed increments.</p>
 <h3 id="stack-safety"><a class="header" href="#stack-safety">Stack Safety</a></h3>
-<p>The CESK machine runs as a flat <code>while (!isFinal(state)) { state = step(state); }</code> loop. The continuation K is a heap-allocated linked list — the host language’s call stack is not involved in VarioHyve recursion. This means:</p>
-<ul>
-<li><strong>No stack overflow.</strong> A VarioHyve program that recurses 10 million times deep will not crash with a <code>StackOverflowError</code>. Each recursive call allocates a continuation frame on the Java heap, not on the JVM thread stack.</li>
-<li><strong>Graceful degradation.</strong> Without TCO, deep recursion consumes heap memory proportional to the recursion depth (one continuation frame per call). This is bounded by available heap (gigabytes), not by the JVM’s thread stack size (typically 512KB–1MB). The program may eventually run out of memory, but it degrades gracefully with GC pressure rather than crashing abruptly.</li>
-<li><strong>TCO as a space optimization.</strong> In this context, TCO is not needed for correctness or crash prevention — it is a <strong>space efficiency</strong> optimization. A tail call in tail position can reuse the current continuation frame instead of allocating a new one, reducing heap allocation from O(n) to O(1) for tail-recursive loops. See Clinger (1998) for the formal treatment of proper tail recursion as a space efficiency property.</li>
-</ul>
+<p>The concrete driver loops over configurations. Native method/lambda calls and
+initializer calls schedule their bodies through continuation frames, so language
+call depth is not represented by recursive Java evaluator calls. This supports
+deep native recursion without consuming one Java stack frame per language call.</p>
+<p>Synchronous foreign calls and Expat callbacks do use the host call stack. The
+current visitor imposes a callback nesting limit of 64 and shares the active
+transition budget across callbacks. Non-local returns cannot cross an active
+foreign-call boundary. A transition budget does not preempt a blocking foreign
+operation; its behavior remains an adapter obligation.</p>
+<p>Explicit continuations do not guarantee unlimited execution or graceful memory
+exhaustion. The concrete store retains allocated values and frames, and there
+is no language GC or TCO. A program may hit its transition budget or exhaust
+memory. Reducing continuation depth alone would not establish bounded total
+space without accounting for these other allocations and retention policies.</p>
 <h2 id="references"><a class="header" href="#references">References</a></h2>
 <ul>
 <li>William D. Clinger. 1998. <em>Proper tail recursion and space efficiency.</em> In Proceedings of the ACM SIGPLAN 1998 conference on Programming language design and implementation (PLDI ’98), 174–185. <a href="https://doi.org/10.1145/277650.277719">https://doi.org/10.1145/277650.277719</a></li>
