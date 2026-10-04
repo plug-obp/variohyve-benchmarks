@@ -1,0 +1,12 @@
+{
+  "sha": "1e5225345b7aec2736b2c6b957aafaae2444405a",
+  "branch": "shorter-spec",
+  "run_url": "https://github.com/plug-obp/variohyve/actions/runs/37228816170",
+  "outcome": "success",
+  "reported_at": "2026-10-04T19:46:08.708504+00:00",
+  "tests": 565,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "duration_seconds": 10.695
+}
