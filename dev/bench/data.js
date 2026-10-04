@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1790978612455,
+  "lastUpdate": 1791143164777,
   "repoUrl": "https://github.com/plug-obp/variohyve",
   "entries": {
     "VarioHyve / shared-name-bootstrap": [
@@ -694,6 +694,188 @@ window.BENCHMARK_DATA = {
           {
             "name": "vh.benchmarks.VisitorSemanticsBenchmark.methodSend",
             "value": 17.476207781466037,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          }
+        ]
+      }
+    ],
+    "VarioHyve / shorter-spec": [
+      {
+        "commit": {
+          "author": {
+            "email": "ciprian.teodorov@gmail.com",
+            "name": "Ciprian Teodorov",
+            "username": "teodorov"
+          },
+          "committer": {
+            "email": "ciprian.teodorov@gmail.com",
+            "name": "Ciprian Teodorov",
+            "username": "teodorov"
+          },
+          "distinct": true,
+          "id": "1e5225345b7aec2736b2c6b957aafaae2444405a",
+          "message": "updated graalpy config",
+          "timestamp": "2026-10-04T21:34:43+02:00",
+          "tree_id": "eab092430c8ec1302a22684191d2c1a2c91df450",
+          "url": "https://github.com/plug-obp/variohyve/commit/1e5225345b7aec2736b2c6b957aafaae2444405a"
+        },
+        "date": 1791143164072,
+        "tool": "jmh",
+        "benches": [
+          {
+            "name": "vh.benchmarks.RecursionBenchmark.families ( {\"depth\":\"16\",\"nestingDepth\":\"1\"} )",
+            "value": 365.6814505818489,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.RecursionBenchmark.families ( {\"depth\":\"16\",\"nestingDepth\":\"8\"} )",
+            "value": 593.8004886108102,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.RecursionBenchmark.families ( {\"depth\":\"256\",\"nestingDepth\":\"1\"} )",
+            "value": 1902.653828543906,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.RecursionBenchmark.families ( {\"depth\":\"256\",\"nestingDepth\":\"8\"} )",
+            "value": 3056.542861323725,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.RecursionBenchmark.inherited ( {\"depth\":\"16\",\"hierarchyDepth\":\"4\"} )",
+            "value": 197.92713744903955,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.RecursionBenchmark.inherited ( {\"depth\":\"16\",\"hierarchyDepth\":\"32\"} )",
+            "value": 401.5596651183997,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.RecursionBenchmark.inherited ( {\"depth\":\"256\",\"hierarchyDepth\":\"4\"} )",
+            "value": 1254.0517041091882,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.RecursionBenchmark.inherited ( {\"depth\":\"256\",\"hierarchyDepth\":\"32\"} )",
+            "value": 1791.5094941454324,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.RecursionBenchmark.mutual ( {\"depth\":\"16\"} )",
+            "value": 119.13611164789033,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.RecursionBenchmark.mutual ( {\"depth\":\"256\"} )",
+            "value": 1047.8967511401934,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.RecursionBenchmark.partners ( {\"depth\":\"16\",\"partnerCount\":\"3\"} )",
+            "value": 240.35870111729528,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.RecursionBenchmark.partners ( {\"depth\":\"16\",\"partnerCount\":\"8\"} )",
+            "value": 281.68528303697474,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.RecursionBenchmark.partners ( {\"depth\":\"256\",\"partnerCount\":\"3\"} )",
+            "value": 1551.8355619032554,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.RecursionBenchmark.partners ( {\"depth\":\"256\",\"partnerCount\":\"8\"} )",
+            "value": 1534.7062207434033,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.RecursionBenchmark.simple ( {\"depth\":\"16\"} )",
+            "value": 139.59454325276306,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.RecursionBenchmark.simple ( {\"depth\":\"256\"} )",
+            "value": 1084.3391221984605,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.RecursionBenchmark.superChain ( {\"depth\":\"16\",\"hierarchyDepth\":\"4\"} )",
+            "value": 394.6078759292296,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.RecursionBenchmark.superChain ( {\"depth\":\"16\",\"hierarchyDepth\":\"32\"} )",
+            "value": 1877.8772620685424,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.RecursionBenchmark.superChain ( {\"depth\":\"256\",\"hierarchyDepth\":\"4\"} )",
+            "value": 3727.0260109632777,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.RecursionBenchmark.superChain ( {\"depth\":\"256\",\"hierarchyDepth\":\"32\"} )",
+            "value": 55552.363746282375,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.RuntimeSetupBenchmark.literalPreparedWorld",
+            "value": 0.4347078462409564,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.RuntimeSetupBenchmark.machineSetup",
+            "value": 0.010347475030699665,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.RuntimeSetupBenchmark.worldSetup",
+            "value": 16.54566483423487,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.VisitorSemanticsBenchmark.closureSend",
+            "value": 17.186793676683145,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.VisitorSemanticsBenchmark.literal",
+            "value": 16.7198140248322,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.VisitorSemanticsBenchmark.methodSend",
+            "value": 21.51679471059675,
             "unit": "us/op",
             "extra": "iterations: 5\nforks: 1\nthreads: 1"
           }
