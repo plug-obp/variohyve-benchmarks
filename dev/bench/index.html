@@ -1,379 +1,54 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes" />
-    <style>
-      html {
-        font-family: BlinkMacSystemFont,-apple-system,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
-        -webkit-font-smoothing: antialiased;
-        background-color: #fff;
-        font-size: 16px;
-      }
-      body {
-        color: #4a4a4a;
-        margin: 8px;
-        font-size: 1em;
-        font-weight: 400;
-      }
-      header {
-        margin-bottom: 8px;
-        display: flex;
-        flex-direction: column;
-      }
-      main {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-      }
-      a {
-        color: #3273dc;
-        cursor: pointer;
-        text-decoration: none;
-      }
-      a:hover {
-        color: #000;
-      }
-      button {
-        color: #fff;
-        background-color: #3298dc;
-        border-color: transparent;
-        cursor: pointer;
-        text-align: center;
-      }
-      button:hover {
-        background-color: #2793da;
-        flex: none;
-      }
-      .spacer {
-        flex: auto;
-      }
-      .small {
-        font-size: 0.75rem;
-      }
-      footer {
-        margin-top: 16px;
-        display: flex;
-        align-items: center;
-      }
-      .header-label {
-        margin-right: 4px;
-      }
-      .benchmark-set {
-        margin: 8px 0;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-      }
-      .benchmark-title {
-        font-size: 3rem;
-        font-weight: 600;
-        word-break: break-word;
-        text-align: center;
-      }
-      .benchmark-graphs {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
-        flex-wrap: wrap;
-        width: 100%;
-      }
-      .benchmark-chart {
-        max-width: 1000px;
-      }
-      .benchmark-section {
-        margin: 1.5rem 0;
-        width: 100%;
-      }
-      .benchmark-section h2 {
-        margin-bottom: .25rem;
-      }
-      .benchmark-summary {
-        border-collapse: collapse;
-        width: 100%;
-        margin: .75rem 0 1.5rem;
-      }
-      .benchmark-summary th, .benchmark-summary td {
-        border-bottom: 1px solid #ddd;
-        padding: .45rem .6rem;
-        text-align: left;
-      }
-      .benchmark-summary th:last-child, .benchmark-summary td:last-child {
-        text-align: right;
-        white-space: nowrap;
-      }
-      .benchmark-figure {
-        box-sizing: border-box;
-        margin: 1rem 0;
-        padding: .75rem;
-        width: min(100%, 1000px);
-        border: 1px solid #ddd;
-        border-radius: .4rem;
-      }
-      .benchmark-figure figcaption {
-        font-weight: 600;
-        overflow-wrap: anywhere;
-      }
-    </style>
-    <title>Benchmarks</title>
-  </head>
-
-  <body>
-    <header id="header">
-      <div class="header-item">
-        <strong class="header-label">Last Update:</strong>
-        <span id="last-update"></span>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VarioHyve · Performance</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <script defer src="data.js"></script>
+  <script defer src="measurements.js"></script>
+  <script defer src="model.js"></script>
+  <script defer src="dashboard.js"></script>
+</head>
+<body>
+  <header>
+    <div><a class="wordmark" href="../../">VarioHyve<span> / performance</span></a><h1>One workload. Three runtimes.</h1>
+    <p>Explore execution time across every branch, with the context behind every measurement.</p></div>
+    <nav><a href="test-reports/">JUnit reports ↗</a><button id="download">Download data ↓</button></nav>
+  </header>
+  <main>
+    <div id="status" role="status">Loading benchmark history…</div>
+    <section class="controls" aria-label="Filter measurements">
+      <label>GC profile<select id="profile"><option value="tracing">Tracing GC · current</option><option value="legacy">Before explicit GC · historical</option></select></label>
+      <label>Branch<select id="branch"><option value="all">All branches</option></select></label>
+      <label>Workload family<select id="family"><option value="all">All workloads</option><option value="core">Core</option><option value="recursion">Recursion</option></select></label>
+      <label>Find workload<input id="search" type="search" placeholder="Try superChain or depth=256"></label>
+    </section>
+    <section class="panel" aria-labelledby="chart-title">
+      <div class="chart-heading"><div><span class="eyebrow">HISTORY</span><h2 id="chart-title">Workload history</h2></div><label class="workload-label">Configuration<select id="workload"></select></label></div>
+      <div class="chart-tools">
+        <div class="segmented" role="group" aria-label="Chart view"><button data-view="comparison" aria-pressed="true">Compare runtimes</button><button data-view="distribution" aria-pressed="false">VarioHyve spread</button><button data-view="ratio" aria-pressed="false">VH / Python</button></div>
+        <div class="chart-options"><label><input id="log" type="checkbox" checked> Log scale</label><label>History <select id="limit"><option value="20">Last 20 runs</option><option value="50">Last 50 runs</option><option value="all">All runs</option></select></label></div>
       </div>
-      <div class="header-item">
-        <strong class="header-label">Repository:</strong>
-        <a id="repository-link" rel="noopener"></a>
-      </div>
-      <div class="header-item">
-        <strong class="header-label">Tests:</strong>
-        <a href="test-reports/">JUnit reports</a>
-      </div>
-      <div class="header-item">
-        <strong class="header-label">Benchmarks:</strong>
-        <a href="#recursion-benchmarks">Recursion</a> ·
-        <a href="#core-benchmarks">Core</a>
-      </div>
-    </header>
-    <main id="main"></main>
-    <footer>
-      <button id="dl-button">Download data as JSON</button>
-      <div class="spacer"></div>
-      <div class="small">Powered by <a rel="noopener" href="https://github.com/marketplace/actions/continuous-benchmark">github-action-benchmark</a></div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.2/dist/Chart.min.js"></script>
-    <script src="data.js"></script>
-    <script id="main-script">
-      'use strict';
-      (function() {
-        // Colors from https://github.com/github/linguist/blob/master/lib/linguist/languages.yml
-        const toolColors = {
-          cargo: '#dea584',
-          go: '#00add8',
-          benchmarkjs: '#f1e05a',
-          benchmarkluau: '#000080',
-          pytest: '#3572a5',
-          googlecpp: '#f34b7d',
-          catch2: '#f34b7d',
-          julia: '#a270ba',
-          jmh: '#b07219',
-          benchmarkdotnet: '#178600',
-          customBiggerIsBetter: '#38ff38',
-          customSmallerIsBetter: '#ff3838',
-          _: '#333333'
-        };
-
-        function init() {
-          function collectBenchesPerTestCase(entries) {
-            const map = new Map();
-            for (const entry of entries) {
-              const {commit, date, tool, benches} = entry;
-              for (const bench of benches) {
-                const result = { commit, date, tool, bench };
-                const arr = map.get(bench.name);
-                if (arr === undefined) {
-                  map.set(bench.name, [result]);
-                } else {
-                  arr.push(result);
-                }
-              }
-            }
-            return map;
-          }
-
-          const data = window.BENCHMARK_DATA;
-
-          // Render header
-          document.getElementById('last-update').textContent = new Date(data.lastUpdate).toString();
-          const repoLink = document.getElementById('repository-link');
-          repoLink.href = data.repoUrl;
-          repoLink.textContent = data.repoUrl;
-
-          // Render footer
-          document.getElementById('dl-button').onclick = () => {
-            const dataUrl = 'data:,' + JSON.stringify(data, null, 2);
-            const a = document.createElement('a');
-            a.href = dataUrl;
-            a.download = 'benchmark_data.json';
-            a.click();
-          };
-
-          // Prepare data points for charts
-          return Object.keys(data.entries).map(name => ({
-            name,
-            dataSet: collectBenchesPerTestCase(data.entries[name]),
-          }));
-        }
-
-        function renderAllChars(dataSets) {
-
-          function renderGraph(parent, name, dataset) {
-            const canvas = document.createElement('canvas');
-            canvas.className = 'benchmark-chart';
-            parent.appendChild(canvas);
-
-            const color = toolColors[dataset.length > 0 ? dataset[0].tool : '_'];
-            const data = {
-              labels: dataset.map(d => d.commit.id.slice(0, 7)),
-              datasets: [
-                {
-                  label: name,
-                  data: dataset.map(d => d.bench.value),
-                  borderColor: color,
-                  backgroundColor: color + '60', // Add alpha for #rrggbbaa
-                }
-              ],
-            };
-            const options = {
-              scales: {
-                xAxes: [
-                  {
-                    scaleLabel: {
-                      display: true,
-                      labelString: 'commit',
-                    },
-                  }
-                ],
-                yAxes: [
-                  {
-                    scaleLabel: {
-                      display: true,
-                      labelString: dataset.length > 0 ? dataset[0].bench.unit : '',
-                    },
-                    ticks: {
-                      beginAtZero: true,
-                    }
-                  }
-                ],
-              },
-              tooltips: {
-                callbacks: {
-                  afterTitle: items => {
-                    const {index} = items[0];
-                    const data = dataset[index];
-                    return '\n' + data.commit.message + '\n\n' + data.commit.timestamp + ' committed by @' + data.commit.committer.username + '\n';
-                  },
-                  label: item => {
-                    let label = item.value;
-                    const { range, unit } = dataset[item.index].bench;
-                    label += ' ' + unit;
-                    if (range) {
-                      label += ' (' + range + ')';
-                    }
-                    return label;
-                  },
-                  afterLabel: item => {
-                    const { extra } = dataset[item.index].bench;
-                    return extra ? '\n' + extra : '';
-                  }
-                }
-              },
-              onClick: (_mouseEvent, activeElems) => {
-                if (activeElems.length === 0) {
-                  return;
-                }
-                // XXX: Undocumented. How can we know the index?
-                const index = activeElems[0]._index;
-                const url = dataset[index].commit.url;
-                window.open(url, '_blank');
-              },
-            };
-
-            new Chart(canvas, {
-              type: 'line',
-              data,
-              options,
-            });
-          }
-
-          function renderBenchSet(name, benchSet, main) {
-            const setElem = document.createElement('div');
-            setElem.className = 'benchmark-set';
-            main.appendChild(setElem);
-
-            const nameElem = document.createElement('h1');
-            nameElem.className = 'benchmark-title';
-            nameElem.textContent = name;
-            setElem.appendChild(nameElem);
-
-            const graphsElem = document.createElement('div');
-            graphsElem.className = 'benchmark-graphs';
-            setElem.appendChild(graphsElem);
-
-            const groups = [
-              {id: 'recursion-benchmarks', title: 'Recursion benchmarks',
-                entries: [...benchSet.entries()].filter(([benchName]) => benchName.includes('.RecursionBenchmark.'))},
-              {id: 'core-benchmarks', title: 'Core benchmarks',
-                entries: [...benchSet.entries()].filter(([benchName]) => !benchName.includes('.RecursionBenchmark.'))},
-            ];
-            for (const group of groups) {
-              if (group.entries.length === 0) continue;
-              const section = document.createElement('section');
-              section.className = 'benchmark-section';
-              section.id = group.id;
-              graphsElem.appendChild(section);
-
-              const title = document.createElement('h2');
-              title.textContent = `${group.title} (${group.entries.length} configurations)`;
-              section.appendChild(title);
-
-              const summary = document.createElement('table');
-              summary.className = 'benchmark-summary';
-              summary.innerHTML = '<thead><tr><th>Configuration</th><th>Latest score</th></tr></thead>';
-              const body = document.createElement('tbody');
-              summary.appendChild(body);
-              section.appendChild(summary);
-
-              const charts = document.createElement('div');
-              charts.className = 'benchmark-graphs';
-              section.appendChild(charts);
-
-              group.entries.forEach(([benchName, benches], index) => {
-                const shortName = benchName.replace(/^vh\.benchmarks\.[^.]+\./, '');
-                const parameterized = shortName.match(/^(.*?) \( (\{.*\}) \)$/);
-                const label = parameterized
-                  ? `${parameterized[1]} (${Object.entries(JSON.parse(parameterized[2]))
-                      .map(([key, value]) => `${key}=${value}`).join(', ')})`
-                  : shortName;
-                const id = `${group.id}-${index + 1}`;
-                const latest = benches[benches.length - 1].bench;
-                const row = document.createElement('tr');
-                const nameCell = document.createElement('td');
-                const link = document.createElement('a');
-                link.href = `#${id}`;
-                link.textContent = label;
-                nameCell.appendChild(link);
-                row.appendChild(nameCell);
-                const scoreCell = document.createElement('td');
-                scoreCell.textContent = `${latest.value.toLocaleString(undefined, {maximumFractionDigits: 1})} ${latest.unit}`;
-                row.appendChild(scoreCell);
-                body.appendChild(row);
-
-                const figure = document.createElement('figure');
-                figure.className = 'benchmark-figure';
-                figure.id = id;
-                const caption = document.createElement('figcaption');
-                caption.textContent = label;
-                figure.appendChild(caption);
-                charts.appendChild(figure);
-                renderGraph(figure, benchName, benches);
-              });
-            }
-          }
-
-          const main = document.getElementById('main');
-          for (const {name, dataSet} of dataSets) {
-            renderBenchSet(name, dataSet, main);
-          }
-        }
-
-        renderAllChars(init()); // Start
-      })();
-    </script>
-  </body>
+      <div id="legend" class="legend"></div>
+      <div id="plot" class="plot"></div>
+      <div id="tooltip" role="tooltip" hidden></div>
+      <p id="chart-note" class="chart-note"></p>
+      <div id="selection" class="selection" aria-live="polite">Hover or focus a point for details. Click a point to pin its run below.</div>
+    </section>
+    <section class="panel overview" aria-labelledby="overview-title">
+      <div class="chart-heading"><div><span class="eyebrow">AT A GLANCE</span><h2 id="overview-title">Latest run per workload</h2></div><span class="muted">µs / operation · lower is faster</span></div>
+      <p class="table-note">All runtime values in a row come from the same run. Select a workload to explore its history.</p>
+      <div class="table-scroll"><table><thead><tr><th>Workload / parameters</th><th>VarioHyve</th><th>CPython</th><th>GraalPy</th><th>VH / CPython</th><th>VH / GraalPy</th><th>Branch · revision</th></tr></thead><tbody id="overview"></tbody></table></div>
+    </section>
+    <details class="methodology"><summary>How to read these measurements</summary>
+      <p>These are complete checked workloads, including applicable construction, execution and result validation. Parsing and warmup are excluded. Python and VarioHyve have different setup, lookup and boundary costs. GraalPy runs on the JVM with guest JIT disabled; Java compilation remains enabled.</p>
+      <p>Each point is one benchmark run. Branches share the timeline in measurement order; adjacent points can come from different branches and do not imply Git ancestry. Select a branch to follow its own history. Hosted runner hardware can vary.</p>
+      <p>Dots show means. In the spread view, boxes show the middle 50% of measured iteration means, the bar shows the median, and whiskers show the observed minimum and maximum. These describe iteration averages, not individual-operation latency or confidence intervals. Quartiles use linear interpolation across sorted samples. JMH's 99.9% confidence interval, when available, is shown separately in point details.</p>
+      <p>Older records have no samples and show a mean only. Their Python times (≈) are recovered from tooltip values rounded to three decimals; archived ratios retain their original precision. Missing data stays missing. Historical measurements before the explicit tracing profile are kept in a separate profile.</p>
+      <p>Sample distributions appear as workflows using the updated publisher complete. The raw download includes both the original archive and the new sample records.</p>
+    </details>
+  </main>
+  <footer><span id="updated"></span><a href="https://github.com/plug-obp/variohyve-benchmarks">Results repository ↗</a></footer>
+</body>
 </html>
