@@ -30,16 +30,18 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="theme/vh-2de7eb16.css">
 
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
         <!-- Provide site root and default themes to javascript -->
         <script>
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0458d790.js";
+            window.path_to_searchindex_js = "searchindex-b0f8be02.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-45e5eade.js"></script>
+        <script src="toc-1ce75dcc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -176,121 +178,49 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="recursion"><a class="header" href="#recursion">Recursion</a></h1>
-<p>VarioHyve fully supports recursion. Because all names are late-bound and resolved at call time via implicit message sends, recursive references work naturally without any special syntax or declarations.</p>
+<p>Recursion uses ordinary late-bound messages and lexical captures; it requires
+no special recursive declaration form. It remains subject to
+<a href="name-resolution.html#lookup-order">normal selection</a>, including overrides and
+callable eligibility.</p>
 <h2 id="named-method-recursion"><a class="header" href="#named-method-recursion">Named Method Recursion</a></h2>
-<p>A method can call itself by name. The name resolves via implicit <code>self</code> dispatch:</p>
-<pre><code class="language-vh">{
-    factorial(n, acc) {
-        n.eq(0).ifTrue(fun { acc }, fun { factorial(n.minus(1), n.mul(acc)) })
-    }
-}
-</code></pre>
+<p>A method can send its own selector or another method’s selector. Declarations
+are available regardless of textual order, enabling mutual recursion.
+Use <code>self.m(...)</code> when current-receiver dispatch is intended; implicit
+<code>m(...)</code> still performs lexical receiver selection.</p>
 <h2 id="slot-bound-lambda-recursion"><a class="header" href="#slot-bound-lambda-recursion">Slot-Bound Lambda Recursion</a></h2>
-<p>A lambda assigned to a slot can reference itself via the slot name. The name resolves via the lexical chain at call time — not at definition time:</p>
+<p>A stored lambda can refer to the accessor holding it:</p>
 <pre><code class="language-vh">{
     fact = fun(n) {
-        n.eq(0).ifTrue(fun { 1 }, fun { n.mul(fact(n.minus(1))) })
-    }
+        n.eq(0).ifTrue(fun { 1 }, fun { n.times(fact(n.minus(1))) })
+    };
 }
 </code></pre>
-<p>This works because everything is late-bound. When <code>fact(n.minus(1))</code> executes, the name <code>fact</code> is looked up through the lexical chain, finding the enclosing object’s slot — which already holds the lambda.</p>
-<p>These lambdas return their final expression normally. <code>^</code> is not a lambda-local
-return: here it would target the initializer that created <code>fact</code>, whose home has
-retired by the time the constructed object’s slot is invoked. The lambda keeps
-its lexical bindings, but not permission to return to that completed initializer.
-See <a href="literals.html#initializer-completion">initializer completion</a>.</p>
+<p>Its body resolves <code>fact</code> when invoked, after the slot is initialized.
+Arithmetic and branching here assume suitable capabilities.
+Normal expression results return through recursive invocations. A <code>^</code> would
+target the creating initializer, normally already retired; see
+<a href="literals.html#early-return-with-">return homes</a>.</p>
 <h2 id="local-lambda-recursion"><a class="header" href="#local-lambda-recursion">Local Lambda Recursion</a></h2>
-<p>Local variables follow the same principle:</p>
-<pre><code class="language-vh">compute() {
-    var fib = fun(n) {
-        n.lt(2).ifTrue(fun { n }, fun { fib(n.minus(1)).plus(fib(n.minus(2))) })
-    }
-    fib(10)
-}
-</code></pre>
-<p>No special <code>let rec</code> form is needed. The <code>var fib</code> binding exists in the local scope, and by the time the lambda body executes, <code>fib</code> resolves to itself through the lookup chain.</p>
-<p>Using <code>^</code> in its branches would instead exit <code>compute</code> at the first base case,
-skipping the pending additions. Ordinary expression results return through each
-recursive lambda invocation.</p>
+<p>A <code>var</code> local can similarly hold a recursive lambda. Its accessor belongs to
+the captured activation. A lambda’s caller supplies no replacement lexical
+scope or implicit self-name.</p>
 <h2 id="mutual-recursion"><a class="header" href="#mutual-recursion">Mutual Recursion</a></h2>
-<p>Methods within the same object can call each other freely:</p>
-<pre><code class="language-vh">{
-    isEven(n) {
-        n.eq(0).ifTrue(fun { true }, fun { isOdd(n.minus(1)) })
-    }
-    isOdd(n) {
-        n.eq(0).ifTrue(fun { false }, fun { isEven(n.minus(1)) })
-    }
-}
-</code></pre>
-<p>Both names resolve via implicit <code>self</code> dispatch. No forward declaration is required — all methods of the object are visible to each other regardless of definition order.</p>
-<p>Mutual recursion also works with <code>var</code>-local lambdas:</p>
-<pre><code class="language-vh">test() {
-    var isEven = fun(n) {
-        n.eq(0).ifTrue(fun { true }, fun { isOdd(n.minus(1)) })
-    }
-    var isOdd = fun(n) {
-        n.eq(0).ifTrue(fun { false }, fun { isEven(n.minus(1)) })
-    }
-    isEven(10)
-}
-</code></pre>
-<p>This works even though <code>isEven</code> references <code>isOdd</code>, which is declared <em>after</em> it. A method activation behaves as an object whose slots (all <code>var</code> locals) exist for the entire activation — not only after their textual declaration. Since names are resolved at call time, by the time <code>isEven(10)</code> executes, <code>isOdd</code> is already bound. There is no temporal dead zone.</p>
+<p>All locals in a source scope are reserved before initialization. Lambdas may
+therefore capture references to later local declarations, provided they run
+after those bindings are initialized. Reading a reserved but uninitialized
+local is an error, not an outer lookup. See <a href="slots.html#var-locals">locals</a>.</p>
 <h2 id="passing-recursive-lambdas-as-arguments"><a class="header" href="#passing-recursive-lambdas-as-arguments">Passing Recursive Lambdas as Arguments</a></h2>
-<p>A recursive lambda can be passed as an argument to another method and continues to recurse correctly. The lambda’s lexical scope is determined at definition time — when called from a different scope, it still resolves names through its own lexical chain:</p>
-<pre><code class="language-vh">{
-    run(f) { f(5) }
-
-    fact = fun(n) {
-        n.eq(0).ifTrue(fun { 1 }, fun { n.mul(fact(n.minus(1))) })
-    }
-
-    test() { run(fact) }  // fact recurses correctly inside run
-}
-</code></pre>
-<p>When <code>run</code> calls <code>f(5)</code>, the lambda body executes. The name <code>fact</code> is resolved via the lambda’s own lexical chain — back to the enclosing object’s slot — not via <code>run</code>’s scope. The call site does not matter; the definition site does.</p>
-<p>The same works for <code>var</code>-local lambdas:</p>
-<pre><code class="language-vh">{
-    run(f) { f(5) }
-
-    test() {
-        var fact = fun(n) {
-            n.eq(0).ifTrue(fun { 1 }, fun { n.mul(fact(n.minus(1))) })
-        }
-        run(fact)  // fact resolves via test()'s activation — works
-    }
-}
-</code></pre>
-<p>This requires that the runtime properly captures closure environments: a method activation must survive as long as any lambda references its locals.</p>
-<p>A lambda can also be returned from a method and called later — the closure keeps
-the enclosing activation’s data reachable. The method’s return home has retired,
-so normal expression results still work but <code>^</code> to that home would fail:</p>
-<pre><code class="language-vh">{
-    makeCounter(start) {
-        var n = start
-        fun() { var old = n; n!(n.plus(1)); old }
-    }
-    test() {
-        var c = makeCounter(0)
-        c()  // 0
-        c()  // 1
-    }
-}
-</code></pre>
-<p>The one case that does <strong>not</strong> work is an anonymous lambda that wants to recurse — it has no name to reference itself:</p>
-<pre><code class="language-vh">{
-    run(f) { f(5) }
-    test() {
-        run(fun(n) {
-            // cannot recurse — this lambda has no name
-            // 'f' is a parameter of 'run', not in this lambda's lexical scope
-        })
-    }
-}
-</code></pre>
-<p>To recurse, the lambda must be bound to a name first (slot or <code>var</code> local).</p>
+<p>Passing or returning a recursive lambda preserves its captured accessors.
+The caller’s parameter name does not become visible in the lambda body.
+Captured data may survive the defining method, but its return home does not:
+ordinary results remain valid, while <code>^</code> to a retired home fails.</p>
+<p>For name-based recursion, place the lambda in a captured slot or local.
+An unbound anonymous lambda has no automatically provided name for itself.</p>
 <h2 id="tail-call-optimization"><a class="header" href="#tail-call-optimization">Tail-Call Optimization</a></h2>
-<p>v1 does not implement tail-call optimization, but the CESK-style abstract machine allocates the stack frames in the heap (either a stack in K or if store allocated continuations in S) - so no risk for stack overflow. See <a href="./future.html#tail-call-optimization">Future Directions</a> for the planned generalized TCO design.</p>
+<p>The prototype uses explicit continuations for native execution but does not
+implement tail-call elimination. This is not a bounded-memory guarantee.
+Foreign callback depth and other execution limits are separate; see
+<a href="interpreter-design.html">implementation</a> and <a href="future.html#tail-call-optimization">future TCO</a>.</p>
 
                     </main>
 

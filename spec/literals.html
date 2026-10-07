@@ -30,16 +30,18 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="theme/vh-2de7eb16.css">
 
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
         <!-- Provide site root and default themes to javascript -->
         <script>
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0458d790.js";
+            window.path_to_searchindex_js = "searchindex-b0f8be02.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-45e5eade.js"></script>
+        <script src="toc-1ce75dcc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -176,286 +178,138 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="literals"><a class="header" href="#literals">Literals</a></h1>
-<p>The grammar defines 6 literal forms. Two are primitive value literals (number, string);
-one is an incomplete-expression literal (hole); and three are structural literals
-(lambda, class, object).</p>
-<pre><code>expression:
-    numberLiteral     // 42, -3.14
-  | stringLiteral     // "hello", 'world'
-  | holeLiteral       // ?
-  | lambdaLiteral     // fun(x) { ... }
-  | classLiteral      // class Point(x, y) { ... }
-  | objectLiteral     // { ... }
-  | ...               // message sends, parens
-  ;
-</code></pre>
+<p>The literal forms are numbers, strings, holes, lambdas, classes and objects.
+Class and object syntax is defined in <a href="objects-and-classes.html">Objects and Classes</a>;
+this chapter owns scalar syntax, closure returns and initializer completion.</p>
+<p><code>null</code>, <code>true</code> and <code>false</code> are ordinary source names, not literal forms.
+Their occurrences are message sends under <a href="name-resolution.html#names-and-contracts">name resolution</a>.
+Canonical null for omitted initializers or empty bodies is supplied directly by
+the language; it does not depend on a declaration named <code>null</code>.</p>
+<p>Operational definition: <a href="./formal-core.html#evaluation">SOS evaluation</a> and <a href="./formal-core.html#completion-return-and-failure">return rules</a>.</p>
 <h2 id="number-literals"><a class="header" href="#number-literals">Number Literals</a></h2>
-<pre><code>numberLiteral : '-'? NUMBER ;
+<pre><code class="language-antlr4">numberLiteral : '-'? NUMBER ;
 NUMBER        : NATURAL ('.' NATURAL)? ;
 fragment NATURAL : [0-9]+ ;
 </code></pre>
-<p>Numbers are signed decimal values. An integer has no decimal point; a float has exactly one.</p>
-<pre><code class="language-vh">42
--7
-3.14159
--0.5
-</code></pre>
-<p>Numbers are value objects. All arithmetic is done via message sends:</p>
-<pre><code class="language-vh">x.plus(1)
-x.times(y)
-x.greaterThan(0)
-</code></pre>
+<p>Examples: <code>42</code>, <code>-7</code>, <code>3.14159</code> and <code>-0.5</code>. Numbers use decimal notation;
+arithmetic and comparisons are messages such as <code>x.plus(1)</code> and
+<code>x.greaterThan(0)</code>. The syntax does not settle the numeric domain, precision
+or overflow behavior. The prototype’s supported subset is documented under
+<a href="interpreter-design.html">implementation limits</a>.</p>
 <h2 id="string-literals"><a class="header" href="#string-literals">String Literals</a></h2>
-<pre><code>STRING : '"' (ESC | ~["\\])* '"'
-       | '\'' (ESC | ~['\\])* '\''
-       ;
-fragment ESC : '\\' (["\\/bfnrt] | 'u' HEX HEX HEX HEX) ;
-</code></pre>
-<p>Strings can use either double or single quotes. Both forms support the same escape sequences:</p>
+<p>Single and double quotes produce the same runtime kind of value. Both support:</p>
 <div class="table-wrapper">
 <table>
 <thead>
 <tr><th>Escape</th><th>Meaning</th></tr>
 </thead>
 <tbody>
-<tr><td><code>\\</code></td><td>backslash</td></tr>
-<tr><td><code>\"</code></td><td>double quote</td></tr>
-<tr><td><code>\'</code></td><td>single quote</td></tr>
-<tr><td><code>\/</code></td><td>forward slash</td></tr>
-<tr><td><code>\b</code></td><td>backspace</td></tr>
-<tr><td><code>\f</code></td><td>form feed</td></tr>
-<tr><td><code>\n</code></td><td>newline</td></tr>
-<tr><td><code>\r</code></td><td>carriage return</td></tr>
-<tr><td><code>\t</code></td><td>tab</td></tr>
-<tr><td><code>\uXXXX</code></td><td>Unicode code point</td></tr>
+<tr><td><code>\\</code></td><td>Backslash</td></tr>
+<tr><td><code>\"</code>, <code>\'</code></td><td>Double or single quote</td></tr>
+<tr><td><code>\/</code></td><td>Slash</td></tr>
+<tr><td><code>\b</code>, <code>\f</code></td><td>Backspace, form feed</td></tr>
+<tr><td><code>\n</code>, <code>\r</code>, <code>\t</code></td><td>Newline, carriage return, tab</td></tr>
+<tr><td><code>\uXXXX</code></td><td>Unicode escape with four hexadecimal digits</td></tr>
 </tbody>
 </table>
 </div>
-<pre><code class="language-vh">"hello, world"
+<pre><code class="language-vh">"hello"
 'it\'s fine'
 "line one\nline two"
-"\u0041"    // "A"
+"\u0041" // A
 </code></pre>
-<p>Single and double quoted forms are identical at runtime — choose whichever avoids escaping the more common quote character in the content.</p>
 <h3 id="multi-line-strings"><a class="header" href="#multi-line-strings">Multi-Line Strings</a></h3>
-<p>The grammar allows raw newlines inside string literals — no special syntax is needed:</p>
-<pre><code class="language-vh">"line one
-line two
-line three"
-</code></pre>
-<p>This is equivalent to <code>"line one\nline two\nline three"</code>. Use whichever form is more readable. Raw multi-line strings preserve the exact whitespace between the quotes, including leading indentation.</p>
+<p>Raw newlines are allowed inside either quoted form. They preserve all whitespace
+between the quotes, including indentation; <code>"a\nb"</code> and the corresponding
+two-line literal have the same content. See the lexer in
+<a href="../../../vh-core/src/main/antlr/vh.g4">vh.g4</a>.</p>
 <h2 id="hole-literals"><a class="header" href="#hole-literals">Hole Literals</a></h2>
-<pre><code class="language-antlr4">holeLiteral : HOLE ;
-HOLE : '?' ;
-</code></pre>
-<p>A hole is written as <code>?</code>. It is an explicit marker for an intentionally incomplete expression:</p>
-<pre><code class="language-vh">threshold = ?;
-
-compute(x) {
-    x.plus(?)
-}
-
-controller = (? : expected(Controller) : reason("provided by integration team"));
-</code></pre>
-<p>A hole may appear anywhere an expression is expected. It is not a parse error and it is not an omitted expression. It is part of the program’s syntax and is represented explicitly in the AST.</p>
-<p>This distinction is important:</p>
-<pre><code class="language-vh">x = ?;   // initialized by an explicit hole
-x = ;    // syntax error or parser recovery: missing expression
-x;       // uninitialized slot, defaults to nil/null according to the active kernel
-</code></pre>
-<p>A hole is also distinct from <code>null</code>. It does not denote absence. It denotes an unresolved value or expression that must be supplied, interpreted, synthesized, or otherwise handled by the active execution or tooling context.</p>
+<p><code>?</code> is an explicit incomplete expression, valid wherever an expression is
+expected. It has its own AST node and differs from both an omitted initializer
+and canonical null. A missing initializer supplies null; a hole remains
+unresolved.</p>
 <h3 id="descriptors-on-holes"><a class="header" href="#descriptors-on-holes">Descriptors on Holes</a></h3>
-<p>Like other expressions, a hole may carry descriptors through parenthesized expression syntax:</p>
-<pre><code class="language-vh">speed = (? : range(0, 300) | units("km/h"));
-
-selectController() {
-    (? : expected(PIDController) : satisfies(StabilityContract))
-}
-</code></pre>
-<p>Descriptors do not change the base syntax of the hole. They provide additional information for tools, abstract interpreters, model checkers, synthesis engines, documentation generators, or interactive environments. For example, a concrete interpreter may use a descriptor to display a better prompt, while an abstract interpreter may use it to choose an abstract value domain or constraint.</p>
+<p>Use parenthesized <a href="descriptors.html#expression-level-descriptors">descriptor syntax</a>,
+for example <code>(? : expected(Controller) : reason("integration input"))</code>.
+Descriptors can inform diagnostics or a separately selected analysis tool;
+they do not silently change raw execution.</p>
 <h3 id="runtime-semantics"><a class="header" href="#runtime-semantics">Runtime Semantics</a></h3>
-<p>Evaluating a hole does not produce a normal VarioHyve value by itself. Instead, it delegates to the active hole-resolution policy of the current runtime or kernel.</p>
-<p>Different runtimes may choose different policies:</p>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>Runtime / tool context</th><th>Possible interpretation</th></tr>
-</thead>
-<tbody>
-<tr><td>Concrete interactive interpreter</td><td>Suspend execution and ask the user/tool to provide a value or replacement expression</td></tr>
-<tr><td>Batch interpreter</td><td>Raise an <code>UnresolvedHole</code> runtime error</td></tr>
-<tr><td>Test kernel</td><td>Fail the test with a diagnostic pointing to the hole</td></tr>
-<tr><td>Abstract interpreter</td><td>Treat the hole as an unknown abstract value, possibly constrained by descriptors</td></tr>
-<tr><td>Model-checking kernel</td><td>Branch over a bounded or descriptor-constrained set of possible values</td></tr>
-<tr><td>Synthesis tool</td><td>Attempt to synthesize an expression satisfying the surrounding context and descriptors</td></tr>
-<tr><td>LSP / IDE</td><td>Report an unresolved-hole diagnostic and offer code actions to fill it</td></tr>
-</tbody>
-</table>
-</div>
-<p>The exact policy is not fixed by the surface language. The language only specifies that <code>?</code> is an explicit hole expression and that reaching it during execution must be handled by the active runtime policy.</p>
+<p>A hole supplies no normal value by itself. Reaching it must invoke the
+execution context’s explicit hole policy. The concrete bootstrap reports
+<code>UnresolvedHole</code>. Interactive suspension, externally supplied replacements,
+abstract values, branching and synthesis are possible richer tooling policies,
+not implemented guarantees. Their interpretation must be specified by that
+context; accepting partial syntax does not imply an abstract interpreter.</p>
 <h3 id="hole-identity"><a class="header" href="#hole-identity">Hole Identity</a></h3>
-<p>Each syntactic occurrence of ? denotes a distinct hole. Tools and interpreters should assign a stable internal hole identity to each occurrence, typically derived from the AST node and source location.</p>
-<p>For example:</p>
-<pre><code class="language-vh">x = ?;
-y = ?;
-</code></pre>
-<p>contains two different holes, even though they have the same spelling.</p>
-<p>Stable hole identity is useful for diagnostics, LSP code actions, external annotations, abstract interpretation, trace replay, and interactive execution. A tool may refer to a hole through a descriptor-supplied name:</p>
-<pre><code class="language-vh">gain = (? : controllerGain);
-</code></pre>
-<p>or through a qualified path derived from the surrounding syntactic context.</p>
-<h3 id="holes-and-partial-programs"><a class="header" href="#holes-and-partial-programs">Holes and Partial Programs</a></h3>
-<p>Holes support partial programs and partial models. They allow a VarioHyve artifact to remain syntactically well-formed even when some design decisions are still open.</p>
-<p>This is especially useful in system-of-systems and federated modeling contexts, where different stakeholders may progressively supply behavior, configuration values, interface adapters, or analysis assumptions. A hole marks an explicit design opening: something is known to be missing, and the program records that incompleteness directly.</p>
+<p>Each syntactic occurrence denotes a distinct hole. Tools should retain a stable
+internal identity, normally based on AST/source identity, for diagnostics,
+annotations, filling, traces or replay. A descriptor-supplied name or qualified
+source path may identify a hole to a tool. Two occurrences of <code>?</code> do not become
+one hole merely because their spelling is equal.</p>
 <h2 id="lambda-literals"><a class="header" href="#lambda-literals">Lambda Literals</a></h2>
-<pre><code class="language-antlr4">lambdaLiteral : LAMBDA arguments LB statementList RB (COLON descriptorList)* ;
-LAMBDA        : 'fun' | 'λ' ;
-arguments     : (LP formalList? RP)? ;
-statementList : statement (SEMICOLON statement)* SEMICOLON? ;
+<p><code>fun</code> and <code>λ</code> introduce lambdas. Parentheses around the parameter list are
+optional when it is empty. Bodies are semicolon-separated statement lists;
+an empty body and a trailing semicolon are allowed.</p>
+<pre><code class="language-vh">fun { 42 }
+fun(x) { x.plus(1) }
+λ(x, y) { x.plus(y) }
 </code></pre>
-<p>A lambda is an anonymous callable. Its body is a <code>statementList</code> — a sequence of statements separated by <code>;</code>. Parameters are optional.</p>
-<pre><code class="language-vh">fun { 42 }                          // 0-arg lambda, implicit return of 42
-fun(x) { x.plus(1) }               // 1-arg lambda, implicit return
-fun(x, y) { x.plus(y) }            // 2-arg lambda, implicit return
-λ(n) { n.times(2) }                // Unicode keyword form
-</code></pre>
+<p>A lambda captures its evaluation scope, current receiver, contribution origin
+and lexical return home. It does not capture its later caller’s scope.
+Captured activation data can outlive the creating invocation. A lambda supplies
+exact <code>apply/N</code> at its declared parameter count; binding invocation uses the
+<a href="message-sends.html#candidate-selection">ordinary eligibility rules</a>.
+Optional descriptors follow the closing brace.</p>
+<p>A lambda is a native object with its own identity and the inherited
+<a href="objects-and-classes.html#root-object-protocol">root Object protocol</a>.
+Distinct evaluations create distinct objects. Object-method sends use the lambda
+as receiver; its <code>apply/N</code> body instead uses the captured receiver and return
+home. Inheritance neither changes lexical <code>self</code> nor exposes captures. There is
+no public Lambda factory or ambient Lambda binding; the private representation
+is described in <a href="object-model.html#core-structures">Core Structures</a>.</p>
 <h3 id="implicit-return"><a class="header" href="#implicit-return">Implicit Return</a></h3>
-<p>Both methods and lambdas implicitly return the value of their <strong>last expression</strong> — no <code>^</code> required:</p>
-<pre><code class="language-vh">fun(x) { x.plus(1) }                // returns x+1
-fun(x) { x.plus(1); x.times(2) }   // returns x*2 (last expression)
-</code></pre>
-<pre><code class="language-vh">getX() { x }                        // method — implicit return of x
-add(a, b) { a.plus(b) }             // method — implicit return of sum
-</code></pre>
-<p>This is one rule applied uniformly. There are no special cases.</p>
+<p>Methods and lambdas return their final expression’s value on normal completion.
+An empty body returns canonical null. This normal result returns from the
+current invocation; it does not perform a non-local return.</p>
 <h3 id="early-return-with-"><a class="header" href="#early-return-with-">Early Return with <code>^</code></a></h3>
-<p><code>^</code> returns to the lexically enclosing <strong>method or initializer</strong> home. The home
-is fixed by creation context, not by the dynamic caller; invoking a lambda does
-not create another return home.</p>
-<ul>
-<li><strong>In a method body:</strong> <code>^</code> exits the method, returning the given value.</li>
-<li><strong>In a lambda inside a method:</strong> <code>^</code> exits the enclosing method, not the lambda.</li>
-<li><strong>In an initializer or its lambda:</strong> <code>^</code> targets that initializer invocation.
-It fails during slot initialization; in post-slot code it completes only that
-contribution, ignoring the returned value. See <a href="#initializer-completion">Initializer completion</a>.</li>
-</ul>
-<pre><code class="language-vh">find(items, pred) {
-    items.forEach(fun(item) {
-        pred(item).ifTrue(fun { ^ item })    // ^ exits find, not forEach or ifTrue
-    })
-    nil                                       // implicit return — not found
-}
-</code></pre>
-<p>Another example — the <code>^</code> in each lambda returns directly from <code>search</code>:</p>
-<pre><code class="language-vh">search(items, idx) {
-    idx.eq(items.size).ifTrue(fun { ^ notFound })           // exits search
-    items.at(idx).matches.ifTrue(fun { ^ items.at(idx) })   // exits search
-    search(items, idx.plus(1))                               // implicit return
-}
-</code></pre>
-<p><strong>When is <code>^</code> necessary?</strong> Only for early exit. If the value you want to return is naturally the last expression, <code>^</code> is not needed. If you need to exit a method from inside a lambda (or from a branch before the last line), use <code>^</code>.</p>
-<p><strong>Dead context risk:</strong> A lambda with <code>^</code> captures its enclosing method or
-initializer home. If it executes a return after that home has retired, a
-runtime error occurs. Captured data remains usable; it does not preserve return
-authority. A live home is necessary but not sufficient: initializer slot-phase
-returns and returns crossing an active Alien callback barrier are also rejected.</p>
-<p>Lambdas capture the lexical activation/object scope at their creation site. Internal scope links preserve those bindings; source <code>outer</code> is a declaration-relative enclosing-object operation and does not expose the captured activation.</p>
-<p>Every initializer invocation establishes a fresh home. Class expressions retain
-definition-time bindings without retaining that method’s return target for future
-initialization. An outside lambda passed to an initializer keeps its own home
-and may unwind construction to it; it is not rebound to the initializer.</p>
-<p>Lambdas supply the exact <code>apply/N</code> capability for their parameter count. A
-generated binding containing a lambda can supply invocation at that arity; a
-wrong-arity lambda is a lookup miss, not a reason to invoke it and catch an error.
-For a binding <code>f = fun { 7 };</code>, bare <code>f</code> returns the lambda and <code>f()</code> returns
-<code>7</code>. Direct <code>f.apply()</code> also invokes it once. See
-<a href="./slots.html#the-apply-protocol-and-callable-objects">Slots and Accessors</a>.</p>
-<p>Lambdas can carry optional descriptors after a <code>:</code>:</p>
-<pre><code class="language-vh">fun(x) { x.plus(1) } : MyAnnotation
-</code></pre>
-<h2 id="class-literals"><a class="header" href="#class-literals">Class Literals</a></h2>
-<pre><code>namedClassLiteral
-    : CLASS IDENT arguments mixinApplications superclassApplication
-      LB classBodyElement* initializerBody? RB (COLON descriptorList)* ;
-anonymousClassLiteral
-    : CLASS arguments mixinApplications superclassApplication
-      LB classBodyElement* initializerBody? RB (COLON descriptorList)* ;
-classLiteral
-    : namedClassLiteral | anonymousClassLiteral ;
-arguments            : (LP formalList? RP)? ;
-mixinApplications    : (WITH expressionList)? ;    // expressionList — comma-separated, allows multiple mixins
-superclassApplication: (EXTENDS expression)? ;
-classBodyElement     : namedClassLiteral SEMICOLON? | methodDecl SEMICOLON?
-                     | slotDecl SEMICOLON | factoryDecl SEMICOLON? ;
-initializerBody      : PIPE statementList? ;
-</code></pre>
-<p>The <code>class</code> keyword is <strong>required</strong> for all class definitions. A literal without <code>class</code> is always a singleton object (see <a href="#object-literals">Object Literals</a> below).</p>
+<p><code>^ expression</code> first evaluates its operand, then returns to the lexically
+enclosing method or initializer home. Lambda invocation creates no new home.</p>
 <div class="table-wrapper">
 <table>
 <thead>
-<tr><th>Form</th><th>Result</th></tr>
+<tr><th>Creation context</th><th>Target of <code>^</code></th></tr>
 </thead>
 <tbody>
-<tr><td><code>class { body }</code></td><td>anonymous class — zero parameters</td></tr>
-<tr><td><code>class() { body }</code></td><td>anonymous class — zero parameters (equivalent to above)</td></tr>
-<tr><td><code>class(params) { body }</code></td><td>anonymous class with parameters</td></tr>
-<tr><td><code>class Name { body }</code></td><td>named class — zero parameters</td></tr>
-<tr><td><code>class Name() { body }</code></td><td>named class — zero parameters (equivalent to above)</td></tr>
-<tr><td><code>class Name(params) { body }</code></td><td>named class with parameters</td></tr>
+<tr><td>Method body or a lambda created there</td><td>That method invocation</td></tr>
+<tr><td>Initializer or a lambda created there</td><td>That initializer contribution invocation</td></tr>
+<tr><td>Supplied outside lambda</td><td>Its original home, even when called during construction</td></tr>
 </tbody>
 </table>
 </div>
-<p>Forms with and without empty parentheses are exactly equivalent. Both produce a zero-parameter class. This follows from the <code>arguments</code> grammar rule — <code>(LP formalList? RP)?</code> — which makes the parenthesized form optional. This allows homogeneous syntax when defining families of classes with varying parameter counts.</p>
-<p><strong>Named class expressions</strong> carry an identifier after <code>class</code>. Both named and
-anonymous expression forms capture the lexical activation/object scope in which
-they are evaluated. An expression’s name is retained as declaration metadata;
-it does not introduce a binding in the surrounding body.</p>
-<p>A named class in <code>bodyElement</code> position is a <strong>member-class declaration</strong>. Its
-synthesized zero-arity accessor binds the declaration to the enclosing instance
-and caches that class per receiver and declaration occurrence. It does not
-capture the enclosing instance’s constructor parameters, and it is not sugar
-for a slot initializer. A backend may use hidden storage to cache the class,
-but must retain its declaration identity, definition scope and source origin.</p>
-<p>An invocation candidate can inspect the member declaration’s constructor arity
-and owned <code>factory apply</code> signatures before realizing the class. A rejected arity
-evaluates no superclass or mixin targets. A selected member is realized normally:
-its contributor receiver expressions may compute class values, with mixin targets
-evaluated left-to-right before the superclass target. The terminal application
-routes arguments for later instance initialization; receiver subexpressions run
-as ordinary computations. See <a href="./object-model.html#what--mixinargs-and--baseargs-mean">constructor clauses</a>.</p>
-<pre><code class="language-vh">class Container(argument) {
-    saved = argument;
-    class Member { read { saved } }
-    Expression = class Named { read { argument } };
-}
-</code></pre>
-<p><code>Member.read</code> uses the enclosing instance’s slot. <code>Expression</code> is initialized by
-a class expression that deliberately captures <code>argument</code>. Its behavior is the
-same if the name <code>Named</code> is omitted.</p>
-<p>Member names and slot names share a namespace; duplicates in one body are
-semantic errors. A member has no generated setter. Member declarations remain
-available even before their textual position is reached by ordinary slot
-initialization. Named forms are allowed in declaration and expression positions;
-anonymous forms occur only in expression positions. See
-<a href="./objects-and-classes.html#member-declarations-and-class-expressions">Objects and Classes</a>.</p>
-<p>A body can contain member-class declarations, slot declarations, method declarations, and factory declarations, followed by an optional final <code>|</code> initialization section. Factory methods (<code>factory methodDecl</code>) define alternate constructors on the metaclass — see <a href="./object-model.html#metaclass-details">Object Model — Metaclass Details</a>.</p>
-<p>Full examples, semantics, inheritance (<code>&lt;</code>), mixins (<code>&lt;:</code>), and the <code>class</code> keyword are covered in <a href="./objects-and-classes.html">Objects and Classes</a>.</p>
-<p>The runtime store structure for class literals is covered in <a href="./object-model.html#store-entries">Object Model — Store Entries</a>.</p>
+<p>A missing or retired home causes a dead-context error. Captured data does not
+preserve return authority. A return crossing foreign execution is governed by
+the <a href="foreign-objects.html#non-local-returns-across-the-boundary">boundary agreement</a>.
+The default agreement requires a live home reachable without crossing an active
+Alien callback barrier; supporting agreements must preserve these native home
+and initializer rules.
+Successful unwinding retires intervening invocation homes. Operand failure
+propagates as failure rather than completing a return.</p>
+<p>Class expressions retain definition-time bindings, but each later initializer
+invocation creates a fresh home. An outside lambda can unwind construction to
+its own live accessible home; it is never rebound to the initializer.</p>
+<h2 id="class-literals"><a class="header" href="#class-literals">Class Literals</a></h2>
+<p>The <code>class</code> keyword creates a named or anonymous class value. See
+<a href="objects-and-classes.html#class-literal-syntax">class literal syntax</a> and the
+distinction between <a href="objects-and-classes.html#member-declarations-and-class-expressions">member declarations and class expressions</a>.</p>
 <h2 id="object-literals"><a class="header" href="#object-literals">Object Literals</a></h2>
-<pre><code class="language-antlr44">objectLiteral : LB objectBodyElement* initializerBody? RB (COLON descriptorList)* ;
-objectBodyElement     : namedClassLiteral SEMICOLON? | methodDecl SEMICOLON?
-                      | slotDecl SEMICOLON ;
-</code></pre>
-<p>An object literal <code>{ body }</code> creates a singleton — it is evaluated immediately and produces exactly one instance. It never has a parameter list and never carries the <code>class</code> keyword.</p>
-<pre><code class="language-vh">config = {
-    debug = false;
-    verbose = true;
-}
-</code></pre>
-<p>An object literal creates three store entries: the instance, its anonymous class, and its anonymous metaclass. See <a href="./object-model.html#store-entries">Object Model — Store Entries</a>.</p>
+<p><code>{ body }</code>, optionally prefixed by mixin and superclass clauses such as
+<code>&lt;: M(p) &lt; S(q) { body }</code>, realizes a fresh anonymous zero-parameter class and
+immediately sends its primary <code>new/0</code>. It has no constructor parameter list or
+factories; contributor arguments and initialization follow the class rules.
+See <a href="objects-and-classes.html#object-literals">object literals</a>.</p>
 <h2 id="initializer-completion"><a class="header" href="#initializer-completion">Initializer completion</a></h2>
-<p>A class or object body may end with <code>|</code> and an ordinary statement list. These
-statements execute once, after that contribution’s ordered slot declarations:</p>
+<p>A class or object body may end with <code>|</code> and an optional ordinary statement list.
+This section executes after that contribution’s ordered slot initializers:</p>
 <pre><code class="language-vh">class Config(input) {
     saved = input;
     value { saved }
@@ -463,28 +317,28 @@ statements execute once, after that contribution’s ordered slot declarations:<
     ^ "done"
 }
 </code></pre>
-<p>Successful <code>new</code> returns the allocated instance, not <code>"done"</code>. An object literal
-uses the same form, for example <code>{ value = 42; | ^ 99 }</code>. An empty <code>|</code> section is
-allowed. No member/method/slot declarations follow the delimiter; ordinary
-statements, including local <code>var</code> and class expressions, are permitted. Attached
-descriptor lists retain <code>|</code> as their separator. End a descriptor-bearing method,
-member-class or factory declaration with the optional <code>;</code> to separate it from
-post-slot code, for example <code>value { saved } : Tag; | performWork</code>.
-Constructor parameters are visible in both initialization phases; ordinary methods still cannot resolve
-their own constructor parameters, even if called by either phase.</p>
-<p>Each invocation of each initializer contribution has its own fresh private
-return home. During slot initialization a return targeting that home is an error,
-including a return inside the last slot expression. The declaration completes
-only after its value has been assigned. Post-slot code may complete normally or
-use <code>^ value</code>, directly or inside a captured lambda; both results are ignored.
-An early completion finishes only this contribution. The enclosing construction
-schedule continues with any later contributions and ultimately returns the
-receiver. Supplied outside lambdas retain their existing lexical homes.</p>
-<p>Homes retire on normal completion, early completion, failure and unwinding.
-Escaped lambdas/classes may retain bindings without preserving the right to
-return to those homes. Failures do not replay initialization or roll back effects,
-and an already escaped receiver is not retracted. The Alien callback barrier is
-unchanged. See the <a href="../../design-notes/initializer-return-homes.html">accepted policy and implementation sequence</a>.</p>
+<p>Primary construction returns the allocated receiver, not <code>"done"</code>.
+No member, method, factory or slot declarations follow the delimiter;
+ordinary statements, including <code>var</code> and class expressions, are allowed.
+An empty <code>|</code> section is valid.</p>
+<p>Descriptor lists also use <code>|</code>. Terminate a preceding described member, method
+or factory with <code>;</code> to separate post-slot code:
+<code>value { saved } : Tag; | performWork</code>.</p>
+<p>Each contribution invocation has a fresh private return home:</p>
+<ul>
+<li><strong>Slot phase:</strong> returning to that home is an error, including during the
+final slot expression. The phase ends only after its final value is written.</li>
+<li><strong>Post-slot phase:</strong> normal completion or <code>^ value</code> completes that
+contribution and ignores the value. Subsequent contributions still run.</li>
+<li><strong>Every exit:</strong> normal completion, early return, failure and unwinding retire
+the home. Escaped data remain usable without retaining return authority.</li>
+</ul>
+<p>Constructor parameters are visible in both initialization phases, under the
+<a href="objects-and-classes.html">construction scope rules</a>. An outside lambda retains
+its original home. The default Alien callback barrier remains in force; any
+future crossing support must preserve these initializer phase restrictions.
+Failures neither replay initialization nor roll back effects or retract an
+escaped receiver. See the <a href="../../design-notes/initializer-return-homes.html">accepted policy</a>.</p>
 
                     </main>
 

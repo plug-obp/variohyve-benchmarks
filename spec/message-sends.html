@@ -30,16 +30,18 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="theme/vh-2de7eb16.css">
 
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
         <!-- Provide site root and default themes to javascript -->
         <script>
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0458d790.js";
+            window.path_to_searchindex_js = "searchindex-b0f8be02.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-45e5eade.js"></script>
+        <script src="toc-1ce75dcc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -176,355 +178,173 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="message-sends"><a class="header" href="#message-sends">Message Sends</a></h1>
-<p>All computation in VarioHyve is expressed through message sends. There are no operators, no field access, no function calls — only messages dispatched to receivers.</p>
+<p>A selector is a name/arity pair. Ordinary access, invocation and assignment
+all send messages; there is no public direct field access or separate binding
+namespace. Receiver origins are defined in <a href="name-resolution.html">Name Resolution</a>.</p>
+<p>Operational definition: <a href="./formal-core.html#selection">SOS selection rules</a>.</p>
 <h2 id="implicit-message-send"><a class="header" href="#implicit-message-send">Implicit Message Send</a></h2>
-<p>A bare name is an implicit zero-argument send. Parentheses request invocation at
-the written arity; both forms use declaration-relative lexical lookup:</p>
-<pre><code class="language-vh">x           // ordinary x/0 send: execute an accessor or method
-x()         // invoke zero-argument behavior named x
-x!(5)       // invoke x!/1; a synthesized setter stores and returns 5
-foo(a, b)   // invoke foo/2 through a method or eligible accessor result
-</code></pre>
-<p><code>x</code> and <code>x()</code> remain different forms. For a method <code>x { 7 }</code>, either executes
-that method once and returns <code>7</code>. For a slot containing <code>fun { 7 }</code>, bare <code>x</code>
-returns the lambda and <code>x()</code> invokes it. A method returning a callable does not
-implicitly invoke its result. This distinction lets <code>Factory</code> return a class
-object and <code>Factory()</code> invoke its zero-argument factory.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Form</th><th>Request</th></tr>
+</thead>
+<tbody>
+<tr><td><code>x</code></td><td>Exact <code>x/0</code>: return the selected accessor or method result.</td></tr>
+<tr><td><code>x()</code></td><td>Invocation at arity zero.</td></tr>
+<tr><td><code>x(a, b)</code></td><td>Invocation at arity two.</td></tr>
+<tr><td><code>x!(v)</code></td><td>Invocation of <code>x!/1</code>, a distinct selector from <code>x/1</code>.</td></tr>
+</tbody>
+</table>
+</div>
+<p>Parentheses remain semantically significant through lowering and dispatch.
+In particular, invocation cannot always be lowered to getter-then-apply.</p>
 <h2 id="self-dispatch-message-send-leading-dot"><a class="header" href="#self-dispatch-message-send-leading-dot">Self-Dispatch Message Send (Leading Dot)</a></h2>
-<p>A message prefixed with a bare <code>.</code> — no expression to the left — sends the message directly to <code>self</code>, bypassing the lexical chain entirely:</p>
-<pre><code class="language-vh">.x          // send 'x' to self — inheritance chain only
-.x!(5)      // send 'x!(5)' to self — setter, returns 5
-.move(1, 2) // send 'move(1,2)' to self
-</code></pre>
-<p>This is the <code>#SelfMessageSendExp</code> grammar rule. It is semantically distinct from an implicit message send:</p>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>Form</th><th>Grammar rule</th><th>Lookup</th></tr>
-</thead>
-<tbody>
-<tr><td><code>x</code></td><td><code>#ImplicitMessageSendExp</code></td><td>Locals → lexical chain (enclosing objects) → self’s class hierarchy</td></tr>
-<tr><td><code>.x</code></td><td><code>#SelfMessageSendExp</code></td><td>Self’s class hierarchy <strong>only</strong> — lexical chain skipped</td></tr>
-<tr><td><code>self.x</code></td><td><code>#MessageSendExp</code></td><td>Self’s class hierarchy only — identical to <code>.x</code></td></tr>
-</tbody>
-</table>
-</div>
-<p><code>.x</code> and <code>self.x</code> are fully equivalent. <strong>Prefer <code>self.x</code> for clarity</strong> — the explicit receiver makes intent obvious, especially in code with nested classes. Use the leading-dot shorthand only in tightly scoped contexts where <code>self</code> is unambiguously clear.</p>
-<p>The distinction between <code>x</code> and <code>.x</code> is <strong>not stylistic</strong> — it matters inside nested classes where the lexical chain reaches into an enclosing object:</p>
-<pre><code class="language-vh">class Outer {
-    x = 0
-    class Inner {
-        process() {
-            x!(5)      // lexical lookup → finds Outer's x! → mutates Outer's slot
-            .x!(5)     // self-dispatch only → Inner has no x → doesNotUnderstand
-            self.x!(5) // identical to .x!(5), explicit form
-        }
-    }
-}
-</code></pre>
+<p><code>.m(args)</code> is equivalent to <code>self.m(args)</code>; both skip lexical receiver selection.
+Leading <code>..</code> likewise cascades on <code>self</code>. Prefer the explicit forms when nested
+scopes would make the receiver unclear.</p>
 <h2 id="explicit-message-send-dot"><a class="header" href="#explicit-message-send-dot">Explicit Message Send (Dot)</a></h2>
-<p>The <code>.</code> operator sends a message to an explicit receiver. The same distinction
-between ordinary sends and invocation applies:</p>
-<pre><code class="language-vh">p.x          // ordinary x/0 send: return the accessor/method result
-p.x()        // invoke zero-argument behavior named x on p
-p.x!(5)      // send 'x!(5)' to p — setter, returns 5
-p.move(1, 2) // send 'move(1,2)' to p
-</code></pre>
-<p>Dot-chains evaluate left to right. Each message is sent to the result of the previous:</p>
-<pre><code class="language-vh">a.b.c(3)
-// equivalent to:
-// temp = a.b
-// temp.c(3)
-</code></pre>
-<p>This means <code>a.b.c(3)</code> sends <code>b</code> to <code>a</code>, then sends <code>c(3)</code> to whatever <code>b</code> returned. If <code>b</code> returns a different object, <code>c(3)</code> goes to that object — not to <code>a</code>.</p>
+<p><code>receiver.name</code> is an exact zero-argument send. <code>receiver.name(args)</code> invokes
+at the written arity. Evaluate the receiver first, then arguments once from
+left to right, then select behavior. Dot chains send each message to the
+previous result: <code>a.b.c(3)</code> sends <code>c/1</code> to the result of <code>a.b</code>.</p>
 <h3 id="no-operator-precedence"><a class="header" href="#no-operator-precedence">No Operator Precedence</a></h3>
-<p>Because VarioHyve has no binary operators — only message sends — there is no operator precedence. Dot-chains evaluate strictly left to right:</p>
-<pre><code class="language-vh">3.plus(4).times(2)          // (3 + 4) * 2 = 14, not 3 + (4 * 2)
-a.greaterThan(b).and(c.lt(d))  // explicit grouping required
-</code></pre>
-<p>To control evaluation order, use parentheses to nest receiver expressions:</p>
-<pre><code class="language-vh">3.plus(4.times(2))          // 3 + (4 * 2) = 11
-</code></pre>
-<p>This is a direct consequence of the “everything is a message send” principle: arithmetic expressions are just dot-chains, and all dot-chains evaluate left to right. The planned <a href="./future.html#operators-and-control-structures">extensible parser</a> will introduce operator syntax with conventional precedence rules, desugaring back to message sends.</p>
+<p>Arithmetic and comparisons use messages. Consequently
+<code>3.plus(4).times(2)</code> groups as <code>(3.plus(4)).times(2)</code>; use
+<code>3.plus(4.times(2))</code> for the other grouping. General operator syntax is
+<a href="future.html#operators-and-control-structures">deferred</a>.</p>
 <h2 id="dispatch-rules"><a class="header" href="#dispatch-rules">Dispatch Rules</a></h2>
-<p>Invocation selects an operation by name and arity. Native methods, stored
-lambdas, stored native callable objects and member-class factories can supply
-the same invocation selector. Their bodies retain their own receiver, lexical
-scope and return home; invocation equivalence does not change those contexts.</p>
-<p>All these routes consist of message sends: either the direct <code>name/N</code> operation,
-or a generated <code>name/0</code> accessor followed by <code>apply/N</code> on its result. Locals and
-parameters also have generated accessor messages on backend-private activation
-objects. The same message protocol applies throughout. The VM may implement a
-generated accessor’s known behavior with an internal slot primitive and may
-inspect member declaration metadata for eligibility. These are implementations
-of the message protocol, not additional source-level ways to access values.</p>
+<p>The following rules own invocation selection for methods, generated accessors,
+lambdas, native callable objects and member factories. Invocation preserves
+the selected behavior’s receiver, declaration origin, lexical captures and
+return home. Parameters and locals expose generated accessors on private
+activation objects; direct backend reads may implement these messages.</p>
 <h3 id="candidate-selection"><a class="header" href="#candidate-selection">Candidate Selection</a></h3>
-<p>At each searched lexical scope or hierarchy contribution for <code>name/N</code>:</p>
+<p>For <code>name/N</code>, examine each searched hierarchy contribution in order: owned
+contribution, direct mixins left-to-right, then the superclass recursively.</p>
 <ol>
-<li>Prefer a directly matching operation. At <code>N = 0</code>, a generated getter is
-considered under the accessor rule below rather than accepted as the operation.</li>
+<li>Prefer an exact operation <code>name/N</code>. At <code>N = 0</code>, a generated getter goes
+through the next rule instead of satisfying invocation by returning a value.</li>
 <li>Otherwise consider the effective generated <code>name/0</code> accessor. A storage
-accessor qualifies only when its value supplies exactly <code>apply/N</code>. A
-member-class accessor qualifies through its declaration’s factory signatures.</li>
-<li>On a miss, continue to the next scope or contribution. Exhausting lookup
-produces a missing-selector diagnostic.</li>
+accessor qualifies when its value supplies exactly <code>apply/N</code>. A member
+accessor qualifies through its effective declaration’s factory signatures.</li>
+<li>Continue only on a miss. Exhausting the search produces a missing-selector
+diagnostic.</li>
 </ol>
-<p>Implicit invocation searches declaration-relative lexical scopes before a self
-invocation. Explicit native invocation searches contributions in dispatch order:
-owned contribution, direct mixins left-to-right, then the superclass chain.
-<code>super</code> begins after the executing contribution’s exact application occurrence.
-The candidate rule is identical at every level, so an own callable slot can beat
-an inherited exact method.</p>
-<p>For implicit invocation, a declaration-relative scope first establishes
-eligibility: it declares the requested operation, or it declares <code>name/0</code> whose
-effective accessor on that scope’s receiver is generated and qualifies at the
-requested arity. Then dispatch the original <code>name/N</code> invocation normally on
-that receiver, regardless of which kind of declaration established eligibility.
-An overriding <code>name/N</code> method can replace an eligible stored callable or member
-factory; an eligible callable accessor can replace a method. The winning behavior
-keeps its own receiver, declaration origin and lexical context. A candidate that
-fails eligibility continues outward before any self invocation; an unrelated
-method on an inner receiver cannot capture an eligible outer dependency.</p>
-<p>An overridden generated getter is not eligible: do not execute the overriding
-method and do not inspect its backing storage. Getter masking persists down the
-hierarchy, even if the overriding getter does not supply the requested invocation
-arity. An ordinary zero-argument method directly matches <code>name/0</code>, but is not
-executed to discover behavior at other arities. Explicitly retrieve its result
-when that is intended, for example <code>obj.name.apply(arg)</code>.</p>
-<p>For native values, capability selection looks for an exact <code>apply/N</code> method
-through the value’s hierarchy, or checks a lambda’s declared arity. It does not
-recursively treat a stored <code>apply</code> value as an <code>apply/N</code> method. An Alien value
-returned by an eligible generated accessor can qualify through its adapter’s
-effect-free <code>apply/N</code> selection; <code>ForeignCallable</code> remains usable. A send whose explicit
-receiver is Alien selects the requested foreign name/arity directly. It does not
-speculatively invoke a foreign <code>name/0</code> operation to discover a callable.</p>
-<p>Receiver and arguments are evaluated once, left-to-right, before selection.
-Retain an eligible generated accessor’s result and selected callable operation
-through virtual dispatch. Revisiting it uses this retained result,
-including any selected foreign operation, rather than repeating the read or
-resolution. A wrong-arity or non-callable value is a miss; an uninitialized read
-or a selected operation’s failure is an error. Neither errors nor non-local
-control flow cause lookup to resume or effects to replay. Foreign selection failures are errors,
-not selector misses. Eligibility precedes virtual dispatch: its uninitialized
-read or foreign selection failure remains an error even when that receiver has
-an overriding method at the requested arity.</p>
+<p>Exact-operation preference is local to each contribution: a nearer eligible
+accessor can beat a farther method. <code>super</code> starts after the executing
+contribution’s exact occurrence.</p>
+<p><strong>Getter masking.</strong> The first <code>name/0</code> operation masks later getters in that
+hierarchy search, even when its candidate is ineligible. An ordinary overriding
+getter is never executed to discover a callable, and its hidden storage is
+never inspected. Later exact <code>name/N</code> methods can still match. A <code>super</code> search
+starts masking afresh at its redirected origin.</p>
+<p><strong>Callable capability.</strong> Native values qualify through an exact <code>apply/N</code>
+method, including inherited methods, or a lambda’s declared arity. A stored
+<code>apply</code> accessor does not recursively make its containing object callable.
+A stored Alien can qualify through effect-free boundary selection of <code>apply/N</code>,
+including <code>ForeignCallable</code>. An explicit Alien receiver instead selects the
+requested foreign name/arity directly: no foreign getter is probed for a
+callable result.</p>
+<p><strong>Implicit invocation.</strong> First perform
+<a href="name-resolution.html#lookup-order">declaration-relative receiver selection</a>,
+using these same candidates. Then dispatch the original invocation on that
+selected receiver. Method and eligible-accessor overrides both participate.
+Eligibility does not freeze the implementation, and final dispatch failure
+does not resume lexical search.</p>
+<p><strong>Evidence and failures.</strong> Retain an eligible accessor’s value and selected
+callable operation through final dispatch. Revisiting the same candidate
+reuses them without rereading storage or resolving a foreign operation.
+Changing a stored value can change eligibility for a later invocation.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Miss: continue lookup</th><th>Error: stop the operation</th></tr>
+</thead>
+<tbody>
+<tr><td>Absent selector; wrong-arity lambda; non-callable value; unsupported member factory arity</td><td>Uninitialized read; foreign selection failure; selected realization or execution failure; boundary conversion/ownership failure</td></tr>
+</tbody>
+</table>
+</div>
+<p>Eligibility errors precede dispatch: an uninitialized read or foreign selection
+failure remains fatal even when the receiver has an overriding <code>name/N</code> method.
+Neither errors nor non-local returns restart lookup or replay evaluation.</p>
 <h3 id="invocation-at-arity-zero"><a class="header" href="#invocation-at-arity-zero">Invocation at Arity Zero</a></h3>
-<p><code>name()</code> uses the same candidate rule as every other invocation:</p>
-<ul>
-<li>A zero-argument method executes once and returns its result.</li>
-<li>A generated storage getter supplies a candidate only if its stored value has
-<code>apply/0</code>; invoke that operation once.</li>
-<li>An eligible member-class accessor supplies its class’s <code>apply/0</code>.</li>
-</ul>
-<p>Bare <code>name</code> remains an ordinary <code>name/0</code> send and returns the accessor or method
-result without testing callability. Consequently replacing a stored callable
-with a computed getter preserves bare reads but may change invocation behavior.
-Accessor overrides are legal; ordinary methods do not acquire generated-accessor
-semantics.</p>
-<pre><code class="language-vh">{
-    method { 7 }
-    thunk = fun { 7 };
-    returnsThunk { fun { 7 } }
-}
-</code></pre>
-<p>For this object, <code>method</code> and <code>method()</code> return <code>7</code>; <code>thunk</code> returns the lambda
-and <code>thunk()</code> returns <code>7</code>; <code>returnsThunk()</code> returns its lambda without invoking
-it. Write <code>returnsThunk().apply()</code> to perform both operations explicitly.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Declaration</th><th>Bare <code>f</code></th><th><code>f()</code></th></tr>
+</thead>
+<tbody>
+<tr><td><code>f { 7 }</code></td><td><code>7</code></td><td><code>7</code></td></tr>
+<tr><td><code>f = fun { 7 };</code></td><td>Lambda</td><td><code>7</code></td></tr>
+<tr><td><code>f { fun { 7 } }</code></td><td>Lambda</td><td>Lambda</td></tr>
+<tr><td><code>f = 7;</code></td><td><code>7</code></td><td>Miss at this accessor</td></tr>
+<tr><td><code>class f {}</code></td><td>Cached class</td><td>Instance from <code>apply/0</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>A selected method executes exactly once; its returned callable is not
+implicitly invoked. Write <code>obj.f().apply()</code> to invoke that result explicitly.
+Replacing a generated getter with a computed getter can therefore preserve
+bare reads while changing invocation behavior.</p>
 <h3 id="member-class-invocation"><a class="header" href="#member-class-invocation">Member-Class Invocation</a></h3>
-<p>The generated accessor for a member class advertises callable arities from its
-selected declaration: the constructor’s arity and any owned <code>factory apply</code>
-methods. Flat metaclasses import no superclass or mixin factories, so neither
-contributor lookup nor class realization is needed to discover these arities.
-An overriding member declaration supplies its own signatures. An ordinary method
-overriding the accessor has no generated-accessor metadata.</p>
-<pre><code class="language-vh">class Widget(x, y) {
-    factory apply(x) { new(x, x) }
-}
-</code></pre>
-<p><code>Widget</code> is an ordinary access returning the class object. <code>Widget(1)</code> and
-<code>Widget(1, 2)</code> match the advertised arities. <code>Widget()</code> is a miss at this
-declaration, without realizing it, and lookup may continue elsewhere.</p>
-<p>For implicit invocation, metadata eligibility first selects the lexical receiver.
-If virtual dispatch selects a method instead of the member factory, the member
-remains unrealized. When final dispatch selects the member factory, commit to that candidate and
-realize its class through the normal cache keyed by enclosing receiver and
-declaration occurrence. Class definition may execute computations to obtain
-mixin and superclass receivers: direct mixin targets are evaluated left-to-right,
-followed by the superclass target. Their
-results identify the actual contributors and must be native class values,
-excluding metaclasses. Routed
-constructor arguments remain deferred until instance construction. Realization
-failures are cached and propagated, not converted into arity misses.</p>
-<p>Thus no rejected member-class candidate executes definition clauses, but the
-selected member class can use ordinary capability-bearing computations in its
-definition. See the <a href="../../design-notes/unified-callable-lookup.html">accepted design</a>.</p>
-<h3 id="complete-dispatch-walkthrough"><a class="header" href="#complete-dispatch-walkthrough">Complete Dispatch Walkthrough</a></h3>
-<p>Given an object with this shape:</p>
-<pre><code class="language-vh">{
-    slot1 = 32;
-    slot2 = fun(x) { x.plus(slot1) };
-    method1(a) { a.plus(slot1) }
-    answer { 7 }
-    class NoArg { }
-    class WithArgs(x, y) { }
-}
-</code></pre>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>Expression</th><th>Selected behavior</th><th>Result</th></tr>
-</thead>
-<tbody>
-<tr><td><code>a.slot1</code></td><td>Ordinary generated getter</td><td><code>32</code></td></tr>
-<tr><td><code>a.slot1()</code></td><td>No callable candidate</td><td>Missing-selector error</td></tr>
-<tr><td><code>a.slot2</code></td><td>Ordinary generated getter</td><td>The lambda</td></tr>
-<tr><td><code>a.slot2(3)</code></td><td>Stored lambda’s <code>apply/1</code></td><td><code>35</code></td></tr>
-<tr><td><code>a.slot2()</code></td><td>No candidate at arity zero</td><td>Missing-selector error</td></tr>
-<tr><td><code>a.method1</code></td><td>No <code>method1/0</code></td><td>Missing-selector error</td></tr>
-<tr><td><code>a.method1(2)</code></td><td>Exact <code>method1/1</code></td><td><code>34</code></td></tr>
-<tr><td><code>a.answer()</code></td><td>Exact <code>answer/0</code>, once</td><td><code>7</code></td></tr>
-<tr><td><code>a.NoArg</code></td><td>Cached member-class accessor</td><td>Class object</td></tr>
-<tr><td><code>a.NoArg()</code></td><td>Declared class <code>apply/0</code></td><td>Instance</td></tr>
-<tr><td><code>a.WithArgs(1, 2)</code></td><td>Declared class <code>apply/2</code></td><td>Instance</td></tr>
-</tbody>
-</table>
-</div>
-<h3 id="reading-convention"><a class="header" href="#reading-convention">Reading Convention</a></h3>
-<p>Parentheses request invocation; bare selectors request ordinary zero-argument sends:</p>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>Syntax form</th><th>Meaning</th><th>Example</th></tr>
-</thead>
-<tbody>
-<tr><td><code>name</code></td><td>ordinary send — lexical lookup, then run the accessor/method</td><td><code>count</code>, <code>describe</code>, <code>Factory</code></td></tr>
-<tr><td><code>name()</code></td><td>invoke zero-argument behavior once</td><td><code>Factory()</code>, <code>thunk()</code></td></tr>
-<tr><td><code>name(args)</code></td><td>invoke matching method or callable accessor result</td><td><code>move(1, 2)</code>, <code>Factory(x, y)</code></td></tr>
-<tr><td><code>name!(v)</code></td><td>invoke setter; generated setters return <strong>v</strong>, custom methods return their own result</td><td><code>x!(5)</code></td></tr>
-<tr><td><code>.name</code></td><td>self-dispatch — skip lexical chain, send to self’s class hierarchy</td><td><code>.count</code>, <code>.describe</code></td></tr>
-<tr><td><code>.name(args)</code></td><td>self-dispatch with args</td><td><code>.move(1, 2)</code></td></tr>
-<tr><td><code>self.name</code></td><td>same as <code>.name</code> — explicit form, prefer for clarity</td><td><code>self.count</code></td></tr>
-<tr><td><code>outer C.name</code></td><td>qualified outer-dispatch — select receiver for lexically enclosing declaration C</td><td><code>outer Counter.count</code>, <code>outer Module.log(x)</code></td></tr>
-</tbody>
-</table>
-</div>
-<p><strong>Receiver origins and selector names are distinct.</strong> <code>self</code> denotes the current
-native receiver, while <code>alien.self</code> is an ordinary selector sent through the
-Alien boundary. Native receivers have no synthesized or user-defined <code>self</code>
-selector. Using <code>self</code> as a value passed to another object remains supported.</p>
-<p><strong>Native <code>outer</code> is a qualified lexical receiver.</strong> <code>outer C</code> selects
-the ordinary receiver associated with the nearest lexically enclosing declaration
-named <code>C</code>. A subsequent <code>.message</code> uses normal dispatch. Bare <code>outer</code> and
-native <code>expr.outer</code> are invalid; no universal parent getter or activation mirror
-is provided. Explicit Alien selectors <code>outer</code>, <code>self</code> and <code>super</code> are eligible
-for foreign dispatch and have only the meanings supplied by that adapter.
-See <a href="./name-resolution.html#outer--qualified-lexical-receiver">Name Resolution</a>.</p>
-<p>A normal top-level class has an empty top activation as its lexical base, with
-no enclosing application scope. Its <code>outer</code> path must not expose the
-instantiation service or an implicitly injected platform. External capabilities
-enter that module through its declared constructor arguments; see
-<a href="./program-structure.html#top-level-classes-and-instantiation">Program Structure</a>.
-Explicit tooling contexts can supply other lexical objects for evaluation;
-ordinary scope and dispatch rules apply to those objects as well.</p>
-<p>For the <code>=</code> grammar sugar forms of all setter variants, see <a href="./syntactic-sugar.html#-setter-sugar">Syntactic Sugar — <code>=</code> Setter Sugar</a>.</p>
-<p>Classes implement <code>apply</code> for construction (the default <code>apply</code> delegates to <code>new</code>). Lambdas implement <code>apply</code> for invocation. Any user object can implement <code>apply</code> to become callable. See <a href="./slots.html#the-apply-protocol-and-callable-objects">Slots and Accessors</a>.</p>
+<p>A generated member accessor advertises its effective declaration’s constructor
+arity and owned <code>factory apply</code> arities. An overriding declaration supplies its
+own signatures. Flat metaclasses import no contributor factories, so candidate
+testing needs neither contributor lookup nor class realization.</p>
+<p><code>class Widget(x, y) { factory apply(x) { new(x, x) } }</code> supplies invocation
+arities one and two. <code>Widget()</code> is a miss without evaluating definition clauses,
+whether its cache is empty, successful or failed.</p>
+<p>Metadata eligibility first selects the lexical receiver. If final dispatch
+chooses an overriding method, the member remains unrealized, even if its cache
+already holds a failure. When dispatch selects the member factory, commit to
+that candidate, realize it through its receiver-and-declaration-occurrence
+cache, then invoke exact <code>apply/N</code> with the saved arguments. Bare access also
+realizes through that cache. A selected failure is cached and propagated.</p>
+<p>Realization evaluates direct mixin targets left-to-right, then the superclass
+target; their computations may have effects and must produce native classes,
+excluding metaclasses. Terminal constructor arguments remain deferred until
+construction. See <a href="objects-and-classes.html">class realization</a> and the
+<a href="../../design-notes/unified-callable-lookup.html">accepted decision</a>.</p>
 <h2 id="cascade-"><a class="header" href="#cascade-">Cascade (<code>..</code>)</a></h2>
-<p>The cascade operator <code>..</code> sends one or more messages to the <strong>same receiver</strong>,
-ignoring intermediate return values. The receiver is evaluated once. Arms execute
-left-to-right, with each arm’s arguments evaluated immediately before that send.
-Each arm preserves ordinary bare-send versus parenthesized-invocation behavior,
-and can use canonical messages or assignment sugar:</p>
-<pre><code class="language-vh">p..x!(2)..y!(3)..move(1, 1)
+<p>A cascade evaluates its receiver once and sends every arm to that saved receiver.
+Arms execute left-to-right; each arm’s arguments execute immediately before its
+send. Preserve each arm’s exact-access versus invocation mode and any setter
+sugar:</p>
+<pre><code class="language-vh">p..x!(2)..y!(3)..describe
 </code></pre>
-<p>Its evaluation is equivalent to saving the receiver and sequencing sends (the
-actual lowering uses a private accessor name that cannot collide with source names):</p>
-<pre><code class="language-vh">var receiver = p;
-receiver.x!(2);       // return value discarded
-receiver.y!(3);       // return value discarded
-receiver.move(1, 1)   // the cascade expression returns the result of the last send
-</code></pre>
-<p>The key difference from dot-chains:</p>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>Expression</th><th>Receiver of each message</th></tr>
-</thead>
-<tbody>
-<tr><td><code>p.x!(2).y!(3)</code></td><td><code>p</code> receives <code>x!(2)</code>, then <strong>the result of <code>x!(2)</code></strong> receives <code>y!(3)</code></td></tr>
-<tr><td><code>p..x!(2)..y!(3)</code></td><td><code>p</code> receives <code>x!(2)</code>, then <strong><code>p</code></strong> receives <code>y!(3)</code></td></tr>
-</tbody>
-</table>
-</div>
-<p>Cascade does not depend on intermediate results. Generated setters return the
-new value, so <code>p.x!(2).y!(3)</code> sends <code>y!(3)</code> to <code>2</code>. Custom setters may return
-anything; cascades still send every arm to the saved receiver. A failing arm or
-non-local return stops the cascade before later arms or their arguments execute.
-Earlier effects are neither undone nor replayed.</p>
+<p>The intermediate results are discarded. By contrast, <code>p.x!(2).y!(3)</code> sends
+<code>y!/1</code> to the result of <code>x!/1</code>, which is <code>2</code> for a generated setter.
+A failed arm or non-local return prevents later arms and their arguments from
+running. Earlier effects are neither undone nor replayed.</p>
+<p>Lowering uses a fresh private temporary and ordinary sends; it must preserve
+captures and return homes without exposing the temporary scope to programs.</p>
 <h2 id="cascade-return-value"><a class="header" href="#cascade-return-value">Cascade Return Value</a></h2>
-<p>The cascade expression evaluates to the result of the <strong>last</strong> message in the chain:</p>
-<pre><code class="language-vh">result = (p..x(2)..y(3)..describe)
-// result is whatever p.describe returns
-</code></pre>
-<p>Thus <code>p..a..b..c</code> returns the last send’s result. To return the receiver, write
-it explicitly after the cascade, for example <code>p..a..b; p</code>.</p>
+<p>The whole cascade returns its last arm’s result, not necessarily the receiver.
+To return an existing receiver, write <code>p..a..b; p</code>.</p>
 <h2 id="implicit-receiver-cascade-leading-"><a class="header" href="#implicit-receiver-cascade-leading-">Implicit-Receiver Cascade (Leading <code>..</code>)</a></h2>
-<p>A cascade prefixed with <code>..</code> — no expression to the left — sends all messages directly to <code>self</code>. This is the <code>#SelfCascadeExp</code> grammar rule:</p>
-<pre><code class="language-vh">..x!(2)..y!(3)..move(1, 1)
-// equivalent to:
-self..x!(2)..y!(3)..move(1, 1)
-</code></pre>
-<p>Each message is dispatched through the inheritance chain only — the lexical chain is not consulted. <strong>Prefer the explicit <code>self..</code> form for clarity.</strong></p>
-<pre><code class="language-vh">class Point {
-    x = 0;
-    y = 0;
-    reset() {
-        ..x!(0)..y!(0)   // sends x!(0) then y!(0) to self
-    }
-}
-</code></pre>
-<h3 id="mnp-vs-mnp"><a class="header" href="#mnp-vs-mnp"><code>m..n..p</code> vs <code>..m..n..p</code></a></h3>
-<p>These two cascade forms are <strong>semantically different</strong>:</p>
+<p><code>..m..n</code> means <code>self..m..n</code> and skips lexical receiver selection.
+<code>m..n..p</code> instead evaluates implicit <code>m</code> first, then sends <code>n</code> and <code>p</code> to
+its result. Thus a leading cascade and a cascade whose receiver is an implicit
+send select different receivers.</p>
+<h2 id="combining-dot-and-cascade"><a class="header" href="#combining-dot-and-cascade">Combining Dot and Cascade</a></h2>
 <div class="table-wrapper">
 <table>
 <thead>
-<tr><th>Expression</th><th>Grammar rule</th><th>Cascade receiver</th></tr>
+<tr><th>Expression</th><th>Meaning</th></tr>
 </thead>
 <tbody>
-<tr><td><code>m..n..p</code></td><td><code>#CascadeExp</code> (receiver = <code>#ImplicitMessageSendExp</code> <code>m</code>)</td><td>The <strong>result</strong> of evaluating <code>m</code> via lexical lookup</td></tr>
-<tr><td><code>..m..n..p</code></td><td><code>#SelfCascadeExp</code></td><td><code>self</code> directly — no lexical chain consulted</td></tr>
+<tr><td><code>a.b..c..d</code></td><td>Save <code>a.b</code>; send <code>c</code> and <code>d</code> to it.</td></tr>
+<tr><td><code>(a..b..c).d</code></td><td>Send <code>d</code> to the last cascade result.</td></tr>
+<tr><td><code>a..b..c.d</code></td><td>Invalid without the parentheses above.</td></tr>
+<tr><td><code>a..take(b..x..y)..finish</code></td><td>Arguments admit nested cascades directly.</td></tr>
+<tr><td><code>super.make..a..b</code></td><td>Cascade on the result of the completed super send.</td></tr>
 </tbody>
 </table>
 </div>
-<p>In <code>m..n..p</code>, <code>m</code> is evaluated first through the full lexical chain; whatever it returns becomes the cascade receiver for <code>n</code> and <code>p</code>. In <code>..m..n..p</code> all three messages go to <code>self</code>:</p>
-<pre><code class="language-vh">handler..notify..cleanup    // evaluate handler via lexical chain, cascade on its result
-..notify..cleanup           // both messages go to self directly
-</code></pre>
-<h2 id="combining-dot-and-cascade"><a class="header" href="#combining-dot-and-cascade">Combining Dot and Cascade</a></h2>
-<p>Dot and cascade can be mixed. The cascade receiver is the expression to the left of the first <code>..</code>:</p>
-<pre><code class="language-vh">a.b..c(1)..d(2)
-// cascade receiver is (a.b)
-// sends c(1) to (a.b), discards result
-// sends d(2) to (a.b), returns result
-</code></pre>
-<p>The grammar does <strong>not</strong> accept an unparenthesized dot after a cascade:</p>
-<pre><code class="language-vh">a..b..c.d       // parse error
-(a..b..c).d     // send d to the last cascade result
-a.b..c..d      // save a.b, then send c and d to that receiver
-</code></pre>
-<p>This follows from <code>expression</code>: a cascade has a <code>nonCascadeExpr</code> receiver and
-message arms, while a dot send’s receiver must itself be a <code>nonCascadeExpr</code>.
-Parentheses turn a full expression into an eligible receiver. Arguments can
-contain nested cascades without extra grouping, as in <code>a..take(b..x..y)..finish</code>.
-Assignment’s RHS has its own <a href="./syntactic-sugar.html#the-cascade-fence">cascade fence</a>.</p>
-<p>There is no <code>super..a..b</code> form: <code>super</code> is not a receiver value. A completed super
-send can supply a cascade receiver, as in <code>super.make..a..b</code>; the arms are normal
-sends on the value returned by <code>super.make</code>, not additional super sends.</p>
-<p>These forms execute on the bootstrap VM. Lowering saves an explicit receiver
-in a private activation slot and sequences ordinary core sends. Leading
-<code>..</code> uses self sends. The lowering preserves lexical captures and non-local
-return homes without exposing a new scope object to programs. See
-<a href="../../../vh-core/src/main/antlr/vh.g4">vh.g4</a> and the
-<a href="../../../vh-core/src/test/java/boundaryclient/CascadesAndAssignmentTest.java">source regressions</a>.</p>
+<p>There is no <code>super..a..b</code> syntax: <code>super</code> is not a receiver value.
+Assignment has a separate <a href="syntactic-sugar.html#the-cascade-fence">cascade fence</a>.
+The precise grammar is <a href="../../../vh-core/src/main/antlr/vh.g4">vh.g4</a>.</p>
 
                     </main>
 

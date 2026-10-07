@@ -30,16 +30,18 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="theme/vh-2de7eb16.css">
 
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
         <!-- Provide site root and default themes to javascript -->
         <script>
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0458d790.js";
+            window.path_to_searchindex_js = "searchindex-b0f8be02.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-45e5eade.js"></script>
+        <script src="toc-1ce75dcc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -176,336 +178,181 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="name-resolution"><a class="header" href="#name-resolution">Name Resolution</a></h1>
-<p>Messages in VarioHyve are late-bound. A bare name <code>x</code> is an implicit send:
-lexical declaration context first selects a receiver; dispatch then selects
-behavior. If no lexical declaration supplies the requested selector,
-lookup falls back to the current receiver’s inheritance chain. Lexical receiver
-selection is not a search of arbitrary members added by a subclass.</p>
+<p>Implicit sends first select a receiver from lexical declarations, then dispatch
+on that receiver. Lookup is fixed by the language; there is no global
+environment or platform-selectable lookup policy.</p>
+<p>Operational definition: <a href="./formal-core.html#lexical-receiver-selection">SOS lexical receiver selection</a>.</p>
+<h2 id="names-and-contracts"><a class="header" href="#names-and-contracts">Names and Contracts</a></h2>
+<p>An ordinary name selects behavior through message lookup; its spelling alone
+does not identify a value, grant authority or impose a protocol. The selected
+object’s behavior and the contract with its clients give that name meaning.
+This applies equally to <code>null</code>, <code>true</code>, <code>false</code>, <code>Object</code>, <code>kernel</code> and
+application selectors such as <code>ifTrue</code> or <code>plus</code>. They introduce no ambient
+bindings. Parameters, locals, slots and methods may use these names, subject to
+the ordinary declaration rules. Without an applicable declaration, a send fails
+under the ordinary lookup rules.</p>
+<p>Canonical null and Boolean identities, and structural root Object, are governed
+by the seed and core-object contracts. Those identities do not reserve source
+names for obtaining them. An omitted initializer supplies canonical null
+directly; an explicit initializer <code>null</code> sends <code>null/0</code> in its lexical context.
+A name or a matching protocol never establishes canonical identity at the
+foreign boundary.</p>
+<p>The specification explicitly fixes grammar keywords and the receiver forms
+below. It also fixes the callable selector <a href="message-sends-apply-tear-offs.html"><code>apply/N</code></a>,
+the generated primary factory <a href="objects-and-classes.html#the-primary-factory-new"><code>new/N</code></a>
+and the setter selector mapping <a href="syntactic-sugar.html#-setter-sugar"><code>x!/1</code></a>.
+These contracts connect syntax to messages; the selected operations still use
+ordinary dispatch. They do not give other selectors intrinsic behavior.
+Seed methods and explicitly supplied foreign/tooling capabilities have their
+own stated contracts, not meanings inferred from names on arbitrary objects.</p>
 <h2 id="lookup-order"><a class="header" href="#lookup-order">Lookup Order</a></h2>
+<p>Search the current method/lambda’s parameter and local accessors, then enclosing
+lexical scope objects from nearest to farthest. An activation contributes its
+own accessors. A lexical object scope contributes only declarations from its
+originating contribution, associated with its bound receiver. Arbitrary members
+added by a subclass do not become lexical declarations.</p>
+<p>For an exact send, the nearest scope declaring the selector selects its receiver;
+exact dispatch then honors overrides on that receiver. For invocation, use the
+<a href="message-sends.html#candidate-selection">candidate rules</a>:</p>
 <ol>
-<li><strong>Local scope</strong> — parameters and <code>var</code> locals of the current method/lambda</li>
-<li><strong>Lexical chain</strong> — slots and methods of enclosing objects, from innermost to outermost</li>
-<li><strong>Mixin chain</strong> - mixins methods, in declaration order - left to right</li>
-<li><strong>Inheritance chain</strong> — superclass methods, from most specific to most general</li>
+<li>A declared exact <code>name/N</code> operation qualifies the scope, except that a
+generated getter at arity zero must establish callable eligibility.</li>
+<li>Otherwise, if the scope declares <code>name/0</code>, select its effective getter on
+the associated receiver. An eligible generated accessor qualifies the scope.
+At arity zero, an ordinary method overriding that getter also qualifies
+directly.</li>
+<li>A miss continues outward; an eligibility error stops selection.</li>
+<li>Once qualified, dispatch the original invocation uniformly on that receiver,
+retaining successful accessor evidence.</li>
+<li>If all lexical scopes miss, dispatch on current <code>self</code> through its owned
+contribution, direct mixins left-to-right, then superclass chain.</li>
 </ol>
-<p>The first match wins. There is no global environment.</p>
-<h3 id="implicit-invocation-and-callable-accessor-results"><a class="header" href="#implicit-invocation-and-callable-accessor-results">Implicit invocation and callable accessor results</a></h3>
-<p>Locals, parameters and slots are reached through generated accessor messages.
-For locals and parameters, the receiver is the backend-private activation
-object. There is no separate lookup namespace or value-resolution mechanism.
-An invocation is implemented by a direct <code>f/N</code> message or by the generated
-<code>f/0</code> accessor followed by <code>apply/N</code> on its result.</p>
-<p>A message selector is a name/arity pair. For <code>f(args)</code> at arity <code>N</code>, including
-zero, examine each declaration-relative lexical scope from nearest to farthest:</p>
-<ol>
-<li>Prefer an exact operation <code>f/N</code> declared by that scope. At arity zero, a
-generated getter is an accessor candidate under the next rule, not an operation
-that satisfies the invocation by returning its value.</li>
-<li>Otherwise, if the scope declares <code>f/0</code>, consider its effective generated
-accessor. A storage accessor supplies an invocation candidate only if its
-current value supports exactly <code>apply/N</code>.
-A member-class accessor supplies one only if its selected declaration’s
-constructor or owned <code>factory apply</code> signatures include arity <code>N</code>.</li>
-<li>Continue outward when the scope supplies neither applicable candidate. If
-all lexical scopes miss, perform a self invocation through the receiver’s
-composition and superclass chain, with the same per-contribution rule.</li>
-</ol>
-<p>Once a scope qualifies, dispatch the original <code>f/N</code> invocation uniformly on
-that scope’s receiver. Eligibility selects the receiver; it does not fix the
-implementation to the method or accessor that established eligibility. Dynamic
-dispatch uses the same per-contribution candidate rule, so an overriding method
-can replace a callable accessor route and an overriding callable accessor can
-replace a method. Lookup never resumes at another lexical scope after choosing
-a receiver.</p>
-<p>An activation supplies its parameter/local accessors. A lexical object scope
-supplies declarations from its originating contribution, not arbitrary members
-added by a subclass. If its declaration supplies only <code>f/0</code>, first select
-the effective <code>f/0</code> accessor on that scope’s receiver and establish eligibility
-there. A subclass <code>f/N</code> alone cannot make an ineligible accessor qualify. Once
-eligible, that receiver’s <code>f/N</code> overrides participate normally. A method added
-on a different, inner receiver cannot capture a dependency whose eligible
-declaration belongs to an enclosing receiver.</p>
-<p>At arity zero, an ordinary method overriding the declared getter also qualifies
-as an exact <code>f/0</code> operation. Its body executes once; its result is not implicitly
-applied.</p>
-<p>Only the <strong>effective generated getter</strong> can supply an accessor candidate. An
-ordinary method overriding that getter is not executed to discover a callable,
-and lookup never inspects the storage hidden behind it. The same masking rule
-applies while traversing inheritance; an overridden accessor cannot reappear
-as a hidden accessor candidate farther down the chain. Exact methods at the
-requested arity can still match there.</p>
-<pre><code class="language-vh">{
-    f(x) { 42 }
-    run {
-        var f = fun(x) { 7 };
-        f(1)
-    }
-}.run  // 7: the local accessor's result supplies apply/1
-</code></pre>
-<pre><code class="language-vh">{
-    f(x) { 42 }
-    inner = {
-        f = fun(x, y) { 7 };
-        run { f(1) }
-    };
-}.inner.run  // 42: the inner accessor's result supplies apply/2, not apply/1
-</code></pre>
+<p>A subclass <code>name/N</code> alone cannot make an ineligible declared getter qualify.
+Once eligible, that receiver’s overrides apply normally. An operation added
+on a different inner receiver cannot capture an enclosing dependency.</p>
 <pre><code class="language-vh">{
     class Base {
         f = fun(x) { 7 };
         run { f(1) }
     }
     class Child &lt; Base { f(x) { 42 } }
-}.Child().run  // 42: Base establishes eligibility; Child overrides f/1
+}.Child().run // 42: Base selects the receiver; Child overrides f/1
 </code></pre>
-<p>The last example previously returned <code>7</code> by preserving the selected accessor
-route. Programs relying on that behavior must retrieve and invoke their chosen
-callable explicitly, for example <code>f.apply(1)</code> when the intended getter remains
-effective. Ordinary overriding still applies to that getter access.</p>
-<p>Within one scope, an exact method wins over a same-named callable accessor route.
-Wrong-arity and non-callable accessor results are misses; an uninitialized slot
-is an error. Receiver and arguments are evaluated once, left-to-right, before
-selection. Retain the eligible accessor result and selected callable operation
-through eligibility and dispatch; revisiting that candidate reuses the result
-without rereading storage or resolving a foreign operation again. An uninitialized
-read or foreign selection failure while establishing eligibility remains an
-error even if that receiver has an overriding <code>f/N</code> method. Failure
-while accessing an uninitialized slot, resolving a foreign operation, realizing
-a selected member class, or executing selected behavior never resumes lookup.</p>
-<p>Native callability is checked through exact <code>apply/N</code> methods, including
-inherited methods, or a lambda’s declared arity. Foreign values may advertise
-<code>apply/N</code> through the boundary’s effect-free operation-selection contract;
-<code>ForeignCallable</code> remains supported. No candidate is tested by executing it.
-Changing a stored value can change which invocation selectors the scope
-supplies, so a later call may select a farther lexical receiver.</p>
-<p>Bare <code>f</code> remains the ordinary <code>f/0</code> send. <code>f()</code> invokes zero-argument behavior
-exactly once: a method <code>f { 7 }</code> returns <code>7</code>, while a generated accessor returning
-<code>fun { 7 }</code> makes <code>f()</code> invoke the lambda. A method that returns a lambda returns that lambda; it is not
-implicitly invoked again. See <a href="message-sends.html#dispatch-rules">dispatch rules</a>
-and the <a href="../../design-notes/unified-callable-lookup.html">accepted design</a>.</p>
-<p>Member-class candidate selection reads declaration metadata and does not realize
-the class. Realization occurs only if final dispatch selects that member’s
-factory (or on an ordinary bare access), through the accessor’s
-receiver-and-declaration cache. It may compute mixin and
-superclass target receivers to identify the actual contributors; these
-computations are not speculative lookup effects. See
-<a href="message-sends.html#member-class-invocation">member-class invocation</a>.</p>
+<p>If <code>Base.f</code> instead holds a non-callable or wrong-arity value, lexical search
+continues before the final self invocation. Getter masking, failure handling
+and retained callable evidence are specified once in
+<a href="message-sends.html#dispatch-rules">Message Sends</a>.</p>
 <h3 id="capabilities-and-declaration-scopes"><a class="header" href="#capabilities-and-declaration-scopes">Capabilities and declaration scopes</a></h3>
-<p>The four <a href="./program-structure.html#four-sources-of-class-capabilities">class capability sources</a>
-are inheritance, mixin composition, lexical nesting, and constructor parameters;
-that list is not a replacement lookup order. Constructor parameters have
-accessors on activation objects, like other parameters. Naming a class does not
-alter these rules.
-Normal top-level classes have only an empty top activation at the lexical base,
-with no enclosing application scope. They inherit only from root <code>Object</code> and
-compose no mixins. Their external inputs are the existing objects supplied as
-constructor arguments, with no special <code>kernel</code> name or single-argument rule.
-The instantiating caller’s scope never becomes a class’s lexical scope.
-Tools may explicitly choose a richer <a href="./tooling-architecture.html#evaluation-contexts">evaluation context</a>;
-its accessors participate in ordinary lexical lookup, with no change to precedence.</p>
-<p>Constructor parameters have immutable accessors scoped to initialization. In
-<code>class(value) { value = value; }</code>, the initializer reads the argument on the
-right-hand side and stores it in the instance slot. Instance methods cannot
-resolve their own constructor parameters, even when called during initialization.
-They use their own parameters/locals, declaration-relative receiver members and
-the selected definition scope. A method may independently resolve an enclosing
-accessor with the same spelling; constructor names are not globally reserved.
-A contributed mixin method retains its own definition scope, never the receiving
-class’s initialization arguments.</p>
-<p>A member-class declaration binds to the enclosing instance and its declaration
-origin. It does not capture the instance’s constructor activation. Lambdas and
-class expressions, both named and anonymous, capture their actual evaluation
-scope normally. If deliberately created in an initializer, an escaped expression
-may therefore retain constructor parameter accessors. No parameter alone
-synthesizes an instance accessor, and no ordinary instance retains a constructor scope merely
-by having been constructed. Constructor lookup never visits the caller’s scope.
-See <a href="../../design-notes/initializer-scope-and-member-classes.html">the accepted scope decision</a>.</p>
-<p>Lexical receiver selection is declaration-relative and precedes dynamic dispatch.
-Adding an unrelated member to a subclass must not capture an inherited method’s
-existing reference to an enclosing accessor. The ordered lookup summary above
-must be read with this restriction; probing arbitrary dynamic receiver members
-first is not an equivalent implementation. Full composition support must retain
-the selected declaration and application origin.</p>
+<p>The instantiating caller does not supply a class’s lexical scope. Constructor
+parameters, member declarations and class expressions obey the
+<a href="objects-and-classes.html#member-declarations-and-class-expressions">construction scope rules</a>.
+Normal module entry and explicit tooling scopes are distinguished in
+<a href="program-structure.html#top-level-classes-and-instantiation">Program Structure</a>.</p>
 <h2 id="self--current-receiver"><a class="header" href="#self--current-receiver"><code>self</code> — Current Receiver</a></h2>
-<p><code>self</code> retains identifier syntax, but denotes the current native receiver with
-fixed semantic meaning. It is not a lookup of an ordinary property named <code>self</code>.
-Frontend and core representations must preserve this distinction.</p>
-<pre><code class="language-vh">class Point(x, y) {
-    describe() {
-        self   // returns the current Point instance
-    }
-}
-</code></pre>
-<p>Because <code>self</code> is an identifier:</p>
-<ul>
-<li>It parses with identifier syntax, then lowers to <code>CoreSelfExpression</code>;
-its value comes from the current activation rather than ordinary selector lookup</li>
-<li>The semantic layer <strong>rejects</strong> definitions that shadow it — <code>self</code> cannot be used as a slot name, parameter name, or method name</li>
-<li>Native explicit receivers do not provide a <code>self</code> selector. For an Alien,
-<code>alien.self</code> is an ordinary foreign selector, eligible for boundary dispatch;
-it does not necessarily return that Alien. Passing the native <code>self</code> value to
-another object remains supported.</li>
-<li>It participates uniformly in message send chains as a receiver expression: <code>self.x</code>, <code>self.move(1, 2)</code></li>
-</ul>
+<p><code>self</code> denotes the current native receiver with fixed meaning. It parses as an
+identifier but is not an ordinary getter; native declarations cannot shadow it.
+It can be passed as a value and used in chains such as <code>self.x</code>.
+An explicit native receiver has no <code>self</code> selector. <code>alien.self</code> is instead an
+ordinary foreign selector with adapter-defined meaning.</p>
 <h3 id="leading-dot-shorthand-for-self"><a class="header" href="#leading-dot-shorthand-for-self">Leading-Dot Shorthand for Self</a></h3>
-<p>Sending a message to <code>self</code> without naming it explicitly is possible with a leading <code>.</code> (the <code>#SelfMessageSendExp</code> grammar rule):</p>
-<pre><code class="language-vh">.x           // identical to self.x
-.move(1, 2)  // identical to self.move(1, 2)
-</code></pre>
-<p>A leading <code>..</code> (the <code>#SelfCascadeExp</code> rule) cascades all messages to <code>self</code>:</p>
-<pre><code class="language-vh">..x!(0)..y!(0)   // identical to self..x!(0)..y!(0)
-</code></pre>
-<p>Both shorthands skip the lexical chain and dispatch through the inheritance chain only — exactly as <code>self.m</code> does. <strong>Prefer the explicit <code>self.</code> and <code>self..</code> forms.</strong> Reserve the leading-dot shorthand for unambiguously scoped contexts where there are no nested classes or shadowed names.</p>
+<p><code>.m(args)</code> equals <code>self.m(args)</code>; <code>..m..n</code> equals <code>self..m..n</code>.
+Both bypass lexical receiver selection. See <a href="message-sends.html#cascade-">cascades</a>.</p>
 <h2 id="outer--qualified-lexical-receiver"><a class="header" href="#outer--qualified-lexical-receiver"><code>outer</code> — Qualified Lexical Receiver</a></h2>
-<p>An outer receiver has the form <code>outer ClassName</code>, normally used in a send such
-as <code>outer ClassName.message(args)</code>. The qualifier names a class declaration that
-lexically encloses the expression, including its immediately containing class.
-It selects the ordinary receiver corresponding to that declaration; any
-subsequent message dispatches normally on that receiver. This follows Newspeak’s
-declaration-relative receiver selection with VarioHyve’s expression/send syntax.
-This is not a claim of full Newspeak compatibility: ordinary subsequent dispatch,
-runtime qualifier validation and exact captured application scopes have explicit
-differences. See the <a href="../../design-notes/outer-newspeak-comparison.html">outer comparison audit</a>,
-including the unresolved deeper repeated-parent case.</p>
+<p><code>outer ClassName</code> selects the ordinary receiver for the nearest matching named
+lexically enclosing declaration, including the immediately containing class.
+Subsequent messages dispatch normally on that receiver.</p>
 <pre><code class="language-vh">class Counter(start) {
     n = start;
     class Stepper {
-        step {
-            outer Counter.n!(outer Counter.n.plus(1))
-        }
+        step { outer Counter.n!(outer Counter.n.plus(1)) }
+        current { outer Stepper }
     }
 }
 </code></pre>
-<p>Inside <code>Stepper.step</code>, <code>outer Counter.n</code> sends <code>n</code> to the enclosing <code>Counter</code>
-instance. <code>outer Stepper</code> selects the current <code>Stepper</code> receiver. The qualifier
-is lexical declaration metadata, not an evaluated variable, dynamic class name
-or request to inspect the receiver’s class. Repeated class names select the
-nearest matching enclosing declaration.</p>
-<p>A lambda preserves the enclosing declaration context. Named class expressions
-can provide lexical qualifiers for code within their bodies; anonymous class
-expressions and object literals add no invented qualifier. Their enclosing
-named declarations remain eligible. Captured method/initializer parameters and locals are
-internal lexical dependencies, not activation objects exposed by <code>outer</code>.</p>
-<p>Contributed methods use their definition and application origin to select the
-appropriate lexical receiver. Applying a mixin to a class declared elsewhere
-must not substitute the receiving class’s outer scope for the mixin’s lexical
-dependencies. Member classes similarly retain their declaration origin as well
-as their bound enclosing receiver.</p>
-<p>Bare <code>outer</code> and unqualified <code>outer.message</code> are invalid. A native explicit
-receiver does not provide an <code>outer</code> selector. An Alien may support a foreign
-selector named <code>outer</code>; <code>alien.outer</code> then uses ordinary boundary dispatch.
-There is no universal native lexical-parent getter or public activation
-reification. Repeated foreign <code>.outer</code> sends have only their adapter-defined
-meaning. Holding another object alone does not
-reveal its lexical graph. Source code can deliberately return <code>outer ClassName</code>
-as an ordinary object value without exposing an activation.</p>
-<p>An unknown/non-enclosing qualifier is a semantic error. The bootstrap reports
-this through a language diagnostic during evaluation; static validation is a
-later frontend improvement. A normal top-level module still has no enclosing
-application scope: qualifying its own declaration can select its instance,
-but cannot select an instantiation service, platform bundle or empty top
-activation. Explicit tooling scopes remain separate evaluation contexts and do
-not change these rules.</p>
+<p><code>outer Stepper</code> selects the current Stepper instance. The qualifier is
+declaration metadata, not a variable, evaluated accessor or dynamic class name.
+Repeated class names choose the nearest matching declaration. An unrelated
+subclass or superclass name is not thereby an enclosing qualifier.</p>
+<p>Lambdas retain their enclosing declaration context. Named class expressions
+introduce qualifiers for their bodies; anonymous class expressions and object
+literals introduce no invented name. They preserve access to enclosing named
+declarations. Captured parameters and locals remain internal dependencies,
+not activation objects exposed by <code>outer</code>.</p>
+<p>Contributed methods preserve their definition and application origins; applying
+a mixin elsewhere cannot substitute the receiving class’s outer scope.
+Member classes also retain their bound receiver and declaration origin.
+The deeper repeated-parent case is an
+<a href="../../design-notes/outer-newspeak-comparison.html#deeper-repeated-parent-diagnostic">unresolved documented choice</a>;
+do not claim complete Newspeak equivalence.</p>
+<p><code>outer C</code> is a standalone receiver value: grouping, passing it as an argument
+and ordinary sends are allowed. It grants no public parent getter, activation
+reflection or additional access authority. Bare <code>outer</code>, unqualified
+<code>outer.message</code> and native <code>object.outer</code> are invalid. <code>alien.outer</code> is an
+ordinary foreign selector; repeated sends follow that adapter’s protocol.</p>
+<p>An unknown or non-enclosing qualifier is a semantic error. The bootstrap
+validates it when evaluated, before evaluating arguments of a send using that
+receiver. Static qualifier validation is deferred. Qualifying a normal module’s
+own declaration can select its instance; it cannot expose the instantiation
+service, tooling capabilities or empty top activation.</p>
 <h2 id="super--lookup-redirector"><a class="header" href="#super--lookup-redirector"><code>super</code> — Lookup Redirector</a></h2>
-<p><code>super</code> is a <strong>keyword</strong>. As a receiver origin, it is not a value: it redirects
-the following send in <code>super.message(args)</code> (the <code>SuperMessageSendExp</code> rule).
-Standalone <code>super</code> or <code>x = super</code> are parse errors. In the selector position
-<code>alien.super</code>, however, the spelling denotes an ordinary foreign operation,
-not a native lookup redirector.</p>
-<pre><code class="language-vh">class Animal() {
-    speak() { "..." }
-}
-class Dog() &lt; Animal {
-    speak() { super.speak }  // starts lookup from Animal, not Dog
-}
-</code></pre>
-<p><code>super</code> is a keyword because:</p>
-<ul>
-<li>It is not a value — it cannot appear as an expression on its own</li>
-<li>It resumes lookup after the executing contribution’s exact application position,
-continuing through subsequent mixins and then the superclass while retaining <code>self</code></li>
-<li>It cannot be intercepted or overridden — that would break the inheritance contract</li>
-</ul>
+<p><code>super.m(args)</code> retains <code>self</code> and starts lookup immediately after the
+executing contribution’s exact application occurrence. It continues through
+later mixins and the superclass chain, preserving the send mode and using
+fresh getter masking. Repeated applications of one mixin remain distinct;
+lookup does not restart after the first occurrence of its definition.</p>
+<p><code>super</code> is not a value: standalone use, assignment and <code>super..</code> are invalid.
+Its native meaning cannot be overridden. The explicit selector in <code>alien.super</code>
+belongs to the foreign protocol.</p>
 <h2 id="lexical-self-and-outer-dispatch--compared"><a class="header" href="#lexical-self-and-outer-dispatch--compared">Lexical, Self, and Outer Dispatch — Compared</a></h2>
-<p>VarioHyve distinguishes five receiver origins, each controlling where lookup starts:</p>
 <div class="table-wrapper">
 <table>
 <thead>
-<tr><th>Form</th><th>Name</th><th>Lookup path</th></tr>
+<tr><th>Origin</th><th>Receiver/search</th></tr>
 </thead>
 <tbody>
-<tr><td><code>m(args)</code></td><td>Implicit / lexical</td><td>Locals → lexical chain (enclosing objects) → self’s class hierarchy</td></tr>
-<tr><td><code>.m(args)</code> / <code>self.m(args)</code></td><td>Self-dispatch</td><td>Self’s class hierarchy <strong>only</strong></td></tr>
-<tr><td><code>outer C.m(args)</code></td><td>Qualified outer-dispatch</td><td>Receiver for lexically enclosing declaration <code>C</code>, then its class hierarchy</td></tr>
-<tr><td><code>super.m(args)</code></td><td>Super-dispatch</td><td>Same receiver, starting <strong>after</strong> the executing contribution’s exact application occurrence, then its superclass chain</td></tr>
-<tr><td><code>receiver.m(args)</code></td><td>Explicit receiver</td><td>Evaluate receiver once; fixed native dispatch or foreign boundary dispatch according to the resulting value</td></tr>
+<tr><td><code>m(args)</code></td><td>Declaration-relative lexical selection, then self fallback.</td></tr>
+<tr><td><code>self.m(args)</code> / <code>.m(args)</code></td><td>Current receiver’s hierarchy only.</td></tr>
+<tr><td><code>outer C.m(args)</code></td><td>Lexical receiver for C, then ordinary dispatch.</td></tr>
+<tr><td><code>super.m(args)</code></td><td>Current receiver, after the executing occurrence.</td></tr>
+<tr><td><code>receiver.m(args)</code></td><td>Evaluate receiver once; native hierarchy or Alien protocol.</td></tr>
 </tbody>
 </table>
 </div>
-<p>These are semantic lookup origins, not a universal protocol implemented by every
-visible value. In particular, Aliens have no synthesized VarioHyve receiver,
-outer, class or mixins. See <a href="./foreign-objects.html">Foreign Semantic Values</a>.</p>
-<p>In flat, non-nested code the first two forms are usually equivalent — there is no enclosing object that could shadow <code>self</code>’s methods. The difference becomes significant in nested classes:</p>
-<pre><code class="language-vh">class Outer {
-    count = 0
-    log(msg) { ... }
-
-    class Inner {
-        count = 99
-
-        run() {
-            count            // lexical → finds Inner's own count (99)
-            self.count       // self-dispatch → Inner's count (99) same result here
-            outer Outer.count // outer-dispatch → Outer's count (0)
-            outer Outer.log("hi") // outer-dispatch → Outer's log method
-        }
-    }
-}
-</code></pre>
-<p>When the lexical chain is clear (no shadowing, no nesting), prefer the implicit form <code>m(args)</code> for brevity. Use <code>self.m</code> to be explicit about self-only dispatch. Use <code>outer C.m</code> to select a particular lexically enclosing class receiver. Use <code>super.m</code> to continue a method chain up the inheritance hierarchy.</p>
-<h2 id="lexical-receiver-syntax"><a class="header" href="#lexical-receiver-syntax">Lexical Receiver Syntax</a></h2>
-<p><code>self</code> retains identifier syntax with fixed semantic meaning. <code>outer</code> introduces
-qualified receiver syntax, like <code>super</code> introduces its lookup redirector. Neither
-form is a public structural accessor. Activation inspection, <code>thisContext</code> and
-related reflection remain outside the bootstrap.</p>
+<p>These origins are language forms, not a universal protocol implemented by every
+value. Aliens acquire no native class, mixin or lexical outer.</p>
 <h2 id="reserved-words"><a class="header" href="#reserved-words">Reserved Words</a></h2>
-<p>VarioHyve has two categories of reserved words:</p>
 <h3 id="grammar-keywords"><a class="header" href="#grammar-keywords">Grammar Keywords</a></h3>
-<p>These tokens are reserved by the grammar and cannot be used as declaration
-identifiers. They are lexed as distinct token types. The spellings <code>outer</code> and
-<code>super</code> are also allowed in explicit selector position so foreign APIs do not
-lose those names; this does not allow native declarations to bind them.</p>
+<p>Grammar keywords cannot be declaration identifiers. <code>outer</code> and <code>super</code> are
+also allowed as explicit foreign selector spellings.</p>
 <div class="table-wrapper">
 <table>
 <thead>
-<tr><th>Keyword</th><th>Purpose</th></tr>
+<tr><th>Tokens</th><th>Purpose</th></tr>
 </thead>
 <tbody>
-<tr><td><code>super</code></td><td>Lookup redirector — <code>super.message(args)</code></td></tr>
-<tr><td><code>outer</code></td><td>Qualified lexical receiver — <code>outer ClassName</code></td></tr>
-<tr><td><code>class</code></td><td>Required keyword for class literal definitions</td></tr>
-<tr><td><code>var</code></td><td>Local variable declaration</td></tr>
-<tr><td><code>factory</code></td><td>Factory method declaration (targets metaclass)</td></tr>
-<tr><td><code>fun</code>, <code>λ</code></td><td>Lambda literal</td></tr>
-<tr><td><code>&lt;</code>, <code>extends</code></td><td>Superclass declaration</td></tr>
-<tr><td><code>&lt;:</code>, <code>with</code></td><td>Mixin declaration</td></tr>
+<tr><td><code>class</code>, <code>factory</code></td><td>Class and factory declarations.</td></tr>
+<tr><td><code>var</code></td><td>Local declaration.</td></tr>
+<tr><td><code>fun</code>, <code>λ</code></td><td>Lambda literal.</td></tr>
+<tr><td><code>outer</code>, <code>super</code></td><td>Native receiver forms.</td></tr>
+<tr><td><code>&lt;</code>, <code>extends</code></td><td>Superclass clause.</td></tr>
+<tr><td><code>&lt;:</code>, <code>with</code></td><td>Mixin clause.</td></tr>
 </tbody>
 </table>
 </div>
 <h3 id="semantically-reserved-identifiers"><a class="header" href="#semantically-reserved-identifiers">Semantically Reserved Identifiers</a></h3>
-<p>These are regular identifiers in the grammar (they parse as <code>IDENT</code> and participate in normal message send syntax), but the semantic layer <strong>rejects</strong> definitions that shadow them:</p>
 <div class="table-wrapper">
 <table>
 <thead>
-<tr><th>Identifier</th><th>Scope of reservation</th><th>Rationale</th></tr>
+<tr><th>Identifier</th><th>Restriction</th></tr>
 </thead>
 <tbody>
-<tr><td><code>self</code></td><td>Cannot be used as a native slot, parameter or method name, or sent as a selector to a native receiver</td><td>Denotes the current native receiver. An explicit Alien’s selector <code>self</code> belongs to its foreign protocol.</td></tr>
-<tr><td><code>new</code></td><td>Cannot be used as a <code>factory</code> method name (i.e., <code>factory new(...)</code> is rejected)</td><td>Synthesized non-overridable primary factory method on source-class metaclasses and <code>Object class</code>; metamodel objects have no public construction factories. Regular instance methods named <code>new</code> are permitted — only <code>factory new</code> conflicts. See <a href="./object-model.html#the-primary-factory-new">The Primary Factory</a>.</td></tr>
+<tr><td><code>self</code></td><td>Cannot name a native slot, parameter, local or method, or be sent as a native selector.</td></tr>
+<tr><td><code>new</code></td><td><code>factory new</code> is rejected because the primary source-class factory is reserved. Ordinary instance methods named <code>new</code> remain allowed.</td></tr>
 </tbody>
 </table>
 </div>
-<p>The distinction matters: grammar keywords affect parsing (they cannot appear where an <code>IDENT</code> is expected), while semantically reserved identifiers parse normally but are checked during semantic analysis. This keeps the grammar minimal and allows future pseudo-variables to be added without grammar changes.</p>
+<p>These spellings parse as identifiers and are checked semantically. See
+<a href="objects-and-classes.html#the-primary-factory-new">primary construction</a>.</p>
 
                     </main>
 

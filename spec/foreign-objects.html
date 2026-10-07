@@ -30,16 +30,18 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="theme/vh-2de7eb16.css">
 
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
         <!-- Provide site root and default themes to javascript -->
         <script>
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0458d790.js";
+            window.path_to_searchindex_js = "searchindex-b0f8be02.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-45e5eade.js"></script>
+        <script src="toc-1ce75dcc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -176,271 +178,408 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="foreign-semantic-values-and-the-alienexpat-boundary"><a class="header" href="#foreign-semantic-values-and-the-alienexpat-boundary">Foreign Semantic Values and the Alien/Expat Boundary</a></h1>
-<p>VarioHyve programs interact with values and entities governed by other semantic
-domains: Python, Java, C, simulation engines, databases, hardware interfaces,
-other VarioHyve runtimes, and the implementation VM itself. This section defines
-the boundary model. Foreign systems retain their own semantics and execution
-mechanisms; federation does not require a shared object model.</p>
-<h2 id="design-principles"><a class="header" href="#design-principles">Design Principles</a></h2>
-<p>The boundary follows these constraints:</p>
-<ol>
-<li><strong>Foreign semantic sovereignty.</strong> Alienation makes a foreign value reachable;
-it does not supply a VarioHyve class, mixins, lexical receiver structure, or
-methods. The foreign adapter determines the operations it supports.</li>
-<li><strong>Native semantic sovereignty.</strong> VarioHyve lexical lookup, <code>self</code>, qualified
-<code>outer ClassName</code>, <code>super</code>, and native dispatch have fixed language semantics.
-Crossing to an Alien leaves that semantic domain; it does not customize lookup.</li>
-<li><strong>Symmetric crossing.</strong> Arguments, results, failures, identity and callbacks
-obey the Alien/Expat contract in both directions, including VM services.</li>
-<li><strong>Explicit adaptation.</strong> Ordinary VarioHyve wrappers supply VarioHyve behavior
-around foreign values. Alienation preserves foreign semantics; wrapping
-constructs a VarioHyve abstraction.</li>
-</ol>
+<p><a id="design-principles"></a></p>
+<p>Foreign systems retain their semantics and execution mechanisms. An <strong>Alien</strong>
+makes a foreign value reachable inside VarioHyve; it supplies no native class,
+mixins or lexical outer. An <strong>Expat</strong> exposes native behavior to a foreign
+participant. Arguments, results, identity, failures and callbacks obey the same
+boundary contract in both directions, including language-visible VM services.
+Native lookup and receiver-origin semantics remain fixed.</p>
+<p>The chapter follows values through selection, conversion and control transfer,
+then defines the VM-service and mirror capabilities. Operational rules are in
+<a href="./formal-core.html#alienexpat-transitions">the formal appendix</a>.</p>
 <h2 id="aliens--foreign-semantic-values-inside-variohyve"><a class="header" href="#aliens--foreign-semantic-values-inside-variohyve">Aliens — Foreign Semantic Values Inside VarioHyve</a></h2>
-<p>An <strong>Alien</strong> is a VarioHyve-visible reference to a value or entity governed by a
-foreign semantic domain. Examples include a Python object, C pointer, function,
-struct value, opaque resource handle, simulator model or remote endpoint.
-An Alien need not support any direct operation. Its presence in an object slot
-does not make that containing object its lexical outer.</p>
-<p>When VarioHyve code sends a message to an Alien:</p>
-<pre><code>aServer.start(port)        // aServer is an Alien wrapping a Python object
-</code></pre>
-<p>The boundary performs the following protocol when its adapter supports that
-operation:</p>
-<ol>
-<li><strong>Expatriate the arguments</strong> — each VarioHyve argument is converted (or wrapped) into a foreign representation suitable for the target runtime. VarioHyve objects become Expats; primitive values are marshalled.</li>
-<li><strong>Invoke foreign behavior</strong> — the adapter interprets the <code>(name, arity)</code>
-request according to its foreign contract. OO forwarding is one policy;
-capability operations on otherwise opaque handles are another.</li>
-<li><strong>Alienate the result</strong> — the foreign return value is converted (or wrapped) back into a VarioHyve value. Foreign objects become Aliens; primitive values are unmarshalled.</li>
-</ol>
-<pre><code>┌─────────────────┐         ┌──────────────────┐
-│   VarioHyve     │         │  Foreign Runtime  │
-│                 │         │                   │
-│  msg(args)  ──────►  Alien  ──────►  foreign.msg(expatriate(args))
-│                 │         │                   │
-│  alienate(r) ◄──────  Alien  ◄──────  r = result
-│                 │         │                   │
-└─────────────────┘         └──────────────────┘
-</code></pre>
+<p>An Alien may denote an object, function, pointer, struct, resource handle,
+simulator model or remote endpoint. It need not support direct operations.
+Storing it in a slot does not make that slot’s owner its lexical outer.</p>
 <h3 id="alien-dispatch"><a class="header" href="#alien-dispatch">Alien Dispatch</a></h3>
-<p>After evaluating an explicit receiver, the evaluator distinguishes native values
-from Aliens. Native values use fixed VarioHyve lookup. An Alien uses its boundary
-adapter; native class and mixin lookup does not continue through the Alien.
-Selector/arity transport does not imply that the foreign entity intrinsically
-has methods or a VarioHyve class. The adapter may return a genuine selector miss.</p>
-<p>An explicit Alien invocation selects exactly its requested name/arity. A foreign
-getter is not a generated native accessor and is not executed to discover a
-callable; write <code>alien.f.apply(args)</code> to invoke its returned value explicitly.
-A stored Alien can supply callable behavior if its adapter advertises exact
-<code>apply/N</code>, including through <code>ForeignCallable</code>. Candidate selection retains the
-operation and does not resolve it a second time before execution.</p>
-<p>The adapter must distinguish absence before operation entry from failure after
-selection. Resolution must not execute operations or call back into the language.
-A resolution or execution failure never resumes lookup or replays effects.
-Receiver and arguments are evaluated once. See <a href="./message-sends.html">Message Sends</a>.</p>
-<p>Explicit foreign selectors named <code>self</code>, <code>outer</code> or <code>super</code> are eligible for
-ordinary boundary dispatch: <code>alien.outer</code> requests the foreign operation named
-<code>outer</code>. It does not navigate a VarioHyve scope. The receiver forms <code>self</code>,
-<code>outer ClassName</code> and <code>super.message</code> retain their separate native meanings.
-Native declarations do not acquire those reserved names through this exception.</p>
+<p>After receiver and argument evaluation, an Alien send selects the adapter’s
+exact <code>(name, arity)</code> operation. Native class/mixin lookup does not continue
+through the Alien. Selection must distinguish absence from failure, perform no
+operation or callback, and retain the selected operation for execution. A
+resolution or execution failure never restarts lookup or replays effects.</p>
+<p>A foreign getter is not a generated native accessor: <code>alien.f(args)</code> does not
+read <code>f/0</code> to discover a callable. Write <code>alien.f.apply(args)</code> for that behavior.
+A stored Alien can qualify for native callable-binding invocation when its
+adapter advertises exact <code>apply/N</code>; the eligibility check’s selected operation
+is reused. See <a href="./message-sends.html#dispatch-rules">Message sends</a>.</p>
+<p>Explicit Alien selectors <code>self</code>, <code>outer</code> and <code>super</code> use the foreign protocol.
+They do not navigate native scope. Native <code>self</code>, qualified <code>outer ClassName</code>
+and <code>super.message</code> keep their receiver-origin meanings; native declarations
+do not acquire those reserved selector names through this exception.</p>
+<h3 id="arity-mismatch"><a class="header" href="#arity-mismatch">Arity Mismatch</a></h3>
+<p>An adapter defines how name/arity requests map to foreign behavior. Foreign
+methods, explicit capability operations and opaque handles need not share one
+object model. Overloads, defaults, ABI layout and lifetime are adapter concerns;
+automatic host reflection is not implied.</p>
 <h3 id="alien-identity"><a class="header" href="#alien-identity">Alien Identity</a></h3>
-<p>For identity-bearing values, a boundary defines foreign identity and preserves
-sharing across repeated crossings. The current in-process Java adapter
-canonicalizes by Java object identity. This is an adapter policy, not a universal
-identity law for all domains, and does not synthesize an <code>eq</code> method on Aliens.</p>
-<p>For C, numeric address equality, allocation identity, pointer provenance and
-value equality are distinct concerns. Reused addresses must not automatically
-identify the same semantic entity. A future C adapter must define its lifetime
-and identity policy explicitly; no C FFI is implemented by this specification.</p>
+<p>Each adapter defines identity and lifetime for its foreign domain and preserves
+sharing on repeated compatible crossings. Numeric address equality alone is
+insufficient for pointer identity, provenance or reused allocations. Alienation
+does not synthesize an <code>eq</code> method. Concrete Java identity caching is an
+<a href="./interpreter-design.html#java-boundary">implementation policy</a>, not a universal
+foreign identity law or an implemented C FFI.</p>
 <h2 id="expats--variohyve-objects-outside-variohyve"><a class="header" href="#expats--variohyve-objects-outside-variohyve">Expats — VarioHyve Objects Outside VarioHyve</a></h2>
-<p>An <strong>Expat</strong> exposes a native VarioHyve value’s behavior to a foreign domain. It
-may present that behavior in the foreign runtime’s idiom, but its public contract
-does not expose a store, address, activation or VM representation. Invocation
-reenters fixed VarioHyve semantics. Backend adapters may privately retain the
-information required to do so.</p>
-<p>The bootstrap’s <code>VHExpat.send</code> API performs exact selector dispatch, including
-zero-argument access. It does not apply source invocation’s generated-binding
-selection: read a callable binding, then send <code>apply/N</code> to that result explicitly.</p>
-<p>When foreign code sends a message to an Expat:</p>
-<pre><code class="language-python"># Python side — server is an Expat wrapping a VarioHyve object
-server.start(8080)
-</code></pre>
-<p>The Expat performs the mirror-image protocol:</p>
-<ol>
-<li><strong>Alienate the arguments</strong> — each foreign argument is converted (or wrapped) into a VarioHyve value. Foreign objects become Aliens; primitive values are unmarshalled.</li>
-<li><strong>Forward the message</strong> — the foreign call is translated into a VarioHyve <code>(name, arity)</code> dispatch and sent to the wrapped VarioHyve object.</li>
-<li><strong>Expatriate the result</strong> — the VarioHyve return value is converted (or wrapped) back into a foreign representation. VarioHyve objects become Expats; primitive values are marshalled.</li>
-</ol>
-<pre><code>┌──────────────────┐         ┌─────────────────┐
-│  Foreign Runtime  │         │    VarioHyve     │
-│                   │         │                  │
-│  msg(args)  ──────►  Expat  ──────►  vh_obj.msg(alienate(args))
-│                   │         │                  │
-│  expatriate(r) ◄──  Expat  ◄──────  r = result
-│                   │         │                  │
-└──────────────────┘         └─────────────────┘
-</code></pre>
+<p>An Expat reenters native semantics through a behavioral interface. Its public
+contract exposes no store, address, activation, private initializer or VM
+representation. Adapters may privately retain what execution requires.
+The current exact-send interface, <code>VHExpat.send</code>, includes zero-argument access;
+it does not apply source invocation’s callable-binding fallback. To use a
+stored callable, read the binding and send <code>apply/N</code> to the result explicitly.</p>
 <h3 id="expat-surface"><a class="header" href="#expat-surface">Expat Surface</a></h3>
-<p>An Expat exposes the VarioHyve object’s <strong>full behavioral interface</strong> — every method the VarioHyve object can respond to is available through the Expat. In v1 (no access control), this means all methods. When access control is introduced (see <a href="./future.html#access-control">Future Directions — Access Control</a>), Expats will expose only the <strong>export surface</strong> — the same contract that any external VarioHyve caller sees.</p>
+<p>Without language access control, an Expat exposes the same source-visible
+behavior available to an external native caller, including generated accessors.
+Backend-private construction routines are not selectors. Proposed
+<a href="./future.html#access-control">export control</a> must preserve equality of the
+native external interface and the foreign export interface.</p>
 <h3 id="expat-identity"><a class="header" href="#expat-identity">Expat Identity</a></h3>
-<p>Each VarioHyve object has at most one Expat proxy per foreign runtime. If the same VarioHyve object is expatriated through multiple paths, the runtime returns the same Expat. This preserves identity across the boundary.</p>
+<p>A native object has at most one Expat proxy per compatible foreign runtime.
+Exporting it repeatedly through different paths returns the same proxy.</p>
 <h2 id="the-symmetry"><a class="header" href="#the-symmetry">The Symmetry</a></h2>
-<p>The Alien/Expat model is symmetric:</p>
 <div class="table-wrapper">
 <table>
 <thead>
-<tr><th></th><th>Alien</th><th>Expat</th></tr>
+<tr><th>Direction</th><th>Arguments</th><th>Operation</th><th>Result</th></tr>
 </thead>
 <tbody>
-<tr><td><strong>What it represents</strong></td><td>Foreign semantic value/entity</td><td>Native VarioHyve value</td></tr>
-<tr><td><strong>Lives in</strong></td><td>VarioHyve store</td><td>Foreign runtime</td></tr>
-<tr><td><strong>On message receive</strong></td><td>Expatriate args → forward → alienate result</td><td>Alienate args → forward → expatriate result</td></tr>
-<tr><td><strong>Proxy for</strong></td><td>Foreign → VarioHyve</td><td>VarioHyve → Foreign</td></tr>
+<tr><td>Native → Alien</td><td>Expatriate</td><td>Execute the selected foreign operation</td><td>Alienate</td></tr>
+<tr><td>Foreign → Expat</td><td>Alienate</td><td>Exact native send</td><td>Expatriate</td></tr>
 </tbody>
 </table>
 </div>
-<p>The two operations preserve compatible reference round trips:</p>
-<ul>
-<li><strong>Alienate</strong>: foreign value → VarioHyve value (wrap foreign objects as Aliens, unmarshall primitives)</li>
-<li><strong>Expatriate</strong>: VarioHyve value → foreign value (wrap VarioHyve objects as Expats, marshall primitives)</li>
-</ul>
-<p>For a native reference <code>v</code> and an identity-bearing foreign value <code>f</code> within a
-compatible runtime pair:</p>
-<pre><code>alienate(expatriate(v)) = v
-expatriate(alienate(f)) = f
-</code></pre>
-<p>An Expat owned by the importing runtime recovers the original native value;
-an Alien exported to its originating adapter recovers the foreign value.
-Cross-runtime references require an explicit bridge, not a guessed identity.
-By-value conversions instead follow their declared value semantics and may
-normalize host types; these equations do not promise host representation identity
-for marshalled primitives.</p>
+<p>For compatible references, importing an owned Expat recovers the original native
+identity, and exporting an Alien to its originating adapter recovers its foreign
+identity. Cross-runtime references require an explicit bridge. Conversion by
+value instead follows a declared codec and may normalize host representations;
+it does not promise preservation of their object identity.</p>
+<h2 id="operation-results"><a class="header" href="#operation-results">Operation Results</a></h2>
+<p>An Alien send returns the operation’s ordinary result through the declared
+conversion protocol, just as a native send returns its method result. There is
+no automatic Alien-only <code>ok(value) | AlienError(error)</code> wrapper and no required
+sum result. Such an outcome protocol is one optional contract an operation may
+explicitly promise, equally for native and foreign implementations. The boundary
+does not infer failure from an ordinary returned object’s shape, class name or
+truth value. Defined exceptional completions remain diagnostics under
+<a href="#error-propagation">Error Propagation</a>.</p>
+<h2 id="primitive-marshalling"><a class="header" href="#primitive-marshalling">Primitive Marshalling</a></h2>
+<p>Numbers, strings, booleans and null may cross by value instead of through
+proxies. Each adapter must state its supported domains and reject unsupported
+conversions. A numeric encoding must not silently turn a pointer into an integer
+while claiming to preserve its provenance.</p>
+<p>Canonical null and Booleans are ordinary native objects with language methods.
+Their Java boundary representations are exactly <code>null</code>, <code>Boolean.TRUE</code> and
+<code>Boolean.FALSE</code>, never Expats. Incoming scalars recover the corresponding
+canonical native identities, equally for arguments, results and callbacks.
+Conversion recognizes those identities; it never invokes <code>toString</code>, <code>isNull</code>,
+<code>not</code> or a truth-testing protocol to classify another native object. Similar
+behavior or a source name such as <code>null</code>, <code>true</code> or <code>false</code> does not make
+an object canonical. The internal core null constant and empty expressions
+select canonical null directly; those source names use ordinary message lookup.
+The current integer/string subset is recorded
+in <a href="./interpreter-design.html#java-boundary">the implementation</a>.</p>
 <h2 id="explicit-wrappers"><a class="header" href="#explicit-wrappers">Explicit Wrappers</a></h2>
-<p>A native wrapper can combine several foreign capabilities and supply its own
-identity, methods, invariants and lifecycle policy. Constructor parameters remain
-initializer-only, so persistent dependencies are bound into slots:</p>
-<pre><code class="language-vh">class Device(deviceHandle, reader, writer, closer) {
+<p>A native wrapper supplies its own identity, scope and behavior around foreign
+values. Multiple wrappers may share one Alien without sharing native identity.
+For example, a callable capability can operate on an opaque handle:</p>
+<pre><code class="language-vh">class Device(deviceHandle, reader) {
     handle = deviceHandle;
     readFn = reader;
-    writeFn = writer;
-    closeFn = closer;
-
     read(buffer) { readFn(handle, buffer) }
-    write(buffer) { writeFn(handle, buffer) }
-    close { closeFn(handle) }
 }
 </code></pre>
-<p>The function capabilities can support <code>apply/n</code>, while the handle itself remains
-opaque and supports no messages. This illustrates an adapter contract, not a
-built-in C calling convention. Multiple wrappers may share the same Alien while
-having distinct native identities, lexical scopes and behavior.</p>
-<h2 id="vm-services-and-the-trusted-seed"><a class="header" href="#vm-services-and-the-trusted-seed">VM Services and the Trusted Seed</a></h2>
-<p>Language-visible VM services are foreign capabilities and use the same membrane.
-There is no separate privileged native-function invocation ontology. A finite
-trusted seed may privately allocate values, maintain stores, and implement
-lookup and continuations; those internal operations are not language services.</p>
-<p>A VM service constructing a native object must return its Expat so import
-recovers the native value. Returning a Java <code>VMObject</code> representation as an
-ordinary foreign result is invalid. Representation-sensitive capabilities, if
-ever exposed, require explicit authority and backend-private Expat unwrapping;
-public Expats provide no raw-world or address access. See
-<a href="../../design-notes/vm-lang-boundary.html">The VarioHyve–VM Boundary</a>.</p>
+<p>This is explicit adaptation, not a built-in calling convention. Persistent
+dependencies use slots under the ordinary constructor-scope rules.</p>
 <h2 id="constructor-arguments-and-optional-bundles"><a class="header" href="#constructor-arguments-and-optional-bundles">Constructor Arguments and Optional Bundles</a></h2>
-<p>The instantiation service can supply Aliens directly as any of a top-level
-module’s <a href="./program-structure.html#top-level-classes-and-instantiation">constructor arguments</a>.
-It can also assemble an ordinary bundle conventionally called a <code>kernel</code>.
-The parameter name, number of arguments, and use of a bundle are application
-choices, not requirements of the foreign protocol:</p>
-<pre><code class="language-vh">class(consoleService, fileSystemService) {
-    // Each argument may be an Alien or an ordinary VarioHyve object.
-    console = consoleService;
-    fs = fileSystemService;
-}
-</code></pre>
-<p>An optional bundle may itself be an Alien or a VarioHyve object holding Aliens.
-Objects already belonging to VarioHyve retain their identity through the normal
-Expat round trip. The service passes existing objects without exposing its other
-capabilities as a lexical scope. Normal module evaluation has only an empty top
-activation at its base, with no enclosing application scope; the class inherits
-only from root <code>Object</code> and composes no mixins. Its
-constructor inputs are its only external capability entry route.</p>
-<p>Tools may explicitly supply Aliens or native objects in development/debugging
-evaluation contexts. The same boundary contract applies there; those bindings
-must not silently become capabilities of normal modules’ empty top activations.</p>
-<h2 id="primitive-marshalling"><a class="header" href="#primitive-marshalling">Primitive Marshalling</a></h2>
-<p>Certain values cross the boundary without proxying — they are <strong>marshalled</strong> (converted by value) rather than wrapped:</p>
-<ul>
-<li><strong>Numbers</strong> — VarioHyve numbers ↔ host numeric types</li>
-<li><strong>Strings</strong> — VarioHyve strings ↔ host strings</li>
-<li><strong>Booleans</strong> — <code>true</code>/<code>false</code> ↔ host booleans</li>
-<li><strong>Null</strong> — canonical <code>null</code> ↔ host null/None/nil (<code>nil</code> is only a possible platform alias)</li>
-</ul>
-<p>Conversions must have explicit value semantics and reject unsupported values.
-The current Java adapter supports strings, Booleans, null and signed 64-bit
-integers; it normalizes Java integral representations to <code>Long</code> and rejects
-unsupported numeric forms. A foreign pointer must not be passed as an integer
-and expected to retain pointer identity or provenance. Use an explicit handle
-whose interpretation belongs to its adapter.</p>
-<p>Canonical null and booleans are ordinary native objects inside VarioHyve, with
-language-defined methods and thunk-based control flow. Their Java representation
-at the boundary is <code>null</code>, <code>Boolean.TRUE</code> or <code>Boolean.FALSE</code>, never an Expat.
-Incoming Java values map back to the corresponding canonical object in that
-runtime. This applies equally to results, arguments and callbacks.</p>
-<p>Conversion recognizes the canonical identities; it does not call <code>toString</code>,
-<code>isNull</code>, <code>not</code> or a truth-testing protocol to classify an arbitrary object.
-Another native object with similar behavior retains its own identity and uses
-the ordinary Expat route. Core null and empty expressions select the native
-canonical null directly, without a trip through Java conversion.</p>
-<h2 id="design-considerations"><a class="header" href="#design-considerations">Design Considerations</a></h2>
-<h3 id="arity-mismatch"><a class="header" href="#arity-mismatch">Arity Mismatch</a></h3>
-<p>Foreign runtimes may not have a native concept of <code>(name, arity)</code> dispatch. The Alien/Expat layer must map between VarioHyve’s arity-based dispatch and the foreign runtime’s calling convention:</p>
-<ul>
-<li><strong>Python/Ruby</strong> — keyword arguments, <code>*args</code>, default parameters. The mapping is name-based; arity mismatch may surface as a TypeError on the foreign side.</li>
-<li><strong>Java</strong> — selector and arity may participate in an explicit adaptation policy;
-Java overload resolution can also depend on types. Automatic reflection is
-not required and is not supplied by the bootstrap adapter.</li>
-<li><strong>C</strong> — a pointer or struct need not receive messages. Explicit capabilities
-can instead provide <code>call</code>, <code>read</code>, <code>write</code>, <code>field</code> or <code>dereference</code>, subject
-to a defined ABI, layout, ownership and lifetime contract.</li>
-</ul>
-<h3 id="concurrency-boundary"><a class="header" href="#concurrency-boundary">Concurrency Boundary</a></h3>
-<p>A future Semantic Language Interface (SLI) may govern scheduling between a
-sequential VarioHyve VM and concurrent foreign domains. The current boundary
-implements synchronous same-thread callbacks, not an SLI scheduler. See <a href="./future.html#concurrency-and-parallelism">Future Directions — Concurrency and Parallelism</a>.</p>
+<p>Aliens, native objects and bundles can be ordinary
+<a href="./program-structure.html#top-level-classes-and-instantiation">module constructor inputs</a>.
+The same conversion contract applies in richer
+<a href="./tooling-architecture.html#evaluation-contexts">tooling contexts</a>; it does not
+add capabilities to an isolated module root.</p>
+<p><a id="design-considerations"></a></p>
+<h2 id="control-and-failure-agreements"><a class="header" href="#control-and-failure-agreements">Control and Failure Agreements</a></h2>
 <h3 id="error-propagation"><a class="header" href="#error-propagation">Error Propagation</a></h3>
-<p>Selector absence and an operation’s raised failure are different outcomes.
-Foreign failures become defined language failures; native failures crossing an
-Expat become defined foreign diagnostics. Concrete host exception classes must
-not define language control flow or leak as ordinary language values. The
-bootstrap preserves <code>FOREIGN_FAILURE</code>, <code>CONVERSION</code>, <code>OWNERSHIP</code> and
-<code>EXECUTION_POLICY</code> through machine execution and callback failure propagation.
-Native missing-selector and control failures remain <code>LANGUAGE_FAILURE</code>. These
-are defined diagnostic categories, not retained Java exception types or causes.
-The runtime does not implement resumable conditions or asynchronous callbacks.</p>
+<p>Selector absence is distinct from a selected operation’s failure. Failures cross
+as defined diagnostics, never as retained host exception objects, classes or
+causes. The Java categories <code>FOREIGN_FAILURE</code>, <code>CONVERSION</code>, <code>OWNERSHIP</code> and
+<code>EXECUTION_POLICY</code> survive machine execution and callback propagation; native
+lookup/control errors use <code>LANGUAGE_FAILURE</code>.</p>
+<p>Callbacks use ordinary native semantics and preserve state changes. A failed
+callback aborts its own native continuation, retires its invocation homes and
+reports a defined diagnostic to its foreign caller. It does not automatically
+fail the suspended native caller. Foreign code may handle the diagnostic, make
+further callbacks and return normally, or propagate a failure. The outer NF send
+observes the foreign operation’s completion, subject to normal result conversion
+and execution limits. A propagated diagnostic preserves its kind; a later foreign
+failure is reported as that failure, not replaced by an earlier handled one.</p>
+<p>Effects already performed are not rolled back. Handling a callback failure does
+not resume the aborted callback, revive its homes, replay the operation or grant
+NLR crossing. The suspended caller’s homes remain live until its own completion
+or failure. Callbacks continue to share the active execution budget; handling an
+exhaustion diagnostic does not replenish it. There are no native resumable
+conditions in the current language. See the
+<a href="../../design-notes/synchronous-foreign-interactions.html#accepted-decision-foreign-handling-of-callback-failure">accepted recovery agreement</a>.</p>
+<h3 id="non-local-returns-across-the-boundary"><a class="header" href="#non-local-returns-across-the-boundary">Non-local Returns Across the Boundary</a></h3>
+<p>The boundary is the agreement between native and foreign participants. That
+agreement owns whether a non-local return may cross a foreign invocation and how
+the crossing is handled. The native language cannot prescribe how arbitrary
+foreign execution unwinds or otherwise transfers control.</p>
+<p>The default agreement forbids crossing. A callback may return to an accessible
+home created inside that callback; an attempt to reach a live home across an
+active foreign-call barrier fails with <code>LANGUAGE_FAILURE</code>. The failure is reported
+to the foreign caller under the recovery agreement above. This is the only
+crossing agreement implemented by the current Java boundary.</p>
+<p>A boundary may explicitly support crossing under a future agreement. It is
+responsible for implementing that agreement, including its observable control
+flow and treatment of intervening foreign work; the foreign-side mechanism is
+not fixed by VarioHyve. Every intervening boundary must support the requested
+transfer. Such support does not change the lexical target of <code>^</code>, revive a
+retired home, or bypass initializer phase restrictions. Crossing support and
+its transfer protocol are deferred; the default barrier must not be disabled
+without implementing a supporting agreement. See the
+<a href="../../design-notes/synchronous-foreign-interactions.html#accepted-decision-boundary-owned-non-local-return">accepted decision and examples</a>.</p>
+<p><a id="execution-authority"></a></p>
+<h3 id="control-tokens-and-execution-agreements"><a class="header" href="#control-tokens-and-execution-agreements">Control Tokens and Execution Agreements</a></h3>
+<p>Ordinary native transitions require execution authority under an explicit
+execution agreement. <strong>The current sequential agreement has one conceptual
+control token per live runtime.</strong> It governs advancement of ordinary native continuations and
+their NF/FN control transfers. A suspended continuation has no independent
+authority to advance. The token is neither a language value nor an additional
+capability that programs must pass; implementations need not reify it. A
+refinement argument must account for the authority using the implementation’s
+actual synchronization and state.</p>
+<p>The token may be idle at the boundary, assigned to a native continuation, or
+assigned to a foreign invocation. Independent FN entry acquires the existing
+idle token. NF transfers it to the selected foreign invocation; admitted callback
+entry transfers it to a new native continuation. Callback success or failure
+returns it to that invocation; foreign completion transfers it to the suspended
+native caller only after admitted descendants finish. Independent native
+completion returns it to the idle boundary. Nested calls retain suspended
+continuations and interaction state, not additional control tokens.
+Backend tooling may also yield after a requested step and later reacquire
+authority to advance its retained successor. Yielding is not native completion
+and does not retire homes; storing a configuration grants neither execution
+authority nor a snapshot of the mutable runtime.</p>
+<p>This is an execution discipline, not exclusive physical access to all runtime
+memory. It permits three distinct forms of activity:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Activity</th><th>Authority and correctness obligation</th></tr>
+</thead>
+<tbody>
+<tr><td>Ordinary evaluation and callbacks</td><td>Execution authority under the active agreement; preserve continuations, admission and boundary transfers.</td></tr>
+<tr><td>Representation maintenance and optimizations, including concurrent GC</td><td>Implementation refinement of the agreed semantics and observations; no second ordinary native continuation is implied by concurrent implementation work.</td></tr>
+<tr><td>Explicit observation or intervention</td><td>A granted capability with a declared effect and coordination contract; it may intentionally change abstract program state without owning the ordinary control token.</td></tr>
+</tbody>
+</table>
+</div>
+<p>An observation or intervention contract must specify its subjects and scope,
+permitted effects, consistency and coordination with execution, authority
+lifetime, and completion/failure behavior. Reading live state requires a defined
+consistency model. Changing a slot, pausing execution or replacing a continuation
+requires an explicit intervention contract; it cannot be justified as invisible
+maintenance. Such authority does not implicitly grant arbitrary evaluation,
+additional ordinary continuations, NLR crossing, dead-home revival or relaxed
+initializer rules. Language-visible VM services, debuggers and language monitors
+remain explicitly supplied Aliens using ordinary boundary sends. No general
+intervention API is implemented by this agreement.
+All agreements preserve fixed lookup, identity, return-home lifetime and
+initializer phase rules. NLR crossing still requires an explicitly supporting
+boundary agreement.</p>
+<p>Implementations may use parallel work, concurrent collectors and boundary
+optimizations without a global representation lock. They must preserve logical
+identity, return-home liveness, roots and agreed observations, and coordinate their concrete
+data structures correctly. An optimization cannot silently replay foreign effects
+or change their specified ordering. Boundary bookkeeping, such as recording a
+pending request or an arriving completion, does not itself advance a native
+continuation.</p>
+<p>A richer execution agreement may explicitly authorize simultaneous native
+transitions, including a model checker’s request to execute proven independent
+transitions on a parallel VM. It must specify execution authority, shared-state
+and observation semantics, and applicable independence or synchronization
+conditions. Token uniqueness is a property of the sequential agreement, not a
+universal serialization requirement. The accepted extension principle and the
+remaining implementation work are separated in
+<a href="./future.html#concurrency-and-parallelism">Concurrency and Parallelism</a>.</p>
+<h3 id="concurrency-boundary"><a class="header" href="#concurrency-boundary">Concurrency Boundary</a></h3>
+<p>The boundary supports synchronous same-thread callbacks and explicitly
+call-associated worker callbacks. Native execution remains serial over one
+runtime/store under the sequential agreement. Each NF invocation suspends and
+roots its native caller, transfers the conceptual control token, and records its
+call ancestry. An admitted FN callback acquires that authority, runs a separate
+native continuation, and shares the active budget. Nested NF calls repeat this
+protocol.</p>
+<p>Foreign code captures a <code>CallbackContext</code> on its own active operation thread and
+may explicitly pass it to a worker. Its <code>send</code> requires an Expat from the same
+runtime; the context grants permission to request admission, not receiver
+authority or possession of the control token. Contexts may be copied among
+workers; competing requests negotiate access to the unique token. Expats obtained
+before the NF invocation remain valid targets. Unassociated entry on another
+thread during an active execution is rejected, as is callback entry during
+selection. Neither thread identity alone nor possession of an Expat grants
+admission to an outstanding foreign call.</p>
+<p>Only callbacks associated with the innermost active foreign invocation may
+acquire native execution permission. Other associated requests wait for their
+turn without running native code. A descendant operation cannot synchronously
+use an ancestor context to wait on its own completion; that request is rejected.
+There is no FIFO or fairness guarantee. A future FIFO policy must respect call
+eligibility: a waiting ancestor request cannot block a needed descendant callback
+merely because it arrived first. Foreign completion closes admission, rejects
+queued or late requests and waits for already admitted descendants to finish
+before importing the result and resuming its native caller. A foreign result can
+arrive while a callback owns the token; arrival is recorded, and delivery waits
+for ownership transfer. Retained call contexts cannot attach to a later
+invocation. This preserves the existing NLR
+barriers and callback-local failure contract.</p>
+<p>This protocol provides no preemption or termination guarantee: foreign work or
+an admitted descendant may never finish, and foreign dependencies may deadlock.
+Independent-entry scheduling, detached asynchronous native tasks and parallel
+native execution remain outside this contract. Execution limits belong to
+<a href="./interpreter-design.html#java-boundary">the implementation policy</a>.</p>
 <h3 id="lifecycle-and-garbage-collection"><a class="header" href="#lifecycle-and-garbage-collection">Lifecycle and Garbage Collection</a></h3>
-<p>Ownership and lifetime belong to the boundary contract for the foreign domain.
-The current Java adapter retains strong proxy references for the runtime’s
-lifetime. Future adapters must account for resources without a GC, callback
-lifetime, and cross-boundary cycles. No universal reclamation protocol is yet
-defined; exposing raw addresses is not a solution.</p>
+<p>Ownership, resource expiry, callback lifetime and cross-boundary cycles belong
+to each adapter’s contract. No universal reclamation protocol is defined.
+Public raw addresses are not a substitute for that contract.</p>
 <h3 id="foreign-kinds-and-capability-contracts"><a class="header" href="#foreign-kinds-and-capability-contracts">Foreign Kinds and Capability Contracts</a></h3>
-<p>An adapter may classify values as callable, pointer, struct, remote endpoint or
-semantic model. Such classifications are foreign contracts, not VarioHyve
-classes. Future analysis can consume explicit contracts for effects, callbacks,
-blocking, determinism or state transitions; unknown behavior remains opaque.
-The bootstrap has no general contract metadata system, provenance registry or
-foreign reflection API. Those additions must preserve this semantic boundary.</p>
+<p>An adapter may classify a value as callable, pointer, struct or endpoint; these
+are foreign contracts, not native classes. Analysis needs explicit assumptions
+about effects, callbacks, blocking, determinism and state changes. Unknown
+behavior stays opaque. General contract metadata, provenance registries and
+foreign reflection remain unimplemented; see the
+<a href="../../design-notes/alien-semantic-membrane.html">boundary assessment</a>.</p>
+<h2 id="vm-services-and-the-trusted-seed"><a class="header" href="#vm-services-and-the-trusted-seed">VM Services and the Trusted Seed</a></h2>
+<p>The host boundary has a public foreign facet and a privileged VM-service facet
+over one private owner. The public facet exposes only the ordinary transport,
+explicit mirror grant and call-associated callback admission. Trusted seed
+provisioning supplies narrow VM service capabilities; public clients have no
+operation for obtaining the provisioning facet or raw runtime representations.
+Object’s identity service is provisioned only to its definition scope. The
+optional public <code>IdentityMirror</code> grants its own limited observations.</p>
+<p>Both facets share identity maps, conversion, execution admission, budgets and GC
+roots. Current services use the same serial admission protocol. Privilege changes
+authority, not lookup, return or failure semantics; privilege alone grants no
+additional ordinary native execution. A future independently operating service
+requires an explicit <a href="#execution-authority">execution or intervention agreement</a>.
+The same capability view preserves identity across either route. Distinct
+restricted views have distinct identities even when they concern one resource.
+Deliberately exporting a privileged capability delegates that capability; a
+partition label does not silently attenuate it. No new privilege registry,
+selector allowlist or native invocation path is introduced.</p>
+<p>Language-visible VM services use this same boundary; there is no privileged
+native-function invocation path. The trusted backend may privately allocate
+values, maintain stores and implement lookup/continuations. Those internal
+operations are not language services.</p>
+<p>A service returning a native object must return its Expat, so import recovers
+the object. Returning its raw backend representation as a foreign value is
+invalid. Any future representation-sensitive service requires explicit authority
+and private unwrapping without adding raw-world access to public Expats. See
+<a href="../../design-notes/vm-lang-boundary.html">the VM boundary decision</a>.</p>
+<h2 id="identitymirror"><a class="header" href="#identitymirror">IdentityMirror</a></h2>
+<p><code>IdentityMirror</code> is an explicitly supplied capability for observations that must
+not dispatch through the subject. A host obtains it with
+<code>runtime.boundary().identityMirror()</code> and can pass it as an ordinary module
+constructor argument. It is not installed in the kernel or exposed by Object.
+The Java public interface uses the same <code>ForeignObject</code> selector protocol as
+other services; it grants no store, address or runtime access.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Operation</th><th>Result</th></tr>
+</thead>
+<tbody>
+<tr><td><code>same(a, b)</code></td><td>Whether supported values have the same logical identity</td></tr>
+<tr><td><code>identityHash(a)</code></td><td>Integer stable for that identity’s lifetime</td></tr>
+<tr><td><code>kind(a, name)</code></td><td>Membership in the semantic kind named by a string</td></tr>
+<tr><td><code>isAlien(a)</code></td><td><code>kind(a, "Alien")</code></td></tr>
+<tr><td><code>isNative(a)</code></td><td><code>kind(a, "Object")</code></td></tr>
+<tr><td><code>instanceOf(a, C)</code></td><td>Whether the actual native class/superclass chain contains class C by identity</td></tr>
+<tr><td><code>applies(a, C)</code></td><td>Whether the native contribution chain contains C’s owned mixin by identity</td></tr>
+</tbody>
+</table>
+</div>
+<p>These operations execute no subject or target method, foreign resolver, computed
+getter or member-class realization. Their arguments are first evaluated using
+ordinary message-send rules, which may themselves realize a member class.
+All explicit sends on an Alien retain their foreign meaning, even for these
+same selector names. Object’s ordinary equality and hash
+defaults are normative for the current runtime seed and remain available without
+granting the mirror itself. Another seed may choose different root defaults.</p>
+<h3 id="identity-and-kinds"><a class="header" href="#identity-and-kinds">Identity and kinds</a></h3>
+<p>Identity comparison is reflexive, symmetric and transitive on its supported
+domain. It observes native identity or adapter-preserved Alien identity, never
+semantic equality or remote resource equivalence. Compatible round trips preserve
+identity and hashes; same identities hash equally, but collisions are permitted.
+Hashes are neither addresses nor stable across sessions. A wrapper and its
+payload differ; differently restricted handles must not be merged merely because
+they refer to the same resource. Ownership failures require an explicit bridge.</p>
+<p>The supported kind labels are exactly <code>"Object"</code> and <code>"Alien"</code>, case sensitive.
+Object includes native instances, class objects, metaclasses, canonical null and
+Booleans, and lambdas. Alien includes opaque foreign references and VM services
+exposed through the adapter. It does not imply callability or trust. Classification
+is relative to the observing runtime; importing its owned Expat recovers a native
+object.</p>
+<p>Current integer/string codec values belong to neither kind and have no native
+class or mixin membership. Identity operations on them, including mixed <code>same</code>
+queries, fail with <code>CONVERSION</code>; interning does not specify scalar identity.
+Future native or preserved foreign scalars require their own specified contracts.
+Thus <code>isNative</code> is not implemented as the negation of <code>isAlien</code>. Object’s default
+<code>equals</code> with a codec scalar still returns false because its receiver is native.
+An unknown kind label fails with <code>LANGUAGE_FAILURE</code>, a non-string kind label
+with <code>CONVERSION</code>, and a missing selector/arity follows ordinary lookup failure.</p>
+<h3 id="class-and-contribution-references"><a class="header" href="#class-and-contribution-references">Class and contribution references</a></h3>
+<p>The second argument of both membership queries is a native class reference,
+obtained through ordinary messages or explicit capability provision. For an
+ordinary class, it is the same definition object usable in superclass and mixin
+applications. <code>instanceOf</code> uses that class’s identity; <code>applies</code> selects that
+class’s owned reified mixin,
+just as <code>&lt;: C</code> does. It does not send an <code>ownedMixin</code> accessor or require a
+separately exposed mixin token. The query does not resolve a name or consult a
+class registry. Names and hashes, including old anonymous labels, are not targets.</p>
+<p><code>instanceOf</code> starts at the receiver’s actual class and follows superclasses
+through root Object, inclusive. It returns at the first matching class identity.
+It does not treat a mixin application’s source class as a superclass.</p>
+<p><code>applies</code> walks the same linear contribution order used for native dispatch:
+the class’s owned contribution, its direct applications left to right, then
+its superclass’s owned contribution and direct applications, continuing through
+Object inclusive. It returns true at the first match and false after the chain
+is exhausted. Matching compares the reified contribution’s identity, not its
+syntax, name or semantic equality. An application contributes only the selected
+source’s owned mixin; this query does not traverse that source’s superclass or
+applications.
+Owned, inherited and repeated contributions are included without collapsing
+occurrence identities or executing construction routes.</p>
+<p>Anonymous and named definitions follow identical identity rules. Distinct class
+evaluations and distinct per-enclosing-receiver member realizations remain
+distinct even when they share a declaration or name. Aliases to the same class
+select the same identity and owned mixin. No identity hash participates in
+membership, so hash collisions cannot change an answer.</p>
+<p>For a class object, queries inspect its metaclass hierarchy and class-side
+contributions; they never switch to the represented class’s instance hierarchy.
+The target rule remains the same: C denotes C itself or C’s owned instance-side
+mixin, not its metaclass’s contribution. In particular, <code>instanceOf(C, C)</code> and
+<code>applies(C, C)</code> are normally false. If a metaclass reference is explicitly
+supplied, it can select that metaclass or its owned class-side contribution.
+This does not add a public class/metaclass getter.</p>
+<p>Both arguments undergo ordinary boundary ownership validation. A non-class
+target, including a string, canonical null, ordinary instance or foreign object,
+fails with <code>CONVERSION</code>; an unowned class fails with <code>OWNERSHIP</code>. Invalid targets
+fail even when the subject is an Alien or codec value. With a valid target,
+Aliens and codec values return false because they have no native membership.</p>
+<p>These are structural identity tests, not proofs that a selector is supported or
+that a contribution’s behavior remains effective after overriding. They do not
+establish trust in a subclass or authorize its behavior. The
+<a href="../../design-notes/mirrors-identity-and-alien-classification.html">design note</a>
+records the routing and capability tradeoffs.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="interpreter-design.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="descriptors.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="tooling-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="object-model.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -450,11 +589,11 @@ foreign reflection API. Those additions must preserve this semantic boundary.</p
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="interpreter-design.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="descriptors.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="tooling-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="object-model.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

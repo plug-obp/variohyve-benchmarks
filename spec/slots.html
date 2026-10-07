@@ -30,16 +30,18 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="theme/vh-2de7eb16.css">
 
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
         <!-- Provide site root and default themes to javascript -->
         <script>
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0458d790.js";
+            window.path_to_searchindex_js = "searchindex-b0f8be02.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-45e5eade.js"></script>
+        <script src="toc-1ce75dcc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -176,253 +178,94 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="slots-and-accessors"><a class="header" href="#slots-and-accessors">Slots and Accessors</a></h1>
-<p>Slots are the storage units of objects. Every slot declaration synthesizes accessor methods that follow the uniform message send convention.</p>
+<p>Slots hold object state and expose it through generated accessor messages.</p>
+<p>Operational definition: <a href="./formal-core.html#calls-and-generated-accessors">SOS accessor rules</a>.</p>
 <h2 id="slot-declaration"><a class="header" href="#slot-declaration">Slot Declaration</a></h2>
-<p>Slots are declared in object and class bodies using <code>slotDecl</code>:</p>
-<pre><code class="language-vh">{
-    x = 0
-    y = 0
-    name
-}
-</code></pre>
-<ul>
-<li><code>x = 0</code> — slot <code>x</code> initialized to <code>0</code></li>
-<li><code>name</code> — uninitialized slot (defaults to <code>nil</code>)</li>
-</ul>
-<p>The <code>=</code> in a slot declaration is <strong>initialization</strong>, not assignment. It appears only at definition time.</p>
-<h2 id="contribution-slots-and-storage"><a class="header" href="#contribution-slots-and-storage">Contribution Slots and Storage</a></h2>
-<p>A slot declaration has a local position in its owned reified mixin. Each
-application of that mixin creates a distinct logical occurrence of the slot,
-including repeated applications to one class. A superclass retains its complete
-set of occurrences. The actual receiver’s class owns the immutable mapping from
-these logical slots to its storage locations.</p>
-<p>The current policy maps same-named slots from different occurrences to one
-shared location. Accessor precedence remains owned contribution, applied mixins
-left-to-right, then superclass. After lookup selects a generated accessor, that
-accessor uses its occurrence and local slot position to select the physical
-location. A flat backing array does not replace the source-level message send
-or prevent an explicit method from overriding an accessor.</p>
-<p>Declaration initialization uses the initializing occurrence’s mapping directly,
-without invoking an overridable setter. The existing superclass, right-to-left
-mixin, then owned initialization schedule remains unchanged; later writes to a
-shared location replace earlier values. Storage sharing does not merge
-initializer invocations or their effects. Explicit sharing specifications and
-contribution-private access rules remain deferred. See
-<a href="../../design-notes/occurrence-slot-layout.html">the implementation decision</a>.</p>
-<h2 id="synthesized-accessors"><a class="header" href="#synthesized-accessors">Synthesized Accessors</a></h2>
-<p>Every slot <code>x</code> synthesizes two accessors with distinct selectors:</p>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>Syntax</th><th>Selector</th><th>Behavior</th></tr>
-</thead>
-<tbody>
-<tr><td><code>x</code></td><td><code>x/0</code></td><td>getter — returns the current value of <code>x</code></td></tr>
-<tr><td><code>x!(v)</code></td><td><code>x!/1</code></td><td>setter — updates <code>x</code> and returns <strong>v</strong></td></tr>
-</tbody>
-</table>
-</div>
-<p>Invocation syntax <code>x(args)</code> is not another synthesized accessor. It selects
-behavior at the requested arity. When the effective getter is generated, its
-result can supply that behavior through an exact <code>apply/N</code> capability.
-Bare <code>x</code> returns the value; <code>x()</code> invokes its <code>apply/0</code> if available. A stored
-non-callable value still supports bare reads but supplies no invocation candidate.
-See <a href="./message-sends.html#invocation-at-arity-zero">Message Sends</a>.</p>
-<p>The setter uses a separate name, <code>x!</code>, so it does not conflict with invocation
-through <code>x</code> at arity one.</p>
 <pre><code class="language-vh">class Point(a, b) {
-    x = a
-    y = b
-    move(dx, dy) {
-        x!(x.plus(dx))       // setter — updates x, returns new value
-        y!(y.plus(dy))       // setter — updates y
-    }
-    getX() { x }             // getter — reads x
+    x = a;
+    y = b;
+    label;
 }
 </code></pre>
+<p>A slot declaration ends with <code>;</code>. Its <code>=</code> introduces initialization, whereas
+<a href="syntactic-sugar.html#-setter-sugar">expression assignment</a> invokes a setter.
+An omitted initializer supplies canonical null; storage awaiting its initializer
+is uninitialized, and reading it is an error.</p>
+<h2 id="contribution-slots-and-storage"><a class="header" href="#contribution-slots-and-storage">Contribution Slots and Storage</a></h2>
+<p>Each contributed slot retains its application occurrence and local position.
+The actual receiver’s complete layout maps these logical identities to storage.
+The current policy shares one location among same-named slots, while preserving
+their separate initializers and effects. A selected accessor uses its own
+logical identity in that layout.</p>
+<p>Declaration initialization writes through this mapping without calling an
+overridable setter. Later initializer writes to shared storage replace earlier
+ones. Sharing and construction order are specified in <a href="objects-and-classes.html#ordered-overrides-and-shared-state">Objects and Classes</a>;
+explicit sharing policies and contribution-private access remain deferred.</p>
+<h2 id="synthesized-accessors"><a class="header" href="#synthesized-accessors">Synthesized Accessors</a></h2>
+<p>Source instance slots and <code>var</code> locals supply:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Send</th><th>Selector</th><th>Result</th></tr>
+</thead>
+<tbody>
+<tr><td><code>x</code></td><td><code>x/0</code></td><td>Current stored value</td></tr>
+<tr><td><code>x!(v)</code></td><td><code>x!/1</code></td><td>Store and return <code>v</code></td></tr>
+</tbody>
+</table>
+</div>
+<p><code>x/1</code> and <code>x!/1</code> are different selectors. <code>x(args)</code> is invocation syntax,
+not a third synthesized accessor.</p>
+<p><a id="interaction-with-the-apply-protocol"></a></p>
 <h2 id="the-apply-protocol-and-callable-objects"><a class="header" href="#the-apply-protocol-and-callable-objects">The <code>apply</code> Protocol and Callable Objects</a></h2>
-<p>An object is <strong>callable at arity N</strong> when it provides an exact <code>apply/N</code> method. Classes and lambdas implement <code>apply</code> by default:</p>
-<ul>
-<li><strong>Class objects</strong>: <code>(apply, N)</code> delegates to <code>(new, N)</code>, which allocates and initializes a new instance.</li>
-<li><strong>Lambdas</strong>: <code>(apply, N)</code> invokes the lambda body.</li>
-<li><strong>User objects</strong>: any object can implement <code>(apply, N)</code> to become callable.</li>
-</ul>
-<h3 id="interaction-with-the-apply-protocol"><a class="header" href="#interaction-with-the-apply-protocol">Interaction with the Apply Protocol</a></h3>
-<p>At each lexical scope or hierarchy contribution, invocation <code>x(args)</code> prefers
-an exact operation <code>x/N</code>, then an eligible generated getter whose result
-supports <code>apply/N</code>. Continue searching on a genuine miss. A wrong-arity lambda
-or non-callable value supplies no operation at that arity; an uninitialized read
-or selected operation failure remains an error.</p>
-<p>For implicit invocation, an eligible declaration first selects its lexical
-receiver. The original <code>x/N</code> invocation then dispatches uniformly on that
-receiver: an overriding method can replace the generated getter/apply route.
-The eligibility result is retained if dispatch uses that route. An ineligible
-accessor continues lexical search, even when the same receiver has an unrelated
-<code>x/N</code> method. See <a href="./name-resolution.html">uniform virtual invocation</a>.</p>
-<p>This rule also applies to <code>x()</code>: a method <code>x { 7 }</code> executes once, whereas a
-slot containing <code>fun { 7 }</code> delegates to the lambda’s <code>apply/0</code>. A generated
-getter alone does not satisfy invocation merely because its own arity is zero.</p>
-<pre><code class="language-vh">{
-    Point = class(x, y) { };
-    handler = fun(req) { req };
-
-    test(request, OtherClass, newFn) {
-        Point;                     // returns the class object
-        Point(2, 3);               // invokes the stored class's apply/2
-        handler;                   // returns the lambda
-        handler(request);          // invokes its apply/1
-        Point!(OtherClass);         // replaces the class value
-        handler!(newFn)             // replaces the lambda value
-    }
-}
-</code></pre>
-<p>Replacing a slot’s value can change the arities available under its name. A
-later invocation may consequently select a farther scope or contribution. The
-candidate’s value and callable operation are retained once selected; invocation
-never retries another candidate after failure.</p>
-<p>Generated member-class accessors use declaration-derived factory signatures
-instead of stored-value inspection. Their classes are realized only when the
-accessor/apply route wins virtual dispatch. See
-<a href="./message-sends.html#member-class-invocation">member-class invocation</a>
-and the <a href="../../design-notes/unified-callable-lookup.html">accepted design</a>.</p>
+<p>Generated getters may supply invocation through their returned value.
+Eligibility, exact arity, zero-argument behavior and retained selection evidence
+are defined by <a href="message-sends.html#dispatch-rules">Message Sends</a>; the
+<a href="message-sends-apply-tear-offs.html">Apply guide</a> introduces callable values.</p>
 <h2 id="setter-return-value"><a class="header" href="#setter-return-value">Setter Return Value</a></h2>
-<p>The return value of synthesized setters is <strong>the new value</strong> — the RHS expression. <code>x!(5)</code> evaluates to <code>5</code>.</p>
-<p>Generated setters do not return <code>self</code>. Thus <code>p.x!(2).y!(3)</code> sends <code>y!(3)</code> to
-<code>2</code>, and fails if that value has no applicable operation. An overridden setter
-returns whatever its method body returns; neither <code>x!(v)</code> nor <code>x = v</code> forces
-the result to equal <code>v</code>. Use a cascade to send each message to the same receiver:</p>
-<pre><code class="language-vh">p..x!(2)..y!(3)    // correct — both messages go to p
-</code></pre>
-<p>See <a href="./message-sends.html#cascade-">Message Sends — Cascade</a> for the full comparison. For the <code>=</code> grammar sugar form of setter calls, see <a href="./syntactic-sugar.html#-setter-sugar">Syntactic Sugar — <code>=</code> Setter Sugar</a>.</p>
+<p>A generated setter returns the new value, not <code>self</code>. Consequently
+<code>p.x!(2).y!(3)</code> sends <code>y!/1</code> to <code>2</code>. Use <code>p..x!(2)..y!(3)</code> to keep both
+messages on <code>p</code>. A custom setter returns its body result; assignment syntax
+does not force it to return the argument or perform a storage write.</p>
 <h2 id="shadowing-accessors"><a class="header" href="#shadowing-accessors">Shadowing Accessors</a></h2>
-<p>An explicit method definition with the same selector as a synthesized accessor replaces it:</p>
+<p>An explicit method with the same selector overrides a generated accessor.
+Generated-accessor invocation eligibility then follows the
+<a href="message-sends.html#candidate-selection">masking rule</a>.</p>
+<p>Calling <code>x!(v)</code> inside a custom <code>x!/1</code> dispatches normally, potentially back
+to that method; it does not expose the overridden storage primitive. There is
+no public raw-slot operation. Use a distinct backing slot when needed:</p>
 <pre><code class="language-vh">{
-    x = 0
-    x() { computedX }                 // custom getter — replaces synthesized getter
+    _x = 0;
+    x { _x }
+    x!(v) { validate(v); _x!(v) }
 }
 </code></pre>
-<p>An overridden getter no longer participates as a generated accessor.
-Lookup neither executes the overriding method to discover a callable nor reads
-the hidden backing storage. This masking persists during inheritance search.
-The overriding method itself still matches its declared arity: <code>x()</code> executes a
-custom <code>x/0</code> once, while <code>x(1)</code> does not execute it to inspect its result. To
-retrieve and invoke such a result explicitly, write <code>self.x.apply(1)</code>.</p>
-<p>This distinction preserves accessor overriding and predictable ordinary reads,
-but generated getters returning callables and computed getters are not
-interchangeable for invocation syntax.</p>
-<p><strong>Setter shadowing is discouraged.</strong> Once a setter is overridden, the synthesized slot-write operation is no longer reachable — calling <code>x!(v)</code> from inside the custom setter dispatches to itself, causing infinite recursion. There is no built-in mechanism for “raw” slot access.</p>
-<p>Two workarounds exist:</p>
-<p><strong>1. The backing-slot pattern</strong> — use a separate slot for internal storage and expose the public name via custom accessors:</p>
-<pre><code class="language-vh">{
-    _x = 0                             // backing slot — private by convention
-    x() { _x }                        // custom getter
-    x!(v) { validate(v); _x!(v) }    // custom setter — writes to backing slot
-}
-</code></pre>
-<p><strong>2. Privileged access (future)</strong> — a reflection API or kernel-provided primitive that enables resend-semantics or direct slot writes, bypassing the method dispatch chain. This is not available in v1 but is planned as part of the <a href="./future.html#mirror-based-reflection-api">Mirror-Based Reflection API</a>.</p>
-<pre><code>
-## `var` Locals
-
-Local variables declared with `var` in method/lambda bodies follow the same
-message convention. Their generated accessors are supplied by the current
-activation object; reading or updating a local does not use a separate value
-lookup mechanism. Activations remain backend-private:
-
-```vh
-test() {
-    var count = 0
-    count!(count.plus(1))   // setter — updates local, returns new value
-    count                   // getter — reads local
-}
-</code></pre>
+<p>The underscore is only a naming convention, not access control.</p>
+<h2 id="var-locals"><a class="header" href="#var-locals"><code>var</code> Locals</a></h2>
+<p><code>var count = 0;</code> declares a mutable local with getter/setter messages on a
+backend-private activation object. All locals in a source scope are reserved
+before its initializers run. A reference to a later local therefore selects
+that local and fails if it is still uninitialized; it does not fall through
+to an outer name. This supports <a href="recursion.html#mutual-recursion">mutual recursion</a>
+when the lambdas run after their bindings are initialized.</p>
 <h2 id="parameter-immutability"><a class="header" href="#parameter-immutability">Parameter Immutability</a></h2>
-<p>Parameters expose <strong>read-only accessor messages</strong> and their names follow the same noun rule — no <code>!</code> suffix is permitted. No setter (<code>name!</code>) is synthesized for parameters:</p>
-<pre><code class="language-vh">move(dx, dy) {
-    dx!(5)    // ERROR — dx is a parameter, no setter exists
-}
-</code></pre>
-<p>To get a mutable copy:</p>
-<pre><code class="language-vh">move(dx, dy) {
-    var localDx = dx       // mutable local, initialized from parameter
-    localDx!(localDx.plus(1))  // OK — var locals have setters
-}
-</code></pre>
+<p>Parameters have immutable getter accessors and no synthesized setter.
+A request for <code>parameter!</code> therefore cannot mutate the parameter; ordinary
+lookup may find another applicable setter or fail. Use a <code>var</code> local for a
+mutable copy. Constructor-parameter lifetime is specified with
+<a href="objects-and-classes.html">construction scopes</a>.</p>
 <h2 id="the--convention"><a class="header" href="#the--convention">The <code>!</code> Convention</a></h2>
-<p>The <code>!</code> suffix is a <strong>selector-only</strong> convention. It may appear only on method selectors (verbs) — it is not permitted in slot names, parameter names, or local variable names (nouns).</p>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>Syntactic role</th><th><code>!</code> allowed?</th><th>Examples</th></tr>
-</thead>
-<tbody>
-<tr><td>Slot name</td><td><strong>no</strong></td><td><code>x</code>, <code>count</code>, <code>handler</code></td></tr>
-<tr><td>Parameter name</td><td><strong>no</strong></td><td><code>dx</code>, <code>value</code>, <code>n</code></td></tr>
-<tr><td><code>var</code> local name</td><td><strong>no</strong></td><td><code>acc</code>, <code>result</code></td></tr>
-<tr><td>Method selector</td><td><strong>yes</strong></td><td><code>sort!</code>, <code>reset!</code>, <code>x!</code></td></tr>
-<tr><td>Message selector</td><td><strong>yes</strong></td><td><code>x!(v)</code>, <code>sort!()</code></td></tr>
-</tbody>
-</table>
-</div>
-<p>This noun/verb split makes <code>!</code> a reliable signal: whenever you see a <code>!</code>-suffixed name you are reading an effectful operation, never a data declaration. It also keeps the namespace of callable objects clean — a slot named <code>handler</code> will never collide with a setter named <code>handler!</code>.</p>
-<pre><code class="language-vh">List {
-    sort() { ... }       // return new sorted list — pure, no !
-    sort!() { ... }      // sort in place — mutation signaled by !
-}
-</code></pre>
-<p>Synthesized setters follow this convention: a slot <code>x</code> gets <code>x!</code> as its setter. Because slot names cannot end in <code>!</code>, setter names are always unambiguously derived — <code>x!</code> can only mean the setter for slot <code>x</code>, never a slot named <code>x!</code>. Users can define their own <code>!</code>-methods to signal mutation or side effects (similar to Ruby and Scheme).</p>
-<h3 id="what--signals--and-what-it-does-not"><a class="header" href="#what--signals--and-what-it-does-not">What <code>!</code> Signals — and What It Does Not</a></h3>
-<p><code>!</code> marks <strong>invocation semantics</strong>: calling this selector causes mutation or a side effect. It says nothing about the nature of the <em>value stored</em> in a slot.</p>
-<p>This means a slot holding an effectful callback cannot use <code>!</code> in its name:</p>
-<pre><code class="language-vh">{
-    onCommit = fun(v) { db.write(v) }   // stored effectful callback
-}
-onCommit(v)     // invokes the stored lambda at arity one, causing side effects
-</code></pre>
-<p>The slot name <code>onCommit</code> looks pure. There is no way for the slot name alone to announce that invoking the stored value has side effects — that information lives in the lambda itself, not in the slot declaration.</p>
-<p>This is a deliberate constraint: <code>!</code> marks an <em>operation that is itself defined as effectful</em>, not a slot that <em>happens to hold something effectful</em>. The tradeoff is clarity at the method boundary vs. expressiveness in slot naming. Users coming from Ruby, where <code>attr_accessor :commit!</code> is idiomatic, will need to adjust their mental model.</p>
-<p>The practical mitigation is to make effectful callbacks <strong>explicit methods</strong> rather than stored slots:</p>
-<pre><code class="language-vh">{
-    _onCommit = fun(v) { db.write(v) }   // internal backing slot, plain name
-
-    onCommit!() { _onCommit(lastValue) } // explicit effectful method with !
-    setOnCommit!(fn) { _onCommit!(fn) }  // setter for the stored callback
-}
-</code></pre>
-<p>Or, when the effectful nature should be visible at every call site, use a thin delegation method:</p>
-<pre><code class="language-vh">class SortingAdapter {
-    inner = ...
-
-    sort!() { inner.sort! }   // explicit delegation — ! visible at definition
-}
-</code></pre>
-<p>This pattern also applies to future <strong>tear-off</strong> forwarding: you cannot store a torn-off <code>!</code> method in a slot that mirrors the original name, but you can always delegate explicitly:</p>
-<pre><code class="language-vh">// Not possible — slot name cannot end in !
-// sort! = collection.sort!$
-
-// Idiomatic replacement:
-sort!() { collection.sort! }
-</code></pre>
-<h3 id="reading-variohyve-assignment-patterns"><a class="header" href="#reading-variohyve-assignment-patterns">Reading VarioHyve Assignment Patterns</a></h3>
-<p>For programmers coming from imperative languages, the <code>x!(value)</code> setter convention may look unusual. Here is a quick mapping to the canonical form:</p>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>Other languages</th><th>VarioHyve canonical</th><th>Notes</th></tr>
-</thead>
-<tbody>
-<tr><td><code>x = 5</code> (assignment)</td><td><code>x!(5)</code></td><td>returns <code>5</code></td></tr>
-<tr><td><code>x = x + 1</code></td><td><code>x!(x.plus(1))</code></td><td>getter + op + setter</td></tr>
-<tr><td><code>obj.x = 5</code></td><td><code>obj.x!(5)</code></td><td>explicit receiver</td></tr>
-<tr><td><code>x = f(a)</code></td><td><code>x!(f(a))</code></td><td>setter with any expression</td></tr>
-</tbody>
-</table>
-</div>
-<p>The same <code>=</code> token introduces slot/local initialization in declarations and
-setter invocation in expressions, including arguments and initializer bodies.
-Declaration initialization and setter invocation have different semantics; see
-<a href="./syntactic-sugar.html#-setter-sugar">Syntactic Sugar — <code>=</code> Setter Sugar</a>.</p>
+<p><code>!</code> suffixes are allowed only on method/message selectors, including repeated
+suffixes. Slot, parameter and local names are plain identifiers.
+A slot <code>x</code> thus generates unambiguous selector <code>x!</code>.</p>
+<p>The suffix convention signals mutation or effects; it is not a static effect
+system. A plain-named slot may hold an effectful lambda, and invoking that
+lambda need not display <code>!</code> at the call site. An explicit forwarding method
+such as <code>commit!(v) { callback(v) }</code> can communicate that intent. User-defined
+bang methods need not be setters.</p>
 <h2 id="descriptors-on-slots"><a class="header" href="#descriptors-on-slots">Descriptors on Slots</a></h2>
-<p>Slots can optionally carry descriptor chains for use by future tooling or runtime extensions. See <a href="./descriptors.html">Descriptors</a> for details. Descriptors have no effect on raw execution.</p>
+<p><a href="descriptors.html">Descriptors</a> may annotate slots and locals. They do not change
+raw accessor behavior or make a slot immutable.</p>
 
                     </main>
 

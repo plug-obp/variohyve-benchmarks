@@ -1,0 +1,1077 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Formal Rules - VarioHyve Language Specification</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-0392ca55.css">
+        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/vh-2de7eb16.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-b0f8be02.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-1ce75dcc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">VarioHyve Language Specification</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="formal-rules"><a class="header" href="#formal-rules">Formal Rules</a></h1>
+<p>This appendix gives the structural operational semantics (SOS) of the accepted
+core. Surface syntax and its explanatory examples are in <strong>Specification</strong>;
+Java representations and restrictions are in
+<a href="./interpreter-design.html">Java Interpreter</a>. Unsettled parameters are listed
+at the end. No correctness or refinement theorem is assumed.</p>
+<h2 id="signature-and-notation"><a class="header" href="#signature-and-notation">Signature and notation</a></h2>
+<p>\[
+\begin{gathered}
+v,\rho\in A,\quad \sigma:A\rightharpoonup\mathit{Node},\quad u\notin A,\quad
+s=(n,k),\quad o=(C,i,\mu),\cr
+H:\mathit{Home}\rightharpoonup{\mathrm{method},\mathrm{slots},\mathrm{body},\mathrm{dead}},\cr
+X=(\sigma,H,B),\cr
+\kappa::=\mathrm{halt}\mid f::\kappa,\qquad K=\langle c,\rho,\kappa\rangle_X.
+\end{gathered}
+\]</p>
+<p>\(A\) contains private runtime identities; \(u\) is uninitialized storage.
+\(B\) is the boundary state, including identity maps and canonical native
+null/Boolean identities. Failure is carried by the active control and is
+reported at the nearest callback boundary or independent entry. Fresh identities
+are always distinct from existing ones. An omitted
+configuration component is unchanged; \(X[\sigma(v).p:=w]\) denotes a field
+update, not a source assignment. \(\cdot\) concatenates sequences/stacks.
+For context-preserving steps, \(\langle c\rangle_X\) abbreviates
+\(\langle c,\rho,\kappa\rangle_X\) with the same \(\rho,\kappa\) on both sides.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Node or record</th><th>Fields relevant to execution</th></tr>
+</thead>
+<tbody>
+<tr><td>\(\mathrm{Obj}(C,S,\rho_d,\Gamma)\)</td><td>Class, physical slots, definition scope, member cache.</td></tr>
+<tr><td>\(\mathrm{Act}(U,\rho_p,v,o,h)\)</td><td>Generated local/parameter accessors, lexical parent, receiver, occurrence, return home.</td></tr>
+<tr><td>\(\mathrm{View}(v,o,\rho_d)\)</td><td>Declaration-relative receiver scope; no parameter bindings or return home.</td></tr>
+<tr><td>\(\Lambda(\bar x,e,\rho_d,v,o,h)\)</td><td>Native object of class Lambda, with code and private lexical captures.</td></tr>
+<tr><td>\(\mu=(D,\rho_d,\bar x,T,\bar S,\bar D_m,e_b)\)</td><td>Reified owned contribution: declaration, scope, formals, operations, slots, members, final initializer body.</td></tr>
+<tr><td>\(\mathrm{Class}(\mu,\bar o,S,R,L,M)\)</td><td>Owned contribution, direct applications, superclass, routes, complete layout, metaclass.</td></tr>
+<tr><td>\(\mathrm{Meta}(\mu,\ldots)\)</td><td>Class-side record; its fixed structural fields are given below. Not an eligible construction-clause target.</td></tr>
+<tr><td>\(\mathrm{Alien}(\phi)\), \(\mathrm{Scalar}(p)\)</td><td>Foreign identity or scalar payload; neither implies a native class.</td></tr>
+</tbody>
+</table>
+</div>
+<p>Scopes use object accessors, not a separate binding environment. Every active
+scope carries receiver/origin/home metadata; a <code>View</code> has \(h=\bot\).
+\(\sigma(\rho).U\) is storage for generated accessors, not a source namespace.
+It retains declaration mutability: local bindings have setters; parameters do
+not. The maps below abbreviate these tagged storage declarations.</p>
+<h3 id="class-algebra"><a class="header" href="#class-algebra">Class algebra</a></h3>
+<p>Let \(A_{\mathrm{cls}}\subseteq A\) contain identities whose store records are
+<code>Class</code> or <code>Meta</code>. The superclass field ranges over
+\(A_{\mathrm{cls}}\cup{\mathrm{Top}}\). The distinguished empty constructor
+\(\mathrm{Top}\notin A\) is not a store node, source value, lookup miss
+\(\bot\), uninitialized marker \(u\), or the canonical null identity.</p>
+<p>The <a href="./objects-and-classes.html#top-and-the-class-algebra">class algebra</a> and its
+projection from realized classes are:</p>
+<p>\[
+\begin{aligned}
+Q&amp;::=\mathrm{Top}\mid\mathrm{Apply}(\mu,Q),\cr
+\mathrm{shape}(\mathrm{Top})&amp;=\mathrm{Top},\cr
+\mathrm{shape}(C)&amp;=\mathrm{Apply}(\mu_C,
+\mathrm{Apply}(\mu_{o_1},\ldots
+\mathrm{Apply}(\mu_{o_m},\mathrm{shape}(S_C))\ldots)).
+\end{aligned}
+\]</p>
+<p>For no direct applications the last equation is
+\(\mathrm{shape}(C)=\mathrm{Apply}(\mu_C,\mathrm{shape}(S_C))\);
+in particular,
+\(\mathrm{shape}(\mathrm{Object})=\mathrm{Apply}(\mu_{\mathrm{Object}},\mathrm{Top})\).
+This is a projection of instance-side composition, not an equality of runtime
+identities: occurrences, scopes, routes and metaclasses remain in their records.
+It introduces no intermediate classes. Every realized superclass chain is
+finite and ends at <code>Top</code>; only Object has <code>Top</code> as its direct superclass.</p>
+<p><code>Top</code> has no owned contribution, scope, class-of link or superclass projection.
+There is no value, allocation, factory or initializer-entry rule for it. Source
+construction-clause targets must be realized non-metaclass identities in
+\(A_{\mathrm{cls}}\); the seed supplies Object’s terminal superclass.</p>
+<h3 id="core-and-machine-controls"><a class="header" href="#core-and-machine-controls">Core and machine controls</a></h3>
+<p>\[
+\begin{aligned}
+e::={}&amp;l\mid\mathrm{null}\mid ?\mid\mathrm{self}\mid\mathrm{outer}(D)\cr
+&amp;\mid q.n(\bar e)_\iota\mid\lambda\bar x.e\mid\mathrm{class}(d)\mid\mathrm{object}(d)\cr
+&amp;\mid\mathrm{let}(\bar b;e)\mid\mathrm{ret}(e)\cr
+&amp;\mid\mathrm{alloc}(C)\mid\mathrm{init}(\tau;e_r,\bar e)
+\mid\mathrm{write}(j,e)\mid\mathrm{slotsDone},\cr
+q::={}&amp;\mathrm{implicit}\mid\mathrm{explicit}(e)\mid\mathrm{super},\cr
+\iota::={}&amp;\mathrm{exact}\mid\mathrm{invoke},\qquad
+b::=x\leftarrow e\mid_\leftarrow e.
+\end{aligned}
+\]</p>
+<p>The return form \(\mathrm{ret}(e)\) is source <code>^e</code>. Bare sends use <code>exact/0</code>; parentheses use
+<code>invoke/k</code>. Leading-dot sends lower to an explicit <code>self</code> receiver. The final
+four forms are private generated construction code. A class descriptor \(d\)
+retains owned declarations, contributor-target expressions and delayed routes.
+For \(\mathrm{object}(d)\), the descriptor is anonymous, with no owned constructor
+formals or factories; it may retain the same optional contributor clauses as a
+class descriptor.</p>
+<p>The core form \(\mathrm{null}\) is an internal constant, not the source
+identifier <code>null</code>. Empty bodies and omitted initializers lower to this form;
+source <code>null</code>, <code>true</code> and <code>false</code> lower to ordinary implicit sends.
+Their results depend on lookup and the selected behavior, not on this constant
+rule or a reserved source spelling.</p>
+<p>\[
+\begin{aligned}
+c::={}&amp;e\mid\mathrm{val}(v)\mid\mathrm{collect}(a;\bar v;\bar e)
+\mid a[\bar v]\cr
+&amp;\mid\mathrm{call}(p,\bar v)\mid\mathrm{enter}(v,o,\bar x,\bar v,e,\chi)\cr
+&amp;\mid\mathrm{steps}(\bar b;e)\mid\mathrm{return}(h,v)\cr
+&amp;\mid\mathrm{member}(g)\mid\mathrm{foreign}(\omega)
+\mid\mathrm{callback}(v,n,\bar f)\cr
+&amp;\mid\mathrm{error}(\epsilon)\mid\mathrm{abort}(\epsilon),\cr
+\chi::={}&amp;\mathrm{method}\mid\mathrm{initializer}.
+\end{aligned}
+\]</p>
+<p>\(a\) is a pending control with a value-list hole: a send, a private initializer
+entry, or class realization. Frames appearing below are exhaustive for these
+forms: <code>Recv</code>, <code>Args</code>, <code>Bind</code>, <code>Restore</code>, <code>Done</code>, <code>Return</code>, <code>Write</code>, <code>Cache</code>,
+<code>Apply</code>, <code>Module</code>, and <code>Barrier</code>. Their fields are given by their rules; the tail is \(\kappa\).</p>
+<h3 id="runtime-admission-and-conceptual-control"><a class="header" href="#runtime-admission-and-conceptual-control">Runtime admission and conceptual control</a></h3>
+<p>The following transition rules describe ordinary execution under the
+<a href="./foreign-objects.html#execution-authority">sequential execution agreement</a>.
+Their runtime-level admissibility condition is one conceptual control token
+\(\tau_c\) per live runtime, with one owner:</p>
+<p>\[
+\begin{aligned}
+\operatorname{owner}(\tau_c)\in{}&amp;{\mathrm{idle}}\
+&amp;{}\cup{\mathrm{native}(\alpha)\mid\alpha\text{ admitted}}\
+&amp;{}\cup{\mathrm{foreign}(\iota)\mid\iota\text{ active}}.
+\end{aligned}
+\]</p>
+<p>Here \(\alpha\) ranges over native continuations and \(\iota\) over foreign invocations.
+The condition ranges over one runtime’s evolving state and all its configurations,
+not separate tokens per configuration, stored version or thread. Ordinary native
+rules require ownership by their continuation; modeled foreign actions require
+ownership by their invocation. Transfers below are abstractly atomic, with
+associations retained in \(B\) and barriers. \(\tau_c\) is ghost state, not a
+required field or language value; initializer target \(\tau\) is unrelated.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Abstract event</th><th>Required ownership transfer</th></tr>
+</thead>
+<tbody>
+<tr><td>Accepted independent entry or tooling readmission</td><td><code>idle</code> to the selected new or prepared native continuation</td></tr>
+<tr><td>Committed NF invocation</td><td>Native caller to its fresh foreign invocation</td></tr>
+<tr><td>Admitted callback</td><td>Current foreign invocation to the fresh callback continuation</td></tr>
+<tr><td>Callback result or failure delivered at its barrier</td><td>Callback continuation to the associated foreign invocation</td></tr>
+<tr><td>Foreign <code>done</code> or <code>fail</code> delivered</td><td>Foreign invocation to its suspended native caller, after admitted descendants finish</td></tr>
+<tr><td>Independent final result or failure delivered</td><td>Native continuation to <code>idle</code></td></tr>
+<tr><td>Backend driver yields after a requested step</td><td>Native continuation to <code>idle</code>, retaining the successor for later readmission</td></tr>
+</tbody>
+</table>
+</div>
+<p>All other ordinary steps retain ownership. Pending/rejected requests and
+completion arrival are adapter bookkeeping; <code>done</code>/<code>fail</code> below denotes delivery
+after descendant completion. The
+<a href="./foreign-objects.html#concurrency-boundary">admission contract</a> supplies nesting
+eligibility and rules out confusing a copied context with control ownership.</p>
+<p>Backend one-step yield may leave a nonterminal successor without retiring its
+homes or producing a final observation. Later advancement requires readmission.
+The source evaluator’s driver instead retains authority between native steps
+until a boundary transfer or completion.</p>
+<p>This layer models serialized control effects, not arbitrary foreign computation,
+host queues, wakeups or fairness. Such work can continue while a callback owns
+the token. Refinement must reconstruct ownership from the implementation;
+these conditions are not a completed proof of the Java coordinator.</p>
+<p>The <a href="./foreign-objects.html#control-tokens-and-execution-agreements">execution agreement</a>
+also permits maintenance refinements and declared interventions. Maintenance may
+stutter; an intervention changing abstract state needs its own specified
+transition. The rules below define neither an intervention relation nor a
+parallel agreement. Proofs must state which extensions, if any, they include.</p>
+<h2 id="evaluation"><a class="header" href="#evaluation">Evaluation</a></h2>
+<p>Literal interpretation \(B,\sigma\vdash l\Downarrow(v,\sigma’,B’)\) is fixed by the
+selected scalar profile; conversion failures use <code>error</code>. The internal null
+form returns the canonical identity \(v_{\mathrm{null}}\).</p>
+<p>\[
+\frac{B,\sigma\vdash l\Downarrow(v,\sigma’,B’)}
+{\langle l,\rho,\kappa\rangle_X\longrightarrow
+\langle\mathrm{val}(v),\rho,\kappa\rangle_{X[\sigma:=\sigma’,B:=B’]}}
+\]</p>
+<p>\[
+\begin{aligned}
+\langle\mathrm{null},\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{val}(v_{\mathrm{null}}),\rho,\kappa\rangle_X,\cr
+\langle ?,\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{error}(\mathrm{Hole}),\rho,\kappa\rangle_X,\cr
+\langle\mathrm{self},\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{val}(\sigma(\rho).v),\rho,\kappa\rangle_X.
+\end{aligned}
+\]</p>
+<p>The <code>self</code> rule requires a receiver; absence is an error. For <code>outer(D)</code>, let
+\(\rho_j\) be the first declaration-relative view for lexical declaration
+\(D\) in the retained lexical chain. No such view is <code>InvalidOuter</code>.
+The disputed deeper repeated-parent case is parameter <strong>O</strong> below.</p>
+<p>\[
+\frac{\sigma(\rho_j)=\mathrm{View}(v,o,\rho_d)\qquad \mu_o.D=D}
+{\langle\mathrm{outer}(D),\rho,\kappa\rangle_X
+\longrightarrow\langle\mathrm{val}(v),\rho,\kappa\rangle_X}
+\]</p>
+<p>\[
+\frac{w\text{ fresh}\qquad
+\sigma’=\sigma[w\mapsto\Lambda(\bar x,e,\rho,\sigma(\rho).v,\sigma(\rho).o,\sigma(\rho).h)]}
+{\langle\lambda\bar x.e,\rho,\kappa\rangle_X
+\longrightarrow\langle\mathrm{val}(w),\rho,\kappa\rangle_{X[\sigma:=\sigma’]}}
+\]</p>
+<h3 id="receiver-and-arguments"><a class="header" href="#receiver-and-arguments">Receiver and arguments</a></h3>
+<p><code>send</code> retains its mode and origin: \(r=\mathrm{lex}(\rho)\),
+\(\mathrm{recv}(v)\), or \(\mathrm{super}(v,o)\). In the following first rule,
+\(q\in{\mathrm{implicit},\mathrm{super}}\), and \(r\) is <code>lex(ρ)</code> for implicit sends
+and <code>super(σ(ρ).v,σ(ρ).o)</code> for <code>super</code>;
+an absent required receiver/origin is an error.</p>
+<p>\[
+\begin{aligned}
+\langle q.n(\bar e)<em>\iota,\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{collect}(\mathrm{send}(r,n,\square,\iota);[];\bar e),
+\rho,\kappa\rangle_X,\cr
+\langle\mathrm{explicit}(e).n(\bar e)</em>\iota,\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle e,\rho,\mathrm{Recv}(n,\bar e,\iota,\rho)::\kappa\rangle_X.
+\end{aligned}
+\]</p>
+<p>\[
+\begin{aligned}
+&amp;\langle\mathrm{val}(v),\rho’,\mathrm{Recv}(n,\bar e,\iota,\rho)::\kappa\rangle_X\cr
+&amp;\quad\longrightarrow
+\langle\mathrm{collect}(\mathrm{send}(\mathrm{recv}(v),n,\square,\iota);[];\bar e),
+\rho,\kappa\rangle_X.
+\end{aligned}
+\]</p>
+<p>\[
+\begin{aligned}
+\langle\mathrm{collect}(a;\bar v;[]),\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle a[\bar v],\rho,\kappa\rangle_X,\cr
+\langle\mathrm{collect}(a;\bar v;e::\bar e),\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle e,\rho,\mathrm{Args}(a,\bar v,\bar e,\rho)::\kappa\rangle_X,\cr
+\langle\mathrm{val}(v),\rho’,\mathrm{Args}(a,\bar v,\bar e,\rho)::\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{collect}(a;\bar v\cdot[v];\bar e),\rho,\kappa\rangle_X.
+\end{aligned}
+\]</p>
+<p>A class-target <code>Args</code> frame rejects each nonclass or metaclass result before
+advancing to the next target. Other argument lists retain values without
+executing their contents. These rules evaluate receivers/arguments once,
+left-to-right.</p>
+<h3 id="local-scope-and-sequencing"><a class="header" href="#local-scope-and-sequencing">Local scope and sequencing</a></h3>
+<p>For \(\mathrm{let}(\bar b;e)\), allocate fresh \(a\) and
+\(\sigma’=\sigma[a\mapsto\mathrm{Act}(U,\rho,v,o,h)]\), where
+\((v,o,h)\) are copied from \(\rho\) and
+\(U={x\mapsto u\mid(x\leftarrow e_x)\in\bar b}\).
+All local names are reserved before the first initializer; duplicate names fail.</p>
+<p>\[
+\begin{aligned}
+\langle\mathrm{let}(\bar b;e),\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{steps}(\bar b;e),a,\mathrm{Restore}(\rho)::\kappa\rangle_{X[\sigma:=\sigma’]},\cr
+\langle\mathrm{steps}([];e),\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle e,\rho,\kappa\rangle_X,\cr
+\langle\mathrm{steps}((x\leftarrow e_0)::\bar b;e),\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle e_0,\rho,\mathrm{Bind}(x,\bar b,e,\rho)::\kappa\rangle_X,\cr
+\langle\mathrm{val}(v),\rho’,\mathrm{Bind}(x,\bar b,e,\rho)::\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{steps}(\bar b;e),\rho,\kappa\rangle_{X[\sigma(\rho).U(x):=v]},\cr
+\langle\mathrm{val}(v),\rho’,\mathrm{Restore}(\rho)::\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{val}(v),\rho,\kappa\rangle_X.
+\end{aligned}
+\]</p>
+<p>For \(x=_\), the <code>Bind</code> rule discards the value and leaves storage unchanged.
+Source assignment remains a setter send. Empty bodies and missing initializers
+lower to the internal null form. Sequencing is a <code>let</code> with discard steps, not
+an additional binding discipline.</p>
+<h2 id="selection"><a class="header" href="#selection">Selection</a></h2>
+<p>This section is the formal counterpart of
+<a href="./message-sends.html#dispatch-rules">message selection</a> and
+<a href="./name-resolution.html#lookup-order">lexical lookup</a>.</p>
+<p>\[
+\begin{aligned}
+\mathrm{lin}(\mathrm{Top})&amp;=[],\qquad L_{\mathrm{Top}}=\varnothing,\cr
+\mathrm{lin}(C)&amp;=[(C,0,\mu_C)]\cdot\bar o_C\cdot\mathrm{lin}(S_C),\cr
+\mathcal R&amp;={\bot}\cup{!\epsilon\mid\epsilon\in\mathit{Error}}\cup\mathit{Plan},\cr
+p&amp;::=t\mid\mathrm{memberApply}(g,k),\cr
+t&amp;::=\mathrm{get}(v,p_s)\mid\mathrm{set}(v,p_s)\cr
+&amp;\quad\mid\mathrm{method}(v,o,\bar x,e)\mid\mathrm{lambda}(w)\cr
+&amp;\quad\mid\mathrm{memberGet}(v,o,d)\mid\mathrm{foreignOp}(\phi,op).
+\end{aligned}
+\]</p>
+<p>\(\bot\) is a miss and \(!\epsilon\) is an error. A plan is committed behavior.
+\(T_{v,o}(s)\) is the instantiated declaration table at occurrence \(o\):
+explicit methods override generated accessors at the same selector. Slot targets
+contain \(p_s=L_{\mathrm{class}(v)}(o,j)\); activation targets contain their local
+slot. Generated getters are <code>get</code> and <code>memberGet</code>. A lambda has intrinsic
+<code>apply/k</code> at its declared arity; other selectors use its native Lambda/Object
+hierarchy. Scalar tables are parameter <strong>S</strong>.</p>
+<p>The recursive equation for \(\mathrm{lin}(C)\) applies only to realized class
+records. The empty base contributes no occurrence or slot mapping. Reaching it
+therefore uses the empty-list miss rules below for both exact and invocation
+search, including an exhausted <code>super</code> suffix; <code>Top</code> itself is never a receiver.</p>
+<h3 id="exact-and-invocation-lookup"><a class="header" href="#exact-and-invocation-lookup">Exact and invocation lookup</a></h3>
+<p>Exact search over an ordered contribution list is:</p>
+<p>\[
+\begin{aligned}
+E(v,[],s)&amp;=\bot,\cr
+E(v,o::L,s)&amp;=
+\begin{cases}T_{v,o}(s)&amp;T_{v,o}(s)\ne\bot,\cr
+E(v,L,s)&amp;T_{v,o}(s)=\bot.\end{cases}
+\end{aligned}
+\]</p>
+<p>For an Alien, \(E(v,s)\) instead uses effect-free adapter selection
+\(B\vdash\phi.s\Downarrow R\), translating a selected operation to
+<code>foreignOp(φ,op)</code> and retaining miss/error. No foreign getter is speculatively
+invoked. For native \(v\), \(E(v,s)\) starts at its complete hierarchy;
+an activation uses only its own accessor table. Write \(L_v\) for the receiver’s
+search list: \(\mathrm{lin}(\mathrm{class}(v))\) for native objects,
+including lambdas for non-<code>apply</code> selectors, and one accessor table for an
+activation. Lambda <code>apply/k</code> selects its intrinsic operation only at the declared
+arity; invocation retains the captures in the lambda rule below. Intrinsic
+apply has no invented method/contribution origin; inherited Object methods use
+their normal origin and the lambda object as receiver.</p>
+<p>Exact callable eligibility excludes generated getters. Compute \(E(v,(\mathrm{apply},k))\)
+once and match its retained outcome against these cases:</p>
+<p>\[
+P(v,k)=
+\begin{cases}
+t&amp;E(v,(\mathrm{apply},k))=t\text{ and }t\text{ is not a generated getter},\cr
+!\epsilon&amp;E(v,(\mathrm{apply},k))=!\epsilon,\cr
+\bot&amp;\text{otherwise}.
+\end{cases}
+\]</p>
+<p>Let \(\eta\) retain successful accessor evidence for this invocation. The
+following ordered equations define generated-accessor eligibility \(A\);
+in the member row, \(g=\mathrm{memberGet}(v,o,d)\):</p>
+<p>\[
+\begin{aligned}
+A(g,k,\eta)&amp;=\eta(g,k)&amp;&amp;\text{if defined},\cr
+A(\mathrm{get}(v,p_s),k,\eta)&amp;=
+\begin{cases}!\mathrm{Uninitialized}&amp;\sigma(v).S[p_s]=u,\cr
+P(w,k)&amp;\sigma(v).S[p_s]=w,\end{cases}\cr
+A(g,k,\eta)&amp;=\mathrm{memberApply}(g,k)
+&amp;&amp;g\text{ a member},\ k\in\mathrm{arities}(d),\cr
+A(g,k,\eta)&amp;=\bot&amp;&amp;\text{otherwise}.
+\end{aligned}
+\]</p>
+<p>Here storage notation includes activation slots. \(\mathrm{arities}(d)\)
+contains the selected member declaration’s constructor arity and owned <code>apply</code>
+factory arities; it neither consults the realization cache nor imports
+contributor factories.</p>
+<p>Invocation search \(I(v,L,n,k,b,\eta)\) carries the getter-masking bit \(b\).
+In these rules set \(t=T_{v,o}(n,k)\), \(g=T_{v,o}(n,0)\):</p>
+<p>\[
+\begin{gathered}
+I(v,[],n,k,b,\eta)=\bot,\cr
+\frac{t\ne\bot\quad t\text{ not a generated getter}}
+{I(v,o::L,n,k,b,\eta)=t},\cr
+\frac{t=\bot\text{ or generated}\quad \neg b\quad g\ne\bot\quad A(g,k,\eta)=R\ne\bot}
+{I(v,o::L,n,k,b,\eta)=R},\cr
+\frac{t=\bot\text{ or generated}\quad
+b\ \lor\ g=\bot\ \lor\ A(g,k,\eta)=\bot}
+{I(v,o::L,n,k,b,\eta)=I(v,L,n,k,b\lor(g\ne\bot),\eta)}.
+\end{gathered}
+\]</p>
+<p>For each occurrence, compute the unmasked \(A(g,k,\eta)\) at most once and
+match its retained outcome across the alternatives. Premises short-circuit
+left-to-right: never read a masked getter. All searches
+start with \(b=\mathrm{false}\). An ordinary <code>n/0</code> method masks older getters
+without being executed to discover <code>apply/k</code>. A nearer eligible accessor can
+precede a farther exact method. Errors terminate selection.</p>
+<h3 id="lexical-receiver-selection"><a class="header" href="#lexical-receiver-selection">Lexical receiver selection</a></h3>
+<p>For each scope \(\rho_i\), let \(D_i\) be its own declaration table and
+\(v_i\) its associated receiver: the activation itself or the receiver of a
+<code>View</code>. Define the eligibility judgment \(\rho_i\vdash(n,k,\iota)\Downarrow R_i\)
+by this ordered table. \(\checkmark(v_i,\eta)\) selects a receiver and evidence.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Condition</th><th>Eligibility result</th></tr>
+</thead>
+<tbody>
+<tr><td><code>exact</code>, \(D_i(n,k)\ne\bot\)</td><td>\(\checkmark(v_i,\varnothing)\)</td></tr>
+<tr><td><code>invoke</code>, \(D_i(n,k)\) exists and is not a generated getter</td><td>\(\checkmark(v_i,\varnothing)\)</td></tr>
+<tr><td><code>invoke</code>, \(D_i(n,0)\ne\bot\), \(g=E(v_i,(n,0))\) is an ordinary method, \(k=0\)</td><td>\(\checkmark(v_i,\varnothing)\)</td></tr>
+<tr><td><code>invoke</code>, \(D_i(n,0)\ne\bot\), \(g=E(v_i,(n,0))\), \(A(g,k,\varnothing)=p\)</td><td>\(\checkmark(v_i,{(g,k)\mapsto p})\)</td></tr>
+<tr><td>An evaluated selection premise yields \(!\epsilon\)</td><td>\(!\epsilon\)</td></tr>
+<tr><td>Otherwise</td><td>\(\bot\)</td></tr>
+</tbody>
+</table>
+</div>
+<p>Walk lexical parents until the first nonmiss. On \(\checkmark(v_i,\eta)\),
+dispatch the <strong>original</strong> selector/mode on \(v_i\); do not execute the declaring
+operation directly. Invocation uses \(I(v_i,L_{v_i},n,k,
+\mathrm{false},\eta)\). Exhausting the lexical chain starts the same search on
+current <code>self</code>, or misses if no receiver exists. A final dispatch error/miss
+never resumes lexical search. Eligibility is thus established before an override
+can replace the eligible accessor route.</p>
+<p>Explicit native sends start at the full receiver hierarchy. <code>super(v,o)</code> starts
+strictly after the <strong>executing occurrence</strong> \(o\), with fresh getter masking.
+The suffix is determined by occurrence identity, not by contribution equality.
+Explicit Aliens use adapter selection in either mode. Invalid native origins
+fail; foreign spellings <code>self</code>, <code>outer</code>, and <code>super</code> remain foreign selectors.
+Write \(r\vdash(n,k,\iota)\Downarrow R\) for this complete selection judgment.</p>
+<p>\[
+\begin{gathered}
+\frac{r\vdash(n,|\bar v|,\iota)\Downarrow p}
+{\langle\mathrm{send}(r,n,\bar v,\iota),\rho,\kappa\rangle_X
+\longrightarrow\langle\mathrm{call}(p,\bar v),\rho,\kappa\rangle_X},\cr
+\frac{r\vdash(n,|\bar v|,\iota)\Downarrow\bot}
+{\langle\mathrm{send}(r,n,\bar v,\iota),\rho,\kappa\rangle_X
+\longrightarrow\langle\mathrm{error}(\mathrm{MissingSelector}),\rho,\kappa\rangle_X}.
+\end{gathered}
+\]</p>
+<p>A selected \(!\epsilon\) similarly enters <code>error(ε)</code>. Eligibility evidence
+retains the callable target itself, including a selected foreign operation;
+<code>call</code> never rereads its getter or repeats adapter selection.</p>
+<h2 id="calls-and-generated-accessors"><a class="header" href="#calls-and-generated-accessors">Calls and generated accessors</a></h2>
+<p>\[
+\begin{aligned}
+\langle\mathrm{call}(\mathrm{get}(v,p_s),[]),\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{val}(\sigma(v).S[p_s]),\rho,\kappa\rangle_X,\cr
+\langle\mathrm{call}(\mathrm{set}(v,p_s),[w]),\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{val}(w),\rho,\kappa\rangle_{X[\sigma(v).S[p_s]:=w]},\cr
+\langle\mathrm{call}(\mathrm{method}(v,o,\bar x,e),\bar v),\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{enter}(v,o,\bar x,\bar v,e,\mathrm{method}),\rho,\kappa\rangle_X.
+\end{aligned}
+\]</p>
+<p>The getter requires a value other than \(u\); otherwise it enters
+<code>error(Uninitialized)</code>. Setters exist only for writable declarations.
+For <code>enter</code>, arity must match. Allocate fresh \(a,\ell,h\):</p>
+<p>\[
+\begin{aligned}
+\sigma’&amp;=\sigma[\ell\mapsto\mathrm{View}(v,o,\mu_o.\rho_d),
+a\mapsto\mathrm{Act}(\bar x\mapsto\bar v,\ell,v,o,h)],\cr
+H’&amp;=H[h\mapsto
+\begin{cases}\mathrm{method}&amp;\chi=\mathrm{method},\cr
+\mathrm{slots}&amp;\chi=\mathrm{initializer}.\end{cases}
+\end{aligned}
+\]</p>
+<p>\[
+\begin{aligned}
+&amp;\langle\mathrm{enter}(v,o,\bar x,\bar v,e,\chi),\rho,\kappa\rangle_X\cr
+&amp;\quad\longrightarrow
+\langle e,a,\mathrm{Done}(h,v,\chi,\rho)::\kappa\rangle_{X[\sigma:=\sigma’,H:=H’]}.
+\end{aligned}
+\]</p>
+<p>A method’s definition scope is the selected contribution’s scope, never its
+receiver’s own constructor activation. For a lambda, no fresh home is created:</p>
+<p>\[
+\frac{\sigma(w)=\Lambda(\bar x,e,\rho_d,v,o,h)\quad |\bar x|=|\bar v|\quad a\text{ fresh}
+\quad\sigma’=\sigma[a\mapsto\mathrm{Act}(\bar x\mapsto\bar v,\rho_d,v,o,h)]}
+{\langle\mathrm{call}(\mathrm{lambda}(w),\bar v),\rho,\kappa\rangle_X
+\longrightarrow\langle e,a,\mathrm{Restore}(\rho)::\kappa\rangle_{X[\sigma:=\sigma’]}}
+\]</p>
+<p>Arity errors in a committed call are failures, not new lookup misses.</p>
+<h2 id="class-realization-and-construction"><a class="header" href="#class-realization-and-construction">Class realization and construction</a></h2>
+<h3 id="definition-occurrences-and-layout"><a class="header" href="#definition-occurrences-and-layout">Definition, occurrences and layout</a></h3>
+<p>A descriptor’s target list is \(\bar e_d=[e_{A_1},\ldots,e_{A_m},e_S]\):
+direct mixins left-to-right, then an explicit superclass target. Omit \(e_S\)
+for implicit <code>Object</code>. Terminal constructor arguments remain in \(d.R\).</p>
+<p>\[
+\langle\mathrm{class}(d),\rho,\kappa\rangle_X
+\longrightarrow
+\langle\mathrm{collect}(\mathrm{realize}(d,\rho,\square);[];\bar e_d),\rho,\kappa\rangle_X.
+\]</p>
+<p>Given validated target classes \(A_1,\ldots,A_m,S\), allocate fresh \(C,M\).
+Let \(\mu_C\) be \(d\)’s owned instance contribution capturing \(\rho_d\),
+\(o_i=(C,i,\mu_{A_i})\), and \(o_0=(C,0,\mu_C)\). The store extension is:</p>
+<p>\[
+\begin{aligned}
+\sigma(C)&amp;=\mathrm{Class}(\mu_C,[o_1,\ldots,o_m],S,R_C,L_C,M),\cr
+\sigma(M)&amp;=\mathrm{Meta}(\mu_C^{\mathrm{class}},[],\mathrm{Class},[],L_M,\mathrm{Metaclass}),\cr
+L_C(o,j)&amp;=L_C(o’,j’)\ \Longleftrightarrow\ \mathrm{name}(o,j)=\mathrm{name}(o’,j’).
+\end{aligned}
+\]</p>
+<p>\(L_C\) numbers distinct slot names in first-occurrence order through
+\(\mathrm{lin}(C)\), retaining a mapping for every logical slot. All inherited
+occurrences keep their original applying class. The class-side contribution
+contains only owned factories and generated <code>new</code>/default <code>apply</code>.
+With this extension \(\sigma’\):</p>
+<p>\[
+\langle\mathrm{realize}(d,\rho_d,[A_1,\ldots,A_m,S]),\rho,\kappa\rangle_X
+\longrightarrow\langle\mathrm{val}(C),\rho,\kappa\rangle_{X[\sigma:=\sigma’]}.
+\]</p>
+<p>For implicit <code>Object</code>, insert that structural root without a source lookup.
+Declaration validity, reserved <code>new</code>, flat root seeding and factory signatures
+are the static constraints of <a href="./objects-and-classes.html#factories">Objects and Classes</a>.
+For realized ordinary classes \(C\), including Object, Class, Metaclass and
+the shared Lambda class (not the semantic terminal <code>Top</code>):</p>
+<p>\[
+\begin{gathered}
+\mathrm{super}(\mathrm{Object})=\mathrm{Top},\quad
+\mathrm{super}(\mathrm{Class})=\mathrm{Object},\cr
+\mathrm{super}(\mathrm{Metaclass})=\mathrm{Class},\quad
+\mathrm{super}(\mathrm{Lambda})=\mathrm{Object},\cr
+\mathrm{class}(C)=M_C,\quad \mathrm{super}(M_C)=\mathrm{Class},\quad
+\mathrm{class}(M_C)=\mathrm{Metaclass}.
+\end{gathered}
+\]</p>
+<p>Lambda values have class Lambda while retaining the record’s lexical captures.
+Lambda’s class has no public factories. Applications reuse the selected owned
+contribution’s identity; membership observations compare that identity with the
+supplied class’s owned contribution. IdentityMirror is an ordinary foreign
+capability governed by the <a href="./foreign-objects.html#identitymirror">observation contract</a>; it adds no
+privileged machine transition.</p>
+<h3 id="member-class-cache"><a class="header" href="#member-class-cache">Member-class cache</a></h3>
+<p>For \(g=\mathrm{memberGet}(v,o,d)\), the cache key is \(k_g=(v,o,d.D)\), with
+\(\Gamma(k_g)\in{\bot,\mathrm{busy},\mathrm{ready}(C),\mathrm{failed}(\epsilon)}\).
+<code>Γ</code> abbreviates the enclosing object’s private cache in \(\sigma\).</p>
+<p>\[
+\begin{aligned}
+\langle\mathrm{call}(g,[]),\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{member}(g),\rho,\kappa\rangle_X,\cr
+\langle\mathrm{call}(\mathrm{memberApply}(g,k),\bar v),\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{member}(g),\rho,\mathrm{Apply}(\bar v,\rho)::\kappa\rangle_X.
+\end{aligned}
+\]</p>
+<p>\[
+\frac{\Gamma(k_g)=\mathrm{ready}(C)}
+{\langle\mathrm{member}(g)\rangle_X\longrightarrow\langle\mathrm{val}(C)\rangle_X}.
+\]</p>
+<p>For an absent entry, allocate fresh \(\ell\) with
+\(\sigma(\ell)=\mathrm{View}(v,o,\mu_o.\rho_d)\), and set \(\Gamma(k_g)=\mathrm{busy}\):</p>
+<p>\[
+\langle\mathrm{member}(g),\rho,\kappa\rangle_X
+\longrightarrow\langle\mathrm{class}(d),\ell,\mathrm{Cache}(k_g,\rho)::\kappa\rangle_{X’}.
+\]</p>
+<p>\[
+\begin{aligned}
+\langle\mathrm{val}(C),\rho’,\mathrm{Cache}(k_g,\rho)::\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{val}(C),\rho,\kappa\rangle_{X[\Gamma(k_g):=\mathrm{ready}(C)]},\cr
+\langle\mathrm{val}(C),\rho’,\mathrm{Apply}(\bar v,\rho)::\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{call}(t,\bar v),\rho,\kappa\rangle_X
+&amp;&amp;P(C,|\bar v|)=t.
+\end{aligned}
+\]</p>
+<p><code>busy</code> raises <code>CyclicRealization</code>; <code>failed(ε)</code> raises that error without retry.
+<code>Apply</code> commits to the realized class’s exact callable operation: miss/error
+fails, never resumes outer lookup. A member that loses virtual dispatch or
+fails arity eligibility never enters these cache rules.</p>
+<h3 id="generated-constructor-code"><a class="header" href="#generated-constructor-code">Generated constructor code</a></h3>
+<p>Let \(\tau=\mathrm{whole}(C)\) select the complete coordinator and
+\(\tau=\mathrm{owned}(o)\) select one owned contribution. With <code>;</code> denoting the
+already-defined discard sequencing:</p>
+<p>\[
+\begin{aligned}
+I_\mu&amp;=\mathrm{write}(0,e_0);\cdots;\mathrm{write}(r-1,e_{r-1});
+\mathrm{slotsDone};e_b,\cr
+\mathrm{superRoute}(\mathrm{Top},[])&amp;=[],\cr
+\mathrm{superRoute}(S,\bar a_S)&amp;=[(\mathrm{whole}(S),\bar a_S)]
+\quad(S\in A_{\mathrm{cls}}),\cr
+R_C&amp;=\mathrm{superRoute}(S,\bar a_S)\cdot[
+(\mathrm{owned}(o_m),\bar a_m),\ldots,(\mathrm{owned}(o_1),\bar a_1)],\cr
+R_C&amp;=[(\tau_1,\bar\beta_1),\ldots,(\tau_q,\bar\beta_q)],\cr
+I_C&amp;=\mathrm{init}(\tau_1;\mathrm{self},\bar\beta_1);\cdots;
+\mathrm{init}(\tau_q;\mathrm{self},\bar\beta_q);I_{\mu_C},\cr
+\mathrm{new}_C(\bar x)&amp;=\mathrm{let}(z\leftarrow\mathrm{alloc}(C),
+_\leftarrow\mathrm{init}(\mathrm{whole}(C);z,\bar x);z),\cr
+\mathrm{apply}<em>C(\bar x)&amp;=\mathrm{explicit}(\mathrm{self}).\mathrm{new}(\bar x)</em>{\mathrm{exact}}.
+\end{aligned}
+\]</p>
+<p>Names \(z,\bar x\) in generated code denote exact accessor sends; \(z\) is
+fresh. An owned <code>apply/k</code> replaces the generated default at that arity. <code>Object</code>
+has no direct applications and its superclass is <code>Top</code>, so its dependency list
+is empty by <code>superRoute</code>. Its owned initializer is also empty; an empty implicit
+Object call may be omitted. No route targets <code>Top</code> and no initializer activation,
+return home or effects are created for it. The base equation admits no arguments;
+there is no \(\mathrm{whole}(\mathrm{Top})\) routine.
+A direct mixin imports neither its source class’s routes nor
+its other contributors. Source factories otherwise use ordinary method calls.</p>
+<p>\[
+\begin{aligned}
+\langle\mathrm{alloc}(C),\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{val}(v),\rho,\kappa\rangle_{X[\sigma(v):=\mathrm{Obj}(C,u^{|\mathrm{im},L_C|},\mu_C.\rho_d,\varnothing)]},\cr
+\langle\mathrm{init}(\tau;e_r,\bar e),\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{collect}(\mathrm{initEntry}(\tau,\square);[];e_r::\bar e),\rho,\kappa\rangle_X,\cr
+\langle\mathrm{initEntry}(\tau,v::\bar v),\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{enter}(v,o,\mu_o.\bar x,\bar v,I_\tau,\mathrm{initializer}),\rho,\kappa\rangle_X.
+\end{aligned}
+\]</p>
+<p>Allocation requires a realized constructible \(C\) and fresh \(v\).
+For <code>whole(C)</code>, \(o=o_0\), \(I_\tau=I_C\);
+for <code>owned(o)</code>, \(I_\tau=I_{\mu_o}\). The coordinator’s route expressions and owned
+body share this single home; each nested dependency call gets its own.
+An object literal realizes its anonymous class and sends ordinary exact <code>new/0</code>:</p>
+<p>\[
+\begin{aligned}
+\langle\mathrm{object}(d),\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{explicit}(\mathrm{class}(d)).\mathrm{new}([])_{\mathrm{exact}},
+\rho,\kappa\rangle_X.
+\end{aligned}
+\]</p>
+<p>The ordinary receiver rule evaluates the class expression exactly once before
+dispatch. Its target expressions run in \(\rho\); routed arguments run in the
+fresh declaring initializer home after allocation. The resulting class and
+receiver are fresh on every evaluation. This introduces no additional private
+operation or object-specific continuation, and does not call <code>apply</code> or any
+contributor factory.</p>
+<p>For a live current initializer home \(h\) with \(H(h)=\mathrm{slots}\), set
+\(v=\sigma(\rho).v\), \(o=\sigma(\rho).o\), and
+\(p_s=L_{\mathrm{class}(v)}(o,j)\) <strong>before</strong> evaluating the value expression:</p>
+<p>\[
+\begin{aligned}
+\langle\mathrm{write}(j,e),\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle e,\rho,\mathrm{Write}(v,p_s,\rho)::\kappa\rangle_X,\cr
+\langle\mathrm{val}(w),\rho’,\mathrm{Write}(v,p_s,\rho)::\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{val}(w),\rho,\kappa\rangle_{X[\sigma(v).S[p_s]:=w]},\cr
+\langle\mathrm{slotsDone},\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{val}(v),\rho,\kappa\rangle_{X[H(h):=\mathrm{body}]}.
+\end{aligned}
+\]</p>
+<p>Invalid private targets, arities or phases raise errors. No selector or Expat
+operation can name these controls.</p>
+<h2 id="completion-return-and-failure"><a class="header" href="#completion-return-and-failure">Completion, return and failure</a></h2>
+<p>The rules below model the default boundary agreement, which prohibits non-local
+returns across foreign execution. Whether to support crossing belongs to the
+<a href="foreign-objects.html#non-local-returns-across-the-boundary">boundary agreement</a>,
+not a universal native-language prohibition. A supporting agreement requires
+additional transfer rules; none are defined or implemented here. Lexical return
+targets, home liveness and initializer phase restrictions remain native rules.</p>
+<p>\[
+\frac{(\chi,H(h),v’)\in
+{(\mathrm{method},\mathrm{method},w),(\mathrm{initializer},\mathrm{body},v)}}
+{\langle\mathrm{val}(w),\rho’,\mathrm{Done}(h,v,\chi,\rho)::\kappa\rangle_X
+\longrightarrow\langle\mathrm{val}(v’),\rho,\kappa\rangle_{X[H(h):=\mathrm{dead}]}}.
+\]</p>
+<p>An initializer finishing in <code>slots</code> raises <code>PrematureCompletion</code>.
+A source return first evaluates its operand, capturing \(h=\sigma(\rho).h\):</p>
+<p>\[
+\begin{aligned}
+\langle\mathrm{ret}(e),\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle e,\rho,\mathrm{Return}(h)::\kappa\rangle_X,\cr
+\langle\mathrm{val}(v),\rho,\mathrm{Return}(h)::\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{return}(h,v),\rho,\kappa\rangle_X.
+\end{aligned}
+\]</p>
+<p>Let \(\kappa=P\cdot[\mathrm{Done}(h,w,\chi,\rho_c)]\cdot\kappa_c\), with no
+<code>Barrier</code> in \(P\). Successful delivery requires \(H(h)=\mathrm{method}\) or
+\(H(h)=\mathrm{body}\), according to \(\chi\). Let \(X’\) retire all homes in
+that prefix through the target and mark its pending <code>Cache</code> frames failed with
+<code>AbandonedRealization</code>:</p>
+<p>\[
+\frac{\kappa=P\cdot[\mathrm{Done}(h,w,\chi,\rho_c)]\cdot\kappa_c
+\qquad v’=\begin{cases}v&amp;\chi=\mathrm{method},\cr w&amp;\chi=\mathrm{initializer}\end{cases}}
+{\langle\mathrm{return}(h,v),\rho,\kappa\rangle_X
+\longrightarrow\langle\mathrm{val}(v’),\rho_c,\kappa_c\rangle_{X’}}.
+\]</p>
+<p>Failure cases for this default agreement, checked before any successful-unwind
+mutation, are:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Condition</th><th>Error</th></tr>
+</thead>
+<tbody>
+<tr><td>Missing or dead captured home</td><td><code>DeadContext</code></td></tr>
+<tr><td>Live target lies below the first barrier (default no-crossing agreement)</td><td><code>ForeignReturn</code></td></tr>
+<tr><td>No matching completion frame</td><td><code>DeadContext</code></td></tr>
+<tr><td>Reachable target still has \(H(h)=\mathrm{slots}\)</td><td><code>PrematureCompletion</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>Only completion of the target contribution is skipped; its caller’s subsequent
+contributions continue. A lambda’s captured home is never dynamically rebound.</p>
+<p>\[
+\langle\mathrm{error}(\epsilon),\rho,\kappa\rangle_X
+\longrightarrow\langle\mathrm{abort}(\epsilon),\rho,\kappa\rangle_X.
+\]</p>
+<p>For an ordinary frame \(f\) (not <code>Barrier</code>), obtain \(X_f\) by retiring its
+home if it is <code>Done</code>, or caching <code>failed(ε)</code> if it is <code>Cache</code>; otherwise
+\(X_f=X\):</p>
+<p>\[
+\langle\mathrm{abort}(\epsilon),\rho,f::\kappa\rangle_X
+\longrightarrow\langle\mathrm{abort}(\epsilon),\rho,\kappa\rangle_{X_f}.
+\]</p>
+<p>There is no rollback, lookup retry, or revival of a retired home. Aborting a
+callback retires only frames above its barrier; the suspended caller remains
+live. Cache failure caused by a successful return does not abort that return.</p>
+<h2 id="alienexpat-transitions"><a class="header" href="#alienexpat-transitions">Alien/Expat transitions</a></h2>
+<p>The adapter state <code>B</code> includes call association and admission lifetime. The
+Java realization may obtain a callback from the operation thread or from a worker
+holding an explicit call context; admission serializes their native transitions.
+Each admitted callback belongs to the current foreign invocation, retains its
+suspended caller and budget, and creates the barrier below. Closing a foreign
+invocation disallows further callback actions for it and joins admitted
+descendants before delivering <code>done</code> or <code>fail</code>. Host requests rejected before
+admission do not create a native callback continuation. These rules describe the
+serialized native interaction; they do not formalize arbitrary parallel foreign
+actions, host waiting queues or a general scheduler.</p>
+<p>These transitions use the default no-crossing agreement: callback entry installs
+<code>Barrier</code>, and the foreign action relation has no non-local-return transfer
+action. A future supporting boundary must define that transfer and its observable
+interaction with foreign execution; merely removing <code>Barrier</code> is insufficient.</p>
+<p>The adapter provides stateful, identity-preserving conversions
+\(B,\sigma\vdash\bar v\Uparrow(\bar f,B’)\) and
+\(B,\sigma\vdash\bar f\Downarrow(\bar v,\sigma’,B’)\), or failure with the
+state reached before failure. Lists convert left-to-right. Exact canonical
+null/Booleans convert by identity; scalars follow <strong>S</strong>. Compatible identity
+round trips satisfy \(\Downarrow\Uparrow v=v\) and \(\Uparrow\Downarrow\phi=\phi\).
+These are boundary obligations, not privileged native service operations.</p>
+<p>\[
+\frac{B,\sigma\vdash\bar v\Uparrow(\bar f,B’)}
+{\langle\mathrm{call}(\mathrm{foreignOp}(\phi,op),\bar v),\rho,\kappa\rangle_X
+\longrightarrow\langle\mathrm{foreign}(op(\phi,\bar f)),\rho,\kappa\rangle_{X[B:=B’]}}.
+\]</p>
+<p>The foreign interaction-state relation \(B\vdash\omega\leadsto(a,B’)\) has actions
+\(a::=\mathrm{done}(f)\mid\mathrm{fail}(\epsilon)\mid\mathrm{next}(\omega’)
+\mid\mathrm{send}(v,n,\bar f,\omega’)\). It may block or diverge; it need not be
+deterministic. The state \(\omega\) records foreign behavior and resumption;
+it is not the unique control token. Several suspended barriers can retain distinct
+foreign interaction states. Actions <code>done</code> and <code>fail</code> below mean completion
+delivery after the admission condition above is satisfied, not the physical
+arrival of an answer from a foreign worker. Its completion rules are:</p>
+<p>\[
+\begin{gathered}
+\frac{B\vdash\omega\leadsto(\mathrm{next}(\omega’),B’)}
+{\langle\mathrm{foreign}(\omega),\rho,\kappa\rangle_X
+\longrightarrow\langle\mathrm{foreign}(\omega’),\rho,\kappa\rangle_{X[B:=B’]}},\cr
+\frac{B\vdash\omega\leadsto(\mathrm{done}(f),B_1)
+\quad B_1,\sigma\vdash f\Downarrow(v,\sigma’,B_2)}
+{\langle\mathrm{foreign}(\omega),\rho,\kappa\rangle_X
+\longrightarrow\langle\mathrm{val}(v),\rho,\kappa\rangle_{X[\sigma:=\sigma’,B:=B_2]}},\cr
+\frac{B\vdash\omega\leadsto(\mathrm{fail}(\epsilon),B’)}
+{\langle\mathrm{foreign}(\omega),\rho,\kappa\rangle_X
+\longrightarrow\langle\mathrm{error}(\epsilon),\rho,\kappa\rangle_{X[B:=B’]}}.
+\end{gathered}
+\]</p>
+<p>For callback action <code>send(v,n,fs,ω′)</code>, allocate an empty
+activation \(a\) with no parent, receiver or home:</p>
+<p>\[
+\begin{aligned}
+&amp;\langle\mathrm{foreign}(\omega),\rho,\kappa\rangle_X\cr
+&amp;\quad\longrightarrow
+\langle\mathrm{callback}(v,n,\bar f),a,\mathrm{Barrier}(\omega’,\rho)::\kappa\rangle_{X’},\cr
+&amp;\frac{B,\sigma\vdash\bar f\Downarrow(\bar v,\sigma’,B’)}
+{\langle\mathrm{callback}(v,n,\bar f),a,\kappa\rangle_X
+\longrightarrow\langle\mathrm{send}(\mathrm{recv}(v),n,\bar v,\mathrm{exact}),a,\kappa\rangle_{X[\sigma:=\sigma’,B:=B’]}}.
+\end{aligned}
+\]</p>
+<p>Here \(X’\) includes the adapter step and fresh activation. Installing the
+barrier before import gives conversion failure the same failure path as the
+callback body. A previously handled failure does not prevent a new callback.</p>
+<p>\[
+\frac{B,\sigma\vdash v\Uparrow(f,B’)}
+{\langle\mathrm{val}(v),\rho’,\mathrm{Barrier}(\omega,\rho)::\kappa\rangle_X
+\longrightarrow\langle\mathrm{foreign}(\omega[\mathrm{result}(f)]),\rho,\kappa\rangle_{X[B:=B’]}}
+\]</p>
+<p>\[
+\langle\mathrm{abort}(\epsilon),\rho’,\mathrm{Barrier}(\omega,\rho)::\kappa\rangle_X
+\longrightarrow\langle\mathrm{foreign}(\omega[\mathrm{failure}(\epsilon)]),\rho,\kappa\rangle_X.
+\]</p>
+<p>Export failure enters <code>error</code> with the barrier still present. The failed callback
+reports its diagnostic to the foreign continuation. Foreign code can handle it,
+make another callback and complete normally, or propagate a failure. The outer
+native caller observes that foreign completion after conversion; no shared fatal
+marker overrides it. Native mutations and callback-home retirement survive
+reentry, while suspended caller homes remain live until their own completion or
+failure. This does not resume the aborted callback or permit NLR crossing.</p>
+<h3 id="conversion-failures"><a class="header" href="#conversion-failures">Conversion failures</a></h3>
+<p>Import failure has form \(!(\epsilon,\sigma’,B’)\); export failure has form
+\(!(\epsilon,B’)\), with unchanged native store. At each site the reached
+state is retained:</p>
+<p>\[
+\begin{gathered}
+\frac{B,\sigma\vdash l\Downarrow !(\epsilon,\sigma’,B’)}
+{\langle l\rangle_X\longrightarrow
+\langle\mathrm{error}(\epsilon)\rangle_{X[\sigma:=\sigma’,B:=B’]}},\cr
+\frac{B,\sigma\vdash\bar v\Uparrow !(\epsilon,B’)}
+{\langle\mathrm{call}(\mathrm{foreignOp}(\phi,op),\bar v)\rangle_X\longrightarrow
+\langle\mathrm{error}(\epsilon)\rangle_{X[B:=B’]}},\cr
+\frac{B,\sigma\vdash\bar f\Downarrow !(\epsilon,\sigma’,B’)}
+{\langle\mathrm{callback}(v,n,\bar f)\rangle_X\longrightarrow
+\langle\mathrm{error}(\epsilon)\rangle_{X[\sigma:=\sigma’,B:=B’]}},\cr
+\frac{B\vdash\omega\leadsto(\mathrm{done}(f),B_1)
+\quad B_1,\sigma\vdash f\Downarrow !(\epsilon,\sigma’,B_2)}
+{\langle\mathrm{foreign}(\omega)\rangle_X\longrightarrow
+\langle\mathrm{error}(\epsilon)\rangle_{X[\sigma:=\sigma’,B:=B_2]}}.
+\end{gathered}
+\]</p>
+<p>\[
+\frac{B,\sigma\vdash v\Uparrow !(\epsilon,B’)}
+{\begin{aligned}
+&amp;\langle\mathrm{val}(v),\rho’,\mathrm{Barrier}(\omega,\rho)::\kappa\rangle_X\cr
+&amp;\quad\longrightarrow
+\langle\mathrm{error}(\epsilon),\rho’,\mathrm{Barrier}(\omega,\rho)::\kappa\rangle_{X[B:=B’]}
+\end{aligned}}.
+\]</p>
+<h2 id="entry-observations-and-remaining-parameters"><a class="header" href="#entry-observations-and-remaining-parameters">Entry, observations and remaining parameters</a></h2>
+<p>Normal module definition starts at an empty top activation, with structural
+superclass <code>Object</code> and no mixins; forbidden top-level contributor clauses fail
+before evaluation. Instantiation supplies existing argument values to exact
+<code>new/k</code>, without capturing the service’s scope. Tools may explicitly supply a
+different starting activation. See <a href="./program-structure.html#top-level-classes-and-instantiation">module entry</a>.
+Independent entry requires successful runtime admission from <code>idle</code> under the
+control agreement above. Construction of an entry configuration does not itself
+grant execution authority. For a valid module descriptor \(d\), \(d\)’s arity
+must equal \(|\bar v|\).
+Allocate fresh \(a\) with \(\sigma’=\sigma[a\mapsto\mathrm{Act}(\varnothing,\bot,\bot,\bot,\bot)]\):</p>
+<p>\[
+\begin{aligned}
+\mathrm{module}(d,\bar v;X)
+&amp;\leadsto\langle\mathrm{class}(d),a,\mathrm{Module}(\bar v)::\mathrm{halt}\rangle_{X[\sigma:=\sigma’]},\cr
+\langle\mathrm{val}(C),a,\mathrm{Module}(\bar v)::\mathrm{halt}\rangle_X
+&amp;\longrightarrow\langle\mathrm{send}(\mathrm{recv}(C),\mathrm{new},\bar v,\mathrm{exact}),a,\mathrm{halt}\rangle_X,\cr
+\mathrm{tool}(e,\rho;X)
+&amp;\leadsto\langle e,\rho,\mathrm{halt}\rangle_X.
+\end{aligned}
+\]</p>
+<p>These are admitted independent entry points, not source operations. The entry
+arrow acquires the existing idle token for the new continuation. The same
+admission premise applies to independent exact Expat sends; callbacks instead
+use the foreign invocation’s admission path. A rejected module descriptor has no
+definition transition; it reports its validation error. Delivery of a <code>Final</code>
+observation returns control to <code>idle</code>; retaining the final configuration does
+not retain execution authority.</p>
+<p>\[
+\mathrm{Final}(K)=
+\begin{cases}
+\mathrm{success}(v)&amp;K=\langle\mathrm{val}(v),\rho,\mathrm{halt}\rangle_X,\cr
+\mathrm{failure}(\epsilon)&amp;K=\langle\mathrm{abort}(\epsilon),\rho,\mathrm{halt}\rangle_X.
+\end{cases}
+\]</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Parameter / obligation</th><th>Boundary of this formalization</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>S — scalar profile</strong></td><td>Numeric domains, overflow and native string/number methods are underdeveloped. The prototype supplies signed-64-bit/string transport, not the full intended scalar protocol.</td></tr>
+<tr><td><strong>O — outer origins</strong></td><td>The deeper repeated-parent case remains undecided; Java follows captured application scopes. Ordinary declaration-relative cases are fixed.</td></tr>
+<tr><td><strong>B — adapter relation</strong></td><td>Each adapter must specify effect-free selection, conversion, foreign actions and failure kinds satisfying the boundary contract.</td></tr>
+<tr><td><strong>Execution authority</strong></td><td>The global sequential admission condition must be refined by every ordinary entry, callback and completion path. Host queues, fairness, parallel execution and intervention relations require additional contracts; token uniqueness does not prohibit concurrent implementation maintenance.</td></tr>
+<tr><td><strong>Static validity</strong></td><td>Complete surface-to-core elaboration and declaration-validity judgments remain to be mechanized; invalid/unsupported forms must fail, not acquire substitute semantics.</td></tr>
+<tr><td><strong>Proofs</strong></td><td>Preservation/progress, determinism modulo fresh identities and fixed foreign choices, descriptor erasure, capability confinement, and Java simulation remain obligations.</td></tr>
+</tbody>
+</table>
+</div>
+<p>The intended implementation relation \(R(J,K)\) reads the current Java store,
+decodes addressed frames and suspended callbacks, and preserves origins, homes,
+caches and active failure controls. It also reconstructs global control ownership
+from the Java coordinator and suspended calls; a permit object or copied callback
+context is not individually a control token. In the superclass field of root
+Object, it decodes
+Java’s absent reference as semantic <code>Top</code>, with no corresponding store identity.
+Other absent links retain their field-specific meanings. The
+<a href="./object-model.html#representing-top-without-reification">terminal representation</a>
+preserves the empty lookup, layout and construction cases. The relation is
+restricted to the supported scalar and sequential execution profile, with no
+unspecified interventions:</p>
+<p>\[
+R(J,K)\land J\longrightarrow_J J’
+\ \Longrightarrow\ \exists K’.\ K\longrightarrow^*K’\land R(J’,K’).
+\]</p>
+<p>Administrative stuttering must preserve result/error and boundary traces and
+must not hide divergence. The concrete choices and limitations are recorded
+once in <a href="./interpreter-design.html#refinement-of-the-formal-machine">implementation refinement</a>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="related-works.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="related-works.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-33e14e7d.js"></script>
+        <script src="book-c22b7243.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

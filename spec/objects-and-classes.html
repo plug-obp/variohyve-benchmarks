@@ -30,16 +30,18 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="theme/vh-2de7eb16.css">
 
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
         <!-- Provide site root and default themes to javascript -->
         <script>
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0458d790.js";
+            window.path_to_searchindex_js = "searchindex-b0f8be02.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-45e5eade.js"></script>
+        <script src="toc-1ce75dcc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -176,51 +178,177 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="objects-and-classes"><a class="header" href="#objects-and-classes">Objects and Classes</a></h1>
-<p>This section covers the semantics of object and class literals: nesting, inheritance, mixins, and naming conventions. For the syntax of all literal forms (including number, string, and lambda), see <a href="./literals.html">Literals</a>.</p>
-<h2 id="capabilities-and-definition-scope"><a class="header" href="#capabilities-and-definition-scope">Capabilities and Definition Scope</a></h2>
-<p>Named and anonymous class literals receive capabilities through superclass
-inheritance, mixin composition, their enclosing lexical scope, and constructor
-parameters. These routes preserve the distinction between lexical and inherited
-lookup; they do not give a class access to its caller’s scope.</p>
-<p>A normal top-level class is a module whose lexical base is an empty top
-activation. It has no enclosing application scope, only root <code>Object</code>
-inheritance, and no mixin composition. Its external capabilities arrive solely
-as existing objects passed to its constructor by an instantiation service.
-Neither a single argument nor the name <code>kernel</code> is required. Constructor
-parameters can supply class/mixin objects for nested class definitions, but
-cannot supply the top-level class’s own superclass or mixin clauses. See
-<a href="./program-structure.html#top-level-classes-and-instantiation">Program Structure</a>.</p>
-<p>Tools may explicitly provide a richer context for development-time evaluation.
-Classes created in that context retain its lexical bindings, so they are not
-isolated module definitions over the empty root. They use the same class and
-lookup semantics; see <a href="./tooling-architecture.html#evaluation-contexts">Evaluation Contexts</a>.</p>
-<p>Examples below that refer to enclosing bindings, custom superclasses or mixins
-are fragments within an appropriate enclosing scope, not standalone top-level
-modules. A zero-parameter nested class can still receive capabilities through
-the other three routes; a zero-parameter module over the empty top activation
-has no external inputs.</p>
+<p>This chapter defines class and object literals, member declarations, composition,
+and factories. <a href="./name-resolution.html">Name Resolution</a> defines lexical receivers;
+<a href="./message-sends.html">Message Sends</a> defines invocation; <a href="./literals.html#initializer-completion">Literals</a>
+defines initializer completion and returns. Backend records belong to
+<a href="./object-model.html">Runtime Object Representation</a>.</p>
+<p>Operational definition: <a href="./formal-core.html#class-realization-and-construction">SOS class and construction rules</a>.</p>
+<h2 id="top-and-the-class-algebra"><a class="header" href="#top-and-the-class-algebra">Top and the Class Algebra</a></h2>
+<p><code>Top</code> is the empty constructor of the mixin–class algebra. At the level of
+instance-side composition, the inductive structure is:</p>
+<pre><code class="language-text">ClassShape ::= Top | Apply(Mixin, ClassShape)
+Object       = Apply(ObjectMixin, Top)
+</code></pre>
+<p>Like zero in an inductive definition of natural numbers, <code>Top</code> supplies the base
+case. Every nonempty class shape is a mixin applied to another shape, so even
+<code>Object</code> follows the same construction rule. <code>Apply</code> here is mathematical
+composition, not the source <code>apply</code> selector or a factory invocation.</p>
+<p><code>Top</code> contributes no methods, slots, member declarations, definition scope,
+capabilities or initialization. Lookup ends there with a miss and its layout is
+empty. Only <code>Object</code> has <code>Top</code> as its direct superclass; other native class
+chains reach it through <code>Object</code>. The owned Object mixin supplies the root
+protocol below. Thus adding the empty base does not remove that protocol or
+change the capabilities available through it.</p>
+<p>The algebra describes composition structure, not class identity. A realized
+class retains its owned contribution, ordered direct applications, superclass,
+routes and metaclass. Expanding its shape neither manufactures intermediate
+class objects nor erases contribution scopes or occurrence identities. The
+<a href="./formal-core.html#class-algebra">formal rules</a> give this projection precisely.</p>
+<p><code>Top</code> is a distinguished semantic base, not an instantiable class or a
+language-visible value in the current contract. It has no metaclass, factory,
+owned mixin to import, or public mirror reference. The class/metaclass rules
+below apply to realized classes. No built-in <code>Top</code> binding or new reserved name
+is introduced, and omitted superclass clauses still select <code>Object</code>.
+The empty <strong>top activation</strong> for module entry is a separate execution frame.
+Aliens acquire no native hierarchy through this definition.</p>
+<p>The VM may represent the terminal case without allocating an object:
+<a href="./object-model.html#representing-top-without-reification">the implementation refinement</a>
+states the mapping and the conditions for reconsidering runtime reification.</p>
 <h2 id="the-class-keyword"><a class="header" href="#the-class-keyword">The <code>class</code> Keyword</a></h2>
-<p>The <code>class</code> keyword is <strong>required</strong> for all class definitions. It is the sole discriminator between classes and singleton objects:</p>
-<ul>
-<li><code>class { ... }</code> or <code>class(params) { ... }</code> — a class (instantiable via <code>.new</code> or the apply protocol).</li>
-<li><code>{ ... }</code> — a singleton object (evaluated immediately, one instance).</li>
-</ul>
+<p><code>class</code> distinguishes an instantiable class from an immediately evaluated object:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Form</th><th>Result</th></tr>
+</thead>
+<tbody>
+<tr><td><code>class { body }</code> or <code>class() { body }</code></td><td>Anonymous zero-parameter class</td></tr>
+<tr><td><code>class(params) { body }</code></td><td>Anonymous class with constructor parameters</td></tr>
+<tr><td><code>class Name { body }</code> or <code>class Name() { body }</code></td><td>Named zero-parameter class</td></tr>
+<tr><td><code>class Name(params) { body }</code></td><td>Named class with constructor parameters</td></tr>
+<tr><td><code>{ body }</code></td><td>One object, allocated and initialized on each evaluation</td></tr>
+<tr><td><code>&lt;: Mixins(args) &lt; Base(args) { body }</code></td><td>One object with the selected mixins and superclass</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="class-literal-syntax"><a class="header" href="#class-literal-syntax">Class Literal Syntax</a></h3>
+<pre><code class="language-antlr">namedClassLiteral
+    : CLASS IDENT arguments mixinApplications superclassApplication
+      LB classBodyElement* initializerBody? RB (COLON descriptorList)* ;
+anonymousClassLiteral
+    : CLASS arguments mixinApplications superclassApplication
+      LB classBodyElement* initializerBody? RB (COLON descriptorList)* ;
+classLiteral         : namedClassLiteral | anonymousClassLiteral ;
+arguments            : (LP formalList? RP)? ;
+mixinApplications    : (WITH expressionList)? ;
+superclassApplication: (EXTENDS expression)? ;
+classBodyElement     : namedClassLiteral SEMICOLON? | methodDecl SEMICOLON?
+                     | slotDecl SEMICOLON | factoryDecl SEMICOLON? ;
+factoryDecl          : FACTORY methodDecl ;
+initializerBody      : PIPE statementList? ;
+</code></pre>
+<p><code>WITH</code> is <code>&lt;:</code> or <code>with</code>; <code>EXTENDS</code> is <code>&lt;</code> or <code>extends</code>. Empty parameter
+parentheses are optional. Class bodies contain slots, methods, member classes
+and factories, followed by an optional final <code>|</code> statement section. Slot
+declarations require semicolons; methods, members and factories permit them.
+Descriptor chains retain their <a href="./descriptors.html">annotation syntax</a>.</p>
+<h3 id="object-literals"><a class="header" href="#object-literals">Object Literals</a></h3>
+<pre><code class="language-antlr">objectLiteral    : mixinApplications superclassApplication
+                   LB objectBodyElement* initializerBody? RB (COLON descriptorList)* ;
+objectBodyElement: namedClassLiteral SEMICOLON? | methodDecl SEMICOLON?
+                | slotDecl SEMICOLON ;
+</code></pre>
+<p>An object literal has no constructor parameter list or factories. Its optional
+mixin and superclass clauses have the same syntax, order and meaning as class
+clauses: mixins precede the superclass; <code>&lt;:</code>/<code>with</code> and <code>&lt;</code>/<code>extends</code> are synonyms.
+Omitting the superclass selects structural root <code>Object</code>, without name lookup.
+Slot declarations still require their terminating semicolon.</p>
+<pre><code class="language-vh">&lt;: M1(p1), M2(p2) &lt; S(p3) { x = 5; }
+&lt; S(p) { x = 5; }
+with M(p) { x = 5; }
+</code></pre>
+<p>Each evaluation realizes a fresh anonymous zero-parameter class, then immediately
+sends its generated primary <code>new/0</code> using ordinary exact message dispatch.
+Thus <code>&lt;: M(p) &lt; S(q) { body }</code> is equivalent to
+<code>(class &lt;: M(p) &lt; S(q) { body }).new</code>, with a factory-free body. Successful
+evaluation returns the initialized object. Repeated evaluation creates distinct
+class, metaclass and instance identities; it does not cache a singleton.
+Contributor factories and custom <code>apply</code> methods are not called or imported.</p>
+<p>All <a href="#constructor-clauses">constructor-clause rules</a> apply. Targets resolve
+left-to-right for direct mixins, then the superclass, in the literal’s evaluation
+scope before allocation. Routed arguments run later in its own initializer
+activation, immediately before their contribution is initialized. In particular,
+<code>self</code> in a target computation denotes the enclosing receiver, while <code>self</code> in a
+routed argument denotes the new object. Ordinary initializer lookup also applies:
+an own slot can shadow an enclosing name and is still uninitialized during routing.
+For example, <code>&lt; S(x) { x = 5; }</code> cannot use its own pending <code>x</code> as an argument;
+use a distinct captured binding or a qualified outer receiver when that is intended.</p>
+<p>The anonymous class captures the literal’s evaluation scope, including deliberate
+creation inside another initializer. Contributors retain their own definition
+scopes and initializer-only constructor parameters; parameters are not added to
+instance-method bindings. Each contribution keeps its normal initialization
+order, occurrence, storage rules and private return home. Anonymous objects
+introduce no new <code>outer</code> qualifier.</p>
+<p>An object literal remains an expression, not a valid normal module entry.
+Nested literals may use explicitly supplied module inputs, under the existing
+<a href="./program-structure.html#top-level-classes-and-instantiation">module restrictions</a>.</p>
 <h3 id="zero-parameter-classes-vs-singletons"><a class="header" href="#zero-parameter-classes-vs-singletons">Zero-Parameter Classes vs Singletons</a></h3>
-<pre><code class="language-vh">class Config {
-    debug = false
-    verbose = true
-}
+<p>For <code>class Config { debug = false; }</code>, <code>Config()</code> invokes its <code>apply/0</code> factory;
+<code>Config.new</code> and <code>Config.new()</code> each perform primary construction once. For
+<code>config = { debug = false; };</code>, the slot already holds the initialized object.
+See <a href="./message-sends.html#invocation-at-arity-zero">zero-arity invocation</a>.</p>
+<h2 id="root-object-protocol"><a class="header" href="#root-object-protocol">Root Object Protocol</a></h2>
+<p>In the current runtime seed, native objects, including lambdas, inherit these
+ordinary methods from root <code>Object</code>:</p>
+<pre><code class="language-vh">equals(other) { _vm.same(self, other) }
+hash { _vm.identityHash(self) }
+toString { "an Object" }
 </code></pre>
-<p><code>Config</code> is a class — <code>Config()</code> selects its advertised <code>apply/0</code>, realizes the
-class if needed, and invokes that factory. <code>Config.new</code> and <code>Config.new()</code> both
-invoke primary construction once. See <a href="./message-sends.html#invocation-at-arity-zero">zero-arity invocation</a>.
-By contrast:</p>
-<pre><code class="language-vh">config = {
-    debug = false
-    verbose = true
-}
-</code></pre>
-<p><code>config</code> is a slot holding a singleton object — there is only one instance, created at definition time.</p>
+<p>These are normative defaults of this seed. Another seed may choose different
+root methods without changing lookup, invocation or boundary laws. Replacing an
+application kernel does not replace the structural root; selecting another seed
+is not a current runtime API.</p>
+<p>Root Object does not supply <code>same</code> or <code>identityHash</code>. Reliable identity and
+classification observations belong to an explicitly supplied
+<a href="./foreign-objects.html#identitymirror">IdentityMirror capability</a>.
+The mirror observes subjects without invoking their methods. Defining these
+selector names on an application object cannot intercept mirror observations
+or the root defaults’ direct use of <code>_vm</code>; no selector is thereby reserved on Aliens.</p>
+<p><code>equals</code> defaults to native identity equality, including identity recovered from
+an owned Expat. Canonical null and Booleans participate with their native
+identities. The default <code>hash</code> returns an integer stable for the identity’s
+lifetime; equal identities have equal hashes, but collisions are permitted.
+Hashes are neither addresses nor persistent identifiers across runtime sessions.</p>
+<p><code>equals</code>, <code>hash</code> and <code>toString</code> remain overridable. Equality overrides should
+define a reflexive, symmetric, transitive relation with compatible hashes.
+The defaults provide identity-derived results without a separately supplied
+mirror; the mirror grants observation independent of subject behavior.</p>
+<p>The default <code>toString</code> returns exactly <code>"an Object"</code>. It reveals neither a class
+name nor an instance or class identity hash. Named and anonymous instances,
+class objects, metaclasses and lambdas retain this generic answer unless they
+override it. Canonical values keep their explicit <code>null</code>, <code>true</code> and <code>false</code>
+overrides. Diagnostic detail is therefore chosen by the object’s own protocol.</p>
+<p><code>_vm</code> is a narrow seed capability in Object’s detached definition scope, not an
+inherited slot, ambient module binding or accessor for IdentityMirror. Its
+operations cross the normal Alien/Expat boundary and expose no backend
+representation. Aliens retain their own protocols and do not acquire these
+methods by inheritance. Scalar Object behavior and identity remain subject to
+<a href="../../design-notes/native-values-and-abstract-semantics.html">the scalar design decision</a>.</p>
+<h2 id="capabilities-and-definition-scope"><a class="header" href="#capabilities-and-definition-scope">Capabilities and Definition Scope</a></h2>
+<p>The <a href="./program-structure.html#sources-of-an-objects-capabilities">capability sources</a>
+do not change definition scope: calling a class does not capture its caller’s scope.
+Named and anonymous classes follow the same rule. Examples with custom
+contributors or enclosing bindings assume an appropriate enclosing context;
+<a href="./program-structure.html#top-level-classes-and-instantiation">isolated modules</a>
+and <a href="./tooling-architecture.html#evaluation-contexts">tooling evaluation</a> have
+distinct entry contracts.</p>
+<p>Constructor parameters are immutable bindings available only during
+initialization. Methods cannot resolve their own constructor arguments, even
+when called during initialization. Store persistent dependencies in slots.
+Lambdas and class expressions deliberately evaluated in an initializer may
+capture its parameters. Each contribution receives its own argument bindings;
+composition does not replace its captured definition dependencies.</p>
 <h3 id="member-declarations-and-class-expressions"><a class="header" href="#member-declarations-and-class-expressions">Member Declarations and Class Expressions</a></h3>
 <p>A named class in body-declaration position declares a <strong>member class</strong>:</p>
 <pre><code class="language-vh">class Container(input) {
@@ -230,124 +358,169 @@ By contrast:</p>
     NamedCapture = class Snapshot { read { input } };
 }
 </code></pre>
-<p><code>Member</code> binds to the enclosing <code>Container</code> instance and its declaration origin.
-It can access that instance’s stored <code>value</code>, but cannot implicitly use the
-instance’s constructor parameter <code>input</code>. Its zero-arity accessor caches the
-bound class per enclosing receiver and declaration occurrence. Repeated access
-returns the same class, and different enclosing instances obtain distinct class
-objects. Member declarations are available regardless of their textual position
-among ordinary slot initializers.</p>
-<p><code>Captured</code> and <code>NamedCapture</code> are ordinary slots initialized by class expressions.
-Both expressions capture the initializer scope, including <code>input</code>. Naming an
-expression does not change this rule or declare a member in the surrounding
-body. Class expressions may occur wherever expressions are allowed.</p>
-<p>These forms share callable class behavior, but are <strong>not</strong> semantically
-equivalent. Lowering must preserve member declarations instead of turning them
-into slot assignments. Member names and slot names share the same namespace;
-a duplicate in the same body is an error. A member accessor has no setter.
-An ordinary mutable slot holding a class can be changed through its setter.
-Both support invocation at their available <code>apply/N</code> arities. A stored class is
-checked through its callable capability; a member declaration advertises its
-constructor arity and owned <code>factory apply</code> signatures before realization. A
-wrong-arity member candidate is skipped without executing its definition clauses.</p>
-<p>Methods do not implicitly retain their own class’s constructor parameters.
-Initialization must bind the values needed by later methods into slots. Ordinary
-lambdas and named/anonymous class expressions evaluated during initialization
-may deliberately retain their lexical captures. See
-<a href="./name-resolution.html#lookup-order">Name Resolution</a>.</p>
+<p><code>Member</code> binds to the enclosing receiver and its declaration/application origin.
+Its zero-argument accessor lazily realizes and caches one class per enclosing
+receiver and declaration occurrence. Repeated access returns that identity;
+different enclosing receivers obtain distinct classes. The member can use
+stored <code>value</code>, but cannot acquire <code>Container</code>’s constructor binding <code>input</code>.
+Members are available regardless of their position among slot initializers.</p>
+<p><code>Captured</code> and <code>NamedCapture</code> are slots initialized by class expressions. Both
+capture the evaluation scope, including <code>input</code>. An expression’s optional name
+is declaration metadata, not a binding introduced in the surrounding body.
+Anonymous forms occur only as expressions; named forms can be expressions or
+member declarations. Lowering must preserve this distinction.</p>
+<p>Member and slot names share a namespace; duplicates in one body are errors.
+A member also conflicts with a zero-argument method of the same name and has
+no setter. A stored class is callable through its current value;
+a member advertises the selected declaration’s constructor and owned
+<code>factory apply</code> arities before realization. Wrong-arity invocation evaluates no
+contributor targets. Selected realization failures, including cycles or
+abandonment during non-local return, are cached without replay. See
+<a href="./message-sends.html#member-class-invocation">member invocation</a> for selection
+and overriding.</p>
 <h3 id="initializer-bodies"><a class="header" href="#initializer-bodies">Initializer Bodies</a></h3>
-<p>An optional final <code>|</code> section runs statements after the contribution’s ordered
-slots. Constructor parameters remain available there. For example:</p>
-<pre><code class="language-vh">class Config(input) {
-    saved = input;
-    read { saved }
-    |
-    ^ input
-}
-</code></pre>
-<p>Construction returns the allocated <code>Config</code>, ignoring the initializer’s return
-value. Each invocation has a fresh return home. Returns to it during slot
-initialization are errors; post-slot returns complete only that contribution,
-without skipping others. Objects use the same final-section syntax and home
-lifecycle. Methods and deliberately captured data keep the scope distinctions
-above. See <a href="./literals.html#initializer-completion">Initializer completion</a>.</p>
-<h2 id="nesting"><a class="header" href="#nesting">Nesting</a></h2>
-<p>Classes and objects nest lexically. Inner objects access outer slots via the lexical chain:</p>
-<pre><code class="language-vh">{
-    config = { debug = false }
-    class Server(port) {
-        start() {
-            // 'config' resolves via lexical chain to the enclosing object's config
-            config.debug
-        }
-    }
-}
-</code></pre>
+<p>The optional final <code>|</code> section executes after the contribution’s ordered slots.
+Constructor parameters remain available. No member, method, slot or factory
+declarations follow the delimiter; ordinary statements, including local <code>var</code>
+and class expressions, may occur there. Its ordinary result
+or permitted early-return value is ignored. The complete phase, home-lifetime
+and failure rules are in <a href="./literals.html#initializer-completion">Initializer completion</a>.</p>
 <h2 id="inheritance"><a class="header" href="#inheritance">Inheritance</a></h2>
-<p>Classes can extend a superclass:</p>
-<pre><code class="language-vh">class Animal() {
-    speak() { "..." }
-}
-class Dog() &lt; Animal {
-    speak() { "woof" }
-}
-</code></pre>
-<p>The <code>&lt;</code> (or <code>extends</code>) clause specifies a native class as superclass. It inherits
-that class’s complete chain: its owned contribution, applied mixins and ancestors.
-Lookup reaches that chain after the receiving class’s own and applied contributions.
-Construction runs the superclass’s complete initialization schedule on the same
-allocated receiver. This is instance-side inheritance: it does not import the
-superclass’s factories. Each class’s metaclass contains only its own class-side
-contribution and directly extends common <code>Class</code>; see
-<a href="./object-model.html#bootstrap-metaclasses">Bootstrap Metaclasses</a>.</p>
-<p>Note that <code>class Animal()</code> uses the <code>class</code> keyword, making it a class. Writing <code>Animal = { speak() { "..." } }</code> would create a singleton object instance — not a class — and <code>&lt; Animal</code> would pass that instance where a class is expected. Always use the <code>class</code> keyword when defining types intended for inheritance.</p>
-<p><strong>The runtime does not auto-dereference singletons.</strong> Given a singleton instance, the runtime will <em>not</em> silently follow <code>instance.class</code> to obtain its anonymous class. This is a deliberate design choice:</p>
-<ul>
-<li><strong>Ambiguity</strong>: both classes and instances are objects. The runtime cannot reliably distinguish “you passed a class” from “you passed an instance whose anonymous class you intended.” Auto-deref would guess wrong in the common case of a slot holding a class reference.</li>
-<li><strong>Mixin composability</strong>: <code>super</code> dispatch depends on a well-defined class chain. Silently inheriting from an anonymous class that was never designed for subclassing produces fragile, hard-to-debug lookup chains.</li>
-<li><strong>Static analysis</strong>: a clear “this must be a class” constraint at <code>&lt;</code> sites is easy to verify abstractly. Auto-deref adds a branching point that complicates hierarchy tracing.</li>
-</ul>
+<p><code>&lt; Base(args)</code> selects a native class and inherits its complete instance-side
+chain: owned contribution, applied mixins and ancestors. Omitting the clause
+uses structural root <code>Object</code>, without looking up the name <code>Object</code>. An instance
+or Alien is not a class target; no implicit <code>instance.class</code> conversion occurs.
+Native <code>super</code> cannot be a contributor target.</p>
+<p>Construction runs the superclass’s complete initializer schedule on the newly
+allocated receiver. Inheritance imports no factories; factories belong to the
+<a href="#factories">declaring class</a>.</p>
 <h2 id="mixins"><a class="header" href="#mixins">Mixins</a></h2>
-<p>The <code>&lt;:</code> (or <code>with</code>) clause applies mixins:</p>
-<pre><code class="language-vh">class Serializable() {
-    serialize() { ... }
-}
-class Loggable() {
-    log() { ... }
-}
-class Dog() &lt;: Serializable, Loggable &lt; Animal {
-    speak() { "woof" }
+<p><code>&lt;: A(args), B(args)</code> applies the <strong>owned reified contribution</strong> of each selected
+native class: directly declared methods, slots, member classes, constructor
+formals and own initializer. It imports no source superclass, applied mixins,
+factories or argument routes. The definition scope remains captured. Resolving
+the source class itself still realizes its targets normally; applying its owned
+contribution does not evaluate those original constructor argument routes.</p>
+<p>For example, if <code>A &lt;: M1, M2 &lt; S1</code>, <code>B &lt;: M3, M4 &lt; S2</code>, and <code>C &lt;: A &lt; B</code>,
+the contribution order is:</p>
+<pre><code class="language-text">own(C), own(A), own(B), own(M3), own(M4), then the complete S2 chain
+</code></pre>
+<p><code>own(X)</code> means X’s owned contribution. No intermediate classes are introduced.
+Repeated applications share the reified definition but have distinct application
+occurrences and initializer invocations. A contributed method’s <code>super</code> resumes
+from its application occurrence; see <a href="./name-resolution.html">Name Resolution</a>.
+Public mixin extraction and reflection are not part of the current language.</p>
+<h2 id="constructor-clauses"><a class="header" href="#constructor-clauses">Constructor Clauses</a></h2>
+<p>The terminal application in a superclass or mixin clause has construction
+semantics. It selects a contributor during class realization and retains the
+argument expressions for each later construction; it does not call a factory.
+Bare targets route zero arguments, and parentheses around the whole clause do
+not change its meaning.</p>
+<h3 id="computed-contributor-targets"><a class="header" href="#computed-contributor-targets">Computed Contributor Targets</a></h3>
+<p>For <code>&lt; registry.choose(kind).Base(x)</code>, realization evaluates
+<code>registry.choose(kind)</code> and reads <code>Base</code>; construction later evaluates <code>x</code>.
+Receiver subexpressions perform ordinary computations. Direct mixin targets
+run left-to-right, then the superclass target. Their choices are fixed for the
+realized class. This applies to class expressions and cached member classes.</p>
+<h3 id="construction-order"><a class="header" href="#construction-order">Construction Order</a></h3>
+<p>For <code>class C(x) &lt;: A(a), B(b) &lt; S(s) { ... }</code>, successful primary construction:</p>
+<ol>
+<li>Allocates one receiver with fresh uninitialized storage for its complete layout.</li>
+<li>Evaluates <code>s</code> and runs S’s complete initialization schedule on that receiver.</li>
+<li>Evaluates <code>b</code> and runs B’s owned initializer, then does the same for <code>a</code> and A.</li>
+<li>Runs C’s own ordered slots and final body, then returns the allocated receiver.</li>
+</ol>
+<p>Each argument list is evaluated once, left-to-right, immediately before its
+private target invocation. Argument expressions run in the declaring
+contribution’s initializer activation, with its constructor parameters bound.
+Superclass and applied-mixin calls receive their own bindings and fresh homes.
+The declaring routes and owned body share one logical home, established before
+routing begins. Routing precedes slot completion, so returning to that home
+from a route cannot finish construction early. Each contribution completes its
+slots and final body before the next contribution runs.</p>
+<p>These calls are private identity-bound routines, never selectors named
+<code>initialize</code> or public operations on arbitrary receivers. Initializer writes
+bypass overridable setters. No component instances are allocated, no effects
+are replayed or rolled back, and escaped partial receivers are not retracted.
+Return and failure handling follows <a href="./literals.html#initializer-completion">Initializer completion</a>.</p>
+<h3 id="ordered-overrides-and-shared-state"><a class="header" href="#ordered-overrides-and-shared-state">Ordered Overrides and Shared State</a></h3>
+<p>Own declarations have precedence, followed by direct mixins left-to-right, then
+the superclass recursively. At each contribution, selector/accessor choice
+follows <a href="./message-sends.html">Message Sends</a>. A member override selects the whole
+declaration and its origin; it does not merge nested families automatically.
+Duplicate slots, members or exact method selectors within one body remain errors;
+an explicit method may override a generated slot accessor.</p>
+<p>Every slot retains its logical identity <code>(applying class, occurrence, local slot)</code>.
+<strong>Same-named contributions share storage.</strong> Initialization runs in the reverse
+contribution order above, so later writes replace earlier values. Every occurrence
+still initializes, including repeated applications. Surviving methods may therefore
+observe shared state; this policy does not promise independent stateful mixins.
+Getter/setter eligibility and mutability belong to the selected declaration,
+even when storage is shared. Renaming, explicit state mapping and deep family
+composition require future rules.</p>
+<h2 id="factories"><a class="header" href="#factories">Factories</a></h2>
+<p>A <code>factory</code> method is sent to the class object; an ordinary method is sent to
+its instances. Both use ordinary method invocation and lexical scope.</p>
+<h3 id="the-primary-factory-new"><a class="header" href="#the-primary-factory-new">The Primary Factory (<code>new</code>)</a></h3>
+<p>Every source class and root <code>Object</code> has a generated, non-overridable primary
+<code>new/N</code>, where N is its constructor arity. Successful invocation allocates a
+fresh receiver, executes the complete construction schedule and returns that
+receiver. Its selector uses ordinary lookup; only its generated body contains
+private construction operations. Object literals automatically send this primary
+<code>new/0</code> to their newly realized anonymous class.</p>
+<p><code>factory new</code> is forbidden. An ordinary instance method named <code>new</code> is allowed.
+This restriction preserves a primary entry that guarantees fresh allocation and
+the complete initialization schedule, while <code>apply</code> and named factories retain
+control over their results. It does not make an arbitrary <code>new</code> send an
+allocation primitive.
+Inheriting <code>Object</code> does not add <code>new/0</code> to a class with parameters, and neither
+inheritance nor mixin application imports contributor factories.</p>
+<h3 id="the-callable-protocol-apply"><a class="header" href="#the-callable-protocol-apply">The Callable Protocol (<code>apply</code>)</a></h3>
+<p>At constructor arity N, the default <code>apply/N</code> makes an exact <code>self.new/N</code> send.
+An owned <code>factory apply</code> at N replaces that default; factories at other arities
+coexist with it. A custom factory controls its result and causes no automatic
+allocation or initialization. It may call <code>new</code>, return a cached instance, or
+return another value.</p>
+<pre><code class="language-vh">class Point(xInput, yInput) {
+    x = xInput;
+    y = yInput;
+    factory apply() { new(0, 0) }
+    factory copy(point) { new(point.x, point.y) }
 }
 </code></pre>
-<p>A <code>&lt;: A(args)</code> application selects <strong>only the owned reified mixin of <code>A</code></strong>:
-its directly declared methods, slots, member classes and own initializer. It
-imports neither <code>A</code>’s applied mixins nor its superclass or factory methods.
-The routed arguments bind <code>A</code>’s formals for this invocation; <code>A</code>’s original
-superclass/mixin argument routes are not evaluated. Its definition scope remains
-captured normally. This holds even when <code>A</code> itself is inherited or composed.</p>
-<p>Thus <code>class A &lt;: M1, M2 &lt; S1</code>, <code>class B &lt;: M3, M4 &lt; S2</code> and
-<code>class C &lt;: A &lt; B</code> give the lookup order <code>M(C), M(A), M(B), M(M3), M(M4)</code>,
-then the full <code>S2</code> chain. Here <code>M(X)</code> means <code>X</code>’s owned mixin. Initialization
-runs in reverse contribution order, with a fresh home for each invocation.
-See <a href="./object-model.html#mixin-application">Mixin Application</a> for scope,
-occurrence identity and state rules.</p>
-<h2 id="computed-contributor-targets"><a class="header" href="#computed-contributor-targets">Computed Contributor Targets</a></h2>
-<p>Superclass and mixin receiver expressions may perform ordinary computations to
-select their contributor classes. For example, <code>&lt; registry.choose(kind).Base(x)</code>
-evaluates <code>registry.choose(kind)</code> and reads its <code>Base</code> class during class
-realization. Only the terminal <code>.Base(x)</code> application has construction semantics:
-<code>x</code> is routed when constructing an instance, rather than invoking a factory at
-class realization. Parentheses around the whole clause do not change that rule.</p>
-<p>This applies to member classes as well as class expressions. Direct mixin targets
-run left-to-right, followed by the superclass target. A member accessor realizes
-and caches its class for the enclosing receiver and declaration occurrence;
-subsequent constructions reuse those contributor choices. Invocation first checks
-member factory signatures, so rejecting a wrong-arity candidate evaluates none of
-its target computations. A selected realization failure is propagated and cached.
-See <a href="./object-model.html#what--mixinargs-and--baseargs-mean">constructor-clause semantics</a>
-and <a href="./message-sends.html#member-class-invocation">member-class invocation</a>.</p>
-<h2 id="descriptors"><a class="header" href="#descriptors">Descriptors</a></h2>
-<p>Object and class literals can carry optional descriptor chains for use by future tooling, compiler, or runtime extension layers. See <a href="./descriptors.html">Descriptors</a> for details. Descriptors have no effect on raw execution.</p>
+<p><code>Point(2, 3)</code> uses default <code>apply/2</code>; <code>Point()</code> uses the custom <code>apply/0</code>;
+<code>Point.new(2, 3)</code> performs primary construction directly. General callable
+selection belongs to <a href="./message-sends.html">Message Sends</a>.</p>
+<h3 id="named-factory-methods-factory"><a class="header" href="#named-factory-methods-factory">Named Factory Methods (<code>factory</code>)</a></h3>
+<p>Named factories such as <code>Point.copy(p)</code> are ordinary class-side methods with
+full result control. In a factory, <code>self</code> is the class object; lexical sends and
+qualified <code>outer</code> use the factory’s declaration origin and the class’s definition
+scope. A factory on a member class can therefore access its bound enclosing
+receiver. Invoking it does not capture the caller or instantiation service.</p>
+<h3 id="bootstrap-metaclasses"><a class="header" href="#bootstrap-metaclasses">Bootstrap Metaclasses</a></h3>
+<p>Each source class C has a distinct metaclass <code>C class</code>, containing only C’s
+owned factories, with direct superclass <code>Class</code> and structural class <code>Metaclass</code>.
+Factory <code>super</code> continues at <code>Class</code>, independently of C’s instance superclass.
+The root relationships are:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Identity</th><th>Structural class</th><th>Direct superclass</th></tr>
+</thead>
+<tbody>
+<tr><td><code>Object</code></td><td><code>Object class</code></td><td><code>Top</code></td></tr>
+<tr><td><code>Class</code></td><td><code>Class class</code></td><td><code>Object</code></td></tr>
+<tr><td><code>Metaclass</code></td><td><code>Metaclass class</code></td><td><code>Class</code></td></tr>
+<tr><td>Each of the three root metaclasses</td><td><code>Metaclass</code></td><td><code>Class</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>Thus <code>Metaclass</code> and <code>Metaclass class</code> form a shared two-object class-of cycle.
+<code>Top</code> terminates superclass chains without participating in this class-of graph.
+<code>Object</code> retains its empty initializer and <code>new/0</code>/default <code>apply/0</code>.
+<code>Class</code>, <code>Metaclass</code> and metaclass objects have no public construction factories;
+the common instance protocol of <code>Class</code> is initially empty. Structural links
+create no public <code>class</code> or <code>outer</code> selector, ambient binding or reflection API.</p>
 
                     </main>
 

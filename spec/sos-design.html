@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>VarioHyve for Systems-of-Systems and Federated Modeling - VarioHyve Language Specification</title>
+        <title>Behavioral Federation - VarioHyve Language Specification</title>
 
 
         <!-- Custom HTML head -->
@@ -30,16 +30,18 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="theme/vh-2de7eb16.css">
 
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
         <!-- Provide site root and default themes to javascript -->
         <script>
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0458d790.js";
+            window.path_to_searchindex_js = "searchindex-b0f8be02.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-45e5eade.js"></script>
+        <script src="toc-1ce75dcc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -175,255 +177,197 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="variohyve-for-systems-of-systems-and-federated-modeling"><a class="header" href="#variohyve-for-systems-of-systems-and-federated-modeling">VarioHyve for Systems-of-Systems and Federated Modeling</a></h1>
-<p>VarioHyve is an experimental language for <strong>behavioral federation</strong>: expressing
-interactions among systems and models that retain their own semantics and
-execution mechanisms. It is also a vehicle for experimenting with virtual
-machine design and the integration of formal methods. Its working hypothesis
-is that a small coordination language, with explicit capabilities and a precise
-foreign boundary, can make some federation tasks easier to construct, inspect
-and analyze. Establishing where that hypothesis holds is part of the work.</p>
-<p>This chapter motivates the design and introduces its main mechanisms. The
-following chapters define their semantics; the
-<a href="../../catalog/README.html">case-study catalog</a> develops experiments separately
-from the specification.</p>
-<h2 id="the-problem-cooperation-without-complete-control"><a class="header" href="#the-problem-cooperation-without-complete-control">The Problem: Cooperation Without Complete Control</a></h2>
-<p>A system-of-systems brings together constituent systems that retain meaningful
-operational and managerial independence. Its engineer cannot generally redesign
-every participant, impose one release cycle, or replace every local objective
-with a common one. This emphasis on independence follows the characterization
-used in the <a href="https://sebokwiki.org/wiki/Systems_of_Systems_%28SoS%29">Systems Engineering Body of Knowledge</a>.
-Differences in technology, terminology, time, authority and lifecycle are
-practical consequences to accommodate. We therefore use <em>systems-of-systems</em>
-without treating heterogeneity as an exceptional qualification.</p>
-<p>Federated modeling presents a related problem at the level of engineering
-artifacts. A requirement, a simulation variable and a maintenance record may
-refer to the same equipment while describing different aspects of it. Their
-relationships matter, but their meanings are not interchangeable. An MBSE
-(model-based systems engineering) toolchain may itself involve independently
-maintained tools, even when the engineered product is not a system-of-systems.
-Model federation and operational federation are related concerns, not synonyms.</p>
-<p>Consider a pumping station participating in a wider water-management system.
-A design team uses requirements and hydraulic models; an operator owns the
-controller and maintenance data. Assessing a proposed operating mode requires
-more than connecting APIs. Which pump does each model denote? Are flow rates
-expressed in compatible units? Which revision was simulated? Who may request an
-actuation? What happens if a command succeeds but its acknowledgment is lost?
-These questions concern correspondence, behavior, authority and evidence.</p>
-<p>Existing programming languages, integration frameworks and modeling tools can
-address such problems. The motivation for VarioHyve is to investigate a
-particular combination of mechanisms and its costs. A common message syntax
-cannot establish semantic agreement, a coordinator cannot manufacture authority,
-and an executable model is not by itself evidence about the physical system.</p>
-<h2 id="four-perspectives-on-the-experiment"><a class="header" href="#four-perspectives-on-the-experiment">Four Perspectives on the Experiment</a></h2>
-<h3 id="systems-engineers-and-sos-architects"><a class="header" href="#systems-engineers-and-sos-architects">Systems Engineers and SoS Architects</a></h3>
-<p>For systems engineers, the question is whether an executable coordination model
-can make assumptions at system boundaries easier to review and test. It should
-show which participant supplies an observation, which policy interprets it, and
-which capability permits an effect. Replacing a live participant with a recorded
-trace or simulator should leave the coordination logic understandable while
-making the changed assumptions explicit.</p>
-<p>The intended benefit is a more inspectable account of cooperation and its
-failure cases. VarioHyve does not supply a systems engineering method or resolve
-organizational governance. Nor does sequential execution of a coordinator imply
-determinism, timing guarantees or safety of the participating systems.</p>
-<h3 id="builders-of-mbse-environments-and-design-systems"><a class="header" href="#builders-of-mbse-environments-and-design-systems">Builders of MBSE Environments and Design Systems</a></h3>
-<p>For tool builders, the question is how to give behavior to a federation of
-models without relocating every model into a new repository or metamodel.
-Useful experiments include orchestrating a consistency check, collecting its
-evidence, and exposing a narrowly scoped operation to an interactive tool.
-Participants should remain responsible for their data and domain operations.</p>
-<p>Explicit service objects offer a way to assemble such experiments and substitute
-test implementations. Descriptors and external annotations provide intended
-attachment points for different tool perspectives. The hoped-for benefit is
-reuse of coordination behavior across tools and configurations; adapter work,
-versioning, persistence and synchronization policies still need to be designed.</p>
-<h3 id="language-designers-and-programmers"><a class="header" href="#language-designers-and-programmers">Language Designers and Programmers</a></h3>
-<p>For the programming-language community, VarioHyve offers a concrete setting in
-which to study the interaction of message sends, lexical scope, first-class
-classes, reified mixins and foreign behavior. Programmers need these mechanisms
-to remain predictable when code is reused in a different enclosing object or
-composed with another contribution.</p>
-<p>The research question is whether this combination yields useful, economical
-abstractions for federation. Fixed lookup and invocation rules provide a
-reference against which VM implementations and later optimizations can be
-checked. The experiment includes measuring complexity and debugging costs;
-dynamic dispatch and flexible composition are not benefits without tradeoffs.</p>
-<h3 id="the-formal-methods-community"><a class="header" href="#the-formal-methods-community">The Formal Methods Community</a></h3>
-<p>For formal methods, the attraction is a coordination layer with explicit inputs,
-state and control flow, together with identifiable points where foreign behavior
-enters. One experiment may call an existing checker as a capability; another
-may derive an analysis of VarioHyve programs. These are different undertakings:
-calling a checker does not verify the caller or the whole federation.</p>
-<p>Any analysis must state which properties it checks, how foreign operations are
-modeled, and what assumptions relate those models to actual participants.
-Unknown effects cannot silently be treated as pure or deterministic. The aim is
-to make these obligations easier to state and investigate, while preserving a
-reference execution semantics. No sound analyzer or end-to-end verification
-claim follows merely from the current VM architecture.</p>
-<h2 id="a-brief-language-overview"><a class="header" href="#a-brief-language-overview">A Brief Language Overview</a></h2>
-<h3 id="dependencies-are-supplied-as-objects"><a class="header" href="#dependencies-are-supplied-as-objects">Dependencies Are Supplied as Objects</a></h3>
-<p>A program is a single expression; a top-level class literal serves as a module.
-For example, a small assessment coordinator can be written as:</p>
-<pre><code class="language-vh">class Assessment(modelSource, analysisService, evidenceSink) {
+                        <p><a id="motivation"></a></p>
+<h1 id="behavioral-federation"><a class="header" href="#behavioral-federation">Behavioral Federation</a></h1>
+<p>VarioHyve investigates how programs can coordinate systems that keep their own
+meaning, execution mechanisms and authority. A model repository, a simulator and
+a running controller can cooperate without becoming objects of one universal
+model or processes of one execution engine. The difficult part is making the
+agreements between them explicit enough to understand, change and examine.</p>
+<p>We call this <strong>behavioral federation</strong>. The experiment combines an object
+language, a native/foreign boundary and an explicit execution model. Its working
+hypothesis is that a small, coherent set of mechanisms can make coordination
+behavior easier to reuse and its assumptions easier to inspect. An executable
+bootstrap now allows that hypothesis to be investigated through programs and
+tests. Whether the combination improves real engineering workflows remains an
+empirical question.</p>
+<h2 id="cooperation-without-complete-control"><a class="header" href="#cooperation-without-complete-control">Cooperation Without Complete Control</a></h2>
+<p>A system-of-systems brings together participants that retain substantial
+operational and managerial independence. Their owners, release cycles and
+objectives need not coincide. Engineering environments encounter a related
+problem when requirements, designs, simulations and operational records live in
+different tools. The engineered product need not itself be a system-of-systems
+for its engineering models to require federation.</p>
+<p>Consider a pumping station. A requirements model states a minimum flow, a
+hydraulic simulator predicts performance, and maintenance records describe the
+installed equipment. Each may refer to the same pump while expressing different
+facts about it. Assessing a proposed replacement requires a correspondence
+between those references, compatible units, an agreed revision of the design
+and a policy for interpreting the analysis. Authorizing the replacement requires
+additional authority. A successful assessment alone does not supply it.</p>
+<p>API connectivity solves only part of this problem. A simulator may finish after
+the relevant design has changed. A service may fail after accepting a request,
+leaving its effects uncertain. A callback may arrive while the coordinator is
+waiting for a result. The engineer needs to know which observations support a
+decision, which assumptions remain in force and what a failed interaction means.
+Replacing the simulator with a recorded trace should expose the changed
+assumptions while preserving the intended coordination protocol.</p>
+<p>These needs become language and tooling questions when the workflow must be
+maintained across many projects. Builders of modeling environments need reusable
+behavior over heterogeneous models, traceable evidence and controlled access to
+tools. Moving every model into a new metamodel can be expensive or inappropriate;
+reimplementing every participant’s behavior can lose exactly the semantics that
+made it useful. Existing federation and model-management tools already address
+substantial parts of this problem. VarioHyve asks what a compact coordination
+language can contribute alongside them, and what it costs compared with their
+own workflows or direct host-language code.</p>
+<h2 id="agreements-expressed-through-objects"><a class="header" href="#agreements-expressed-through-objects">Agreements Expressed Through Objects</a></h2>
+<p>The approach starts with supplied capabilities: objects whose behavior grants
+access to particular services or resources. A coordinator receives the
+capabilities it needs and exchanges objects by sending messages. Its inputs can
+represent a narrow model query, an analysis operation or permission to record
+evidence. The supplying system determines the available authority; the
+coordinator’s source makes its use visible.</p>
+<p>This is also a commitment to semantic sovereignty. Foreign participants retain
+their own execution and interpretation of operations. The boundary states how
+messages, values, identity, failures and callbacks cross between them. An
+operation may return an ordinary value or promise an explicit outcome protocol,
+just as a native method may. A shared message syntax does not establish agreement
+about units, revisions or successful completion: those remain part of the
+supplied operation’s contract.</p>
+<p>Here, “contract” means an agreement about behavior and authority, not an
+implemented contract language or automatic proof system. The boundary makes
+such agreements a subject of design. It also makes their limits visible. For
+example, foreign code running in the same host process can terminate that
+process; a capability interface alone does not provide process containment.</p>
+<h2 id="a-language-for-explicit-dependencies"><a class="header" href="#a-language-for-explicit-dependencies">A Language for Explicit Dependencies</a></h2>
+<p>The following module illustrates the shape of a coordinator:</p>
+<pre><code class="language-vh">class Assessment(modelSource, checker, evidenceSink) {
     models = modelSource;
-    analysis = analysisService;
+    analysis = checker;
     evidence = evidenceSink;
 
     assess(item) {
         var snapshot = models.snapshot(item);
-        var result = analysis.check(snapshot);
-        evidence.record(snapshot, result)
+        evidence.record(snapshot, analysis.check(snapshot))
     }
 }
 </code></pre>
-<p>An external instantiation service supplies the three objects and subsequently
-requests <code>assess</code>. The constructor parameters belong only to initialization;
-the slots retain the dependencies used by the method. The names <code>snapshot</code>,
-<code>check</code> and <code>record</code> describe application contracts, not built-in services.
-Those contracts must define revision identity, results and effects. The method
-sequences three requests; it supplies neither a distributed transaction nor a
-proof that the recorded assessment is valid.</p>
-<p>Normal module definition starts over an empty top activation, with no enclosing
-application scope. The top-level class inherits only from root <code>Object</code> and
-composes no mixins; external capabilities arrive solely through its constructor
-arguments. There is no ambient global namespace or import mechanism, and no
-mandatory <code>kernel</code> argument. Tools can explicitly provide richer evaluation
-contexts, whose captured dependencies remain significant.</p>
-<p>Within a module, classes may obtain capabilities through lexical nesting,
-superclass inheritance, mixin composition and constructor parameters. Authority
-therefore depends on the reachable object graph, including retained definition
-scopes. Nesting shares access to enclosing capabilities; it does not create an
-isolation boundary. The bootstrap also has no general source-level access
-control: narrow authority requires appropriately restricted supplied objects,
-not a descriptor or a conventionally private slot name. See
-<a href="./program-structure.html">Program Structure</a>.</p>
-<h3 id="native-behavior-uses-messages-and-lexical-objects"><a class="header" href="#native-behavior-uses-messages-and-lexical-objects">Native Behavior Uses Messages and Lexical Objects</a></h3>
-<p>Native objects provide methods and slots; slot access, parameters and local
-bindings use generated accessor messages. Lambdas are callable values, and
-classes provide construction behavior through factories and the <code>apply</code>
-protocol. Selectors distinguish name and arity. Invocation considers exact
-operations and eligible generated callable accessors according to fixed rules;
-it does not execute arbitrary getters to discover a callable.</p>
-<p>Lexical lookup selects receivers relative to declarations and remains distinct
-from inheritance lookup. Member classes bind to their enclosing receiver and
-declaration origin, while class expressions and lambdas capture the scope in
-which they are evaluated. Reified mixins preserve their own contributions and
-definition scopes. Applying a mixin imports its owned contribution, not its
-source class’s entire inheritance chain or factories. Composition uses declared
-order and overriding; automatic deep family merging is deferred. These choices
-support experiments with reusable families and policies without making their
-composition automatically safe. See <a href="./objects-and-classes.html">Objects and Classes</a>,
-<a href="./message-sends.html">Message Sends</a> and <a href="./name-resolution.html">Name Resolution</a>.</p>
-<h3 id="foreign-participants-keep-their-semantics"><a class="header" href="#foreign-participants-keep-their-semantics">Foreign Participants Keep Their Semantics</a></h3>
-<p>An <strong>Alien</strong> represents a foreign semantic value or entity inside VarioHyve.
-Its adapter defines the foreign operations available through the boundary; an
-opaque handle need not support direct messages. An Alien acquires no native
-class, mixins or lexical outer. An explicit native wrapper can supply VarioHyve
-behavior around it. Conversely, an <strong>Expat</strong> exposes native behavior to a foreign
-participant, allowing callbacks under the boundary’s execution rules.</p>
-<p>The boundary specifies argument and result conversion, compatible identity
-round trips, and the distinction between a missing selector and failure of a
-selected operation. Failure must not trigger a search that replays effects.
-Language-visible VM services use this same boundary. Matching selector names
-and arities alone does not establish substitutability: results, effects,
-lifetimes and failure behavior must also satisfy the intended contract.</p>
-<p>Here, <em>capability contract</em> means the agreed behavior and authority of a
-supplied object and its adapter. It does not imply an implemented contract
-language or automatic enforcement. The current Java boundary supports
-synchronous callbacks on the calling thread; multi-runtime scheduling and
-asynchronous interaction remain future work. See
-<a href="./foreign-objects.html">Foreign Object Interaction</a>.</p>
-<h3 id="execution-is-a-basis-for-analysis-experiments"><a class="header" href="#execution-is-a-basis-for-analysis-experiments">Execution Is a Basis for Analysis Experiments</a></h3>
-<p><code>VisitorSemanticsVM</code> is the current implementation target. It represents lexical
-scope with activation objects and executes with explicit state and continuations.
-This makes execution mechanisms available for inspection and provides a starting
-point for investigating analyses inspired by
-<a href="https://matt.might.net/papers/vanhorn2010abstract.pdf">Abstracting Abstract Machines</a>.
-Deriving a sound analysis additionally requires suitable abstract domains,
-store and control abstractions, transfer rules, effect models and a soundness
-argument. Replacing the allocator or supplying an “abstract kernel” is
-insufficient. See <a href="./interpreter-design.html">Interpreter Design</a>.</p>
-<p>Descriptors attach optional information to syntax without changing core
-execution. Tooling may associate annotations, assumptions or analysis results
-with those elements. A units annotation does not convert a value; a safety
-annotation does not certify behavior. Any interpreting tool must explain what
-it checks or enforces. See <a href="./descriptors.html">Descriptors</a> and
-<a href="./tooling-architecture.html">Tooling Architecture</a>.</p>
-<h2 id="complementary-work-and-language-lineage"><a class="header" href="#complementary-work-and-language-lineage">Complementary Work and Language Lineage</a></h2>
-<p>The following relationships suggest experiments, not existing VarioHyve
-integrations or exclusive divisions of responsibility. Each project already
-addresses parts of the broader problem; any proposed combination should justify
-its additional complexity.</p>
-<h3 id="openflexo-and-fml"><a class="header" href="#openflexo-and-fml">Openflexo and FML</a></h3>
-<p>Openflexo’s Flexo Modeling Language (FML) provides virtual models, concepts,
-roles and behaviors for domain-specific perspectives over different information
-sources. Technology adapters connect those sources to the federation. Its
-scope already includes behavior and model manipulation, as described in the
-<a href="https://openflexo.org/openflexo-core/docs/">Openflexo core documentation</a> and
-<a href="https://openflexo.org/ModelFederation/">model federation overview</a>.</p>
-<p>A possible collaboration is to expose selected FML operations as capabilities
-and investigate VarioHyve for a bounded piece of coordination or analysis.
-Conversely, an FML environment could invoke that behavior through Expats.
-Openflexo would supply a concrete modeling context and integration needs;
-VarioHyve experiments could inform execution and boundary design. This does not
-presuppose replacing FML behavior or translating FML models into VarioHyve.</p>
-<h3 id="eclipse-epsilon"><a class="header" href="#eclipse-epsilon">Eclipse Epsilon</a></h3>
-<p><a href="https://eclipse.dev/epsilon/">Epsilon</a> supplies languages and tools for model
-querying, validation, transformation, comparison and related management tasks.
-Its model connectivity layer supports different model technologies, so it
-already addresses heterogeneity directly.</p>
-<p>An experiment could expose an Epsilon validation or transformation as a
-capability, with VarioHyve coordinating when it runs and how its results are
-used alongside other participants. Epsilon would retain its model-management
-semantics. In the other direction, Epsilon programs could use exposed native
-behavior where a suitable adapter exists. The comparison should include an
-Epsilon-only workflow: adding a coordination language is useful only if the
-resulting separation, reuse or analyzability outweighs the extra boundary.</p>
-<h3 id="comprehensive-systems-and-corrlang"><a class="header" href="#comprehensive-systems-and-corrlang">Comprehensive Systems and CorrLang</a></h3>
-<p><a href="https://www.corrlang.io/intro.html">CorrLang</a> explores semantic interoperability
-through declared correspondences among endpoints, drawing on the formal
-framework of comprehensive systems. That work gives explicit structure to
-relationships among models and their concepts; it should not be reduced to
-format conversion.</p>
-<p>A potentially symbiotic experiment would use such correspondences to specify
-which entities and relations a behavioral interaction concerns, and VarioHyve
-to express a protocol that uses them. Execution traces could in turn provide
-observations for consistency checks. A structural correspondence alone does not
-prove protocol compatibility, and a successful execution does not establish
-model consistency. Connecting those two kinds of evidence is a research
-question; no automatic correspondence-to-behavior translation is assumed.</p>
-<h3 id="newspeak-and-smalltalk"><a class="header" href="#newspeak-and-smalltalk">Newspeak and Smalltalk</a></h3>
-<p>Smalltalk and Newspeak are VarioHyve’s principal language influences.
-<a href="https://www.cs.virginia.edu/~evans/cs655/readings/smalltalk.html">Smalltalk’s design principles</a>
-inform the emphasis on objects, messages and an environment in which behavior
-can be explored. <a href="https://newspeaklanguage.org/spec/newspeak-spec.pdf">Newspeak</a>
-is the closer reference for lexical nesting, modules instantiated with explicit
-dependencies, and the absence of a global namespace.</p>
-<p>VarioHyve explores these ideas in the setting of behavioral federation and an
-experimental VM. It has its own invocation, composition and foreign-boundary
-contracts; influence is not a claim of language compatibility. In particular,
-VarioHyve retains reified mixin contributions and a flat metaclass graph, and
-keeps activations backend-private. The
-<a href="../../design-notes/outer-newspeak-comparison.html">Newspeak comparison</a> records
-specific correspondences and differences. Rich live tooling and persistent
-platforms remain directions to investigate, not facilities inherited merely by
-adopting this lineage.</p>
-<h2 id="from-motivation-to-evidence"><a class="header" href="#from-motivation-to-evidence">From Motivation to Evidence</a></h2>
-<p>The present result is an executable bootstrap, not a complete federation
-platform. The <a href="../../design-notes/bootstrap-next-steps.html">bootstrap roadmap</a>
-records implemented behavior and limitations. General foreign contract metadata,
-abstract interpretation, concurrent coordination, persistent platform recovery
-and mature development tools require further work; the
-<a href="./future.html">future directions</a> are proposals rather than available features.</p>
-<p>The <a href="../../catalog/README.html">catalog</a> starts with small proposed studies:
-replaying a control decision, assessing an engineering change, coordinating
-through model correspondences, checking a bounded protocol, and preserving
-identity through callbacks. Each identifies a baseline, a capability boundary,
-a falsifiable improvement hypothesis and missing implementation work. Useful
-evidence includes both successful reuse and cases where a direct host program
-or an existing modeling tool is simpler. These studies are intended to guide
-the language’s development rather than illustrate benefits assumed in advance.</p>
+<p>The host supplies three existing objects when it constructs <code>Assessment</code>; it
+later requests an assessment by sending <code>assess</code>. The module retains its inputs
+in slots because constructor parameters belong to initialization, rather than
+becoming instance-method bindings. Nothing in this code requires the three
+services to be implemented in VarioHyve. Their selectors are application
+agreements, and the example deliberately leaves their failure and evidence
+policies to those agreements.</p>
+<p>A normal module begins over an empty top activation. It receives external
+capabilities through explicit constructor inputs and, subsequently, message
+arguments and the behavior of objects already available to it. There is no
+ambient application namespace. Supplied objects keep their own authority and
+captured scopes, so a short parameter list is not by itself an isolation proof.
+The <a href="./program-structure.html">program-structure chapter</a> defines this entry
+contract precisely.</p>
+<p>Within the language, objects and message sends also organize access and reuse.
+Slots are accessed through messages; lexical scopes are activation objects and
+ordinary objects. Classes are first-class values. Composition uses reified
+contributions and application occurrences, retaining the declaration origins
+that determine scope and invocation. A reusable analysis stage can therefore
+keep access to its defining provider even when applied in a receiving module
+with similarly named bindings. The rules aim to make that behavior predictable
+without merging independently defined models into a deep class family.</p>
+<p>For language design, the question is whether these mechanisms work together
+without hidden exceptions at each point of reuse. Definition scope, receiver
+identity and contribution selection must remain intelligible when code moves
+between modules or across a foreign boundary. The specification fixes these
+rules independently of the Java representation, giving alternative
+implementations a contract to preserve. That precision also exposes costs in
+notation, implementation and debugging that the experiments must assess.</p>
+<p>Foreign values appear inside the language as <strong>Aliens</strong>; native behavior is
+exported as <strong>Expats</strong>. Sending a message to an Alien uses the ordinary source
+syntax. The adapter mediates the operation, and foreign code may call an Expat
+while the native caller waits. Language-visible VM services use this same
+boundary, with separately granted privileged capabilities. Explicit mirrors can
+offer information beyond ordinary behavior. The
+<a href="./foreign-objects.html">boundary chapter</a> defines these interactions, including
+identity, failure and the default prohibition on non-local returns crossing a
+foreign call.</p>
+<h2 id="making-execution-available-for-inquiry"><a class="header" href="#making-execution-available-for-inquiry">Making Execution Available for Inquiry</a></h2>
+<p>Coordination becomes easier to investigate when execution itself has a precise
+description. VarioHyve’s machine exposes configurations and transitions for
+evaluation, invocation, storage and control. This supports a correspondence
+between language rules, executable behavior and observations made by tools.
+It does not by itself establish that correspondence as a proved theorem.</p>
+<p>The current sequential execution agreement uses a conceptual <strong>control token</strong>
+for ordinary native execution. A native-to-foreign call transfers control to the
+foreign side; an admitted callback can return it to native execution before the
+original call completes. Multiple callback workers must negotiate admission,
+and the current implementation serializes their native execution. The token
+need not be a runtime object. Its purpose is to describe an agreement that an
+implementation must realize.</p>
+<p>That agreement leaves room for explicitly confined extensions. A collector may
+perform concurrent maintenance if it preserves the required abstract behavior.
+A monitor may have a separately specified intervention capability. A future
+parallel machine may execute proven-independent transitions under an appropriate
+execution agreement. These possibilities have distinct obligations; granting
+one does not silently grant unrestricted execution authority. The
+<a href="./formal-core.html">formal appendix</a> states the model and its limits, while
+<a href="./future.html">Future Directions</a> separates accepted extension principles from
+mechanisms still to be developed.</p>
+<p>This opens two different lines of inquiry for formal methods. A coordinator can
+call an external checker as a supplied capability. Separately, an analyzer can
+be derived for the coordinator’s own execution semantics. The first requires an
+agreement about the checker’s inputs, results and assumptions; the second needs
+an abstraction and soundness argument, including a treatment of foreign effects.
+Neither alone verifies a complete federation or its physical environment.
+Descriptors can carry tooling information, but attaching information does not
+establish its truth. Keeping these distinctions explicit makes proposed claims
+testable and clarifies the evidence still required.</p>
+<p><a id="from-motivation-to-evidence"></a></p>
+<h2 id="what-the-bootstrap-establishes"><a class="header" href="#what-the-bootstrap-establishes">What the Bootstrap Establishes</a></h2>
+<p>The present result is an executable language bootstrap centered on
+<code>VisitorSemanticsVM</code>. It includes parsing and lowering, explicit module entry,
+object and class construction, reified composition, lexical lookup, closures and
+return-home checks, a native heap collector, and a synchronous Java Alien/Expat
+boundary. Semantic regressions exercise the interactions between these
+mechanisms. The implementation chapters identify concrete policies and remaining
+limitations; executable tests are evidence about those policies, not a substitute
+for their specification.</p>
+<p>The <a href="../../catalog/02-composition-bootstrap.html">composition case study</a> provides
+a small but concrete federation slice. Native source coordinates Java fixture
+services for model observations, validation, capacity checking and evidence.
+Reusable stages preserve their defining checker capabilities despite competing
+bindings in the receiving module. Its acceptance cases cover successful and
+rejected assessments, early failure and a selected foreign operation failing
+without being replayed. This tests capability flow and composition using
+controlled participants.</p>
+<p>The slice does not yet integrate an industrial model repository or simulator,
+and it establishes no comparative productivity or performance advantage.
+The <a href="../../catalog/README.html">case-study catalog</a> develops the next experiments
+around explicit baselines, measurable outcomes and failure conditions. Useful
+findings include cases where an existing tool or direct adapter is simpler.
+Current measurement infrastructure also supports language implementation
+experiments, with workload and measurement boundaries documented separately.</p>
+<p><a id="complementary-work-and-language-lineage"></a>
+<a id="openflexo-and-fml"></a>
+<a id="eclipse-epsilon"></a>
+<a id="comprehensive-systems-and-corrlang"></a>
+<a id="newspeak-and-smalltalk"></a></p>
+<h2 id="positioning-and-reading-the-experiment"><a class="header" href="#positioning-and-reading-the-experiment">Positioning and Reading the Experiment</a></h2>
+<p>VarioHyve draws on object languages, capability security, behavioral reflection
+and explicit operational semantics. Openflexo, Epsilon and CorrLang provide
+important comparisons for model federation and coordination; Smalltalk and
+Newspeak inform the language lineage. Work on monitoring and analysis supplies
+ways to formulate the questions raised by observable execution. The
+<a href="./related-works.html">Related Works part</a> explains the relevant connections and
+differences without treating them as delivered integrations or inherited proofs.</p>
+<p>The rest of the book moves from agreement to realization. <strong>Specification</strong>
+defines language behavior, including the foreign boundary. <strong>Implementation</strong>
+describes the Java bootstrap and its tooling. <strong>Future</strong> records extension
+principles, proposals and unresolved work. <strong>Related Works</strong> situates the
+experiment, and the <strong>Appendix</strong> gives the formal rules. This opening
+<strong>Motivation</strong> supplies the questions behind those parts: can explicit
+capabilities and preserved semantic boundaries make coordination easier to
+understand, and can explicit execution make its behavior easier to investigate?</p>
 
                     </main>
 

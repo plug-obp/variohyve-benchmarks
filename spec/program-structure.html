@@ -30,16 +30,18 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="theme/vh-2de7eb16.css">
 
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
         <!-- Provide site root and default themes to javascript -->
         <script>
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0458d790.js";
+            window.path_to_searchindex_js = "searchindex-b0f8be02.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-45e5eade.js"></script>
+        <script src="toc-1ce75dcc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -176,213 +178,96 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="program-structure"><a class="header" href="#program-structure">Program Structure</a></h1>
-<p>VarioHyve explores behavioral federation for systems-of-systems and modeling
-environments. This chapter defines how programs receive capabilities and how
-module entry differs from tooling evaluation. The current sequential core
-interacts with foreign participants through the
-<a href="./foreign-objects.html">Alien/Expat boundary</a>; analysis and concurrent coordination
-remain research directions, including the proposed
-<a href="./future.html#concurrency-and-parallelism">semantic language interface</a>.</p>
+<p>Operational definition: <a href="./formal-core.html#entry-observations-and-remaining-parameters">SOS entry rules</a>.</p>
 <h2 id="a-program-is-a-single-expression"><a class="header" href="#a-program-is-a-single-expression">A Program Is a Single Expression</a></h2>
-<p>The grammar entry point is:</p>
-<pre><code>top: expression? EOF;
-</code></pre>
-<p>A VarioHyve program is an optional single expression. A top-level class literal,
-named or anonymous, serves as a module. The service that instantiates it supplies
-the existing object instances required by its constructor; the language does not
-prescribe their number or names.</p>
-<pre><code class="language-vh">class Application(consoleService, clockService, settings) {
-    console = consoleService;
-    clock = clockService;
-    config = settings;
-
-    run { console.print(clock.now) }
-}
-</code></pre>
-<p><code>class(consoleService, clockService, settings) { ... }</code> has the same dependency
-rules. Naming the class does not create an ambient binding or change how it
-receives capabilities. The top-level expression is optional; empty input is
-represented as <code>EmptyExpression</code> and is a no-op for expression evaluation.
-The module-instantiation entry specifically requires a class literal; it rejects
-empty input and other expression forms without evaluating them.</p>
-<h2 id="four-sources-of-class-capabilities"><a class="header" href="#four-sources-of-class-capabilities">Four Sources of Class Capabilities</a></h2>
-<p>A class literal, whether named or anonymous, obtains its required capabilities
-through four mechanisms:</p>
-<ol>
-<li><strong>Superclass inheritance:</strong> inherited behavior and the capabilities available
-through that behavior.</li>
-<li><strong>Mixin composition:</strong> behavior contributed by composed mixins, preserving
-their definition scopes and the capabilities available through that behavior.</li>
-<li><strong>Lexical nesting:</strong> bindings available from the enclosing scope in which the
-class is defined.</li>
-<li><strong>Constructor parameters:</strong> existing objects supplied when an instance is
-constructed.</li>
-</ol>
-<p>These describe where capabilities come from, not a new lookup priority. The
-language’s <a href="./name-resolution.html">lookup rules</a> still distinguish lexical scope,
-composition and inheritance. Calling a class from another scope does not give it
-that caller’s lexical bindings. Constructor arguments supply object references,
-not an implicit caller environment.</p>
-<p>Constructor parameters are initializer-only bindings. Persistent behavior uses
-values explicitly bound to instance slots, or deliberate captures of expressions
-created during initialization. Member-class declarations access the enclosing
-instance and declaration origin; they do not capture its constructor parameters.
-Named and anonymous class expressions retain their actual lexical scopes.</p>
-<p>Capabilities include ordinary VarioHyve objects, callable class objects, and
-<a href="./foreign-objects.html">Aliens</a> representing foreign services. Sending messages to
-an available object may return further objects; such access derives from that
-object’s authority and is not an additional ambient acquisition mechanism.</p>
+<p>The grammar entry is <code>top: expression? EOF</code>. Empty input is an empty expression;
+normal expression evaluation returns canonical null. A named or anonymous
+<strong>class literal</strong> can instead serve as a module. Naming it retains declaration
+metadata without creating an ambient binding. Module instantiation requires a
+class literal and rejects empty input or other expression forms without
+executing them.</p>
+<p>The introductory <a href="./sos-design.html#a-language-for-explicit-dependencies">Assessment example</a>
+is such a module. Its instantiation service supplies the three existing objects
+<code>modelSource</code>, <code>checker</code> and <code>evidenceSink</code>; a caller later sends <code>assess(item)</code>.
+These selectors are application contracts, not built-in services.</p>
+<p><a id="four-sources-of-class-capabilities"></a></p>
+<h2 id="sources-of-an-objects-capabilities"><a class="header" href="#sources-of-an-objects-capabilities">Sources of an Object’s Capabilities</a></h2>
+<p>An object’s behavior can access capabilities through inherited behavior, mixin
+contributions, lexical nesting and explicitly supplied inputs. Inputs include
+constructor arguments during initialization and arguments to later messages.
+Further capabilities may become available through message results.</p>
+<p>These routes do not change
+<a href="./name-resolution.html">lookup order</a>. Contributions retain their definition
+scopes; calling a class from another scope does not supply the caller’s bindings.</p>
+<p>Constructor parameters are available only during initialization. Retaining these
+inputs for later use requires slots or deliberate captures, as specified by the
+<a href="./objects-and-classes.html#capabilities-and-definition-scope">definition-scope rules</a>.
+These rules apply equally to native and foreign capabilities.</p>
+<p>A capability can be a native object, including a class with factory behavior, or an
+<a href="./foreign-objects.html">Alien</a>. Its offered behavior may return further objects
+or create new ones. Authority therefore includes behavior and captured scopes,
+not merely objects present in an initial heap. Nesting shares enclosing
+capabilities; it is not an isolation boundary.</p>
 <h2 id="top-level-classes-and-instantiation"><a class="header" href="#top-level-classes-and-instantiation">Top-Level Classes and Instantiation</a></h2>
-<p>Normal module evaluation starts in an <strong>empty top activation</strong> at the base of
-the lexical chain. This is an activation object, not a separate environment or
-an implicit platform object. It contributes no capability bindings and has no
-capability-bearing parent or receiver. Keeping this execution frame is compatible
-with saying that a top-level class has <strong>no enclosing application scope</strong>: the
-empty root supplies no interesting capabilities.</p>
-<p>Under this normal entry contract, the top-level class inherits only from the
-language root <strong><code>Object</code></strong> and <strong>composes no mixins</strong>. The empty top activation
-supplies no other superclass or mixin to resolve. The root <code>Object</code> relationship
-is part of the object model; it does not supply an ambient platform namespace or
-host services. Internal lexical links may retain the empty activation without
-making it an enclosing application object exposed through <code>outer</code>.</p>
-<p>This is VarioHyve’s Newspeak-inspired module discipline: dependencies are supplied
-as objects when a module is instantiated, rather than imported from global scope.</p>
-<p>Consequently, <strong>constructor parameters are the only way to supply external
-capabilities to a top-level module</strong>. There can be zero, one, or several
-parameters, with the normal declared arity. No name such as <code>kernel</code> or
-<code>platform</code> is reserved or required. A zero-parameter top-level module receives
-no external capabilities through construction.</p>
-<p>The instantiation service acquires or already holds the existing objects needed
-by the module, then supplies them as arguments. Those objects may come from
-previously constructed modules, explicit platform assembly, or foreign systems
-through the Alien/Expat boundary. How that service acquires them is external to
-the module’s lexical scope. The module cannot discover the service’s other
-objects, its registry, or its caller scope. Objects intentionally passed as
-arguments retain their own behavior and reachable object graphs.</p>
-<p>Constructor parameters do not make a top-level superclass or mixin clause
-legal: class structure is established before that class’s constructor receives
-arguments. A module can instead use supplied class/mixin objects when defining
-<strong>nested</strong> classes inside the constructed module:</p>
-<pre><code class="language-vh">class Module(baseClass, loggingMixin, output) {
+<p>Normal module definition evaluates the class over a <strong>fresh empty top
+activation</strong>. The execution frame exists, but has no capability accessors,
+lexical parent, receiver or enclosing application scope. The class inherits
+only from structural root <code>Object</code> and composes no mixins. This structural
+relationship supplies neither an <code>Object</code> binding nor a platform namespace.
+Every explicit top-level superclass or mixin clause is rejected before its
+expressions execute, including a clause spelled <code>Object</code>.</p>
+<p>At entry, the module’s declared constructor arguments are its only external
+capability inputs. Zero, one or multiple arguments are allowed, with exact
+arity. The service passes existing objects, preserving identity and sharing
+through the ordinary boundary. It does not lend the module its own scope,
+registry or other services. Supplied objects retain their capabilities and
+captures; later explicit message arguments are additional inputs.</p>
+<p>Class definition precedes construction, so constructor arguments cannot provide
+that top-level class’s superclass or mixins. They can be stored and used when
+realizing <strong>nested</strong> classes:</p>
+<pre><code class="language-vh">class Module(baseClass, loggingMixin) {
     Base = baseClass;
     Logging = loggingMixin;
-    console = output;
-
-    class Worker(identifier) &lt;: Logging &lt; Base {
-        id = identifier;
-        report { console.print(id) }
-    }
+    class Worker(identifier) &lt;: Logging &lt; Base { id = identifier; }
 }
 </code></pre>
-<p><code>Module</code> has only root <code>Object</code> inheritance and no composition. Its nested
-<code>Worker</code> uses all four routes: <code>Base</code>, <code>Logging</code>, the enclosing <code>console</code>, and
-its own <code>identifier</code> argument. The same rules hold for anonymous class literals.</p>
+<p>The host receives the constructed module instance and explicitly chooses any
+entry message. Instantiation does not guess or send <code>main</code> or <code>run</code>.
+Construction failure does not return a successful instance; effects already
+performed are not rolled back, and an initializer may deliberately share <code>self</code>.</p>
 <h2 id="the-kernel-parameter"><a class="header" href="#the-kernel-parameter">The Kernel Parameter</a></h2>
-<p>A <code>kernel</code> is an <strong>optional ordinary capability bundle</strong>, not the unique
-parameter or a privileged entry mechanism. An application may choose a bundle,
-several independent service objects, or a mixture:</p>
-<pre><code class="language-vh">class(kernel, consoleService, repository) {
-    null = kernel.null;
-    true = kernel.true;
-    false = kernel.false;
-    console = consoleService;
-    records = repository;
-
-    run { console.print(records.summary) }
-}
-</code></pre>
-<p>Here <code>kernel</code> is one ordinary argument. A <code>class(kernel) { ... }</code> example is
-simply a one-argument convention. The instantiation service must honor the
-module’s declared constructor interface rather than always inserting one kernel.
-There is no global environment or implicit platform lookup.</p>
-<h3 id="consequences"><a class="header" href="#consequences">Consequences</a></h3>
-<ul>
-<li><strong>Explicit dependencies.</strong> Superclass inheritance, mixin composition, lexical
-nesting and constructor parameters are the four class capability routes.
-The top-level restrictions leave parameters as the external entry route.</li>
-<li><strong>Testability.</strong> Supply alternatives for individual arguments or for a bundle
-without changing the class’s lookup or invocation semantics.</li>
-<li><strong>Analysis boundary.</strong> An analysis must account for all supplied arguments and
-their reachable behavior. Supplying abstract input objects alone does not
-implement abstract interpretation; domains, effects and machine semantics also
-need an appropriate analysis model.</li>
-<li><strong>Isolation depends on reachability.</strong> A nested class can access its enclosing
-scope, and inherited/composed behavior retains its own capabilities. Passing a
-narrow argument does not remove those other routes. Separate top-level modules
-with appropriately restricted argument graphs provide a clearer boundary.</li>
-</ul>
+<p>A <code>kernel</code> is an optional ordinary bundle, not a reserved name, mandatory
+parameter or global lookup mechanism. Services may be separate inputs or grouped
+in native/Alien bundles. Passing a narrow object does not remove authority
+already retained by its methods, enclosing scopes or composed contributions.</p>
 <h3 id="optional-bootstrap-bundle"><a class="header" href="#optional-bootstrap-bundle">Optional Bootstrap Bundle</a></h3>
-<p>A platform may bundle canonical null/Boolean values, library objects, collections
-and I/O capabilities for convenience. Such a bundle’s inventory is a platform
-contract, not a required module signature. Services can equally be supplied as
-separate arguments. The current bootstrap exports <code>null</code>, <code>true</code> and <code>false</code>;
-<code>nil</code> may be a platform alias for the same null object, not a second null value.</p>
-<p>The <a href="../../design-notes/bootstrap-next-steps.html#first-increment-native-canonical-protocols">implemented native Boolean protocol</a>
-uses eager <code>and</code>/<code>or</code> and thunk-taking <code>andThen</code>/<code>orElse</code>, with <code>ifTrue</code>, <code>ifFalse</code>
-and <code>not</code>. Numeric, string and collection protocols remain library milestones.
-The inventory of one bootstrap bundle must not be mistaken for the language’s
-only possible set of constructor parameters.</p>
+<p>A platform may bundle canonical values, libraries and I/O capabilities. Bundle
+inventory and the behavior of its selectors are platform contracts. Source names
+such as <code>null</code>, <code>true</code> and <code>false</code> select behavior through ordinary lookup;
+their spelling establishes no canonical identity. See
+<a href="./name-resolution.html#names-and-contracts">names and contracts</a>. The current
+tooling bundle is described in <a href="./interpreter-design.html#module-entry">the Java implementation</a>.</p>
 <h2 id="bootstrap-conformance-requirements"><a class="header" href="#bootstrap-conformance-requirements">Bootstrap Conformance Requirements</a></h2>
-<p>These requirements describe normal module entry with an empty top activation.
-The explicitly supplied tooling contexts below have a different set of available
-objects, while using the same language lookup and invocation rules.</p>
-<p>The visitor bootstrap implements this entry through
-<code>BootstrapRuntime.instantiateModule(source, maxSteps, arguments...)</code>. It accepts
-named and anonymous class literals with zero, one or multiple constructor
-parameters, preserves argument identity/sharing through the ordinary boundary,
-and rejects arity mismatches. It creates an empty top activation with no
-platform/service bindings, parent or receiver, uses only structural root <code>Object</code>
-inheritance, and rejects every explicit top-level superclass or mixin clause.
-Constructor arguments do not make such clauses legal.</p>
-<p>The result is the constructed module instance as an Expat. The host explicitly
-chooses any subsequent entry message; the service does not guess <code>main</code> or <code>run</code>.
-Definition, construction and synchronous callbacks share one transition budget.
-Supplied objects retain their reachable capabilities and lexical captures.
-See the <a href="../../design-notes/isolated-module-entry.html">entry contract</a>.</p>
-<p><code>BootstrapRuntime.evaluate</code> remains a distinct tooling expression context with
-the assembled kernel as its lexical parent and receiver. It does not enrich the
-empty module root. Nested classes can use explicitly available superclass and
-direct mixin definitions, with initializer arguments routed from their own
-constructor bindings. See the <a href="../../design-notes/class-composition-bootstrap.html">implemented construction contract</a>
-for composition limits and the <a href="../../design-notes/bootstrap-next-steps.html">bootstrap roadmap</a>.</p>
+<p>Definition, construction and synchronous callbacks share the requested execution
+budget. Host sends supply an empty caller activation; the target’s definition
+supplies its lexical scope. The concrete APIs and validation are documented under
+<a href="./interpreter-design.html#module-entry">module entry</a> and in the
+<a href="../../design-notes/isolated-module-entry.html">implemented entry decision</a>.</p>
 <h2 id="development-and-debugging-contexts"><a class="header" href="#development-and-debugging-contexts">Development and Debugging Contexts</a></h2>
-<p>Tools may explicitly supply capabilities for development, debugging and
-design-time expression evaluation. For example, an evaluator can provide a
-console, test objects or a mirror service through its evaluation activation or
-an enclosing tooling object. A debugger can evaluate in an explicitly selected
-activation, using that activation’s existing lexical bindings. These contexts
-need not be empty.</p>
-<p>This uses the same object-based lexical scope, lookup, invocation and Alien/Expat
-protocol as ordinary execution. It is not an ambient global registry or a fifth
-capability mechanism: the tool explicitly supplies objects to the evaluation
-context. It must distinguish this context from normal module entry and must not
-silently enrich the empty root used by ordinary modules.</p>
-<p>Objects, closures and classes created in a tooling context retain their actual
-definition scopes. A class evaluated with tool-supplied lexical bindings may
-resolve superclass or mixin objects from that scope under the usual rules; it
-is not an isolated module defined over an empty top activation. Moving such a
-class to normal module entry requires making its dependencies explicit, rather
-than silently dropping captured references or preserving hidden tool authority.
-See <a href="./tooling-architecture.html#evaluation-contexts">Tooling Architecture</a>.</p>
+<p>Richer <a href="./tooling-architecture.html#evaluation-contexts">tool evaluation contexts</a>
+are distinct from normal module entry. A class created with tooling authority
+retains those captures and cannot silently be treated as an isolated module.</p>
 <h2 id="error-handling"><a class="header" href="#error-handling">Error Handling</a></h2>
-<p><strong>Status:</strong> v1 design is intentionally minimal.</p>
-<p>The bootstrap reports fatal runtime errors, including:</p>
-<ul>
-<li><strong>Missing selector</strong> — an ordinary send finds no exact selector, or invocation
-exhausts exact operations and eligible generated callable bindings at the
-requested arity. The bootstrap reports a diagnostic; it does not invoke a
-language-level <code>doesNotUnderstand:</code> handler.</li>
-<li><strong>Dead context</strong> — a <code>^</code> return targets a method or initializer home that has
-retired. See <a href="./literals.html#early-return-with-">Literals — Early Return</a>.</li>
-<li><strong>Premature initializer completion</strong> — a return targets an initializer whose
-slot phase has not completed, including its final slot expression. See
-<a href="./literals.html#initializer-completion">Initializer completion</a>.</li>
-</ul>
-<p>These are <strong>fatal language failures</strong> with diagnostic messages, not recoverable
-language exception values in the current bootstrap. Public failures do not
-expose raw activation addresses or host exceptions. Boundary failures preserve
-their defined kinds; see <a href="./foreign-objects.html">Foreign Objects</a>.
-See <a href="./future.html">Future Directions</a> for DNU plans.</p>
+<p>Current execution failures abort their native continuation; they are not
+catchable language values. A failed FN callback reports its diagnostic to foreign
+code, which may handle it and complete the enclosing NF call normally.
+Missing dispatch does not invoke a language-level <code>doesNotUnderstand</code> handler.
+Uninitialized reads, unresolved holes, invalid contributors and invalid returns
+also fail explicitly; <a href="./literals.html">return rules</a> specify dead homes,
+initializer completion and callback barriers. Public diagnostics expose neither
+raw activation addresses nor host exceptions. The boundary preserves its
+<a href="./foreign-objects.html#error-propagation">defined failure kinds</a>.
+<a href="./future.html#exception-system">Conditions and restarts</a> remain proposed work.</p>
 
                     </main>
 

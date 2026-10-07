@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Behavioral Federation - VarioHyve Language Specification</title>
+        <title>Connections and Comparisons - VarioHyve Language Specification</title>
 
 
         <!-- Custom HTML head -->
@@ -177,204 +177,131 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <p><a id="motivation"></a></p>
-<h1 id="behavioral-federation"><a class="header" href="#behavioral-federation">Behavioral Federation</a></h1>
-<p>VarioHyve investigates how programs can coordinate systems that keep their own
-meaning, execution mechanisms and authority. A model repository, a simulator and
-a running controller can cooperate without becoming objects of one universal
-model or processes of one execution engine. The difficult part is making the
-agreements between them explicit enough to understand, change and examine.</p>
-<p>We call this <strong>behavioral federation</strong>. The experiment combines an object
-language, a native/foreign boundary and an explicit execution model. Its working
-hypothesis is that a small, coherent set of mechanisms can make coordination
-behavior easier to reuse and its assumptions easier to inspect. An executable
-bootstrap now allows that hypothesis to be investigated through programs and
-tests. Whether the combination improves real engineering workflows remains an
-empirical question.</p>
-<h2 id="cooperation-without-complete-control"><a class="header" href="#cooperation-without-complete-control">Cooperation Without Complete Control</a></h2>
-<p>A system-of-systems brings together participants that retain substantial
-operational and managerial independence. Their owners, release cycles and
-objectives need not coincide. Engineering environments encounter a related
-problem when requirements, designs, simulations and operational records live in
-different tools. The engineered product need not itself be a system-of-systems
-for its engineering models to require federation.</p>
-<p>Consider a pumping station. A requirements model states a minimum flow, a
-hydraulic simulator predicts performance, and maintenance records describe the
-installed equipment. Each may refer to the same pump while expressing different
-facts about it. Assessing a proposed replacement requires a correspondence
-between those references, compatible units, an agreed revision of the design
-and a policy for interpreting the analysis. Authorizing the replacement requires
-additional authority. A successful assessment alone does not supply it.</p>
-<p>API connectivity solves only part of this problem. A simulator may finish after
-the relevant design has changed. A service may fail after accepting a request,
-leaving its effects uncertain. A callback may arrive while the coordinator is
-waiting for a result. The engineer needs to know which observations support a
-decision, which assumptions remain in force and what a failed interaction means.
-Replacing the simulator with a recorded trace should expose the changed
-assumptions while preserving the intended coordination protocol.</p>
-<p>These needs become language and tooling questions when the workflow must be
-maintained across many projects. Builders of modeling environments need reusable
-behavior over heterogeneous models, traceable evidence and controlled access to
-tools. Moving every model into a new metamodel can be expensive or inappropriate;
-reimplementing every participant’s behavior can lose exactly the semantics that
-made it useful. Existing federation and model-management tools already address
-substantial parts of this problem. VarioHyve asks what a compact coordination
-language can contribute alongside them, and what it costs compared with their
-own workflows or direct host-language code.</p>
-<h2 id="agreements-expressed-through-objects"><a class="header" href="#agreements-expressed-through-objects">Agreements Expressed Through Objects</a></h2>
-<p>The approach starts with supplied capabilities: objects whose behavior grants
-access to particular services or resources. A coordinator receives the
-capabilities it needs and exchanges objects by sending messages. Its inputs can
-represent a narrow model query, an analysis operation or permission to record
-evidence. The supplying system determines the available authority; the
-coordinator’s source makes its use visible.</p>
-<p>This is also a commitment to semantic sovereignty. Foreign participants retain
-their own execution and interpretation of operations. The boundary states how
-messages, values, identity, failures and callbacks cross between them. An
-operation may return an ordinary value or promise an explicit outcome protocol,
-just as a native method may. A shared message syntax does not establish agreement
-about units, revisions or successful completion: those remain part of the
-supplied operation’s contract.</p>
-<p>Here, “contract” means an agreement about behavior and authority, not an
-implemented contract language or automatic proof system. The boundary makes
-such agreements a subject of design. It also makes their limits visible. For
-example, foreign code running in the same host process can terminate that
-process; a capability interface alone does not provide process containment.</p>
-<h2 id="a-language-for-explicit-dependencies"><a class="header" href="#a-language-for-explicit-dependencies">A Language for Explicit Dependencies</a></h2>
-<p>The following module illustrates the shape of a coordinator:</p>
-<pre><code class="language-vh">class Assessment(modelSource, checker, evidenceSink) {
-    models = modelSource;
-    analysis = checker;
-    evidence = evidenceSink;
-
-    assess(item) {
-        var snapshot = models.snapshot(item);
-        evidence.record(snapshot, analysis.check(snapshot))
-    }
-}
-</code></pre>
-<p>The host supplies three existing objects when it constructs <code>Assessment</code>; it
-later requests an assessment by sending <code>assess</code>. The module retains its inputs
-in slots because constructor parameters belong to initialization, rather than
-becoming instance-method bindings. Nothing in this code requires the three
-services to be implemented in VarioHyve. Their selectors are application
-agreements, and the example deliberately leaves their failure and evidence
-policies to those agreements.</p>
-<p>A normal module begins over an empty top activation. It receives external
-capabilities through explicit constructor inputs and, subsequently, message
-arguments and the behavior of objects already available to it. There is no
-ambient application namespace. Supplied objects keep their own authority and
-captured scopes, so a short parameter list is not by itself an isolation proof.
-The <a href="./program-structure.html">program-structure chapter</a> defines this entry
-contract precisely.</p>
-<p>Within the language, objects and message sends also organize access and reuse.
-Slots are accessed through messages; lexical scopes are activation objects and
-ordinary objects. Classes are first-class values. Composition uses reified
-contributions and application occurrences, retaining the declaration origins
-that determine scope and invocation. A reusable analysis stage can therefore
-keep access to its defining provider even when applied in a receiving module
-with similarly named bindings. The rules aim to make that behavior predictable
-without merging independently defined models into a deep class family.</p>
-<p>For language design, the question is whether these mechanisms work together
-without hidden exceptions at each point of reuse. Definition scope, receiver
-identity and contribution selection must remain intelligible when code moves
-between modules or across a foreign boundary. The specification fixes these
-rules independently of the Java representation, giving alternative
-implementations a contract to preserve. That precision also exposes costs in
-notation, implementation and debugging that the experiments must assess.</p>
-<p>Foreign values appear inside the language as <strong>Aliens</strong>; native behavior is
-exported as <strong>Expats</strong>. Sending a message to an Alien uses the ordinary source
-syntax. The adapter mediates the operation, and foreign code may call an Expat
-while the native caller waits. Language-visible VM services use this same
-boundary, with separately granted privileged capabilities. Explicit mirrors can
-offer information beyond ordinary behavior. The
-<a href="./foreign-objects.html">boundary chapter</a> defines these interactions, including
-identity, failure and the default prohibition on non-local returns crossing a
-foreign call.</p>
-<h2 id="making-execution-available-for-inquiry"><a class="header" href="#making-execution-available-for-inquiry">Making Execution Available for Inquiry</a></h2>
-<p>Coordination becomes easier to investigate when execution itself has a precise
-description. VarioHyve’s machine exposes configurations and transitions for
-evaluation, invocation, storage and control. This supports a correspondence
-between language rules, executable behavior and observations made by tools.
-It does not by itself establish that correspondence as a proved theorem.</p>
-<p>The current sequential execution agreement uses a conceptual <strong>control token</strong>
-for ordinary native execution. A native-to-foreign call transfers control to the
-foreign side; an admitted callback can return it to native execution before the
-original call completes. Multiple callback workers must negotiate admission,
-and the current implementation serializes their native execution. The token
-need not be a runtime object. Its purpose is to describe an agreement that an
-implementation must realize.</p>
-<p>That agreement leaves room for explicitly confined extensions. A collector may
-perform concurrent maintenance if it preserves the required abstract behavior.
-A monitor may have a separately specified intervention capability. A future
-parallel machine may execute proven-independent transitions under an appropriate
-execution agreement. These possibilities have distinct obligations; granting
-one does not silently grant unrestricted execution authority. The
-<a href="./formal-core.html">formal appendix</a> states the model and its limits, while
-<a href="./future.html">Future Directions</a> separates accepted extension principles from
-mechanisms still to be developed.</p>
-<p>This opens two different lines of inquiry for formal methods. A coordinator can
-call an external checker as a supplied capability. Separately, an analyzer can
-be derived for the coordinator’s own execution semantics. The first requires an
-agreement about the checker’s inputs, results and assumptions; the second needs
-an abstraction and soundness argument, including a treatment of foreign effects.
-Neither alone verifies a complete federation or its physical environment.
-Descriptors can carry tooling information, but attaching information does not
-establish its truth. Keeping these distinctions explicit makes proposed claims
-testable and clarifies the evidence still required.</p>
-<p><a id="from-motivation-to-evidence"></a></p>
-<h2 id="what-the-bootstrap-establishes"><a class="header" href="#what-the-bootstrap-establishes">What the Bootstrap Establishes</a></h2>
-<p>The present result is an executable language bootstrap centered on
-<code>VisitorSemanticsVM</code>. It includes parsing and lowering, explicit module entry,
-object and class construction, reified composition, lexical lookup, closures and
-return-home checks, a native heap collector, and a synchronous Java Alien/Expat
-boundary. Semantic regressions exercise the interactions between these
-mechanisms. The implementation chapters identify concrete policies and remaining
-limitations; executable tests are evidence about those policies, not a substitute
-for their specification.</p>
-<p>The <a href="../../catalog/02-composition-bootstrap.html">composition case study</a> provides
-a small but concrete federation slice. Native source coordinates Java fixture
-services for model observations, validation, capacity checking and evidence.
-Reusable stages preserve their defining checker capabilities despite competing
-bindings in the receiving module. Its acceptance cases cover successful and
-rejected assessments, early failure and a selected foreign operation failing
-without being replayed. This tests capability flow and composition using
-controlled participants.</p>
-<p>The slice does not yet integrate an industrial model repository or simulator,
-and it establishes no comparative productivity or performance advantage.
-The <a href="../../catalog/README.html">case-study catalog</a> develops the next experiments
-around explicit baselines, measurable outcomes and failure conditions. Useful
-findings include cases where an existing tool or direct adapter is simpler.
-Current measurement infrastructure also supports language implementation
-experiments, with workload and measurement boundaries documented separately.</p>
-<p><a id="complementary-work-and-language-lineage"></a>
-<a id="openflexo-and-fml"></a>
-<a id="eclipse-epsilon"></a>
-<a id="comprehensive-systems-and-corrlang"></a>
-<a id="newspeak-and-smalltalk"></a></p>
-<h2 id="positioning-and-reading-the-experiment"><a class="header" href="#positioning-and-reading-the-experiment">Positioning and Reading the Experiment</a></h2>
-<p>VarioHyve draws on object languages, capability security, behavioral reflection
-and explicit operational semantics. Openflexo, Epsilon and CorrLang provide
-important comparisons for model federation and coordination; Smalltalk and
-Newspeak inform the language lineage. Work on monitoring and analysis supplies
-ways to formulate the questions raised by observable execution. The
-<a href="./related-works.html">Related Works part</a> explains the relevant connections and
-differences without treating them as delivered integrations or inherited proofs.</p>
-<p>The rest of the book moves from agreement to realization. <strong>Specification</strong>
-defines language behavior, including the foreign boundary. <strong>Implementation</strong>
-describes the Java bootstrap and its tooling. <strong>Future</strong> records extension
-principles, proposals and unresolved work. <strong>Related Works</strong> situates the
-experiment, and the <strong>Appendix</strong> gives the formal rules. This opening
-<strong>Motivation</strong> supplies the questions behind those parts: can explicit
-capabilities and preserved semantic boundaries make coordination easier to
-understand, and can explicit execution make its behavior easier to investigate?</p>
+                        <h1 id="connections-and-comparisons"><a class="header" href="#connections-and-comparisons">Connections and Comparisons</a></h1>
+<p>VarioHyve combines an object language with explicit boundaries for independently
+implemented behavior. These comparisons distinguish inherited ideas, alternative
+choices and possible verification techniques. Proposed integrations and proof
+directions are not implemented results.</p>
+<h2 id="federation-and-model-interoperability"><a class="header" href="#federation-and-model-interoperability">Federation and Model Interoperability</a></h2>
+<p>Maier identifies operational and managerial independence as distinguishing
+systems-of-systems concerns. VarioHyve adopts this perspective when participants
+retain their semantics and authority. Federating engineering models nevertheless
+does not imply that their subject is a system-of-systems, or that the coordinator
+controls every participant. <a href="https://doi.org/10.1002/%28SICI%291520-6858%281998%291%3A4%3C267%3A%3AAID-SYS3%3E3.0.CO%3B2-D">Maier (1998)</a></p>
+<p>Openflexo’s FML organizes virtual models, concepts, roles and behaviors, connected
+to resources through technology adapters. Its synchronization behaviors operate
+on models in their original technical spaces: both FML and VarioHyve can
+coordinate execution. FML supplies modeling abstractions; VarioHyve investigates
+an object-language boundary exposing selected operations as capabilities. An
+experiment should compare the same coordination in FML, including adapter and
+correspondence maintenance. <a href="https://openflexo.org/openflexo-core/docs/">Openflexo Core</a>,
+<a href="https://openflexo.org/docs/Tutorials/Tutorial7-WorkingOnModelMapping/">model-mapping tutorial</a></p>
+<p>Eclipse Epsilon supplies model querying, validation and transformation, with
+connectivity, Java embedding and workflow support. VarioHyve might combine an
+Epsilon validation with a simulator while retaining Epsilon’s semantics. The
+experiment must establish whether explicit authority and interaction contracts
+improve that workflow over Epsilon-only or host-language coordination.
+<a href="https://eclipse.dev/epsilon/">Epsilon documentation</a></p>
+<p>CorrLang and comprehensive systems specify relationships among heterogeneous
+endpoints, distinguishing identity from other commonalities. Their graph-based
+correspondences address entity and constraint alignment. An Alien’s reference
+identity does not establish that two models describe the same physical entity;
+conversely, correspondence does not establish compatible callback or failure
+behavior. These agreements could complement VarioHyve’s behavioral contracts.
+<a href="https://www.corrlang.io/intro.html">CorrLang introduction and comprehensive-systems references</a></p>
+<h2 id="objects-modules-and-reified-composition"><a class="header" href="#objects-modules-and-reified-composition">Objects, Modules and Reified Composition</a></h2>
+<p>Smalltalk supplies the orientation toward communicating objects and minimal
+irreducible machinery. VarioHyve shares these concerns without inheriting a
+Smalltalk image or debugger through similar syntax.
+<a href="https://rmod-files.lille.inria.fr/FreeBooks/BlueBookHughes/Design%20Principles%20Behind%20Smalltalk.html">Ingalls, <em>Design Principles Behind Smalltalk</em> (1981)</a></p>
+<p>Newspeak is the closer comparison: lexical nesting, late binding and modules
+without globals make dependencies construction inputs. VarioHyve likewise uses
+explicit module inputs and preserves declaration origins in lexical selection
+and mixin application. It specifies its own callable eligibility, initialization
+and class-side construction. The
+<a href="../../design-notes/outer-newspeak-comparison.html">detailed comparison</a> records
+unresolved differences, including deeper repeated parent applications; complete
+Newspeak conformance is not claimed.
+<a href="https://bracha.org/newspeak-modules.pdf">Bracha et al., <em>Modules as Objects in Newspeak</em> (2010)</a></p>
+<p>Piumarta and Warth bootstrap an extensible object model from a small messaging
+seed. This informs VarioHyve’s private initialization machinery, with a deliberate
+difference: native lookup and invocation remain fixed. Reified contributions
+preserve semantic information rather than granting replacement dispatch policies.
+Language-visible VM services use the ordinary Alien/Expat agreement.
+<a href="https://doi.org/10.1007/978-3-540-89275-5_1">Piumarta and Warth, <em>Open, Extensible Object Models</em> (2008)</a></p>
+<h2 id="authority-reflection-and-foreign-boundaries"><a class="header" href="#authority-reflection-and-foreign-boundaries">Authority, Reflection and Foreign Boundaries</a></h2>
+<p>Miller’s <em>Robust Composition</em> connects object capabilities, cooperation and
+limiting interference. VarioHyve’s explicit inputs and restricted service views
+follow this concern: public and privileged VM-service facets share transport
+without sharing every grant. This does not provide E’s distributed execution,
+persistence or hostile-component security guarantees.
+<a href="https://www.erights.org/talks/thesis/">Miller (2006)</a></p>
+<p>Bracha and Ungar separate reflection from base behavior, encapsulate its
+implementation and align reflective concepts with the observed language.
+VarioHyve’s supplied <code>IdentityMirror</code> follows this separation: observations belong
+to the mirror, leaving Alien selectors to their foreign protocol. Implemented
+identity and membership observations are a limited facility, not a general
+activation-inspection API. <a href="https://bracha.org/mirrors.pdf">Bracha and Ungar, <em>Mirrors</em> (2004)</a></p>
+<h2 id="execution-monitoring-and-controlled-intervention"><a class="header" href="#execution-monitoring-and-controlled-intervention">Execution Monitoring and Controlled Intervention</a></h2>
+<p>Kishon, Hudak and Consel compose language semantics with monitor specifications.
+Their monitoring semantics separates the program’s answer from monitoring
+information, with preservation obligations; subsequent work develops profilers,
+tracers and interactive debuggers.
+<a href="https://doi.org/10.1145/113446.113474">Kishon, Hudak and Consel (1991)</a>,
+<a href="https://doi.org/10.1017/S0956796800001465">Kishon and Hudak (1995)</a></p>
+<p>Drey and Teodorov distinguish observation from deliberate intervention, such as
+editing a variable during diagnosis. VarioHyve accordingly separates ordinary
+continuation authority, observation and intervention contracts. Its sequential
+control token does not universally lock representations. Observers need defined
+consistency; mutating monitors need specified additional effects. Neither
+implicitly changes lexical return-home rules. These are
+<a href="./tooling-architecture.html#execution-observation-and-intervention">tooling contracts</a>,
+not an implemented debugger.
+<a href="https://www.obpcdl.org/assets/papers/sle-2016.pdf">Drey and Teodorov (2016)</a></p>
+<p>Implementation concurrency remains separate: Dijkstra and colleagues demonstrate
+collection concurrent with computation under established invariants. VarioHyve
+permits such semantic-preserving maintenance, without claiming a concurrent
+collector implementation or proof.
+<a href="https://www.cs.utexas.edu/~EWD/transcriptions/EWD06xx/EWD630.html">Dijkstra et al. (1978)</a></p>
+<h2 id="analysis-and-verification-of-composed-behavior"><a class="header" href="#analysis-and-verification-of-composed-behavior">Analysis and Verification of Composed Behavior</a></h2>
+<p><em>Abstracting Abstract Machines</em> derives sound analyses through systematic
+machine abstraction. VarioHyve’s explicit state is a starting point, not an
+analyzer: soundness must cover object scopes, contribution identities, return
+homes and foreign effects. Bounding addresses alone is insufficient. Foreign
+summaries must account for mutation, callbacks, failures and nontermination.
+<a href="https://arxiv.org/abs/1007.4446">Van Horn and Might (2010)</a></p>
+<p><em>Abstracting Definitional Interpreters</em> offers another derivation path: monadic
+interpreters can support collecting and abstract semantics while inheriting
+precise call/return matching from the defining language. This suggests an
+alternative analysis organization, not a property obtained automatically by
+VarioHyve’s Java interpreter. Either route needs a sound relationship to the
+specified object and boundary semantics.
+<a href="https://plum-umd.github.io/abstracting-definitional-interpreters/">Darais et al. (2017)</a></p>
+<p>Interaction trees model recursive computation and external events; VarioHyve
+crossings would need intermediate callbacks, not just atomic results.
+Omnisemantics supports reasoning over every permitted nondeterministic outcome.
+Neither establishes that a foreign provider meets its contract.
+<a href="https://www.cis.upenn.edu/~stevez/papers/XZHH%2B20.pdf">Xia et al. (2020)</a>,
+<a href="https://adam.chlipala.net/papers/OmniTOPLAS23/OmniTOPLAS23.pdf">Charguéraud et al. (2023)</a></p>
+<p>DimSum composes independently defined language semantics through events and
+protocol translations. Melocoton verifies OCaml/C interoperability with related
+language-local state. Both suggest obligations for conversions, roots and callback
+control; neither verifies VarioHyve’s Java adapter. The
+<a href="../../design-notes/newspeak-formal-semantics-and-federation.html">research audit</a>
+expands these comparisons, including alternative boundary calculi, while the
+<a href="../../catalog/README.html">case-study catalog</a> defines integration experiments
+and baselines. <a href="https://plv.mpi-sws.org/dimsum/">DimSum (2023)</a>,
+<a href="https://melocoton-project.github.io/">Melocoton (2023)</a></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="future.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
 
-                            <a rel="next prefetch" href="program-structure.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="formal-core.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -384,8 +311,11 @@ understand, and can explicit execution make its behavior easier to investigate?<
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="future.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
 
-                    <a rel="next prefetch" href="program-structure.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="formal-core.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

@@ -30,16 +30,18 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="theme/vh-2de7eb16.css">
 
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
         <!-- Provide site root and default themes to javascript -->
         <script>
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0458d790.js";
+            window.path_to_searchindex_js = "searchindex-b0f8be02.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-45e5eade.js"></script>
+        <script src="toc-1ce75dcc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -176,97 +178,54 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="descriptors"><a class="header" href="#descriptors">Descriptors</a></h1>
-<p>Descriptors are VarioHyve’s mechanism for attaching meta-information to any syntactic element. They are expressions that describe the nature, constraints, or behavior of the element they annotate.</p>
+<p>Descriptors attach optional metadata expressions to syntax for tools or
+separately specified extensions.</p>
 <h2 id="design-constraint"><a class="header" href="#design-constraint">Design Constraint</a></h2>
-<p>Descriptors are <strong>strictly optional</strong>. The core execution model — object creation, class instantiation, slot access, message sends, inheritance, lexical scoping, lambdas, and return — is fully expressed through the base grammar without any descriptors.</p>
-<p>A program with all descriptors stripped must execute identically to the original. Descriptors never alter the raw execution semantics; they are hooks for future layers:</p>
-<ul>
-<li><strong>Compiler</strong> — optimization hints (<code>: cached</code>, <code>: inline</code>)</li>
-<li><strong>Tooling</strong> — documentation, visibility, IDE support (<code>: public</code>, <code>: deprecated</code>)</li>
-<li><strong>Runtime extensions</strong> — contracts, serialization, immutability (<code>: immutable</code>, <code>: serializedAs("json")</code>)</li>
-</ul>
-<p>The interpreter ignores descriptors it does not understand. This means:</p>
-<pre><code class="language-vh">// These two are semantically identical in the raw interpreter:
-x = 3 : immutable : tracked
-x = 3
-</code></pre>
-<p>The <code>class</code> keyword and the <code>extends</code>/<code>with</code> clauses are part of the <strong>core grammar</strong>, not the descriptor layer. They affect execution directly:</p>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>Mechanism</th><th>Layer</th><th>Needed for execution?</th></tr>
-</thead>
-<tbody>
-<tr><td><code>class(params) { body }</code></td><td>core grammar</td><td>yes — creates a class</td></tr>
-<tr><td><code>&lt; SuperExpr</code></td><td>core grammar</td><td>yes — sets up inheritance</td></tr>
-<tr><td><code>&lt;: MixinExpr</code></td><td>core grammar</td><td>yes — applies mixins</td></tr>
-<tr><td><code>fun(args) { body }</code></td><td>core grammar</td><td>yes — creates a lambda</td></tr>
-<tr><td><code>: module</code></td><td>descriptor</td><td>no — it’s just an object in the raw interpreter</td></tr>
-<tr><td><code>: immutable</code></td><td>descriptor</td><td>no — mutability is the default</td></tr>
-<tr><td><code>: cached</code></td><td>descriptor</td><td>no — optimization hint</td></tr>
-</tbody>
-</table>
-</div>
+<p>Removing all descriptors must preserve raw execution, including results,
+effects and failures. The core interpreter does not evaluate descriptor
+expressions as program behavior. An annotation named <code>immutable</code>, <code>cached</code>,
+<code>public</code> or <code>module</code> alone grants no such runtime semantics.</p>
+<p>Class, superclass and mixin clauses belong to the core grammar and affect
+execution independently of descriptors.</p>
 <h2 id="syntax"><a class="header" href="#syntax">Syntax</a></h2>
-<p>Descriptors follow the element they describe, separated by <code>:</code>:</p>
-<pre><code>element : descriptor
+<pre><code class="language-text">element : descriptor
 element : descriptor1 | descriptor2
 element : descriptor1 : descriptor2
 </code></pre>
-<ul>
-<li><code>|</code> separates descriptors within a single group</li>
-<li>Chaining with <code>:</code> applies multiple descriptor groups</li>
-</ul>
+<p><code>|</code> separates expressions within one group; <code>:</code> chains groups.
+Descriptors use ordinary expression syntax, including message sends such as
+<code>constrained(0, 100)</code>. Their interpretation is supplied by the consuming tool,
+not by the name of the annotation.</p>
 <h2 id="where-descriptors-apply"><a class="header" href="#where-descriptors-apply">Where Descriptors Apply</a></h2>
 <div class="table-wrapper">
 <table>
 <thead>
-<tr><th>Element</th><th>Example</th></tr>
+<tr><th>Attachment</th><th>Example</th></tr>
 </thead>
 <tbody>
-<tr><td>Slot</td><td><code>x = 0 : immutable</code></td></tr>
+<tr><td>Slot or local</td><td><code>x = 0 : tracked;</code> / <code>var x = 0 : tracked;</code></td></tr>
 <tr><td>Method</td><td><code>move(dx, dy) { ... } : cached</code></td></tr>
-<tr><td>Object/Class literal</td><td><code>class(a, b) { ... } : typed</code></td></tr>
-<tr><td>Lambda</td><td><code>fun(x) { ... } : async</code></td></tr>
+<tr><td>Class or object</td><td><code>class { ... } : typed</code> / <code>{ ... } : module</code></td></tr>
+<tr><td>Lambda</td><td><code>fun(x) { x } : annotation</code></td></tr>
 <tr><td>Formal parameter</td><td><code>(x : nonNeg, y : nonNeg)</code></td></tr>
-<tr><td><code>var</code> local</td><td><code>var count = 0 : tracked</code></td></tr>
-<tr><td>Expression (parenthesized)</td><td><code>(3 : immutable : tracked)</code></td></tr>
+<tr><td>Expression</td><td><code>(3 : immutable : tracked)</code></td></tr>
 </tbody>
 </table>
 </div>
-<h2 id="expression-level-descriptors"><a class="header" href="#expression-level-descriptors">Expression-Level Descriptors</a></h2>
-<p>Inside expressions, descriptors require explicit parentheses to avoid ambiguity with slot-level descriptors:</p>
-<pre><code class="language-vh">x = (3 : immutable)     // the VALUE 3 is described as immutable
-x = 3 : immutable       // the SLOT x is described as immutable
+<h3 id="expression-level-descriptors"><a class="header" href="#expression-level-descriptors">Expression-Level Descriptors</a></h3>
+<p>Parenthesized expression descriptors distinguish the annotated expression from
+its surrounding declaration:</p>
+<pre><code class="language-vh">x = (3 : annotation);  // describes the expression
+x = 3 : annotation;    // describes the slot
 </code></pre>
-<p>The main use case for expression-level descriptors is naming subparts of long expressions.
-Expression-level descriptors support chaining, just like all other descriptor attachment points:</p>
-<pre><code class="language-vh">x = (3 : immutable : tracked)    // two descriptor groups on the value
-</code></pre>
-<h2 id="chaining"><a class="header" href="#chaining">Chaining</a></h2>
-<p>Multiple descriptor groups chain with <code>:</code>:</p>
-<pre><code class="language-vh">x = 3 : immutable : serializable
-move(dx, dy) { ... } : cached : public
-</code></pre>
-<p>Within a group, <code>|</code> separates alternatives or co-descriptors:</p>
-<pre><code class="language-vh">speak() { ... } : cached | logged
-</code></pre>
-<h2 id="descriptors-are-expressions"><a class="header" href="#descriptors-are-expressions">Descriptors Are Expressions</a></h2>
-<p>Descriptors are not special syntax — they are ordinary expressions. This means they can be message sends:</p>
-<pre><code class="language-vh">{
-    x = 0 : constrained(0, 100)
-    data  : serializedAs("json")
-} : module
-</code></pre>
-<p>The descriptor <code>constrained(0, 100)</code> is a regular message send that returns a descriptor object.</p>
+<p>Groups may chain at every attachment point. When <code>|</code> would otherwise extend a
+descriptor list, terminate a described declaration with <code>;</code> before a
+<a href="literals.html#initializer-completion">final initializer body</a>.</p>
 <h2 id="semantics"><a class="header" href="#semantics">Semantics</a></h2>
-<p>The grammar defines where descriptors attach syntactically. Their interpretation is entirely up to future runtime extensions, the compiler, or tooling layers — never the core interpreter.</p>
-<p>The same literal <code>{...}</code> can have its behavior specialized by descriptors, but only when a layer that understands those descriptors is active:</p>
-<pre><code class="language-vh">{...} : module      // singleton namespace (object in raw interpreter)
-{...} : closure     // captures lexical scope (all objects do this already)
-{...} : prototype(parent)  // delegation-based (redundant with &lt; parent)
-</code></pre>
-<p>This separation of syntax and semantics is the core design principle: the grammar provides uniform literal forms (<code>class ... { ... }</code> for classes, <code>{ ... }</code> for singletons), descriptors specialize meaning for higher layers, and the raw interpreter runs without them.</p>
+<p>Compilation hints, documentation, contracts and analysis constraints need
+explicit tooling or extension contracts. The syntax itself promises none of
+those features and cannot replace core construction, lookup or boundary rules.
+See <a href="tooling-architecture.html">tooling architecture</a> for external annotations.</p>
 
                     </main>
 
@@ -276,7 +235,7 @@ move(dx, dy) { ... } : cached : public
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="object-model.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="foreign-objects.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -290,7 +249,7 @@ move(dx, dy) { ... } : cached : public
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="object-model.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="foreign-objects.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

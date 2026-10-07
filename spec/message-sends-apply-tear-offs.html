@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Message Sends, Apply, Tear-offs - VarioHyve Language Specification</title>
+        <title>Apply and Callable Values - VarioHyve Language Specification</title>
 
 
         <!-- Custom HTML head -->
@@ -30,16 +30,18 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="theme/vh-2de7eb16.css">
 
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
         <!-- Provide site root and default themes to javascript -->
         <script>
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0458d790.js";
+            window.path_to_searchindex_js = "searchindex-b0f8be02.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-45e5eade.js"></script>
+        <script src="toc-1ce75dcc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -175,168 +177,33 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="message-send-invocation-apply-and-tear-off"><a class="header" href="#message-send-invocation-apply-and-tear-off">Message Send, Invocation, Apply, and Tear-Off</a></h1>
-<p>Sections 1–5 specify accepted invocation behavior. Sections 6–9 describe a
-<strong>deferred tear-off proposal</strong>, not executable syntax. The detailed lookup rules
-are in <a href="message-sends.html#dispatch-rules">Message Sends</a> and the accepted
-<a href="../../design-notes/unified-callable-lookup.html">unified callable lookup decision</a>.</p>
-<h2 id="1-general-principle"><a class="header" href="#1-general-principle">1. General Principle</a></h2>
-<p>VarioHyve has no public direct slot access or separate function-call mechanism.
-Ordinary access sends a selector; invocation requests behavior by name and arity.
-Methods, generated accessors returning callables and member-class factories can
-supply the same invocation selector. <code>apply/N</code> is the callable capability, not an instruction
-to execute arbitrary getters until some result can be called.</p>
-<p>Slots, locals and parameters have generated storage accessors. A named nested
-class is a distinct <strong>member-class declaration</strong>, exposed through a generated
-accessor that binds and caches the class by enclosing receiver and declaration
-occurrence. It is not equivalent to a slot initialized by a class expression:
-that expression captures its evaluation scope normally, whereas a member class
-does not capture its enclosing instance’s constructor activation.</p>
-<h2 id="2-zero-arity-messages"><a class="header" href="#2-zero-arity-messages">2. Zero-Arity Messages</a></h2>
-<p>A bare selector is an ordinary zero-argument send:</p>
-<pre><code class="language-vh">obj.size
-obj.name
-obj.reset!
+                        <h1 id="apply-and-callable-values"><a class="header" href="#apply-and-callable-values">Apply and Callable Values</a></h1>
+<p><code>apply/N</code> is the callable capability at arity N. A lambda supplies it at its
+declared arity; a class’s generated <code>apply/N</code> delegates to primary <code>new/N</code>;
+an ordinary object can define it as a method. Owned custom class factories may
+replace or add <code>apply</code> arities; see <a href="objects-and-classes.html#factories">factories</a>.</p>
+<p>The language fixes <code>apply/N</code> as the protocol connecting invocation syntax to
+callable values, so methods and stored callables can participate in the same
+<a href="message-sends.html#candidate-selection">selection rules</a>. Its implementation and
+result belong to the selected receiver; the spelling does not imply allocation,
+lambda execution or any other particular body on an arbitrary object.</p>
+<pre><code class="language-vh">{
+    handler = fun(request) { request };
+    run(request) { handler(request) }
+}
 </code></pre>
-<p>It returns the selected accessor or method’s result. Parentheses request
-invocation, including at arity zero:</p>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>Definition</th><th><code>obj.f</code></th><th><code>obj.f()</code></th></tr>
-</thead>
-<tbody>
-<tr><td><code>f { 7 }</code></td><td><code>7</code></td><td><code>7</code></td></tr>
-<tr><td><code>f = fun { 7 };</code></td><td>The lambda</td><td><code>7</code></td></tr>
-<tr><td><code>f { fun { 7 } }</code></td><td>The lambda</td><td>The lambda</td></tr>
-<tr><td><code>f = 7;</code></td><td><code>7</code></td><td>No candidate here; continue lookup</td></tr>
-</tbody>
-</table>
-</div>
-<p>Invoke a returned lambda explicitly with <code>obj.f().apply()</code>. Invocation never
-automatically executes the result of a directly selected zero-argument method.</p>
-<h2 id="3-invocation-syntax"><a class="header" href="#3-invocation-syntax">3. Invocation Syntax</a></h2>
-<p>For <code>obj.m(e1, ..., en)</code>, evaluate the receiver and arguments once, left-to-right.
-Then search the receiver’s contributions in dispatch order. At each contribution:</p>
-<ol>
-<li>Prefer an exact <code>m/n</code> operation. At zero arity, generated getters are candidates
-for an accessor/apply route under the next step, not directly callable behavior.</li>
-<li>Otherwise consider the effective generated <code>m/0</code> accessor. A storage accessor
-qualifies when its stored value provides exactly <code>apply/n</code>. A member-class
-accessor qualifies when its selected declaration advertises that factory arity.</li>
-<li>Continue on a miss; report a missing selector if no candidate exists.</li>
-</ol>
-<p>An implicit <code>m(args)</code> searches declaration-relative lexical scopes under this
-same eligibility rule, then invokes on <code>self</code> if none matches. An eligible scope
-selects its receiver; <code>m/n</code> then dispatches uniformly on that receiver, whether
-eligibility came from a method or generated accessor. An overriding method may
-replace the accessor/apply route. Eligibility is checked first and its result
-is retained if dispatch uses that route. <code>super</code> searches after its exact
-contribution occurrence. An unrelated method on a different receiver cannot
-capture an eligible lexical dependency.</p>
-<p>Do not run computed getters while testing candidates or read behind an overridden
-getter. Getter masking persists through inheritance search. A wrong-arity or
-non-callable stored value is a miss. An uninitialized read, foreign resolution
-failure, selected class realization failure, or invocation failure is an error;
-none causes lookup to resume. Retain the chosen callable value and operation so
-selection is not repeated after effects.</p>
-<p>For an explicit Alien receiver, select the requested foreign name/arity through
-its boundary adapter. Foreign getters are not generated storage accessors and
-are not executed to discover other operations.</p>
-<h2 id="4-callable-objects-and-member-classes"><a class="header" href="#4-callable-objects-and-member-classes">4. Callable Objects and Member Classes</a></h2>
-<p>Native values qualify through exact <code>apply/n</code> methods (including inherited
-methods), or a lambda’s declared arity. A stored Alien can advertise an exact
-<code>apply/n</code> through the boundary’s effect-free selection contract, including
-<code>ForeignCallable</code>. Candidate testing never invokes the operation itself.</p>
-<p>A generated member-class accessor knows its callable arities from the selected
-class declaration: constructor arity plus owned <code>factory apply</code> signatures.
-Flat metaclasses do not import contributor factories. Thus a wrong-arity lookup
-can reject a member class without executing any class-definition clauses.</p>
-<p>When its accessor/apply route wins dispatch, the cached accessor realizes the
-class. Mixin and superclass targets may be computations that select the actual
-contributor classes. Evaluate
-direct mixin targets left-to-right and then the superclass target; routed
-constructor arguments wait for instance construction. Bare class access also
-realizes the class. Both forms use the same cache and propagate realization
-failures. See <a href="message-sends.html#member-class-invocation">member-class invocation</a>.</p>
-<p>For a declared <code>class Point(x, y) { }</code>, <code>Point</code> returns its class object and
-<code>Point(1, 2)</code> calls the class’s <code>apply/2</code>. <code>Point()</code> is a miss at that declaration,
-without realizing it, unless the declaration also supplies <code>factory apply/0</code>.</p>
-<h2 id="5-no-implicit-tear-off"><a class="header" href="#5-no-implicit-tear-off">5. No Implicit Tear-Off</a></h2>
-<p><code>obj.m</code> sends <code>m/0</code>; it does not return a bound method object. <code>obj.m(a, b)</code>
-selects and invokes behavior at arity two. Method tear-off remains a separate,
-explicit proposal below and is not part of the executable language.</p>
-<hr>
-<h2 id="6-postfix-tear-off-syntax"><a class="header" href="#6-postfix-tear-off-syntax">6. Postfix Tear-Off Syntax</a></h2>
-<blockquote>
-<p>The following design is a proposal. Its syntax is not implemented and remains
-subject to revision.</p>
-</blockquote>
-<p>A method can be reified as a value using postfix arity syntax:</p>
-<pre><code class="language-vh">receiver.selector#arity
-</code></pre>
-<p>For example:</p>
-<pre><code class="language-vh">obj.move#2
-obj.size#0
-obj.x!#1
-</code></pre>
-<p>The expression:</p>
-<pre><code class="language-vh">obj.move#2
-</code></pre>
-<p>means:</p>
-<pre><code class="language-text">evaluate obj;
-lookup the actual method (move, 2) on obj;
-return a bound method object for that receiver and method.
-</code></pre>
-<p>The result is a bound method value. Applying it later invokes the selected method with the original receiver as <code>self</code>.</p>
-<p>Proposed tear-off lookup selects an actual method. It does not select callable
-generated getter/apply routes or member-class factory candidates.</p>
-<p>Therefore:</p>
-<pre><code class="language-vh">handler(event)
-</code></pre>
-<p>may succeed through a generated getter returning an <code>apply/1</code> callable, while:</p>
-<pre><code class="language-vh">handler#1
-</code></pre>
-<p>requires an actual method <code>handler/1</code> to exist.</p>
-<hr>
-<h2 id="7-tear-off-as-a-special-getter-like-form"><a class="header" href="#7-tear-off-as-a-special-getter-like-form">7. Tear-Off as a Special Getter-Like Form</a></h2>
-<p>A tear-off form behaves like a special zero-arity getter.</p>
-<pre><code class="language-vh">obj.m#3
-</code></pre>
-<p>selects and returns the bound method object for <code>m/3</code>.</p>
-<p>This means that immediate application of a tear-off does not require a special syntax category.</p>
-<pre><code class="language-vh">obj.m#3(e1, e2, e3)
-</code></pre>
-<p>is interpreted as:</p>
-<pre><code class="language-text">select obj.m#3;
-then apply the resulting bound method object with arguments e1, e2, e3
-</code></pre>
-<p>That is, it follows the same general invocation principle as other callable values.</p>
-<p>The bound method object implements <code>apply/3</code>. Applying it with any other arity is an arity error.</p>
-<p>Therefore:</p>
-<pre><code class="language-vh">obj.m#3(e1, e2)
-</code></pre>
-<p>is invalid because the selected bound method expects arity 3.</p>
-<p>No dedicated <code>TearOffInvoke</code> construct is required.</p>
-<hr>
-<h2 id="8-proposed-tear-off-examples"><a class="header" href="#8-proposed-tear-off-examples">8. Proposed Tear-Off Examples</a></h2>
-<pre><code class="language-vh">p.move#2
-</code></pre>
-<p>Would return a bound method object for the actual <code>move/2</code> method of <code>p</code>.</p>
-<pre><code class="language-vh">p.move#2(1, 1)
-</code></pre>
-<p>Would select that bound method and invoke it with two arguments. These examples
-are proposal syntax, unlike currently supported generated accessors and <code>apply</code>.</p>
-<h2 id="9-representation-consequences"><a class="header" href="#9-representation-consequences">9. Representation Consequences</a></h2>
-<p>The core must preserve the distinction between ordinary sends and invocation
-syntax, as well as implicit, explicit and <code>super</code> receiver origins. Invocation
-cannot be lowered unconditionally into a getter followed by <code>apply</code>: a direct
-method must execute only once, and an ineligible accessor must leave lookup free to
-continue. <code>super</code> retains the exact selected contribution occurrence, rather
-than merely the superclass of the receiver.</p>
-<p>A future tear-off expression could reify the selected method and receiver as a
-bound callable. No implemented <code>CoreTearOff</code> or public method-reification API is
-implied by this proposal. Its detailed syntax and representation remain deferred.</p>
+<p>Retrieving <code>handler</code> returns the lambda. <code>handler(request)</code> can use the generated
+getter and invoke its result. Exact methods and accessor routes compete under
+the <a href="message-sends.html#dispatch-rules">selection rules</a>, so invocation is not
+unconditional getter-then-apply. A computed getter’s result can be called
+explicitly with <code>object.handler.apply(request)</code>.</p>
+<p>Bare <code>object.m</code> sends <code>m/0</code>; it does not produce a bound method.
+For the distinction between <code>f</code> and <code>f()</code>, see
+<a href="message-sends.html#invocation-at-arity-zero">zero-argument invocation</a>.
+Member declarations use <a href="message-sends.html#member-class-invocation">deferred factory selection</a>.</p>
+<p>Method reification is a <a href="future.html#method-tear-offs">future tear-off proposal</a>.
+No tear-off syntax or public method-reification API is part of the executable
+language.</p>
 
                     </main>
 

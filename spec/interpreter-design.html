@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Interpreter Design - VarioHyve Language Specification</title>
+        <title>Java Interpreter - VarioHyve Language Specification</title>
 
 
         <!-- Custom HTML head -->
@@ -30,16 +30,18 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="theme/vh-2de7eb16.css">
 
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
         <!-- Provide site root and default themes to javascript -->
         <script>
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0458d790.js";
+            window.path_to_searchindex_js = "searchindex-b0f8be02.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-45e5eade.js"></script>
+        <script src="toc-1ce75dcc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -175,313 +177,281 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="interpreter-design"><a class="header" href="#interpreter-design">Interpreter Design</a></h1>
-<p>The v1 interpreter is a <strong>CESK-inspired small-step machine</strong> and a starting
-point for experiments with Abstracting Abstract Machines (AAM). Its components
-are:</p>
-<ul>
-<li><strong>C</strong>ontrol — the current evaluation, send, value or error</li>
-<li><strong>E</strong>nvironment — lexical scope represented by activation and enclosing objects,
-using the object protocol rather than a separate name-to-address namespace</li>
-<li><strong>S</strong>tore — a mapping from addresses to values and continuation frames</li>
-<li><strong>K</strong>ontinuation — a linked chain of frames representing what to do next</li>
-</ul>
-<p><code>VisitorSemanticsVM</code> executes a <code>Configuration(control, environmentRef, runtimeWorld, continuationRef)</code>. The environment reference identifies an
-activation or lexical object scope, and the runtime world supplies the store
-and boundary. <code>Control</code> distinguishes expression evaluation, an exact send,
-a selected foreign call, a returned value and a terminal error.</p>
-<p>The Java <code>step</code> API returns a set of successors. The concrete driver requires
-exactly one successor for every nonterminal configuration and stops at an error
-or a value with <code>HaltFrame</code>. That API shape does not implement nondeterministic
-or abstract execution. Configurations share a mutable runtime world; keeping
-an earlier configuration does not create a snapshot of its store.</p>
-<p>The implementation anchors are
-<a href="../../../vh-core/src/main/java/vh/vm/VisitorSemanticsVM.java">VisitorSemanticsVM</a>,
-<a href="../../../vh-core/src/main/java/vh/vm/EvaluateStepVisitor.java">EvaluateStepVisitor</a>
-and <a href="../../../vh-core/src/main/java/vh/vm/ContinuationStepVisitor.java">ContinuationStepVisitor</a>.
-Method and initializer invocations establish private return homes. Scope and
-continuation representations are backend-private, not public language objects
-or reflection APIs.</p>
-<h2 id="module-instantiation-requirements"><a class="header" href="#module-instantiation-requirements">Module Instantiation Requirements</a></h2>
-<p>Named and anonymous class literals receive capabilities through inheritance,
-mixin composition, lexical nesting and constructor parameters. Normal module
-definition starts in an empty top activation: no capability bindings, no
-capability-bearing lexical parent or receiver, and no enclosing application
-scope. The activation frame still exists. Such a class has only root <code>Object</code>
-inheritance and no mixins.
-The instantiation service supplies existing object arguments at the declared
-constructor arity. A kernel is an optional bundle, not a mandatory single input.</p>
-<p>The machine must bind constructor parameters using activation objects and must
-not expose those bindings as instance-method scope or retain an automatic edge
-from an instance to its own initialization activation. Ordinary lambdas and class
-expressions can deliberately capture that activation. Member-class declarations
-instead bind to the enclosing instance and retain their declaration/application
-origin. Activations remain backend-private, with no public reification. The
-machine must not capture the service’s or caller’s scope. Class
-creation and subsequent instance construction are distinct: constructor arguments
-cannot supply that top-level class’s own superclass or mixins. Nested class
-definitions may use class/mixin objects available through their enclosing module.
-See <a href="./program-structure.html#bootstrap-conformance-requirements">Program Structure</a>.</p>
-<p>Tools may explicitly supply a richer evaluation activation or select a debug
-activation. These contexts use the same object-based scope and invocation rules,
-and values created there retain their actual lexical captures. The current
-kernel-injected expression harness is an example of supplied evaluation context:
-its lack of local slots does not make its parent/receiver capability graph empty.
-The separate <code>BootstrapRuntime.instantiateModule</code> path evaluates a class literal
-over an empty top activation and constructs it through an exact Expat <code>new</code> send.
-Definition, initialization and synchronous callbacks share one transition budget;
-host sends contribute an empty caller scope. The instance is returned as an
-Expat, and its entry method is invoked explicitly by the host. See
-<a href="./tooling-architecture.html#evaluation-contexts">Evaluation Contexts</a>.</p>
-<h2 id="why-cesk"><a class="header" href="#why-cesk">Why CESK</a></h2>
-<p>VarioHyve’s uniformity makes CESK a natural fit:</p>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>VarioHyve property</th><th>CESK benefit</th></tr>
-</thead>
-<tbody>
-<tr><td>Source access and invocation use messages</td><td>Shared dispatch rules for methods and generated accessors; literals, scope and returns still have dedicated transitions</td></tr>
-<tr><td>No operators or control structures</td><td><code>ifTrue</code>/<code>ifFalse</code> are message sends — no special-case evaluation</td></tr>
-<tr><td>No globals</td><td>Lexical activation and enclosing objects supply bindings without a global namespace</td></tr>
-<tr><td>Explicit core expressions</td><td>Evaluation and completion are separated into two visitors</td></tr>
-<tr><td>Uniform object model</td><td>Objects, classes, and activations share the same store representation</td></tr>
-</tbody>
-</table>
-</div>
+                        <h1 id="java-interpreter"><a class="header" href="#java-interpreter">Java Interpreter</a></h1>
+<p><code>VisitorSemanticsVM</code> is the executable prototype. The older <code>VM</code> is not a
+semantic authority. This chapter records how Java realizes the language contracts
+and <a href="./formal-core.html">formal reference machine</a>, including implementation
+restrictions. It does not claim a completed refinement proof.</p>
 <h2 id="machine-components"><a class="header" href="#machine-components">Machine Components</a></h2>
+<p>The CESK-inspired configuration is
+<code>Configuration(control, environmentRef, runtimeWorld, continuationRef)</code>.
+The scope reference identifies an activation or lexical receiver view;
+<code>RuntimeWorld</code> supplies the store, boundary and seeded identities. There is no
+separate environment namespace.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Reference component</th><th>Java representation</th></tr>
+</thead>
+<tbody>
+<tr><td>Value <code>v</code>, store <code>σ</code></td><td>Typed <code>ValueRef</code> keys and mutable <code>VMValue</code> entries in <code>ConcreteStore</code>.</td></tr>
+<tr><td>Scope <code>ρ</code></td><td><code>Activation</code> or <code>LexicalObjectScope</code>, with generated accessor storage and declaration/application metadata.</td></tr>
+<tr><td>Continuation <code>κ</code></td><td>Linked <code>ContinuationFrame</code> entries addressed by <code>ContinuationRef</code>.</td></tr>
+<tr><td>Return homes <code>H</code></td><td>Activation addresses also identify homes; <code>ReturnHomeActivation</code> stores liveness and <code>InitializerActivation</code> stores phase.</td></tr>
+<tr><td>Boundary <code>B</code></td><td><code>DefaultJavaBoundary</code> identity maps and suspended synchronous foreign calls.</td></tr>
+<tr><td>Sequential control authority</td><td>Conceptual ownership is reconstructed from boundary admission and suspended-call state; there is no reified control-token value.</td></tr>
+<tr><td>Failure control</td><td><code>Control.Error</code> terminates the current native continuation; callback failure is exported to its foreign caller. No execution-wide failure marker is retained.</td></tr>
+</tbody>
+</table>
+</div>
+<p><code>Control</code> distinguishes expression evaluation, exact host send, committed foreign
+call, returned value and error. <a href="../../../vh-core/src/main/java/vh/vm/EvaluateStepVisitor.java">EvaluateStepVisitor</a>
+handles expressions; <a href="../../../vh-core/src/main/java/vh/vm/ContinuationStepVisitor.java">ContinuationStepVisitor</a>
+handles completion; <a href="../../../vh-core/src/main/java/vh/vm/ObjectProtocol.java">ObjectProtocol</a>
+selects and invokes operations. Its ordered loops, <code>getterSeen</code>, <code>Selection</code> and
+<code>EligibleAccessor</code> retain lookup evidence without repeating reads or selection.
+The language algorithm is specified in <a href="./message-sends.html">Message Sends</a>.</p>
+<p>The step API returns a set, but the concrete driver requires exactly one
+successor for each nonterminal native configuration. It stops at an error or a
+value under <code>HaltFrame</code>. Observable determinism additionally depends on supplied
+foreign behavior. A set-valued interface does not implement abstract execution.
+Retained or prepared configurations do not each hold execution authority. All
+ordinary entry and stepping paths for one runtime obey the same sequential
+<a href="./foreign-objects.html#control-tokens-and-execution-agreements">control agreement</a>.
+<code>step</code> acquires admission for its selected configuration, advances one transition
+and yields authority back to the backend driver. A nonterminal successor retains
+its ordinary home state and needs admission again before <code>step</code> or <code>run</code> can
+advance it; yielding does not mean final delivery.</p>
+<p>Public <code>inject</code> prepares an unexecuted tooling configuration under this
+implementation’s execution guard, because allocation mutates the serial concrete
+store. Unassociated entry during an active execution fails before allocation.
+This guard is coordination for the current representation, not evidence that
+preparing a configuration is itself an ordinary native transition. <code>evaluate</code>
+keeps preparation, execution and export inside one guard and budget. Raw backend
+helpers remain subject to caller coordination; this is not a generally
+thread-safe backend API.</p>
 <h3 id="addresses-and-allocation"><a class="header" href="#addresses-and-allocation">Addresses and Allocation</a></h3>
-<p>The concrete machine uses an explicit store and allocator. Parameters and locals
-belong to activation objects; source access follows generated accessor messages.
-The following notation describes backend storage, not a separate language
-environment or a public address API:</p>
-<pre><code class="language-text">ValueRef        = value address with a long identifier
-ContinuationRef = continuation address with a long identifier
-Entry           = Value(VMValue) | Continuation(ContinuationFrame)
-ConcreteStore   = Map&lt;Address, Entry&gt;
-Allocator.next(environmentRef, continuationRef) -&gt; long
-</code></pre>
-<p>The <a href="../../../vh-core/src/main/java/vh/vm/cesk/Store.java">store interface</a>
-provides set-valued reads, while <code>ConcreteStore</code> holds exactly one entry per
-allocated address. The concrete allocator returns fresh increasing identifiers.
-Concrete singleton reads reject multiple entries; <code>join</code> rejects conflicting
-entries. Reusing addresses is therefore not an available abstract execution mode.</p>
-<p>Allocation is one part of a possible abstraction:</p>
-<ul>
-<li><strong>Concrete allocation</strong> — returns a fresh integer on every call. This is the v1 interpreter.</li>
-<li><strong>Abstract allocation (proposed)</strong> — may return a bounded address based on
-program location and calling context. Reusing addresses requires an abstract
-store that safely combines the represented values.</li>
-</ul>
-<p>Changing the allocator alone does not produce an analyzer. Abstract values, store
-updates, control representation, transition rules and foreign effects must all
-be accounted for, with a soundness argument relating the analysis to concrete
-execution. A finite-state analysis also needs to bound all relevant state
-components, not just allocation. These are future obligations.</p>
+<p><code>Store</code> separates <code>Value(VMValue)</code> and <code>Continuation(ContinuationFrame)</code> entries.
+<code>ConcreteStore</code> uses packed entry storage, a logical-handle-to-position map and
+fresh increasing identifiers. Reads return one entry; concrete <code>join</code> rejects
+conflicting entries. Address reuse is not a
+supported abstract execution mode. Concrete addresses are internal and are never
+required by source programs or boundary clients.</p>
+<p>The native collector traces at complete configuration boundaries when occupancy
+reaches 75% of an elastic entry budget (16,384 initially; backend-configurable
+threshold from 70% to 80%). It compacts live entry references while preserving
+logical handles and Java object identity. The <code>GarbageCollector</code> interface
+separates policy from VM reference enumeration. This is storage compaction,
+not a replacement for the Java collector that manages the underlying objects.
+The native collector currently runs serially at safepoints; the
+<a href="./foreign-objects.html#control-tokens-and-execution-agreements">execution agreement</a>
+permits other correctly coordinated refinements, including concurrent collection.
+See <a href="../../design-notes/native-heap-gc.html">native heap collection</a> for roots,
+boundary retention, measurements and limitations.</p>
+<p>Backend-only root provenance and shortest retention paths share the collector’s
+root enumerator and graph tracer. Reports are non-owning observations rejected
+by the public boundary; no language selector or activation API is added. Audited
+field signatures, randomized graph oracles and GC-on/off execution comparisons
+guard coverage. See <a href="../../design-notes/native-heap-gc-hardening.html">graph hardening</a>
+for guarantees and limits.</p>
 <h3 id="values"><a class="header" href="#values">Values</a></h3>
-<p>Value references resolve to <code>VMValue</code> entries. Continuations occupy separately
-typed store entries; method syntax and construction metadata can be retained
-inside those values without their own store addresses. See
-<a href="./object-model.html">Object Model</a> for the semantic relationships.</p>
-<ul>
-<li><strong><code>VMObject</code></strong> holds a mutable array of value references, slot declarations,
-a class reference, a lexical parent and a hidden member-class cache.</li>
-<li><strong><code>VMClass</code> and <code>VMMetaclass</code></strong> extend that representation. A class retains
-references to reified contributions, its superclass, initialization edges,
-complete layout and private coordinator.</li>
-<li><strong><code>VMMixinClosure</code></strong> is a dedicated closure value retaining the contribution’s
-syntax, definition scope, formals and generated initializer. It is not a
-<code>VMObject</code> with a public class or method protocol.</li>
-<li><strong>Activations</strong> extend <code>VMObject</code> internally, with no class reference in the
-bootstrap. Method/lambda parameters are immutable slots; lowered <code>var</code> locals
-occupy separate let activations. A <code>LexicalObjectScope</code> associates a receiver
-with a particular declaration/application origin and its definition scope.</li>
-<li><strong><code>VMLambdaClosure</code></strong> retains its function, captured scope, receiver and return
-home. Its exact <code>apply/N</code> operation is intrinsic to dispatch.</li>
-<li><strong>Canonical null and booleans</strong> are native objects with ordinary methods.
-Integer and string literals currently use private <code>VMPrimitiveValue</code> entries
-without native class dispatch. Aliens retain foreign semantics through the
-boundary; they do not acquire a native class or lexical outer.</li>
-</ul>
+<p><a href="./object-model.html">Runtime Object Representation</a> describes objects, classes,
+contributions, scopes, caches and occurrence layouts. <code>VMUninitialized</code> is an
+allocated backend sentinel, corresponding to the reference machine’s non-value
+marker. Canonical null and Booleans are native objects; integer/string transport
+and Aliens use separate private entries.</p>
 <h3 id="continuations"><a class="header" href="#continuations">Continuations</a></h3>
-<p>Continuation frames are stored by <code>ContinuationRef</code>. Linked frames retain the
-reference of the next frame and the state needed to resume work. The current
-frame types are:</p>
+<p>Frames retain their next reference and the scope/operands needed on resumption:</p>
 <div class="table-wrapper">
 <table>
 <thead>
-<tr><th>Frame</th><th>Work resumed when a value arrives</th></tr>
+<tr><th>Frames</th><th>Pending work</th></tr>
 </thead>
 <tbody>
-<tr><td><code>ReceiverFrame</code></td><td>Evaluate a send’s arguments after its explicit receiver</td></tr>
-<tr><td><code>ArgFrame</code></td><td>Continue evaluating arguments left-to-right, then dispatch</td></tr>
-<tr><td><code>LetFrame</code></td><td>Bind a local or complete a sequence step, then advance the lowered let expression</td></tr>
-<tr><td><code>CallReturnFrame</code></td><td>Restore the caller’s scope; retire a method home when present</td></tr>
-<tr><td><code>DoReturnFrame</code></td><td>Deliver the evaluated return expression to its captured home</td></tr>
-<tr><td><code>ClassTargetFrame</code></td><td>Retain a resolved contributor and continue class realization</td></tr>
-<tr><td><code>MemberClassReturnFrame</code></td><td>Cache a realized member class and restore its caller</td></tr>
-<tr><td><code>ApplyFrame</code></td><td>Invoke a selected, newly realized member class with the saved arguments</td></tr>
-<tr><td><code>InitializerCallFrame</code></td><td>Evaluate a private initializer call’s receiver and arguments</td></tr>
-<tr><td><code>InitializationWriteFrame</code></td><td>Write a slot value at the already resolved physical index</td></tr>
-<tr><td><code>InitializerReturnFrame</code></td><td>Retire one initializer home and deliver the allocated receiver, ignoring the body’s value</td></tr>
-<tr><td><code>HaltFrame</code></td><td>Mark final value delivery</td></tr>
+<tr><td><code>ReceiverFrame</code>, <code>ArgFrame</code></td><td>Receiver and ordered argument evaluation.</td></tr>
+<tr><td><code>LetFrame</code></td><td>Ordered local binding and sequencing.</td></tr>
+<tr><td><code>CallReturnFrame</code>, <code>DoReturnFrame</code></td><td>Scope restoration, method completion or delivery to the exact captured home.</td></tr>
+<tr><td><code>ClassTargetFrame</code>, <code>MemberClassReturnFrame</code>, <code>ApplyFrame</code></td><td>Contributor resolution, member-cache publication and deferred member invocation.</td></tr>
+<tr><td><code>InitializerCallFrame</code>, <code>InitializationWriteFrame</code>, <code>InitializerReturnFrame</code></td><td>Private-call operands, resolved slot writes and initializer completion.</td></tr>
+<tr><td><code>HaltFrame</code></td><td>Final delivery.</td></tr>
 </tbody>
 </table>
 </div>
-<p>Sequence evaluation uses lowered <code>CoreLetExpression</code> steps and <code>LetFrame</code>;
-there is no separate <code>SeqFrame</code>. <code>CallReturnFrame</code> is also used to restore scope
-after lambda calls and let expressions, without creating a new return home.</p>
-<p><code>^</code> targets its lexically captured method or initializer home. Each initializer
-invocation has a fresh home even when its class captures an earlier activation.
-When <code>^</code> is evaluated, the continuation chain is scanned for that exact home; it
-never chooses the nearest dynamic method or borrows the caller’s home.</p>
-<ol>
-<li><strong>Method or initializer entry</strong> establishes a fresh live home and the
-corresponding completion frame. An initializer begins in the slot phase.</li>
-<li><strong>Normal completion</strong> retires the home. A method delivers its body result;
-an initializer ignores its result and resumes the contribution continuation
-with the receiver.</li>
-<li><strong><code>^</code> evaluated</strong> checks the captured home’s liveness and matching frame.
-Missing/retired homes produce a dead-context error. A live initializer target
-still in its slot phase produces a premature-completion error, including a
-return before the final slot value is assigned. A post-slot initializer target
-completes only its contribution and ignores the returned value. A method
-target returns that value normally.</li>
-<li><strong>Failure or unwinding</strong> retires intervening homes. An outside lambda retains
-its own target and can unwind construction to it if live. An active Alien-call
-barrier forbids unwinding across that boundary.</li>
-</ol>
-<p>The return expression is evaluated normally before delivery; failure there is
-not a successful early exit. Home liveness is separate from reachable captured
-data. See <a href="./literals.html#initializer-completion">Initializer completion</a> and
-<a href="../../design-notes/initializer-return-homes.html">the accepted policy</a>. Explicit
-continuations implement these transitions without using host exception unwinding
-as the language’s return semantics.</p>
+<p>There is no <code>SeqFrame</code>: <code>CoreLetExpression</code> and <code>LetFrame</code> sequence code.
+<code>CallReturnFrame</code> also restores let/lambda scopes without introducing a home.
+Non-local return scans for its exact home before mutating liveness. Completion,
+failure and unwind retire homes and abandon pending member realization. Java
+callbacks start separate native continuation chains; their active foreign context
+provides the barrier required by the default
+<a href="./foreign-objects.html#non-local-returns-across-the-boundary">boundary agreement</a>.</p>
 <h3 id="state-transitions"><a class="header" href="#state-transitions">State Transitions</a></h3>
-<p>Class realization finalizes its immutable complete instance layout and retains
-resolved initialization edges. Formals and the anonymous slot/post-slot initializer
-belong to each reified instance mixin. Direct mixin edges refer to the selected
-owned mixin, while superclass edges refer to the complete class. Allocations reuse
-the class’s physical layout and preserve shared-name storage. Each generated
-accessor resolves its selected contribution occurrence and local slot number
-through the actual receiver class’s immutable logical-to-physical mapping.</p>
-<p>Class realization generates ordinary <code>CoreUserFunction</code> bodies for primary
-<code>new</code>, each owned contribution initializer and the class’s coordinator.
-<code>ClassTargetFrame</code> resolves native class targets before publication;
-<code>MemberClassReturnFrame</code> completes the declaration/application cache.</p>
-<p>Primary <code>new</code> is installed on the owned class-side mixin and follows ordinary
-lookup and method invocation. Its body allocates the bound class’s receiver,
-invokes the private coordinator, and returns that receiver. The coordinator
-sequences superclass and applied-owned-mixin invocations with ordinary core
-expressions, then executes its own initializer body in the same activation/home.
-An applied mixin never follows its source class’s original dependency routes.
-Object literals allocate their receiver and enter the same private coordinator
-directly; they do not dispatch a public <code>new</code> selector.</p>
-<p>Backend-private <code>ConstructionCode</code> operations provide bound-class allocation,
-identity-bound initializer invocation, direct slot writes and an explicit
-slots-complete marker. A slot write resolves its contribution-local number using
-the active initializer’s occurrence and actual receiver layout before evaluating
-the value expression, then retains the destination in its continuation. The
-marker separates mandatory slot initialization from
-the optional final body; a return before the final slot write remains invalid.
-Private call arguments and writes use explicit continuations, while ordinary
-expression sequencing replaces the former contribution/slot schedule frames.
-No source or Expat selector selects a private initializer.</p>
-<p>Empty argument lists still pass through the machine scheduler, so deep
-initialization does not recurse on the host stack. Failure or unwind retires
-initializer homes and caches in-progress member realization as a defined failure.
-See <a href="../../design-notes/flat-metaclasses-and-construction.html#private-core-operations">the construction operation contracts</a>.</p>
-<p>The machine dispatches evaluation to <code>EvaluateStepVisitor</code>, value completion to
-<code>ContinuationStepVisitor</code>, and message selection/invocation to <code>ObjectProtocol</code>.
-The following table summarizes their effects; cascades and local declarations
-are lowered before execution:</p>
+<p>Class realization installs generated <code>CoreUserFunction</code> bodies. Primary <code>new</code>
+uses ordinary method dispatch; private allocation/calls/writes/phase transitions
+are implemented by <code>ConstructionCode</code> and the same visitors. <code>CoreObjectLiteral</code>
+retains a zero-formal, factory-free <code>CoreClassLiteral</code>, including its contributor
+targets and argument routes. Evaluation sends exact <code>new/0</code> to that class
+expression, reusing ordinary realization, dispatch and generated construction.
+No object-specific construction operation or continuation is needed. Empty
+private-call argument lists still schedule machine steps. The representation and
+operation rationale are in
+<a href="./object-model.html#private-construction-code">Private Construction Code</a>.</p>
+<h2 id="explicit-store-the-key-commitment"><a class="header" href="#explicit-store-the-key-commitment">Explicit Store: The Key Commitment</a></h2>
+<p>A <code>VMObject</code> contains a mutable <code>ValueRef[]</code>; a slot holds a reference rather
+than a separately allocated binding cell. Initialization, setters, caches and
+home retirement mutate backend objects. Configurations share <code>RuntimeWorld</code>:
+retaining an earlier configuration does not preserve an earlier store state.
+Only reachable native entries survive a collection. Active and synchronously
+suspended configurations, seed objects, boundary handles and explicit backend
+root leases define reachability. Backend tools retaining a configuration or raw
+address across other executions must use <code>world.nativeHeap().retain(...)</code> and
+close the lease when finished; a Java variable alone is not a native heap root.
+Root registration and lease release must themselves occur under the current
+guard or while the runtime is exclusively idle. These backend helpers do not
+acquire coordination internally; leases protect reachability rather than
+authorizing execution or concurrent store access.
+Public Expats and boundary references are pinned automatically for this increment.
+Alien entries remain boundary-owned and are retained without inspecting foreign
+payloads. Collection preserves captured lexical data and retired return-home
+state, without restoring return authority or introducing activation reflection.</p>
+<p><a id="module-instantiation-requirements"></a></p>
+<h2 id="module-entry"><a class="header" href="#module-entry">Module Entry</a></h2>
+<p><code>BootstrapRuntime.instantiateModule</code> checks a class literal’s declared arity and
+module restrictions, evaluates it in a fresh empty top activation, then uses an
+exact Expat <code>new</code> send. Definition, construction and synchronous callbacks share
+one transition budget. It returns an Expat; the host explicitly sends any entry
+message. Host sends contribute an empty caller scope.</p>
+<p><code>BootstrapRuntime.evaluate</code> is the distinct expression harness, using the
+assembled kernel as parent and receiver. Its supplied capability context may
+become part of returned closures/classes. The
+normative isolation contract is in <a href="./program-structure.html">Program Structure</a>;
+the richer contexts are described in <a href="./tooling-architecture.html#evaluation-contexts">Tooling</a>.</p>
+<p><code>MinimalRuntimeWorld</code> installs ordinary immutable bundle slots named <code>null</code>,
+<code>true</code>, <code>false</code> and <code>Object</code>, holding the corresponding seed identities.
+Additional supplied capabilities cannot replace those slots in this assembler.
+These are this tooling bundle’s assembly rules, not reserved language names; nearer
+declarations can shadow its slots through ordinary lexical lookup. Normal
+modules do not receive these bindings implicitly.</p>
+<h2 id="java-boundary"><a class="header" href="#java-boundary">Java Boundary</a></h2>
+<p><code>ForeignBoundary.identityMirror()</code> returns a stable, boundary-owned capability.
+It is supplied explicitly to modules and observes identity and membership through
+the <a href="./foreign-objects.html#identitymirror">ordinary mirror protocol</a>, never a
+special evaluator dispatch branch. The narrow root Object service shares private
+identity helpers without exposing the mirror. Current identity hashes use the
+retained native/Alien representation’s Java identity hash; that algorithm is a
+backend policy, not a portable identifier.</p>
+<p><a href="../../../vh-core/src/main/java/vh/vm/internal/DefaultJavaBoundary.java">DefaultJavaBoundary</a>
+owns the <a href="./foreign-objects.html">Alien/Expat contract</a>. <code>BootstrapRuntime.boundary()</code>
+returns a narrow <code>PublicFacet</code>; package-private <code>VmServices</code> provisions the seed
+identity service. Both delegate to the same private owner. It uses a Java
+identity cache for Aliens and a per-native-identity Expat cache, both retaining
+strong references, which are roots for native collection and implement the
+specified identity round trips.</p>
+<p>Integer/string interning is a non-owning native cache: collection removes cache
+entries whose native transport values were reclaimed. An explicit public boundary
+reference still pins its value. Conversion by value does not promise host identity.</p>
+<p>Exact native null/Boolean identities map to Java <code>null</code>/<code>Boolean</code> without Expats.
+<code>Byte</code>, <code>Short</code>, <code>Integer</code> and in-range <code>BigInteger</code> normalize to <code>Long</code>; <code>Long</code>
+and <code>String</code> use by-value transport. Other numeric forms and raw VM representation
+values are rejected. Arbitrary objects become opaque Aliens, not reflected Java
+method collections. Integers and strings currently have no native class dispatch.</p>
+<p>For the specified <a href="./foreign-objects.html#concurrency-boundary">callback admission protocol</a>,
+<code>DefaultJavaBoundary.Call</code> records the suspended
+configuration, parent call, originating thread, admission state and active
+callback count. <code>NativeHeap</code> transition leases root suspended configurations
+until their native thread resumes; closed calls clear their configuration and
+ancestry references.</p>
+<p><code>CallbackContext.send</code> uses a permit to serialize native execution and short
+representation-sensitive services. <code>invoke</code> releases permission around the
+selected foreign operation and reacquires it before result conversion. Selection
+retains native permission and prohibits callbacks. Worker callbacks run on their
+own host thread, so the blocked caller needs no callback pump. The coordinator’s
+native owner, active call and idle state collectively realize conceptual token
+ownership; neither copied contexts nor nested permits are individual tokens.</p>
+<p>The innermost call admits callbacks and completion waits for admitted descendants,
+as required by the contract. The implementation uses <code>wait</code>/<code>notifyAll</code>, with no
+FIFO or fairness guarantee. Waiting
+admission can be interrupted with <code>EXECUTION_POLICY</code>; required caller restoration
+waits without abandoning native state and preserves the thread’s interrupt flag.
+No foreign-thread affinity or termination guarantee is added. The shared guard
+also protects this concrete store’s representation-sensitive operations; it is
+an implementation constraint, not a universal physical-memory token rule.</p>
+<p>The callback nesting limit is 64; pending requests do not consume nesting depth.
+The default <a href="./foreign-objects.html#non-local-returns-across-the-boundary">no-crossing NLR agreement</a>
+is implemented by checking home liveness and the callback continuation, then
+delegating crossing rejection to
+<code>DefaultJavaBoundary.nonLocalReturnFailure()</code>.
+<code>Control.Error</code> aborts the callback and retires its homes before the boundary
+exports the <a href="./foreign-objects.html#error-propagation">specified diagnostic</a>.
+The shared <code>Execution</code> retains only the step budget, not a sticky failure marker;
+foreign recovery does not replenish it. Exhaustion prevents further native
+transitions without vetoing a terminal foreign result that needs no further step.
+Host exception classes and message text are not language interfaces.</p>
+<h3 id="stack-safety"><a class="header" href="#stack-safety">Stack Safety</a></h3>
+<p>The native driver loops over explicit frames, so language method/lambda calls
+and nested initializers do not recursively call the Java evaluator. Synchronous
+foreign calls and callbacks do use the host stack. A transition budget cannot
+preempt a blocking foreign operation; termination remains an adapter concern.
+The callback limit, retained allocations and possible resource exhaustion prevent
+any claim of unlimited execution.</p>
+<h2 id="supported-subset-and-remaining-work"><a class="header" href="#supported-subset-and-remaining-work">Supported Subset and Remaining Work</a></h2>
 <div class="table-wrapper">
 <table>
 <thead>
-<tr><th>Control</th><th>Action</th></tr>
+<tr><th>Area</th><th>Current implementation status</th></tr>
 </thead>
 <tbody>
-<tr><td>Literal (number, string)</td><td>Validate signed 64-bit integer syntax or take the frontend string value; obtain a primitive reference through boundary conversion and pass it to the continuation</td></tr>
-<tr><td>Null or empty expression</td><td>Deliver the native canonical null reference directly</td></tr>
-<tr><td>Hole expression (<code>?</code>)</td><td>Stop with <code>unresolved hole (?)</code>; no configurable hole policy is implemented</td></tr>
-<tr><td>Class expression (named or anonymous)</td><td>Capture definition scope in owned contributions; create class with resolved edges/layout and metaclass with owned factories</td></tr>
-<tr><td>Member-class accessor</td><td>Bind declaration to enclosing receiver and origin; cache class/metaclass per receiver and occurrence</td></tr>
-<tr><td><code>outer ClassName</code></td><td>Select receiver by lexical declaration origin; never expose an activation</td></tr>
-<tr><td>Object literal</td><td>Realize anonymous class + metaclass; allocate and enter the private coordinator, then deliver the receiver</td></tr>
-<tr><td>Lambda literal</td><td>Capture lexical scope and return home, allocate closure in store</td></tr>
-<tr><td>Implicit message send — bare (<code>name</code>)</td><td>Look up <code>name</code> via lexical chain; dispatch <code>(name, 0)</code> → return result (invoke only)</td></tr>
-<tr><td>Implicit message send — with parens (<code>name(args)</code>)</td><td>Evaluate args once; at each lexical scope prefer exact <code>name/N</code>, then an eligible generated callable binding, before self invocation. Arity zero executes selected behavior once. See <a href="./message-sends.html#dispatch-rules">invocation rules</a>.</td></tr>
-<tr><td>Explicit message send — bare (<code>e.name</code>)</td><td>Evaluate receiver <code>e</code>, dispatch <code>(name, 0)</code> on receiver → return result</td></tr>
-<tr><td>Explicit message send — with parens (<code>e.name(args)</code>)</td><td>Evaluate receiver and args once; native lookup tests exact operations and eligible generated callable bindings per contribution. Alien lookup selects exact foreign name/arity. Arity zero executes selected behavior once.</td></tr>
-<tr><td>Cascade (<code>e..m1..m2</code>)</td><td>Lower to a let-bound receiver and sequential sends; evaluate the receiver once and deliver the last result</td></tr>
-<tr><td><code>super</code></td><td>Resume lookup from dispatch origin’s next position — see <a href="./object-model.html#super-dispatch">Object Model — Super Dispatch</a></td></tr>
-<tr><td><code>var</code> declaration</td><td>Lower to a bind step in a let activation; reserve all its local slots before evaluating initializers, then bind in source order</td></tr>
-<tr><td><code>^</code> return</td><td>Find the captured lexical home; enforce initializer phase and foreign-call barriers, retire intervening homes and resume its completion frame</td></tr>
+<tr><td>Numbers and strings</td><td>Signed 64-bit integer literals and string transport. Decimal literals are rejected; native arithmetic/string protocols are absent. Broader numeric range, overflow and string contracts remain underdeveloped.</td></tr>
+<tr><td>Qualified <code>outer</code></td><td>Runtime name scan over lexical scopes; frontend binding to declaration identities remains unfinished. The documented deeper repeated-parent case follows captured application scopes pending its semantic decision.</td></tr>
+<tr><td>Holes</td><td>A reached hole is fatal (<code>UnresolvedHole</code>); no configurable concrete policy.</td></tr>
+<tr><td>Composition</td><td>Whole-declaration member override and the specified shared-name state; no deep family merge or adaptation algebra.</td></tr>
+<tr><td>Non-local returns across foreign execution</td><td>Boundary-owned agreement; only default no crossing is implemented. A supporting transfer protocol is deferred.</td></tr>
+<tr><td>Tail calls and reclamation</td><td>Native tracing and entry compaction at occupancy safepoints; no TCO, foreign reclamation or hard memory bound. Expats and Alien entries remain pinned.</td></tr>
+<tr><td>Execution agreements</td><td>Sequential ordinary execution with scoped worker callbacks. The conceptual token is not reified; parallel native execution, concurrent native GC and general monitor/intervention capabilities are permitted extension directions, not implemented APIs.</td></tr>
+<tr><td>Analysis and persistence</td><td>No sound abstract interpreter, persistent snapshots, rollback or portable runtime persistence.</td></tr>
 </tbody>
 </table>
 </div>
-<h2 id="explicit-store-the-key-commitment"><a class="header" href="#explicit-store-the-key-commitment">Explicit Store: The Key Commitment</a></h2>
-<p>Language values and continuation frames are addressed through the explicit
-store. The concrete backend implements that store with Java heap objects:
-<code>ConcreteStore</code> contains a <code>Map&lt;Address, Entry&gt;</code>, and a <code>VMObject</code> contains a
-mutable array of <code>ValueRef</code>s. A slot is an array location holding a value
-reference, not a separately allocated binding cell. A getter reads that
-reference; a setter replaces it after ordinary accessor selection.</p>
-<p>Initialization, local binding, member-cache updates and home retirement also
-mutate backend objects. The explicit store makes references and allocation
-visible to the interpreter, but does not make transitions pure or configurations
-persistent. There is no implemented language garbage collector; retained store
-entries and proxy caches can keep otherwise unreachable values alive.</p>
-<p>This explicit representation supports investigation of an AAM derivation.
-An abstract store with joins and a bounded allocator would be parts of that
-derivation, alongside abstractions of values and control and models of foreign
-operations. The objective is to preserve a justified relationship to the
-reference transitions, not to assume that an unchanged concrete <code>step</code> function
-already supplies a sound analysis.</p>
-<h2 id="connection-to-analysis-tools"><a class="header" href="#connection-to-analysis-tools">Connection to Analysis Tools</a></h2>
-<p>The CESK design connects directly to the <a href="./tooling-architecture.html">Tooling Architecture</a>:</p>
-<ol>
-<li><strong>Concrete execution</strong> → the current sequential interpreter. Native
-transitions follow fixed rules; observable determinism also depends on the
-supplied foreign capabilities.</li>
-<li><strong>Abstract execution (proposed)</strong> → an analysis with sound abstract transitions
-and a state-exploration or fixed-point strategy appropriate to its domains.</li>
-<li><strong>External annotations (proposed)</strong> → named assumptions, abstract domains or
-properties interpreted by a particular analysis tool. Descriptors alone do
-not implement those checks.</li>
-</ol>
-<p>Van Horn and Might (2010), <em>Abstracting Abstract Machines</em>, provides the research
-inspiration: refactor a concrete machine into a form amenable to systematic
-abstraction. A corresponding derivation and validation for VarioHyve remain
-future work.</p>
-<h2 id="tco-and-continuations"><a class="header" href="#tco-and-continuations">TCO and Continuations</a></h2>
-<p>Tail-call optimization is not implemented. Explicit continuations make it
-possible to study continuation reuse, but replacing a call frame must preserve
-captured return homes, their liveness, initializer completion and foreign-call
-barriers. Popping the current method frame unconditionally would not meet those
-requirements. See <a href="./future.html#tail-call-optimization">Future Directions</a> for the
-proposed increments.</p>
-<h3 id="stack-safety"><a class="header" href="#stack-safety">Stack Safety</a></h3>
-<p>The concrete driver loops over configurations. Native method/lambda calls and
-initializer calls schedule their bodies through continuation frames, so language
-call depth is not represented by recursive Java evaluator calls. This supports
-deep native recursion without consuming one Java stack frame per language call.</p>
-<p>Synchronous foreign calls and Expat callbacks do use the host call stack. The
-current visitor imposes a callback nesting limit of 64 and shares the active
-transition budget across callbacks. Non-local returns cannot cross an active
-foreign-call boundary. A transition budget does not preempt a blocking foreign
-operation; its behavior remains an adapter obligation.</p>
-<p>Explicit continuations do not guarantee unlimited execution or graceful memory
-exhaustion. The concrete store retains allocated values and frames, and there
-is no language GC or TCO. A program may hit its transition budget or exhaust
-memory. Reducing continuation depth alone would not establish bounded total
-space without accounting for these other allocations and retention policies.</p>
-<h2 id="references"><a class="header" href="#references">References</a></h2>
-<ul>
-<li>William D. Clinger. 1998. <em>Proper tail recursion and space efficiency.</em> In Proceedings of the ACM SIGPLAN 1998 conference on Programming language design and implementation (PLDI ’98), 174–185. <a href="https://doi.org/10.1145/277650.277719">https://doi.org/10.1145/277650.277719</a></li>
-<li>David Van Horn and Matthew Might. 2010. <em>Abstracting abstract machines.</em> SIGPLAN Not. 45, 9 (September 2010), 51–62. <a href="https://doi.org/10.1145/1932681.1863553">https://doi.org/10.1145/1932681.1863553</a></li>
-<li>David Darais, Nicholas Labich, Phúc C. Nguyen, and David Van Horn. 2017. <em>Abstracting definitional interpreters (functional pearl).</em> Proc. ACM Program. Lang. 1, ICFP, Article 12 (September 2017), 25 pages. <a href="https://doi.org/10.1145/3110256">https://doi.org/10.1145/3110256</a></li>
-</ul>
+<p><a id="tco-and-continuations"></a>
+<a id="connection-to-analysis-tools"></a></p>
+<p>These limits are implementation restrictions or identified open work, not
+permission to replace accepted semantics. Future TCO must preserve captured
+homes and barriers; abstract execution needs sound domains, joins, transitions
+and foreign-effect models beyond an allocator change. See <a href="./future.html">Future Directions</a>
+and the <a href="../../design-notes/outer-newspeak-comparison.html">outer comparison</a>.</p>
+<h2 id="refinement-of-the-formal-machine"><a class="header" href="#refinement-of-the-formal-machine">Refinement of the Formal Machine</a></h2>
+<p>A refinement relation must decode addressed frames and suspended Java calls into
+the reference stack; map mutable entries to the current <code>σ</code>; and preserve scope,
+occurrence, cache, <code>H</code>, <code>B</code> and active failure control. The allocated uninitialized
+sentinel maps to the private marker. Fresh identities and physical slot positions may be
+renamed while preserving identity, sharing and logical mappings.</p>
+<p>It must reconstruct control ownership from the coordinator according to
+<a href="./formal-core.html#runtime-admission-and-conceptual-control">runtime admission</a>.
+Representation maintenance may stutter; declared interventions would need
+their specified effects in the target relation. The present refinement target
+includes neither a parallel execution agreement nor an independent intervention
+relation.</p>
+<p>Object’s absent superclass uses the field-specific
+<a href="./object-model.html#representing-top-without-reification"><code>Top</code> decoding</a>.</p>
+<p>Administrative steps may stutter, and one foreign Java call can contain many
+native callback steps. Neither fact permits hiding effects, changing failure
+kinds, replaying selection or ignoring divergence. A comparison must include the
+prototype’s scalar subset and execution limits, or explicitly exclude runs that
+hit them. No simulation proof is claimed; the formal appendix records the
+remaining obligations.</p>
+<p><code>bash scripts/check-bootstrap.sh</code> runs focused backend checks with JDK 17+ and
+Python 3. <code>./gradlew test</code> additionally exercises parsing and the complete project
+with its configured JDK 23 toolchain. Relevant witnesses include
+<a href="../../../vh-core/src/test/java/boundaryclient/UnifiedInvocationTest.java">UnifiedInvocationTest</a>,
+<a href="../../../vh-core/src/test/java/boundaryclient/ClassCompositionTest.java">ClassCompositionTest</a>,
+<a href="../../../vh-core/src/test/java/boundaryclient/InitializerReturnHomeTest.java">InitializerReturnHomeTest</a>,
+<a href="../../../vh-core/src/test/java/boundaryclient/NativeValuesTest.java">NativeValuesTest</a>
+and <a href="../../../vh-core/src/test/java/boundaryclient/ModuleEntryTest.java">ModuleEntryTest</a>.
+The admission regressions in
+<a href="../../../vh-core/src/test/java/vh/vm/BoundaryReentryChecks.java">BoundaryReentryChecks</a>
+cover competing callbacks and pending completion, rejection of unassociated
+preparation before allocation, leased idle preparation followed by stepping,
+and concurrent foreign computation and consumption of previously published
+immutable diagnostics while native execution owns the guard.</p>
 
                     </main>
 
@@ -491,7 +461,7 @@ space without accounting for these other allocations and retention policies.</p>
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="foreign-objects.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="tooling-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -505,7 +475,7 @@ space without accounting for these other allocations and retention policies.</p>
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="foreign-objects.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="tooling-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

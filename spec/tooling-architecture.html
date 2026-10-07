@@ -30,16 +30,18 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="theme/vh-2de7eb16.css">
 
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
         <!-- Provide site root and default themes to javascript -->
         <script>
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0458d790.js";
+            window.path_to_searchindex_js = "searchindex-b0f8be02.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-45e5eade.js"></script>
+        <script src="toc-1ce75dcc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -176,133 +178,85 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="tooling-architecture"><a class="header" href="#tooling-architecture">Tooling Architecture</a></h1>
-<p>VarioHyve has a highly dynamic base runtime — everything is an object, every name is a late-bound message send, and no static declarations are required. Yet the language is designed to support an arbitrarily large number of <strong>optional static analysis tools</strong>: type checkers, abstract interpreters, contract verifiers, documentation generators, linters, and others.</p>
-<p>The key principle: <strong>the source stays clean; tools annotate externally.</strong></p>
-<p>The annotation tools described below do not supply runtime capabilities merely
-by attaching descriptors. Interactive evaluation is a separate tool operation
-with an explicitly selected context, as described next.</p>
+<p>The interpreter executes without consulting analysis annotations. Tools may add
+naming, diagnostics, inferred types, contracts or analysis results around the
+<a href="./descriptors.html">descriptor layer</a>. This chapter specifies intended tooling
+interfaces and their current limits; it does not claim an implemented analyzer
+or debugger.</p>
 <h2 id="evaluation-contexts"><a class="header" href="#evaluation-contexts">Evaluation Contexts</a></h2>
-<p><strong>Design requirement; a general tooling API is not yet implemented.</strong> Normal
-module entry uses an empty top activation, providing no capability bindings and
-no path to a platform through its parent or receiver. The frame still exists as
-the base of execution. See <a href="./program-structure.html#development-and-debugging-contexts">Program Structure</a>.</p>
-<p>Development tools may supply richer contexts explicitly:</p>
+<p>A tool can evaluate with explicitly supplied objects or select a debug activation.
+The context uses activation objects, ordinary lexical lookup and the same
+Alien/Expat and return rules. It introduces neither a separate Environment
+namespace nor a global service registry. Language-visible debugger and mirror
+services must be explicitly supplied boundary capabilities. Internal activation
+selection does not make activations public language values.</p>
 <div class="table-wrapper">
 <table>
 <thead>
-<tr><th>Context</th><th>Available capabilities</th></tr>
+<tr><th>Operation</th><th>Context</th></tr>
 </thead>
 <tbody>
-<tr><td>Normal module definition</td><td>Empty top activation; external inputs subsequently arrive as constructor arguments</td></tr>
-<tr><td>Design-time expression evaluation</td><td>Objects explicitly supplied by the tool, such as sample data or a console</td></tr>
-<tr><td>Debugger evaluation</td><td>Bindings of the selected activation, plus any explicitly supplied debugging services</td></tr>
+<tr><td>Module instantiation</td><td><a href="./program-structure.html#top-level-classes-and-instantiation">Empty top activation</a>; explicit constructor inputs</td></tr>
+<tr><td>Tool expression evaluation</td><td>Explicitly supplied objects, such as sample data or a console</td></tr>
+<tr><td>Proposed debugger evaluation</td><td>Selected activation’s bindings plus explicitly supplied services</td></tr>
 </tbody>
 </table>
 </div>
-<p>Use activation objects and ordinary lexical object graphs. Tool-supplied
-bindings follow the same name resolution as other bindings; they do not replace
-lookup, introduce a second Environment abstraction, or create a global service
-registry. Language-visible VM debugging and mirror services must use the normal
-Alien/Expat boundary. Access to a debug context does not imply public world/store
-access, and existing callback and non-local-return rules still apply. The
-bootstrap does not reify activations for programs. A future debugger may select
-an activation internally without making it a first-class public capability;
-any later mirror interface needs an explicit authority contract.</p>
-<p>A tool should identify which context it evaluates in and which additional
-objects it supplies. It must not silently add them to the root of ordinary
-module evaluation. Results can capture the supplied context: closures and class
-definition scopes retain their lexical references after the tool call returns.
-A class using tool-provided superclass or mixin bindings is defined in that
-context, rather than satisfying the isolated top-level module contract. Export
-or persistence must account for these references explicitly.</p>
-<p>The current <code>BootstrapRuntime.evaluate</code> is a useful initial expression harness:
-its top activation has no local slots, but its parent and receiver are the
-assembled kernel. This is a supplied evaluation context. The separate
-<code>BootstrapRuntime.instantiateModule</code> operation defines and constructs modules
-over an empty root with explicit arguments. Neither operation implements a
-general selected-activation debugger API.</p>
+<p>A tool must identify its context and additional capabilities. It cannot silently
+enrich normal module entry. Results retain actual lexical captures, including
+classes that resolve superclass/mixin targets there; export and persistence must
+preserve or explicitly account for those dependencies.</p>
+<p>The <a href="./interpreter-design.html#module-entry">Java entry paths</a> implement module and
+supplied-expression evaluation, not a general selected-activation debugger API.</p>
+<h2 id="execution-observation-and-intervention"><a class="header" href="#execution-observation-and-intervention">Execution, Observation and Intervention</a></h2>
+<p>The <a href="./foreign-objects.html#control-tokens-and-execution-agreements">execution agreement</a>
+distinguishes ordinary evaluation, representation maintenance and explicitly
+authorized observation/intervention. Tools use that contract rather than gaining
+execution rights from possession of a configuration. Backend preparation and
+retention follow the <a href="./interpreter-design.html#machine-components">Java coordination rules</a>.</p>
+<p>For example, an immutable published observation can be consumed while ordinary
+execution continues. Reading live slots needs a specified consistency model;
+changing one is an intervention whose effective ordering must be defined.
+Replacing or resuming a continuation also needs an ownership-transfer protocol
+so its previous owner cannot continue. These examples do not imply a general
+monitor or selected-activation intervention API in the current prototype.</p>
+<p>A model checker is another explicitly supplied tool: a supporting parallel VM
+could honor its request for independent simultaneous transitions under the
+<a href="./future.html#independent-transitions-and-parallel-execution">parallel-agreement requirements</a>.
+The execution capability, proof evidence and concrete implementation must meet
+that agreement; a saved configuration alone supplies none of them.</p>
 <h2 id="descriptors-as-the-naming-bridge"><a class="header" href="#descriptors-as-the-naming-bridge">Descriptors as the Naming Bridge</a></h2>
-<p>The <a href="./descriptors.html">descriptor layer</a> gives every syntactic element an attachment point for meta-information. One critical use of this attachment point is <strong>naming</strong>: giving an identity to an AST node so that external tools can reference it.</p>
-<p>Most elements already have intrinsic names — slot names, method names, parameter names. For elements that lack a natural identity (anonymous sub-expressions, intermediate results), a descriptor can supply one:</p>
-<pre><code class="language-vh">{
-    compute(x, y) {
-        var result = (x.mul(y).plus(x) : intermediateSum)
-        result.div(y)
-    }
-}
-</code></pre>
-<p>The descriptor <code>intermediateSum</code> does not alter execution — the core interpreter ignores it. But a tool can now attach information to that specific sub-expression by referencing its name.</p>
+<p>Intrinsic declaration names identify many syntax elements. A descriptor can name
+an otherwise anonymous expression, for example <code>(compute(x) : intermediate)</code>.
+It attaches information without changing execution. Name resolution for tool
+references is separate from language message lookup.</p>
 <h2 id="external-annotation-files"><a class="header" href="#external-annotation-files">External Annotation Files</a></h2>
-<p>Tools store their annotations in <strong>external files</strong>, separate from the source. Each tool defines its own annotation format and references elements by name:</p>
-<pre><code># hypothetical type-checker annotation file
-compute.x          : Int
-compute.y          : Int
-compute.result     : Int
-compute.intermediateSum : Int
-</code></pre>
-<pre><code># hypothetical abstract-interpreter annotation file
-compute.x          : interval(0, 100)
-compute.y          : interval(1, 50)
-compute.intermediateSum : interval(0, 10100)
-</code></pre>
-<p>This separation has several consequences:</p>
-<ul>
-<li><strong>The source is never polluted.</strong> A program reads the same whether zero or ten tools are in use. Adding a tool does not require modifying source files.</li>
-<li><strong>Multiple tools coexist without conflict.</strong> Each tool has its own annotation files. A type checker’s annotations and an abstract interpreter’s annotations never interfere — they are independent views of the same program.</li>
-<li><strong>Tools are optional from the runtime’s perspective.</strong> The base interpreter runs without consulting any annotation file. Tools layer on top.</li>
-<li><strong>Annotations can evolve independently.</strong> Upgrading a tool, changing its analysis strategy, or switching abstract domains does not touch the source.</li>
-</ul>
+<p>Each tool may keep a separate external file associating syntax identities with
+its own facts: a type, interval, units assumption, proof obligation or diagnostic.
+Formats and interpretations belong to the tool. Adding or changing annotations
+does not alter raw execution, supply runtime capabilities or establish that an
+asserted property holds. Different tool views need not use a shared format.</p>
 <h2 id="qualified-naming"><a class="header" href="#qualified-naming">Qualified Naming</a></h2>
-<p>To disambiguate identically named elements in different scopes, tools use <strong>qualified paths</strong> rooted at the module or top-level object:</p>
-<pre><code>module.ClassName.methodName.localVar
-module.ClassName.methodName.paramName
-</code></pre>
-<p>The exact path format is a tooling convention, not a language-level concern. The language provides the names (intrinsic or via descriptors); tools define how to compose them into unambiguous references.</p>
+<p>Paths such as <code>module.Class.method.local</code> are proposed tooling conventions,
+not language selectors. Tools must resolve collisions and preserve references
+when source changes. Descriptor-supplied names can identify subexpressions, but
+a stable AST/source-mapping scheme is still required; spelling a name alone does
+not solve identity across edits.</p>
 <h2 id="connection-to-abstract-interpretation"><a class="header" href="#connection-to-abstract-interpretation">Connection to Abstract Interpretation</a></h2>
-<p>The current visitor interpreter is a CESK-inspired small-step machine with
-explicit storage and continuations; lexical scope uses activation objects.
-This is a basis for analysis experiments, not an implemented abstract
-interpreter. Changing allocation alone cannot establish soundness: abstract
-values, stores, control, transition rules and foreign-effect models must be
-related to reference execution. See <a href="./interpreter-design.html">Interpreter Design</a>.</p>
-<p>This follows two complementary approaches:</p>
-<ul>
-<li><strong>AAM</strong> (Van Horn and Might, 2010) — refactor concrete abstract machines into
-a form suitable for systematic abstraction, including bounded stores.</li>
-<li><strong>ADI</strong> (Darais, Labich, Nguyen, and Van Horn, 2017) — derive analyses from
-definitional interpreters using suitable monadic abstractions.</li>
-</ul>
-<p>These are research approaches to relating execution and analysis, not automatic
-consequences of a configurable allocator. VarioHyve currently uses explicit
-machine states and continuations; it has not implemented either analysis
-derivation. Tool-specific assumptions and foreign behavior remain part of the
-proof obligations.</p>
-<p>The descriptor-based naming layer provides the bridge between any abstract analysis and the programmer’s intent. External annotation files tell the abstract instantiation what abstract domains, type assumptions, or invariants to apply to each named element — without those assumptions being embedded in the source.</p>
-<p>Because descriptor names are stable across interpreter instantiations (the AST is the same whether run concretely or abstractly), a single annotation file can serve any abstract instantiation that understands its format.</p>
-<h2 id="design-summary"><a class="header" href="#design-summary">Design Summary</a></h2>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>Concern</th><th>Mechanism</th></tr>
-</thead>
-<tbody>
-<tr><td>Element identity</td><td>Intrinsic names (slots, methods, params) or descriptor-supplied names</td></tr>
-<tr><td>Annotation storage</td><td>External files, one per tool or analysis</td></tr>
-<tr><td>Cross-referencing</td><td>Qualified paths (tooling convention)</td></tr>
-<tr><td>Annotation runtime cost</td><td>Zero — interpreter ignores descriptors and never reads annotation files</td></tr>
-<tr><td>Interactive evaluation</td><td>Explicit tool-supplied or selected activation context; ordinary lookup and Alien/Expat rules</td></tr>
-<tr><td>Tool independence</td><td>Each tool has its own view; no shared annotation format required</td></tr>
-<tr><td>Source cleanliness</td><td>Descriptors are optional; most elements need no explicit naming</td></tr>
-<tr><td>Interpreter design</td><td>Concrete visitor machine with explicit state; abstract interpretation remains research work</td></tr>
-</tbody>
-</table>
-</div>
+<p>The explicit-state visitor machine provides a starting point for analysis.
+<a href="./related-works.html">AAM and ADI</a> are research approaches, not modes enabled by
+an allocator or an “abstract kernel.” The required derivation is described under
+<a href="./future.html#persistence-and-analysis">Persistence and Analysis</a>.</p>
+<p>Annotations may supply domains or assumptions to a particular analysis, which
+must state their meaning and justify its results. Descriptors alone perform no
+checking. Analysis, mirror tooling and persistence remain
+<a href="./future.html">future work</a>.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="foreign-objects.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="interpreter-design.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
@@ -316,7 +270,7 @@ proof obligations.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="foreign-objects.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="interpreter-design.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
