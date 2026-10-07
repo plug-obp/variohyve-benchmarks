@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-b0f8be02.js";
+            window.path_to_searchindex_js = "searchindex-4e2a9cbc.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-1ce75dcc.js"></script>
@@ -211,6 +211,12 @@ lexical scope objects from nearest to farthest. An activation contributes its
 own accessors. A lexical object scope contributes only declarations from its
 originating contribution, associated with its bound receiver. Arbitrary members
 added by a subclass do not become lexical declarations.</p>
+<p>A selected contribution and its member classes retain their exact application
+occurrence and captured lexical ancestry at every nesting depth. Qualified
+<code>outer</code> and implicit lexical receiver selection follow that ancestry. Messages
+dispatch normally on the selected receiver, and <code>super</code> continues after the
+executing occurrence. Repeated applications of one declaration remain distinct;
+lexical traversal never reselects an earlier application on the same receiver.</p>
 <p>For an exact send, the nearest scope declaring the selector selects its receiver;
 exact dispatch then honors overrides on that receiver. For invocation, use the
 <a href="message-sends.html#candidate-selection">candidate rules</a>:</p>
@@ -281,9 +287,12 @@ not activation objects exposed by <code>outer</code>.</p>
 <p>Contributed methods preserve their definition and application origins; applying
 a mixin elsewhere cannot substitute the receiving class’s outer scope.
 Member classes also retain their bound receiver and declaration origin.
-The deeper repeated-parent case is an
-<a href="../../design-notes/outer-newspeak-comparison.html#deeper-repeated-parent-diagnostic">unresolved documented choice</a>;
-do not claim complete Newspeak equivalence.</p>
+This holds at every nesting depth: a member selected from the second of two
+applications retains that application’s farther enclosing objects, even when
+both applications share the same declaration and immediate receiver. The
+<a href="../../design-notes/outer-newspeak-comparison.html#deeper-repeated-parent-diagnostic">repeated-parent example</a>
+therefore returns <code>42</code>, preserving the selected <code>b.Family</code> ancestry. This is an
+intentional difference from Newspeak’s deeper nearest-parent reselection rule.</p>
 <p><code>outer C</code> is a standalone receiver value: grouping, passing it as an argument
 and ordinary sends are allowed. It grants no public parent getter, activation
 reflection or additional access authority. Bare <code>outer</code>, unqualified

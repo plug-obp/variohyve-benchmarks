@@ -39,7 +39,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-b0f8be02.js";
+            window.path_to_searchindex_js = "searchindex-4e2a9cbc.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-1ce75dcc.js"></script>
@@ -809,8 +809,15 @@ composition does not replace its captured definition dependencies.</p>
 <p><code>Member</code> binds to the enclosing receiver and its declaration/application origin.
 Its zero-argument accessor lazily realizes and caches one class per enclosing
 receiver and declaration occurrence. Repeated access returns that identity;
-different enclosing receivers obtain distinct classes. The member can use
-stored <code>value</code>, but cannot acquire <code>Container</code>’s constructor binding <code>input</code>.
+different enclosing receivers or application occurrences obtain distinct classes.
+The member binds to the actual enclosing receiver while retaining the selected
+occurrence’s captured lexical ancestry at every depth, including when selected
+through <code>super</code>. Its factories retain that same definition parent. Ordinary
+messages to the enclosing receiver still honor overrides; retaining ancestry
+does not restrict virtual sibling selection to the originating contribution.
+See <a href="#lookup-order">lexical receiver selection</a>.</p>
+<p>The member can use stored <code>value</code>, but cannot acquire <code>Container</code>’s constructor
+binding <code>input</code>.
 Members are available regardless of their position among slot initializers.</p>
 <p><code>Captured</code> and <code>NamedCapture</code> are slots initialized by class expressions. Both
 capture the evaluation scope, including <code>input</code>. An expression’s optional name
@@ -1358,6 +1365,12 @@ lexical scope objects from nearest to farthest. An activation contributes its
 own accessors. A lexical object scope contributes only declarations from its
 originating contribution, associated with its bound receiver. Arbitrary members
 added by a subclass do not become lexical declarations.</p>
+<p>A selected contribution and its member classes retain their exact application
+occurrence and captured lexical ancestry at every nesting depth. Qualified
+<code>outer</code> and implicit lexical receiver selection follow that ancestry. Messages
+dispatch normally on the selected receiver, and <code>super</code> continues after the
+executing occurrence. Repeated applications of one declaration remain distinct;
+lexical traversal never reselects an earlier application on the same receiver.</p>
 <p>For an exact send, the nearest scope declaring the selector selects its receiver;
 exact dispatch then honors overrides on that receiver. For invocation, use the
 <a href="#candidate-selection">candidate rules</a>:</p>
@@ -1428,9 +1441,12 @@ not activation objects exposed by <code>outer</code>.</p>
 <p>Contributed methods preserve their definition and application origins; applying
 a mixin elsewhere cannot substitute the receiving class’s outer scope.
 Member classes also retain their bound receiver and declaration origin.
-The deeper repeated-parent case is an
-<a href="../../design-notes/outer-newspeak-comparison.html#deeper-repeated-parent-diagnostic">unresolved documented choice</a>;
-do not claim complete Newspeak equivalence.</p>
+This holds at every nesting depth: a member selected from the second of two
+applications retains that application’s farther enclosing objects, even when
+both applications share the same declaration and immediate receiver. The
+<a href="../../design-notes/outer-newspeak-comparison.html#deeper-repeated-parent-diagnostic">repeated-parent example</a>
+therefore returns <code>42</code>, preserving the selected <code>b.Family</code> ancestry. This is an
+intentional difference from Newspeak’s deeper nearest-parent reselection rule.</p>
 <p><code>outer C</code> is a standalone receiver value: grouping, passing it as an argument
 and ordinary sends are allowed. It grants no public parent getter, activation
 reflection or additional access authority. Bare <code>outer</code>, unqualified
@@ -2385,7 +2401,7 @@ any claim of unlimited execution.</p>
 </thead>
 <tbody>
 <tr><td>Numbers and strings</td><td>Signed 64-bit integer literals and string transport. Decimal literals are rejected; native arithmetic/string protocols are absent. Broader numeric range, overflow and string contracts remain underdeveloped.</td></tr>
-<tr><td>Qualified <code>outer</code></td><td>Runtime name scan over lexical scopes; frontend binding to declaration identities remains unfinished. The documented deeper repeated-parent case follows captured application scopes pending its semantic decision.</td></tr>
+<tr><td>Qualified <code>outer</code></td><td>Runtime name scan over lexical scopes; frontend binding to declaration identities remains unfinished. Exact captured application ancestry at every depth implements the accepted lexical-origin rule.</td></tr>
 <tr><td>Holes</td><td>A reached hole is fatal (<code>UnresolvedHole</code>); no configurable concrete policy.</td></tr>
 <tr><td>Composition</td><td>Whole-declaration member override and the specified shared-name state; no deep family merge or adaptation algebra.</td></tr>
 <tr><td>Non-local returns across foreign execution</td><td>Boundary-owned agreement; only default no crossing is implemented. A supporting transfer protocol is deferred.</td></tr>
@@ -2836,7 +2852,8 @@ explicit module inputs and preserves declaration origins in lexical selection
 and mixin application. It specifies its own callable eligibility, initialization
 and class-side construction. The
 <a href="../../design-notes/outer-newspeak-comparison.html">detailed comparison</a> records
-unresolved differences, including deeper repeated parent applications; complete
+deliberate differences, including exact captured ancestry for deeper repeated
+parent applications, and remaining implementation limits; complete
 Newspeak conformance is not claimed.
 <a href="https://bracha.org/newspeak-modules.pdf">Bracha et al., <em>Modules as Objects in Newspeak</em> (2010)</a></p>
 <p>Piumarta and Warth bootstrap an extensible object model from a small messaging
@@ -3101,7 +3118,11 @@ form returns the canonical identity \(v_{\mathrm{null}}\).</p>
 <p>The <code>self</code> rule requires a receiver; absence is an error. For <code>outer(D)</code>, let
 \(\rho_j\) be the first declaration-relative view for lexical declaration
 \(D\) in the retained lexical chain. No such view is <code>InvalidOuter</code>.
-The disputed deeper repeated-parent case is parameter <strong>O</strong> below.</p>
+At every depth, traversal follows the retained lexical parent of each activation
+or view. A view preserves its exact occurrence and captured definition parent;
+the enclosing receiver’s contribution chain is never searched for a replacement
+application of the same declaration. Implicit lexical selection uses this same
+chain, followed by ordinary dispatch on the selected receiver.</p>
 <p>\[
 \frac{\sigma(\rho_j)=\mathrm{View}(v,o,\rho_d)\qquad \mu_o.D=D}
 {\langle\mathrm{outer}(D),\rho,\kappa\rangle_X
@@ -3728,7 +3749,6 @@ not retain execution authority.</p>
 </thead>
 <tbody>
 <tr><td><strong>S — scalar profile</strong></td><td>Numeric domains, overflow and native string/number methods are underdeveloped. The prototype supplies signed-64-bit/string transport, not the full intended scalar protocol.</td></tr>
-<tr><td><strong>O — outer origins</strong></td><td>The deeper repeated-parent case remains undecided; Java follows captured application scopes. Ordinary declaration-relative cases are fixed.</td></tr>
 <tr><td><strong>B — adapter relation</strong></td><td>Each adapter must specify effect-free selection, conversion, foreign actions and failure kinds satisfying the boundary contract.</td></tr>
 <tr><td><strong>Execution authority</strong></td><td>The global sequential admission condition must be refined by every ordinary entry, callback and completion path. Host queues, fairness, parallel execution and intervention relations require additional contracts; token uniqueness does not prohibit concurrent implementation maintenance.</td></tr>
 <tr><td><strong>Static validity</strong></td><td>Complete surface-to-core elaboration and declaration-validity judgments remain to be mechanized; invalid/unsupported forms must fail, not acquire substitute semantics.</td></tr>

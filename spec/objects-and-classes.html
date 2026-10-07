@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-b0f8be02.js";
+            window.path_to_searchindex_js = "searchindex-4e2a9cbc.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-1ce75dcc.js"></script>
@@ -361,8 +361,15 @@ composition does not replace its captured definition dependencies.</p>
 <p><code>Member</code> binds to the enclosing receiver and its declaration/application origin.
 Its zero-argument accessor lazily realizes and caches one class per enclosing
 receiver and declaration occurrence. Repeated access returns that identity;
-different enclosing receivers obtain distinct classes. The member can use
-stored <code>value</code>, but cannot acquire <code>Container</code>’s constructor binding <code>input</code>.
+different enclosing receivers or application occurrences obtain distinct classes.
+The member binds to the actual enclosing receiver while retaining the selected
+occurrence’s captured lexical ancestry at every depth, including when selected
+through <code>super</code>. Its factories retain that same definition parent. Ordinary
+messages to the enclosing receiver still honor overrides; retaining ancestry
+does not restrict virtual sibling selection to the originating contribution.
+See <a href="name-resolution.html#lookup-order">lexical receiver selection</a>.</p>
+<p>The member can use stored <code>value</code>, but cannot acquire <code>Container</code>’s constructor
+binding <code>input</code>.
 Members are available regardless of their position among slot initializers.</p>
 <p><code>Captured</code> and <code>NamedCapture</code> are slots initialized by class expressions. Both
 capture the evaluation scope, including <code>input</code>. An expression’s optional name

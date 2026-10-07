@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-b0f8be02.js";
+            window.path_to_searchindex_js = "searchindex-4e2a9cbc.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-1ce75dcc.js"></script>
@@ -369,7 +369,11 @@ form returns the canonical identity \(v_{\mathrm{null}}\).</p>
 <p>The <code>self</code> rule requires a receiver; absence is an error. For <code>outer(D)</code>, let
 \(\rho_j\) be the first declaration-relative view for lexical declaration
 \(D\) in the retained lexical chain. No such view is <code>InvalidOuter</code>.
-The disputed deeper repeated-parent case is parameter <strong>O</strong> below.</p>
+At every depth, traversal follows the retained lexical parent of each activation
+or view. A view preserves its exact occurrence and captured definition parent;
+the enclosing receiver’s contribution chain is never searched for a replacement
+application of the same declaration. Implicit lexical selection uses this same
+chain, followed by ordinary dispatch on the selected receiver.</p>
 <p>\[
 \frac{\sigma(\rho_j)=\mathrm{View}(v,o,\rho_d)\qquad \mu_o.D=D}
 {\langle\mathrm{outer}(D),\rho,\kappa\rangle_X
@@ -996,7 +1000,6 @@ not retain execution authority.</p>
 </thead>
 <tbody>
 <tr><td><strong>S — scalar profile</strong></td><td>Numeric domains, overflow and native string/number methods are underdeveloped. The prototype supplies signed-64-bit/string transport, not the full intended scalar protocol.</td></tr>
-<tr><td><strong>O — outer origins</strong></td><td>The deeper repeated-parent case remains undecided; Java follows captured application scopes. Ordinary declaration-relative cases are fixed.</td></tr>
 <tr><td><strong>B — adapter relation</strong></td><td>Each adapter must specify effect-free selection, conversion, foreign actions and failure kinds satisfying the boundary contract.</td></tr>
 <tr><td><strong>Execution authority</strong></td><td>The global sequential admission condition must be refined by every ordinary entry, callback and completion path. Host queues, fairness, parallel execution and intervention relations require additional contracts; token uniqueness does not prohibit concurrent implementation maintenance.</td></tr>
 <tr><td><strong>Static validity</strong></td><td>Complete surface-to-core elaboration and declaration-validity judgments remain to be mechanized; invalid/unsupported forms must fail, not acquire substitute semantics.</td></tr>
