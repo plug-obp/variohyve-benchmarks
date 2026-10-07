@@ -1,0 +1,12 @@
+{
+  "sha": "d888c2aa464df2a3e97770c4355496d5a344d2ba",
+  "branch": "docs/agent-guide-and-design-index",
+  "run_url": "https://github.com/plug-obp/variohyve/actions/runs/37518478657",
+  "outcome": "success",
+  "reported_at": "2026-10-06T19:33:06.271783+00:00",
+  "tests": 665,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "duration_seconds": 15.233999999999998
+}
