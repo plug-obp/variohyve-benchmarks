@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - VisitorSemanticsVMStepTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>VisitorSemanticsVMStepTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/vh.vm.html">vh.vm</a> &gt; VisitorSemanticsVMStepTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">238</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">1.400s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="tab-container">
+<ul class="tabLinks">
+<li>
+<a href="#">Tests</a>
+</li>
+</ul>
+<div class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Method name</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">false not</td>
+<td class="success">bootstrapSemantics()[100]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">false ifTrue/1</td>
+<td class="success">bootstrapSemantics()[101]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">false ifFalse/1</td>
+<td class="success">bootstrapSemantics()[102]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">false ifTrue/2</td>
+<td class="success">bootstrapSemantics()[103]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">false ifFalse/2</td>
+<td class="success">bootstrapSemantics()[104]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">false toString</td>
+<td class="success">bootstrapSemantics()[105]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">false isNull</td>
+<td class="success">bootstrapSemantics()[106]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">false notNull</td>
+<td class="success">bootstrapSemantics()[107]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">null toString</td>
+<td class="success">bootstrapSemantics()[108]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">null isNull</td>
+<td class="success">bootstrapSemantics()[109]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">top-level return rejected</td>
+<td class="success">bootstrapSemantics()[10]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">null notNull</td>
+<td class="success">bootstrapSemantics()[110]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">native lazy branches exactly once</td>
+<td class="success">bootstrapSemantics()[111]</td>
+<td class="success">0.035s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">native eager arguments still evaluated</td>
+<td class="success">bootstrapSemantics()[112]</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">native branches preserve object results</td>
+<td class="success">bootstrapSemantics()[113]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">native branch lexical non-local returns</td>
+<td class="success">bootstrapSemantics()[114]</td>
+<td class="success">0.017s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">native branch dead home rejected</td>
+<td class="success">bootstrapSemantics()[115]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">native singleton boundary round trips</td>
+<td class="success">bootstrapSemantics()[116]</td>
+<td class="success">0.006s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">canonical values and null literals are native objects</td>
+<td class="success">bootstrapSemantics()[117]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">native singleton scope isolation</td>
+<td class="success">bootstrapSemantics()[118]</td>
+<td class="success">0.006s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">native singleton aliases immutable</td>
+<td class="success">bootstrapSemantics()[119]</td>
+<td class="success">0.014s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">canonical booleans</td>
+<td class="success">bootstrapSemantics()[11]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">native branch failure and budget</td>
+<td class="success">bootstrapSemantics()[120]</td>
+<td class="success">0.009s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">root identity and canonical round trips</td>
+<td class="success">bootstrapSemantics()[121]</td>
+<td class="success">0.007s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">root equality and hash overrides</td>
+<td class="success">bootstrapSemantics()[122]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">root display is generic unless explicitly overridden</td>
+<td class="success">bootstrapSemantics()[123]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">root service isolation in modules</td>
+<td class="success">bootstrapSemantics()[124]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">mirror identity round trips and kinds</td>
+<td class="success">bootstrapSemantics()[125]</td>
+<td class="success">0.006s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">mirror leaves foreign selectors untouched</td>
+<td class="success">bootstrapSemantics()[126]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">mirror ownership and unsupported observations</td>
+<td class="success">bootstrapSemantics()[127]</td>
+<td class="success">0.015s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">mirror class-side membership uses exact metaclass contributions</td>
+<td class="success">bootstrapSemantics()[128]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">lambda Object inheritance and private captures</td>
+<td class="success">bootstrapSemantics()[129]</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">local mutation</td>
+<td class="success">bootstrapSemantics()[12]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">mirror requires explicit module capability</td>
+<td class="success">bootstrapSemantics()[130]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">class primary new and default apply</td>
+<td class="success">bootstrapSemantics()[131]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">class zero arity and fresh instances</td>
+<td class="success">bootstrapSemantics()[132]</td>
+<td class="success">0.008s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">class arity does not inherit root factories</td>
+<td class="success">bootstrapSemantics()[133]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">class parameter shadows slot during initialization</td>
+<td class="success">bootstrapSemantics()[134]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">class parameters unavailable in instance methods</td>
+<td class="success">bootstrapSemantics()[135]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">class constructor parameters immutable</td>
+<td class="success">bootstrapSemantics()[136]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">constructor parameters not public instance slots</td>
+<td class="success">bootstrapSemantics()[137]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">class escaped initializer closure</td>
+<td class="success">bootstrapSemantics()[138]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">class nested identities and lexical outer</td>
+<td class="success">bootstrapSemantics()[139]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">parameter read-only</td>
+<td class="success">bootstrapSemantics()[13]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">class constructor cannot capture invocation scope</td>
+<td class="success">bootstrapSemantics()[140]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">class initialization order and direct slot writes</td>
+<td class="success">bootstrapSemantics()[141]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">class premature reads fail</td>
+<td class="success">bootstrapSemantics()[142]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">class absent initializer becomes canonical null</td>
+<td class="success">bootstrapSemantics()[143]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">class initializer foreign failure is once only</td>
+<td class="success">bootstrapSemantics()[144]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">class slot initializer cannot return to defining method</td>
+<td class="success">bootstrapSemantics()[145]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">escaped class slot initializer has its own home</td>
+<td class="success">bootstrapSemantics()[146]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">top-level initializer rejects premature slot completion</td>
+<td class="success">bootstrapSemantics()[147]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">class instance method named new allowed</td>
+<td class="success">bootstrapSemantics()[148]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">class factory new reserved</td>
+<td class="success">bootstrapSemantics()[149]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">capture mutable slot</td>
+<td class="success">bootstrapSemantics()[14]</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">class custom factory controls result</td>
+<td class="success">bootstrapSemantics()[150]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">class missing mixin fails during definition</td>
+<td class="success">bootstrapSemantics()[151]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">class invalid parameter names</td>
+<td class="success">bootstrapSemantics()[152]</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">native receiver names reserved in declarations</td>
+<td class="success">bootstrapSemantics()[153]</td>
+<td class="success">0.053s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">class root and metaclass graph</td>
+<td class="success">bootstrapSemantics()[154]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">class literal over an empty top activation</td>
+<td class="success">bootstrapSemantics()[155]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">class foreign callbacks preserve identity</td>
+<td class="success">bootstrapSemantics()[156]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">class constructor bindings do not rebind mixins</td>
+<td class="success">bootstrapSemantics()[157]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">initializer method call cannot see constructor arguments</td>
+<td class="success">bootstrapSemantics()[158]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">instance methods resolve independent same-name outer bindings</td>
+<td class="success">bootstrapSemantics()[159]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">forward closure capture</td>
+<td class="success">bootstrapSemantics()[15]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">initializer lambda and class expressions deliberately capture arguments</td>
+<td class="success">bootstrapSemantics()[160]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">captured class methods cannot see their own constructor arguments</td>
+<td class="success">bootstrapSemantics()[161]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">member cache binds one class per enclosing receiver</td>
+<td class="success">bootstrapSemantics()[162]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">member classes do not capture constructor arguments</td>
+<td class="success">bootstrapSemantics()[163]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">member use during initialization observes uninitialized slots</td>
+<td class="success">bootstrapSemantics()[164]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">same-body member declaration conflicts are explicit</td>
+<td class="success">bootstrapSemantics()[165]</td>
+<td class="success">0.009s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">inherited method outer dependency is not captured by child member</td>
+<td class="success">bootstrapSemantics()[166]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">lexically selected receiver still dispatches to overrides</td>
+<td class="success">bootstrapSemantics()[167]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">inherited member class binds the current enclosing receiver</td>
+<td class="success">bootstrapSemantics()[168]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">member declaration override selects the cached replacement</td>
+<td class="success">bootstrapSemantics()[169]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">premature local read</td>
+<td class="success">bootstrapSemantics()[16]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">reapplied member mixin preserves definition scope and receiver origin</td>
+<td class="success">bootstrapSemantics()[170]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">qualified outer survives named expression and escaped lambda</td>
+<td class="success">bootstrapSemantics()[171]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">module named and anonymous entries use an empty root</td>
+<td class="success">bootstrapSemantics()[172]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">module inputs are explicit and preserve identity</td>
+<td class="success">bootstrapSemantics()[173]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">module arity is checked before initialization</td>
+<td class="success">bootstrapSemantics()[174]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">module entry rejects expressions and top-level composition</td>
+<td class="success">bootstrapSemantics()[175]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">module service authority is not ambient</td>
+<td class="success">bootstrapSemantics()[176]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">module optional bundle is an ordinary argument</td>
+<td class="success">bootstrapSemantics()[177]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">module entry does not invoke an entry method</td>
+<td class="success">bootstrapSemantics()[178]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">module constructor callbacks preserve native identity</td>
+<td class="success">bootstrapSemantics()[179]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">premature object read</td>
+<td class="success">bootstrapSemantics()[17]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">module definition and construction share a budget</td>
+<td class="success">bootstrapSemantics()[180]</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">module callback cannot swallow exhausted execution</td>
+<td class="success">bootstrapSemantics()[181]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">module initializer foreign failure executes once</td>
+<td class="success">bootstrapSemantics()[182]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">module imports enforce ordinary conversion and ownership</td>
+<td class="success">bootstrapSemantics()[183]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">module arguments retain deliberately captured tooling authority</td>
+<td class="success">bootstrapSemantics()[184]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">module member class sees slots but no construction context</td>
+<td class="success">bootstrapSemantics()[185]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">foreign selectors self outer super retain their protocol meaning</td>
+<td class="success">bootstrapSemantics()[186]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">platform capability bindings reject native receiver-origin names</td>
+<td class="success">bootstrapSemantics()[187]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">opaque handles have no native object ontology</td>
+<td class="success">bootstrapSemantics()[188]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">native wrappers share foreign handle but retain native identity</td>
+<td class="success">bootstrapSemantics()[189]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">default slot value</td>
+<td class="success">bootstrapSemantics()[18]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">selected foreign failure retains kind without replay</td>
+<td class="success">bootstrapSemantics()[190]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">handled callback failure retains its kind without aborting caller</td>
+<td class="success">bootstrapSemantics()[191]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">foreign lookup failures preserve defined categories</td>
+<td class="success">bootstrapSemantics()[192]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">VM service result recovers native identity or rejects representation</td>
+<td class="success">bootstrapSemantics()[193]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">self expression without a receiver is a language diagnostic</td>
+<td class="success">bootstrapSemantics()[194]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">initializer local completion discards result and restores caller</td>
+<td class="success">bootstrapSemantics()[195]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">initializer checks target phase even on last slot</td>
+<td class="success">bootstrapSemantics()[196]</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">slot-created return lambda may complete post-slot body</td>
+<td class="success">bootstrapSemantics()[197]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">initializer invocations have distinct retired homes and retained data</td>
+<td class="success">bootstrapSemantics()[198]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">method returns during slot initialization keep their own homes</td>
+<td class="success">bootstrapSemantics()[199]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">lexical object chain</td>
+<td class="success">bootstrapSemantics()[19]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">integer</td>
+<td class="success">bootstrapSemantics()[1]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">escaped class retains data without definition method return authority</td>
+<td class="success">bootstrapSemantics()[200]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">outside return retires intervening initializer home</td>
+<td class="success">bootstrapSemantics()[201]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">initializer failures retire captured home and preserve prior effects</td>
+<td class="success">bootstrapSemantics()[202]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">initializer execution budget retires captured home</td>
+<td class="success">bootstrapSemantics()[203]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">initializer return cannot cross active Alien callback</td>
+<td class="success">bootstrapSemantics()[204]</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">initializer completion resumes pending contribution on same receiver</td>
+<td class="success">bootstrapSemantics()[205]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">failed initializer retires all nested initializer homes</td>
+<td class="success">bootstrapSemantics()[206]</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">initializer failure retires home when stepping directly</td>
+<td class="success">bootstrapSemantics()[207]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">return checks target initializer phase rather than current initializer phase</td>
+<td class="success">bootstrapSemantics()[208]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">factory apply replaces only its constructor arity</td>
+<td class="success">bootstrapSemantics()[209]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">reified mixin definition scope</td>
+<td class="success">bootstrapSemantics()[20]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">other apply arities preserve default primary construction</td>
+<td class="success">bootstrapSemantics()[210]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">named factories return arbitrary values and call each other</td>
+<td class="success">bootstrapSemantics()[211]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">factory delegation initializes exactly one instance</td>
+<td class="success">bootstrapSemantics()[212]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">flat metaclasses expose only owned factories</td>
+<td class="success">bootstrapSemantics()[213]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">primary factories and private initializers are generated language functions</td>
+<td class="success">bootstrapSemantics()[214]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">construction helpers cannot be intercepted or invoked as selectors</td>
+<td class="success">bootstrapSemantics()[215]</td>
+<td class="success">0.016s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">factory methods and instance methods occupy separate protocols</td>
+<td class="success">bootstrapSemantics()[216]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">factory self denotes its class object</td>
+<td class="success">bootstrapSemantics()[217]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">factory lexical new selects its own primary construction</td>
+<td class="success">bootstrapSemantics()[218]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">factory members use enclosing receiver definition scopes</td>
+<td class="success">bootstrapSemantics()[219]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">lexical before inherited lookup</td>
+<td class="success">bootstrapSemantics()[21]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">factory methods cannot resolve class constructor parameters</td>
+<td class="success">bootstrapSemantics()[220]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">factory parameters do not grant authority to constructed methods</td>
+<td class="success">bootstrapSemantics()[221]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">factory invocations have independent method return homes</td>
+<td class="success">bootstrapSemantics()[222]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">escaped factory captures retain data without return authority</td>
+<td class="success">bootstrapSemantics()[223]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">factory failure is not a selector miss or default construction</td>
+<td class="success">bootstrapSemantics()[224]</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">factory new is reserved at every arity</td>
+<td class="success">bootstrapSemantics()[225]</td>
+<td class="success">0.006s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">duplicate factory signatures are rejected</td>
+<td class="success">bootstrapSemantics()[226]</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">superclass and mixin routing share receiver state</td>
+<td class="success">bootstrapSemantics()[227]</td>
+<td class="success">0.026s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">initializer completion preserves remaining contributions</td>
+<td class="success">bootstrapSemantics()[228]</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">super resumes after the exact repeated mixin occurrence</td>
+<td class="success">bootstrapSemantics()[229]</td>
+<td class="success">0.008s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">reified mixin lookup order</td>
+<td class="success">bootstrapSemantics()[22]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">class clauses preserve reified mixin definition objects</td>
+<td class="success">bootstrapSemantics()[230]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">classes cache shared-name layout and mixins own their formals</td>
+<td class="success">bootstrapSemantics()[231]</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">own slot accessor precedes composed method</td>
+<td class="success">bootstrapSemantics()[232]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">class target resolution does not execute routed arguments</td>
+<td class="success">bootstrapSemantics()[233]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">initializer routing rejects premature completion</td>
+<td class="success">bootstrapSemantics()[234]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">composed mixin application keeps only owned storage and definition</td>
+<td class="success">bootstrapSemantics()[235]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">owned mixin initialization skips original routing expressions</td>
+<td class="success">bootstrapSemantics()[236]</td>
+<td class="success">0.006s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">superclass application retains original routing and full state</td>
+<td class="success">bootstrapSemantics()[237]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">deep construction uses machine continuations</td>
+<td class="success">bootstrapSemantics()[238]</td>
+<td class="success">0.316s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">explicit self skips lexical chain</td>
+<td class="success">bootstrapSemantics()[23]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">lexical method home</td>
+<td class="success">bootstrapSemantics()[24]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">escaped return rejects dead home</td>
+<td class="success">bootstrapSemantics()[25]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">escaped closure retains locals</td>
+<td class="success">bootstrapSemantics()[26]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">caller restored for arguments</td>
+<td class="success">bootstrapSemantics()[27]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">zero-argument invocation</td>
+<td class="success">bootstrapSemantics()[28]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">non-callable binding does not supply an invocation selector</td>
+<td class="success">bootstrapSemantics()[29]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">string</td>
+<td class="success">bootstrapSemantics()[2]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">getter and direct method priority</td>
+<td class="success">bootstrapSemantics()[30]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">nearer local and parameter callables precede outer methods</td>
+<td class="success">bootstrapSemantics()[31]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">ineligible bindings continue lookup but uninitialized reads fail</td>
+<td class="success">bootstrapSemantics()[32]</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">implicit invocation preserves distinct arities and same-scope priority</td>
+<td class="success">bootstrapSemantics()[33]</td>
+<td class="success">0.006s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">implicit callable invocation evaluates arguments once in order</td>
+<td class="success">bootstrapSemantics()[34]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">selected implicit callable failure does not invoke outer method</td>
+<td class="success">bootstrapSemantics()[35]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">callable invocation evaluates arguments once</td>
+<td class="success">bootstrapSemantics()[36]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">injected primitive</td>
+<td class="success">bootstrapSemantics()[37]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">primitive failure is a machine error</td>
+<td class="success">bootstrapSemantics()[38]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">world isolation</td>
+<td class="success">bootstrapSemantics()[39]</td>
+<td class="success">0.006s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">null</td>
+<td class="success">bootstrapSemantics()[3]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">reserved names</td>
+<td class="success">bootstrapSemantics()[40]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">duplicate local names</td>
+<td class="success">bootstrapSemantics()[41]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">decimal diagnostic</td>
+<td class="success">bootstrapSemantics()[42]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">invalid superclass target is explicit</td>
+<td class="success">bootstrapSemantics()[43]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">unsupported super is explicit</td>
+<td class="success">bootstrapSemantics()[44]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">bounded recursive execution</td>
+<td class="success">bootstrapSemantics()[45]</td>
+<td class="success">0.044s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">generic selector and arity</td>
+<td class="success">bootstrapSemantics()[46]</td>
+<td class="success">0.007s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">opaque public client</td>
+<td class="success">bootstrapSemantics()[47]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">proxy round trips and aliasing</td>
+<td class="success">bootstrapSemantics()[48]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">opaque reference ownership</td>
+<td class="success">bootstrapSemantics()[49]</td>
+<td class="success">0.008s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">empty</td>
+<td class="success">bootstrapSemantics()[4]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">primitive value conversion</td>
+<td class="success">bootstrapSemantics()[50]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">raw backend values rejected</td>
+<td class="success">bootstrapSemantics()[51]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">foreign invocation selects exactly and explicit apply evaluates arguments once</td>
+<td class="success">bootstrapSemantics()[52]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">foreign failure never retries</td>
+<td class="success">bootstrapSemantics()[53]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">nested language miss never retries</td>
+<td class="success">bootstrapSemantics()[54]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">foreign lookup failure never retries</td>
+<td class="success">bootstrapSemantics()[55]</td>
+<td class="success">0.009s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">explicit foreign request and reply</td>
+<td class="success">bootstrapSemantics()[56]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">callback restores caller and aliases</td>
+<td class="success">bootstrapSemantics()[57]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">nested foreign callbacks</td>
+<td class="success">bootstrapSemantics()[58]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">construction returns Expat</td>
+<td class="success">bootstrapSemantics()[59]</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">hole</td>
+<td class="success">bootstrapSemantics()[5]</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">foreign code can handle callback failure</td>
+<td class="success">bootstrapSemantics()[60]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">callback shares execution budget</td>
+<td class="success">bootstrapSemantics()[61]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">multiple callbacks share budget</td>
+<td class="success">bootstrapSemantics()[62]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">callback nesting bounded</td>
+<td class="success">bootstrapSemantics()[63]</td>
+<td class="success">0.011s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">callback local non-local return</td>
+<td class="success">bootstrapSemantics()[64]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">boundary denies cross-foreign non-local return by default</td>
+<td class="success">bootstrapSemantics()[65]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">nested boundary handles denial and reports subsequent foreign failure</td>
+<td class="success">bootstrapSemantics()[66]</td>
+<td class="success">0.007s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">missing and retired return homes fail before boundary crossing</td>
+<td class="success">bootstrapSemantics()[67]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">aborted method homes retired</td>
+<td class="success">bootstrapSemantics()[68]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">concurrent callback rejected</td>
+<td class="success">bootstrapSemantics()[69]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">let</td>
+<td class="success">bootstrapSemantics()[6]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">lookup callbacks rejected</td>
+<td class="success">bootstrapSemantics()[70]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Alien selectors do not inherit native restrictions</td>
+<td class="success">bootstrapSemantics()[71]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">boundary baseline records success failure callback and admission traces</td>
+<td class="success">bootstrapSemantics()[72]</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">boundary facets share identity with distinct restricted views</td>
+<td class="success">bootstrapSemantics()[73]</td>
+<td class="success">0.006s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">retained Expat worker callbacks require live call admission</td>
+<td class="success">bootstrapSemantics()[74]</td>
+<td class="success">0.011s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">pending worker callbacks serialize native state changes</td>
+<td class="success">bootstrapSemantics()[75]</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">nested worker callbacks preserve NLR barriers and recover</td>
+<td class="success">bootstrapSemantics()[76]</td>
+<td class="success">0.007s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">worker callback exhaustion preserves shared budget</td>
+<td class="success">bootstrapSemantics()[77]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">foreign completion joins admitted descendant before native resumption</td>
+<td class="success">bootstrapSemantics()[78]</td>
+<td class="success">0.010s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">worker callback collection preserves suspended operands</td>
+<td class="success">bootstrapSemantics()[79]</td>
+<td class="success">0.024s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">identity closure</td>
+<td class="success">bootstrapSemantics()[7]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">interrupted pending callback does not corrupt admission</td>
+<td class="success">bootstrapSemantics()[80]</td>
+<td class="success">0.010s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">unassociated backend preparation rejects before allocation during NF</td>
+<td class="success">bootstrapSemantics()[81]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">idle backend preparation remains available for leased stepping</td>
+<td class="success">bootstrapSemantics()[82]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">foreign work and immutable observations progress during native callback</td>
+<td class="success">bootstrapSemantics()[83]</td>
+<td class="success">0.013s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">true and</td>
+<td class="success">bootstrapSemantics()[84]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">true or</td>
+<td class="success">bootstrapSemantics()[85]</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">true andThen</td>
+<td class="success">bootstrapSemantics()[86]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">true orElse</td>
+<td class="success">bootstrapSemantics()[87]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">true not</td>
+<td class="success">bootstrapSemantics()[88]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">true ifTrue/1</td>
+<td class="success">bootstrapSemantics()[89]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">object method</td>
+<td class="success">bootstrapSemantics()[8]</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">true ifFalse/1</td>
+<td class="success">bootstrapSemantics()[90]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">true ifTrue/2</td>
+<td class="success">bootstrapSemantics()[91]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">true ifFalse/2</td>
+<td class="success">bootstrapSemantics()[92]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">true toString</td>
+<td class="success">bootstrapSemantics()[93]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">true isNull</td>
+<td class="success">bootstrapSemantics()[94]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">true notNull</td>
+<td class="success">bootstrapSemantics()[95]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">false and</td>
+<td class="success">bootstrapSemantics()[96]</td>
+<td class="success">0.079s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">false or</td>
+<td class="success">bootstrapSemantics()[97]</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">false andThen</td>
+<td class="success">bootstrapSemantics()[98]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">false orElse</td>
+<td class="success">bootstrapSemantics()[99]</td>
+<td class="success">0.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">slot accessor</td>
+<td class="success">bootstrapSemantics()[9]</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="https://www.gradle.org">Gradle 9.1.0</a> at Oct 8, 2026, 11:10:15 PM</p>
+</div>
+</div>
+</body>
+</html>
