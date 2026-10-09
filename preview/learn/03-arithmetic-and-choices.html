@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arithmetic and choices · Learn VarioHyve</title><link rel="stylesheet" href="../preview.css"><link rel="stylesheet" href="./learn.css"></head>
+<body><a class="skip" href="#lesson">Skip to lesson</a><header class="site-header wrap"><a class="wordmark" href="../">VarioHyve<span aria-hidden="true">.</span></a><nav aria-label="Tutorial navigation"><a href="./">All lessons</a><a href="../#downloads">Downloads</a></nav></header>
+<main id="lesson" class="lesson"><p class="eyebrow">LEARN VARIOHYVE · V0.1.0</p><h1>Arithmetic and choices</h1>
+<p>Numbers receive messages too. Run <a href="examples/arithmetic.vh">arithmetic.vh</a>:</p>
+<pre><code class="language-sh">../bin/vh run examples/arithmetic.vh
+</code></pre>
+<p>It prints <code>5</code>, <code>20</code>, <code>3</code> and <code>1</code>, each on a separate line.
+<code>2.plus(3)</code> adds, and <code>2.plus(3).times(4)</code> multiplies the result by four.
+<code>7.quotient(2)</code> produces the integer quotient <code>3</code>; <code>7.remainder(2)</code> gives <code>1</code>.
+<code>toString</code> turns each result into text for the console.</p>
+<p>For a useful calculation, open <a href="examples/temperature.vh">temperature.vh</a>:</p>
+<pre><code class="language-sh">../bin/vh run examples/temperature.vh
+</code></pre>
+<p>Enter <code>20</code>. The output is:</p>
+<pre><code class="language-text">Celsius?
+68.0 F
+</code></pre>
+<p><code>Double.parse</code> turns the input text into a decimal value. Our <code>fahrenheit</code>
+method multiplies by <code>1.8</code>, then adds <code>32.0</code>. Keep both operands decimal when
+doing decimal arithmetic; use an integer's <code>asDouble</code> message when converting
+an existing integer. Double arithmetic is approximate, which is why our tests
+will compare decimal results with a tolerance.</p>
+<p>Next run <a href="examples/choices.vh">choices.vh</a>:</p>
+<pre><code class="language-sh">../bin/vh run examples/choices.vh
+</code></pre>
+<p>Enter <code>7</code>:</p>
+<pre><code class="language-text">An integer?
+7 is odd
+</code></pre>
+<p><code>Integer.parse</code> makes an integer from text. The remainder after division by two
+tells us whether it is even. <code>equals(0)</code> returns a Boolean, which receives
+<code>ifTrue(yes, no)</code>. Each branch is a <code>fun { ... }</code>: a small block of work to run
+later. Only the selected branch runs, and its last expression supplies the result.</p>
+<p>Change the input to <code>8</code> and the answer becomes <code>8 is even</code>.</p>
+<p><a href="04-collections.html">Next: Repetition and collections</a></p>
+</main>
+<footer class="wrap"><p>Public preview v0.1.0 · These examples are included in your starter ZIP.</p><a href="../">Back to the preview</a></footer></body></html>

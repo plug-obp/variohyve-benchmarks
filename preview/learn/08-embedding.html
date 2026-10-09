@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Call VarioHyve from Java · Learn VarioHyve</title><link rel="stylesheet" href="../preview.css"><link rel="stylesheet" href="./learn.css"></head>
+<body><a class="skip" href="#lesson">Skip to lesson</a><header class="site-header wrap"><a class="wordmark" href="../">VarioHyve<span aria-hidden="true">.</span></a><nav aria-label="Tutorial navigation"><a href="./">All lessons</a><a href="../#downloads">Downloads</a></nav></header>
+<main id="lesson" class="lesson"><p class="eyebrow">LEARN VARIOHYVE · V0.1.0</p><h1>Call VarioHyve from Java</h1>
+<p>An existing Java application can use a VarioHyve module as a component.
+<a href="examples/java/calculator.vh">calculator.vh</a> exposes <code>twice(value)</code>, which returns
+<code>value.times(2)</code>. There is no required <code>run</code> method when Java chooses the entry
+message itself.</p>
+<p>Read <a href="examples/java/Embed.java">Embed.java</a>. The important steps are:</p>
+<ol>
+<li>Create <code>JavaHostKernel</code> with the input and output streams the application owns.</li>
+<li>Call <code>kernel.newRuntime()</code> to select the Host Seed and its receiver protocols.</li>
+<li>Read a source snapshot and pass its name, text and constructor arguments to
+<code>runtime.instantiateModule</code>.</li>
+<li>Send <code>calculator.send(&quot;twice&quot;, 21L)</code> through the returned <code>VHExpat</code>.</li>
+</ol>
+<p>An <strong>Expat</strong> is a VarioHyve object exposed to Java through messages. In this
+example the result returns to Java as a <code>Long</code> with value <code>42</code>.</p>
+<p>From the starter's <code>learn</code> directory:</p>
+<pre><code class="language-sh">mkdir -p out
+javac -cp '../lib/*' -d out examples/java/Embed.java
+java -cp 'out:../lib/*' Embed examples/java/calculator.vh
+</code></pre>
+<p>On Windows PowerShell, create <code>out</code> with <code>New-Item -ItemType Directory -Force out</code>
+and use <code>&quot;out;../lib/*&quot;</code> for the Java classpath.</p>
+<pre><code class="language-text">twice(21) = 42
+Failure: LANGUAGE_FAILURE / UNRESOLVED_HOLE
+Source: calculator.vh
+</code></pre>
+<p>The last two lines demonstrate a call to the intentionally unfinished method.
+The Java client checks <code>failure.kind()</code> and <code>failure.diagnostic().reason()</code>;
+the diagnostic also records the source location from the snapshot we supplied.
+Use those fields to handle failures, rather than comparing error messages.</p>
+<p>The <code>100_000</code> argument bounds module construction. Subsequent <code>VHExpat.send</code>
+calls use the runtime's default entry budget; that construction argument does
+not configure every later call.</p>
+<p>You have now written programs, made objects, checked their behavior and connected
+both sides of the Java boundary. Try adding a second operation to the calculator,
+then add a test and call it from Java.</p>
+<p><a href="reference.html">Starter reference</a> · <a href="index.html">Back to the lessons</a></p>
+</main>
+<footer class="wrap"><p>Public preview v0.1.0 · These examples are included in your starter ZIP.</p><a href="../">Back to the preview</a></footer></body></html>

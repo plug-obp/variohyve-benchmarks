@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Add a capability written in Java · Learn VarioHyve</title><link rel="stylesheet" href="../preview.css"><link rel="stylesheet" href="./learn.css"></head>
+<body><a class="skip" href="#lesson">Skip to lesson</a><header class="site-header wrap"><a class="wordmark" href="../">VarioHyve<span aria-hidden="true">.</span></a><nav aria-label="Tutorial navigation"><a href="./">All lessons</a><a href="../#downloads">Downloads</a></nav></header>
+<main id="lesson" class="lesson"><p class="eyebrow">LEARN VARIOHYVE · V0.1.0</p><h1>Add a capability written in Java</h1>
+<p>Sometimes a program needs a tool supplied by Java. Our example is a small
+label maker: it accepts a name and returns a greeting. Its behavior is implemented
+by <a href="examples/java/LabelMaker.java">LabelMaker.java</a>, using the public
+<code>ForeignObject</code> interface.</p>
+<p>The adapter's <code>resolve(selector, arity)</code> returns an operation only for
+<code>label/1</code>. Returning <code>null</code> means that operation is absent. Resolution does no
+work; the selected operation calls <code>label</code> exactly once. That method checks its
+input, formats the greeting and returns a Java string.</p>
+<p><a href="examples/java/use-label.vh">use-label.vh</a> declares
+<code>class Program(kernel, labelMaker)</code>. It retains the label maker in a slot and
+sends <code>labels.label(&quot;Ada&quot;)</code>. A Java capability used inside VarioHyve is called
+an <strong>Alien</strong>; the source uses it by sending messages, just like the console.</p>
+<p><a href="examples/java/UseLabel.java">UseLabel.java</a> constructs a JavaHostKernel,
+creates a runtime, and explicitly passes both <code>kernel</code> and <code>new LabelMaker()</code>
+to <code>instantiateModule</code>. No registration or reflection is needed. The normal
+<code>vh run</code> command supplies only the standard kernel, so this example has its own
+small Java launcher.</p>
+<p>From the starter's <code>learn</code> directory, using a JDK 23 <code>javac</code> and <code>java</code>:</p>
+<pre><code class="language-sh">mkdir -p out
+javac -cp '../lib/*' -d out examples/java/LabelMaker.java examples/java/UseLabel.java
+java -cp 'out:../lib/*' UseLabel examples/java/use-label.vh
+</code></pre>
+<p>On Windows PowerShell, use <code>New-Item -ItemType Directory -Force out</code> in place of
+<code>mkdir -p out</code>, and use <code>&quot;out;../lib/*&quot;</code> for Java's classpath. The <code>javac</code>
+classpath remains <code>&quot;../lib/*&quot;</code>.</p>
+<p>The output is:</p>
+<pre><code class="language-text">Hello, Ada!
+Rejected: FOREIGN_FAILURE / FOREIGN_REJECTION
+</code></pre>
+<p>The second line comes from a deliberate blank-name request. The Java client
+catches <code>BoundaryException</code> and checks its structured kind and reason. A selected
+operation's rejection is a failure; it must not be returned as a lookup miss or
+retried under another selector.</p>
+<p><a href="examples/java/LabelMaker.vh">LabelMaker.vh</a> is the matching API description.
+Its <code>label(name) { ? }</code> body marks the missing VarioHyve implementation, while
+<code>host</code> identifies the Java adapter method and <code>doc</code> explains its contract. Open
+the file in VS Code to browse it like VarioHyve source. It is documentation,
+not the implementation and not a program to run. Descriptors never load Java
+or fill the hole.</p>
+<p>The example checker parses the declaration without executing it, verifies the
+adapter's selector/arity, and runs the actual Java launcher.</p>
+<p><a href="08-embedding.html">Next: Call VarioHyve from Java</a></p>
+</main>
+<footer class="wrap"><p>Public preview v0.1.0 · These examples are included in your starter ZIP.</p><a href="../">Back to the preview</a></footer></body></html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Try the first public preview of VarioHyve. Download the starter for macOS, Linux or Windows, install the VS Code extension, and run your first program.">
+  <title>First public preview · VarioHyve</title>
+  <link rel="stylesheet" href="preview.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header wrap">
+    <a class="wordmark" href="../">VarioHyve<span aria-hidden="true">.</span></a>
+    <nav aria-label="Main navigation"><a href="../spec/">Specification</a><a href="../dev/bench/">Benchmarks</a></nav>
+  </header>
+  <main id="main" class="wrap">
+    <section class="hero" aria-labelledby="title">
+      <div>
+        <p class="eyebrow"><span class="dot" aria-hidden="true"></span> Public preview · v0.1.0 <span class="date">9 October 2026</span></p>
+        <h1 id="title">A small program.<br>A place to start.</h1>
+        <p class="lead">Meet VarioHyve: objects that communicate through messages, with the tools they need supplied explicitly.</p>
+        <p>Write your first program, run it in VS Code, and make it your own. This first preview brings a working starter, simple tests, and a hands-on tutorial.</p>
+        <div class="actions"><a class="button primary" href="#downloads">Get the preview <span aria-hidden="true">↓</span></a><a class="text-link" href="learn/">Explore the lessons <span aria-hidden="true">↗</span></a></div>
+      </div>
+      <div class="code-window">
+        <div class="code-title"><span class="lights" aria-hidden="true">● ● ●</span><span>hello.vh</span><span class="code-label">YOUR FIRST PROGRAM</span></div>
+        <pre aria-label="Hello VarioHyve example"><code><span class="keyword">class</span> Program(kernel) {
+    Console = kernel.Console;
+
+    run {
+        Console.printLine(<span class="string">"Hello, VarioHyve!"</span>)
+    }
+}</code></pre>
+        <div class="code-result"><span aria-hidden="true">›</span> Hello, VarioHyve!</div>
+      </div>
+    </section>
+
+    <section id="downloads" class="section" aria-labelledby="download-title">
+      <div class="section-heading"><div><p class="eyebrow">READY TO TRY</p><h2 id="download-title">Choose your starter.</h2></div><p>Install a <strong>Java 23 JDK</strong> first.<br>Java is not bundled. No Gradle or Node needed.</p></div>
+      <div class="downloads">
+        <article class="download-card"><span class="platform-mark" aria-hidden="true">mac</span><h3>macOS</h3><p>The starter, tutorial and examples, with the <code>vh</code> launcher.</p><a class="button download" href="https://github.com/plug-obp/variohyve-benchmarks/releases/download/v0.1.0/variohyve-0.1.0-macos.zip">Download macOS <span aria-hidden="true">↓</span></a><span class="file-type">ZIP archive · Java required</span></article>
+        <article class="download-card"><span class="platform-mark" aria-hidden="true">$ _</span><h3>Linux</h3><p>The starter, tutorial and examples, with the <code>vh</code> launcher.</p><a class="button download" href="https://github.com/plug-obp/variohyve-benchmarks/releases/download/v0.1.0/variohyve-0.1.0-linux.zip">Download Linux <span aria-hidden="true">↓</span></a><span class="file-type">ZIP archive · Java required</span></article>
+        <article class="download-card"><span class="platform-mark" aria-hidden="true">win</span><h3>Windows</h3><p>The starter, tutorial and examples, with the <code>vh.bat</code> launcher.</p><a class="button download" href="https://github.com/plug-obp/variohyve-benchmarks/releases/download/v0.1.0/variohyve-0.1.0-windows.zip">Download Windows <span aria-hidden="true">↓</span></a><span class="file-type">ZIP archive · Java required</span></article>
+        <article class="download-card editor-card"><span class="platform-mark" aria-hidden="true">&lt; / &gt;</span><h3>VS Code</h3><p>Editing, API help, Run and Test. Includes the matching runner and language server.</p><a class="button primary download" href="https://github.com/plug-obp/variohyve-benchmarks/releases/download/v0.1.0/vh-lsp-vscode-0.2.0.vsix">Download extension <span aria-hidden="true">↓</span></a><span class="file-type">VSIX 0.2.0 · All three platforms</span></article>
+      </div>
+      <p class="download-note">The starters use the same Java-based runtime and include both launcher formats. Each ZIP comes from its platform’s successful CI build. <a href="https://github.com/plug-obp/variohyve-benchmarks/releases/tag/v0.1.0">Release notes</a> · <a href="https://github.com/plug-obp/variohyve-benchmarks/releases/download/v0.1.0/SHA256SUMS.txt">SHA-256 checksums</a></p>
+    </section>
+
+    <section class="section getting-started" aria-labelledby="start-title">
+      <div><p class="eyebrow">FROM DOWNLOAD TO HELLO</p><h2 id="start-title">Make something run.</h2><p>Your archive includes <code>learn/</code>: eight short chapters and complete programs to open, change and test.</p><a class="text-link" href="learn/">Read Learn VarioHyve <span aria-hidden="true">↗</span></a></div>
+      <ol class="steps">
+        <li><div><h3>Extract your starter.</h3><p>Check that <code>java -version</code> and <code>javac -version</code> select Java 23. Set <code>JAVA_HOME</code> to that JDK and put its <code>bin</code> directory on your PATH.</p></div></li>
+        <li><div><h3>Open the <code>learn</code> folder.</h3><p>In VS Code, choose <strong>Extensions: Install from VSIX…</strong> and select the downloaded extension. Open <code>learn</code> and trust the folder to enable running programs.</p></div></li>
+        <li><div><h3>Run your first program.</h3><p>Open <code>examples/hello.vh</code>, then choose <strong>VarioHyve: Run File</strong> in the Command Palette. Output appears in the integrated terminal. If Java isn’t found, set <code>vh.javaHome</code> to your JDK folder.</p></div></li>
+      </ol>
+    </section>
+
+    <section class="terminal-section" aria-labelledby="terminal-title">
+      <h2 id="terminal-title">Prefer a terminal?</h2><p>From the extracted starter’s <code>learn</code> directory:</p>
+      <div class="terminal-grid"><div><h3>macOS / Linux</h3><pre><code>../bin/vh run examples/hello.vh
+../bin/vh test examples/tests/lessons.vh</code></pre></div><div><h3>Windows PowerShell</h3><pre><code>..\bin\vh.bat run examples\hello.vh
+..\bin\vh.bat test examples\tests\lessons.vh</code></pre></div></div>
+    </section>
+
+    <section class="section details-grid" aria-labelledby="inside-title">
+      <div><p class="eyebrow">SMALL, USEFUL BUILDING BLOCKS</p><h2 id="inside-title">What’s in this preview?</h2><ul class="features"><li><strong>Numbers, text and collections.</strong> Send messages such as <code>2.plus(3)</code>, work with lists and maps, and read and print console input.</li><li><strong>Tests from the start.</strong> Register named cases and use simple SUnit assertions. Run them from the terminal or VS Code.</li><li><strong>Java, in both directions.</strong> Follow examples that add a Java capability and call VarioHyve from a Java application.</li></ul></div>
+      <aside class="validation" aria-labelledby="validation-title"><p class="eyebrow">BUILT AND CHECKED</p><h2 id="validation-title">A preview you can explore.</h2><p>The full Java suite and all 16 tutorial checks passed on macOS 14, Ubuntu 24.04 and Windows Server 2022.</p><p>The packaged VS Code workflow passed on Linux in CI and macOS locally. The Windows editor workflow has not yet been smoke-tested.</p><p>This is an early language preview, focused on small programs and learning. Debugging and general type inference are outside this release.</p><a href="manifest.json">View the build and validation record <span aria-hidden="true">↗</span></a></aside>
+    </section>
+  </main>
+  <footer class="wrap"><p>VarioHyve v0.1.0 · First public preview · <a href="manifest.json">Build manifest</a></p><a href="https://github.com/plug-obp/variohyve-benchmarks/issues">Share feedback <span aria-hidden="true">↗</span></a></footer>
+</body>
+</html>

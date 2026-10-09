@@ -1,0 +1,12 @@
+.lesson { max-width: 780px; width: calc(100% - 3rem); margin: 3rem auto 4rem; }
+.lesson h1 { font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 1.75rem; }
+.lesson h2 { font-size: 1.5rem; margin-top: 2.5rem; }
+.lesson p, .lesson li { color: var(--muted); }
+.lesson li { margin-bottom: .5rem; }
+.lesson strong { color: var(--ink); }
+.lesson pre { padding: 1.2rem; margin: 1.25rem 0; background: var(--soft); border: 1px solid var(--line); border-radius: 8px; color: var(--ink); }
+.lesson table { display: block; overflow-x: auto; border-collapse: collapse; width: 100%; font-size: .88rem; margin-block: 1.5rem; }
+.lesson th, .lesson td { border-bottom: 1px solid var(--line); padding: .65rem .8rem; text-align: left; vertical-align: top; }
+.lesson a { overflow-wrap: anywhere; }
+.lesson code { overflow-wrap: anywhere; }
+.lesson pre code { overflow-wrap: normal; }

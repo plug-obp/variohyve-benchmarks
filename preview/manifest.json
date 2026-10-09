@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "name": "VarioHyve first public preview",
+  "version": "0.1.0",
+  "date": "2026-10-09",
+  "java_requirement": "JDK 23; not bundled",
+  "source": {
+    "repository": "plug-obp/variohyve",
+    "visibility": "private",
+    "tag": "v0.1.0",
+    "commit": "8a9df4191f421554ddfa538ebdd62070b24dc231"
+  },
+  "ci": {
+    "workflow": "Starter slice",
+    "run_id": 37943252093,
+    "event": "workflow_dispatch",
+    "ref": "v0.1.0",
+    "conclusion": "success",
+    "platforms": [
+      {
+        "runner": "macos-14",
+        "java_tests": "passed",
+        "packaged_tutorial_cases": 16,
+        "packaged_tutorial_result": "passed",
+        "vsix_packaging": "passed",
+        "vsix_smoke": "not run in this job"
+      },
+      {
+        "runner": "ubuntu-24.04",
+        "java_tests": "passed",
+        "packaged_tutorial_cases": 16,
+        "packaged_tutorial_result": "passed",
+        "vsix_packaging": "passed",
+        "vsix_smoke": "passed"
+      },
+      {
+        "runner": "windows-2022",
+        "java_tests": "passed",
+        "packaged_tutorial_cases": 16,
+        "packaged_tutorial_result": "passed",
+        "vsix_packaging": "passed",
+        "vsix_smoke": "not run in this job"
+      }
+    ]
+  },
+  "additional_validation": {
+    "macos_local_extension_smoke": {
+      "source_commit": "12429f577290a038908b5f1e96f1b596b4036e1a",
+      "java": "23.0.2",
+      "vscode": "1.139.0",
+      "checks": 13,
+      "result": "passed"
+    },
+    "tagged_macos_archive_local_recheck": "all 16 checks passed"
+  },
+  "assets": [
+    {
+      "name": "variohyve-0.1.0-macos.zip",
+      "platform": "macos",
+      "bytes": 16539423,
+      "sha256": "3ce7a3039a0efdecf4649d4094f21536fedd0c8ffc2c08ce35d9a9d8ea71d91c",
+      "ci_artifact": "variohyve-starter-macOS"
+    },
+    {
+      "name": "variohyve-0.1.0-linux.zip",
+      "platform": "linux",
+      "bytes": 16539423,
+      "sha256": "3ce7a3039a0efdecf4649d4094f21536fedd0c8ffc2c08ce35d9a9d8ea71d91c",
+      "ci_artifact": "variohyve-starter-Linux"
+    },
+    {
+      "name": "variohyve-0.1.0-windows.zip",
+      "platform": "windows",
+      "bytes": 16539794,
+      "sha256": "41a30c64a7482be77bc64841338ec43f138a336c51d73db3a65baadde0632b49",
+      "ci_artifact": "variohyve-starter-Windows"
+    },
+    {
+      "name": "vh-lsp-vscode-0.2.0.vsix",
+      "platform": "universal",
+      "bytes": 33998877,
+      "sha256": "6d59954cc44ce6321faf618ce769dcece398b14f28313309e2b0c10bef74bef0",
+      "ci_artifact": "variohyve-starter-Linux"
+    }
+  ],
+  "packaging": "Unmodified CI files, with platform-specific download filenames for the starter ZIPs. Universal VSIX is from the Linux job."
+}
