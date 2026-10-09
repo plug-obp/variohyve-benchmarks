@@ -7,7 +7,8 @@
   const cases = BenchmarkModel.normalize(raw, rich);
   const colors = {VarioHyve:'#007f73', CPython:'#5264d9', GraalPy:'#bd6720'};
   const labels = {VarioHyve:'VarioHyve', CPython:'CPython', GraalPy:'GraalPy · no guest JIT'};
-  const state = {view:'comparison', key:cases.find(c => c.profile === 'tracing' && c.name === 'methodSend')?.key};
+  const initialScope = BenchmarkModel.defaultTimingScope(cases);
+  const state = {view:'comparison', key:cases.find(c => c.timingScope === initialScope && c.profile === 'tracing' && c.name === 'methodSend')?.key};
   const number = value => Number.isFinite(value) ? value.toLocaleString(undefined, {maximumSignificantDigits:4}) : '—';
   const mean = metric => metric ? `${metric.approximate ? '≈ ' : ''}${number(metric.mean)}` : '—';
   const short = commit => commit.id.slice(0,7);
@@ -25,11 +26,16 @@
   function option(select, value, label) { const node = element('option',label); node.value = value; select.append(node); }
   const branches = [...new Set(cases.flatMap(c => c.runs.map(r => r.branch)))].sort();
   for (const branch of branches) option($('branch'),branch,branch);
-  for (const profile of new Set(cases.map(c => c.profile))) if (!['tracing','legacy'].includes(profile)) option($('profile'),profile,profile);
-  if (!cases.some(c => c.profile === 'tracing')) $('profile').value = cases[0]?.profile || 'legacy';
+  for (const profile of new Set(cases.map(c => c.profile))) if (!['tracing','legacy','not-applicable'].includes(profile)) option($('profile'),profile,profile);
+  $('timing-scope').value = initialScope;
+  function selectAvailableProfile() {
+    const scoped = cases.filter(c => c.timingScope === $('timing-scope').value);
+    if (!scoped.some(c => c.profile === $('profile').value)) $('profile').value = scoped.find(c => c.profile === 'tracing')?.profile || scoped.find(c => c.profile !== 'not-applicable')?.profile || 'tracing';
+  }
+  selectAvailableProfile();
   const totalRuns = new Set(cases.flatMap(c => c.runs.map(r => r.id))).size;
   $('status').textContent = `${totalRuns} runs · ${branches.length} branches · CPython and GraalPy comparisons · lower is faster`;
-  $('updated').textContent = `Last published ${new Date(Math.max(Number(raw.lastUpdate) || 0, ...rich.map(r => Date.parse(r.date)))).toLocaleString()}`;
+  $('updated').textContent = `Last published ${new Date(Math.max(Number(raw.lastUpdate) || 0, ...rich.map(r => Date.parse(r.date)).filter(Number.isFinite))).toLocaleString()}`;
   $('download').onclick = () => {
     const url = URL.createObjectURL(new Blob([JSON.stringify({archive:raw, measurements:rich},null,2)],{type:'application/json'}));
     const anchor = element('a'); anchor.href = url; anchor.download = 'variohyve-performance.json'; anchor.click();
@@ -37,12 +43,24 @@
   };
   function filteredCases() {
     const query = $('search').value.toLowerCase().trim();
-    return cases.filter(c => c.profile === $('profile').value
-      && ($('family').value === 'all' || (['literal','methodSend','closureSend'].includes(c.name) ? 'core' : 'recursion') === $('family').value)
+    return cases.filter(c => c.timingScope === $('timing-scope').value && (c.profile === $('profile').value || c.profile === 'not-applicable')
+      && ($('family').value === 'all' || c.family === $('family').value)
       && c.label.toLowerCase().includes(query))
       .map(c => ({...c, runs:c.runs.filter(r => $('branch').value === 'all' || r.branch === $('branch').value)})).filter(c => c.runs.length);
   }
   function refresh() {
+    const scope = $('timing-scope').value;
+    const notes = {
+      'prepared-runtime-v1': 'Payload execution on fresh, single-use prepared worlds. Workload construction, boundary calls, checks and execution-time GC are timed; runtime initialization is outside the timer. This is a separate baseline from fresh-world history.',
+      'runtime-setup-v1': 'Warmed runtime initialization, measured independently. Seed construction/installation, initialization GC and platform assembly remain visible here. JVM launch is excluded. These scores are not subtracted from workload scores.',
+      'fresh-world-v1': 'Fresh-world workloads include runtime initialization plus the checked payload. Original history remains in this scope; it is not joined to prepared-runtime payload measurements.'
+    };
+    $('scope-note').textContent = notes[scope] + (cases.some(c => c.timingScope === scope) ? '' : ' No measurements have been published for this timing scope yet.');
+    const setupOnly = scope === 'runtime-setup-v1';
+    document.querySelector('[data-view=ratio]').disabled = setupOnly;
+    document.querySelector('[data-view=comparison]').textContent = setupOnly ? 'VarioHyve history' : 'Compare runtimes';
+    if (setupOnly && state.view === 'ratio') state.view = 'comparison';
+    for (const button of document.querySelectorAll('[data-view]')) button.setAttribute('aria-pressed',String(button.dataset.view === state.view));
     const filtered = filteredCases();
     if (!filtered.some(c => c.key === state.key)) state.key = filtered[0]?.key;
     $('workload').replaceChildren();
@@ -55,7 +73,7 @@
       row.className = c.key === state.key ? 'selected' : '';
       const title = element('td'), button = element('button',c.name);
       button.onclick = () => { state.key = c.key; refresh(); $('chart-title').scrollIntoView({behavior:'smooth',block:'center'}); };
-      title.append(button,element('small',BenchmarkModel.paramsKey(c.params) || 'Core workload'));
+      title.append(button,element('small',[BenchmarkModel.paramsKey(c.params), c.batchSize ? `batch=${c.batchSize} · per payload` : ''].filter(Boolean).join(' · ') || (c.family === 'setup' ? 'Initialization diagnostic' : 'Core workload')));
       row.append(title);
       for (const runtime of ['VarioHyve','CPython','GraalPy']) row.append(element('td',mean(run.runtimes[runtime])));
       for (const runtime of ['CPython','GraalPy']) {
@@ -78,6 +96,9 @@
     const metric = run.runtimes[runtime];
     const lines = [`${labels[runtime]} · ${run.branch}`, `${short(run.commit)} · ${new Date(run.date).toLocaleString()}`, (run.commit.message || '').split('\n')[0]];
     if (state.view === 'ratio') lines.push(`VarioHyve / ${runtime}: ${number(run.ratios[runtime])}×`);
+    lines.push(`${runtime === 'VarioHyve' ? 'Timing scope' : 'VarioHyve comparison scope'}: ${BenchmarkModel.TIMING_SCOPES[run.timingScope]} (${run.timingScope})`);
+    if (run.profile === 'not-applicable') lines.push('GC profile: not applicable · no native heap');
+    if (run.batchSize && runtime === 'VarioHyve') lines.push(`Batch: ${run.batchSize} fresh worlds · normalized per payload operation`);
     lines.push(`Mean: ${mean(metric)} µs/op`);
     if (metric.samples?.length) {
       lines.push(`Min – max: ${number(metric.min)} – ${number(metric.max)} µs/op`, `Median: ${number(metric.median)} · middle 50%: ${number(metric.q1)} – ${number(metric.q3)}`, `${metric.samples.length} measured iteration means`);
@@ -102,10 +123,10 @@
     $('selection').textContent = 'Hover or focus a point for details. Click a point to pin its run below.';
     $('chart-title').textContent = scenario?.label || 'No matching workloads';
     $('chart-note').textContent = '';
-    if (!scenario) { $('plot').append(element('p','Choose another branch, profile, or search.','empty')); return; }
+    if (!scenario) { $('plot').append(element('p','Choose another timing scope, branch, GC profile, or search.','empty')); return; }
     const limit = $('limit').value === 'all' ? Infinity : Number($('limit').value);
     const runs = scenario.runs.slice(-limit);
-    const series = state.view === 'distribution' ? ['VarioHyve'] : state.view === 'ratio' ? ['CPython','GraalPy'] : ['VarioHyve','CPython','GraalPy'];
+    const series = scenario.timingScope === 'runtime-setup-v1' || state.view === 'distribution' ? ['VarioHyve'] : state.view === 'ratio' ? ['CPython','GraalPy'] : ['VarioHyve','CPython','GraalPy'];
     for (const runtime of series) {
       const label = element('span',state.view === 'ratio' ? `VH / ${runtime}` : runtime === 'VarioHyve' && scenario.profile === 'tracing' ? 'VarioHyve + GC' : labels[runtime]);
       label.style.setProperty('--color',colors[runtime]); $('legend').append(label);
@@ -173,13 +194,15 @@
       }
     }
     $('plot').append(svg);
-    const baseNote = `${runs.length} runs · ${new Date(runs[0].date).toLocaleDateString()} – ${new Date(runs.at(-1).date).toLocaleDateString()} · ordered by measurement, across selected branches. `;
+    const baseNote = `${BenchmarkModel.TIMING_SCOPES[scenario.timingScope]}${scenario.batchSize ? ` · batch=${scenario.batchSize} · per payload` : ''} · ${runs.length} runs · ${new Date(runs[0].date).toLocaleDateString()} – ${new Date(runs.at(-1).date).toLocaleDateString()} · ordered by measurement, across selected branches. `;
     const samples = runs.filter(r => r.runtimes.VarioHyve.samples?.length).length;
     $('chart-note').textContent = baseNote + (state.view === 'distribution'
       ? `Dots: means. Boxes: middle 50% and median. Whiskers: min–max. Samples available for ${samples}/${runs.length} runs; other points show means only.`
+      : scenario.timingScope === 'runtime-setup-v1' ? 'Dots: mean initialization time. These independent diagnostics are not additive startup components.'
       : state.view === 'ratio' ? 'Below 1×: VarioHyve faster; above 1×: Python faster. Dashed line: parity.'
       : 'Dots: mean time. Older Python values are approximate. Missing counterparts are omitted.');
   }
+  $('timing-scope').addEventListener('change',() => { $('family').value = 'all'; selectAvailableProfile(); refresh(); });
   for (const id of ['profile','branch','family','limit','log']) $(id).addEventListener('change',refresh);
   $('search').addEventListener('input',refresh);
   $('workload').addEventListener('change',() => {state.key=$('workload').value;refresh();});

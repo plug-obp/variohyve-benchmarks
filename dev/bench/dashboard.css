@@ -86,6 +86,10 @@ button {
 button:hover {
   background:#eef4f3
 }
+button:disabled {
+  cursor:not-allowed;
+  opacity:.45
+}
 button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible {
   outline:3px solid #78bfb6;
   outline-offset:3px
@@ -106,7 +110,7 @@ main {
 }
 .controls {
   display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,.8fr) minmax(0,1.1fr);
+  grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr) minmax(0,.8fr) minmax(0,1.1fr);
   gap:14px;
   padding:20px 0 24px
 }
@@ -449,3 +453,5 @@ footer {
 .controls > label { min-width: 0; }
 .controls select { width: 100%; }
 .chart-heading h2 { overflow-wrap: anywhere; }
+
+.scope-note { margin:0 0 20px; font-size:12px; }

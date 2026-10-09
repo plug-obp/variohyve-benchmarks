@@ -13,17 +13,19 @@
 <body>
   <header>
     <div><a class="wordmark" href="../../">VarioHyve<span> / performance</span></a><h1>One workload. Three runtimes.</h1>
-    <p>Explore execution time across every branch, with the context behind every measurement.</p></div>
+    <p>Explore payload execution, runtime initialization and fresh-world workloads across every branch.</p></div>
     <nav><a href="test-reports/">JUnit reports ↗</a><button id="download">Download data ↓</button></nav>
   </header>
   <main>
     <div id="status" role="status">Loading benchmark history…</div>
     <section class="controls" aria-label="Filter measurements">
+      <label>Timing scope<select id="timing-scope"><option value="prepared-runtime-v1">Payload · prepared runtime</option><option value="runtime-setup-v1">Runtime initialization</option><option value="fresh-world-v1">Fresh world + payload</option></select></label>
       <label>GC profile<select id="profile"><option value="tracing">Tracing GC · current</option><option value="legacy">Before explicit GC · historical</option></select></label>
       <label>Branch<select id="branch"><option value="all">All branches</option></select></label>
-      <label>Workload family<select id="family"><option value="all">All workloads</option><option value="core">Core</option><option value="recursion">Recursion</option></select></label>
+      <label>Workload family<select id="family"><option value="all">All workloads</option><option value="core">Core</option><option value="recursion">Recursion</option><option value="setup">Runtime setup</option></select></label>
       <label>Find workload<input id="search" type="search" placeholder="Try superChain or depth=256"></label>
     </section>
+    <p id="scope-note" class="scope-note" role="status"></p>
     <section class="panel" aria-labelledby="chart-title">
       <div class="chart-heading"><div><span class="eyebrow">HISTORY</span><h2 id="chart-title">Workload history</h2></div><label class="workload-label">Configuration<select id="workload"></select></label></div>
       <div class="chart-tools">
@@ -42,10 +44,12 @@
       <div class="table-scroll"><table><thead><tr><th>Workload / parameters</th><th>VarioHyve</th><th>CPython</th><th>GraalPy</th><th>VH / CPython</th><th>VH / GraalPy</th><th>Branch · revision</th></tr></thead><tbody id="overview"></tbody></table></div>
     </section>
     <details class="methodology"><summary>How to read these measurements</summary>
-      <p>These are complete checked workloads, including applicable construction, execution and result validation. Parsing and warmup are excluded. Python and VarioHyve have different setup, lookup and boundary costs. GraalPy runs on the JVM with guest JIT disabled; Java compilation remains enabled.</p>
+      <p><strong>Payload · prepared runtime</strong> is the primary timing scope. It includes workload class/object construction, execution, boundary calls, correctness checks and execution-time GC. Parsing, warmup, seed construction/installation, initialization GC, platform assembly and VM creation are outside the timer. Each payload uses a fresh independent world exactly once; batch timing amortizes clock overhead without accumulating exported objects in a reused world. Scores are normalized per payload operation. Batch sizes are shown and retained as separate measurement configurations.</p>
+      <p><strong>Runtime initialization</strong> measures warmed world/VM setup separately. <strong>Fresh world + payload</strong> retains the original complete-workload series and new controls. These scopes are never joined into one graph or subtracted from each other. The prepared-runtime series starts a new baseline; a change of timing scope is not a speedup. JVM/process launch is excluded from all JMH scores.</p>
+      <p>Fixture creation outside the payload timer still affects Java GC and caches. GC allocation-profiler values can include fixture allocation; they are not payload-only allocation figures. Python and VarioHyve have different setup, lookup and boundary costs. Python interpreter/context initialization is outside its workload timer. GraalPy runs on the JVM with guest JIT disabled; Java compilation remains enabled.</p>
       <p>Each point is one benchmark run. Branches share the timeline in measurement order; adjacent points can come from different branches and do not imply Git ancestry. Select a branch to follow its own history. Hosted runner hardware can vary.</p>
       <p>Dots show means. In the spread view, boxes show the middle 50% of measured iteration means, the bar shows the median, and whiskers show the observed minimum and maximum. These describe iteration averages, not individual-operation latency or confidence intervals. Quartiles use linear interpolation across sorted samples. JMH's 99.9% confidence interval, when available, is shown separately in point details.</p>
-      <p>Older records have no samples and show a mean only. Their Python times (≈) are recovered from tooltip values rounded to three decimals; archived ratios retain their original precision. Missing data stays missing. Historical measurements before the explicit tracing profile are kept in a separate profile.</p>
+      <p>Older records have no samples and show a mean only. Their Python times (≈) are recovered from tooltip values rounded to three decimals; archived ratios retain their original precision. Missing data stays missing. Historical measurements before the explicit tracing profile are kept in a separate GC profile. Untagged historical runs are classified as fresh world + payload; prepared measurements require an explicit scope and batch size.</p>
       <p>Sample distributions appear as workflows using the updated publisher complete. The raw download includes both the original archive and the new sample records.</p>
     </details>
   </main>
