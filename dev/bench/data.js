@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1791550314895,
+  "lastUpdate": 1791550316943,
   "repoUrl": "https://github.com/plug-obp/variohyve",
   "entries": {
     "VarioHyve / shared-name-bootstrap": [
@@ -6452,6 +6452,258 @@ window.BENCHMARK_DATA = {
             "value": 707.0520971802028,
             "unit": "us/op",
             "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ciprian.teodorov@gmail.com",
+            "name": "Ciprian Teodorov",
+            "username": "teodorov"
+          },
+          "committer": {
+            "email": "ciprian.teodorov@gmail.com",
+            "name": "Ciprian Teodorov",
+            "username": "teodorov"
+          },
+          "distinct": true,
+          "id": "12429f577290a038908b5f1e96f1b596b4036e1a",
+          "message": "test: validate and package the complete starter journey",
+          "timestamp": "2026-10-09T14:24:35+02:00",
+          "tree_id": "0dd9c151c2740fcd12ad2565967e152075af22e2",
+          "url": "https://github.com/plug-obp/variohyve/commit/12429f577290a038908b5f1e96f1b596b4036e1a"
+        },
+        "date": 1791550316486,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "VarioHyve+GC / CPython | closureSend",
+            "value": 4100.37264097671,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 734.699 us/op; CPython 0.179 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 1.174 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / GraalPy no guest JIT | closureSend",
+            "value": 625.8524155486784,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 734.699 us/op; CPython 0.179 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 1.174 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / CPython | inherited (depth=16, hierarchyDepth=32)",
+            "value": 2.478727196262723,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 1659.985 us/op; CPython 669.692 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 1930.413 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / GraalPy no guest JIT | inherited (depth=16, hierarchyDepth=32)",
+            "value": 0.8599120027983828,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 1659.985 us/op; CPython 669.692 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 1930.413 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / CPython | inherited (depth=16, hierarchyDepth=4)",
+            "value": 25.70742191335101,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 1311.876 us/op; CPython 51.031 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 299.780 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / GraalPy no guest JIT | inherited (depth=16, hierarchyDepth=4)",
+            "value": 4.37613493978518,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 1311.876 us/op; CPython 51.031 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 299.780 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / CPython | inherited (depth=256, hierarchyDepth=32)",
+            "value": 6.32886140504934,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 5219.978 us/op; CPython 824.789 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 4133.823 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / GraalPy no guest JIT | inherited (depth=256, hierarchyDepth=32)",
+            "value": 1.2627483520088316,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 5219.978 us/op; CPython 824.789 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 4133.823 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / CPython | inherited (depth=256, hierarchyDepth=4)",
+            "value": 20.35956254675437,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 3935.751 us/op; CPython 193.312 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 2522.896 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / GraalPy no guest JIT | inherited (depth=256, hierarchyDepth=4)",
+            "value": 1.5600128642839812,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 3935.751 us/op; CPython 193.312 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 2522.896 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / CPython | literal",
+            "value": 9240.476174273967,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 689.214 us/op; CPython 0.075 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 13.849 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / GraalPy no guest JIT | literal",
+            "value": 49.76710937696821,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 689.214 us/op; CPython 0.075 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 13.849 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / CPython | methodSend",
+            "value": 106.70802101710757,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 707.052 us/op; CPython 6.626 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 227.513 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / GraalPy no guest JIT | methodSend",
+            "value": 3.107743914572683,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 707.052 us/op; CPython 6.626 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 227.513 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / CPython | mutual (depth=16)",
+            "value": 62.78714188902542,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 1164.738 us/op; CPython 18.551 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 223.931 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / GraalPy no guest JIT | mutual (depth=16)",
+            "value": 5.201322176218934,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 1164.738 us/op; CPython 18.551 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 223.931 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / CPython | mutual (depth=256)",
+            "value": 21.755047413775586,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 3529.160 us/op; CPython 162.223 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 2428.611 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / GraalPy no guest JIT | mutual (depth=256)",
+            "value": 1.4531602216578055,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 3529.160 us/op; CPython 162.223 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 2428.611 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / CPython | partners (depth=16, partnerCount=3)",
+            "value": 48.21296813664004,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 1366.013 us/op; CPython 28.333 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 297.036 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / GraalPy no guest JIT | partners (depth=16, partnerCount=3)",
+            "value": 4.598810337383255,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 1366.013 us/op; CPython 28.333 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 297.036 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / CPython | partners (depth=16, partnerCount=8)",
+            "value": 55.93064111978011,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 1930.829 us/op; CPython 34.522 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 369.479 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / GraalPy no guest JIT | partners (depth=16, partnerCount=8)",
+            "value": 5.225817407777575,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 1930.829 us/op; CPython 34.522 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 369.479 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / CPython | partners (depth=256, partnerCount=3)",
+            "value": 28.69550008790398,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 4838.407 us/op; CPython 168.612 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 2374.988 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / GraalPy no guest JIT | partners (depth=256, partnerCount=3)",
+            "value": 2.0372339671985347,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 4838.407 us/op; CPython 168.612 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 2374.988 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / CPython | partners (depth=256, partnerCount=8)",
+            "value": 25.29098440736549,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 4388.177 us/op; CPython 173.508 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 2476.588 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / GraalPy no guest JIT | partners (depth=256, partnerCount=8)",
+            "value": 1.7718643127874285,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 4388.177 us/op; CPython 173.508 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 2476.588 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / CPython | simple (depth=16)",
+            "value": 63.30263255978212,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 1130.748 us/op; CPython 17.863 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 219.237 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / GraalPy no guest JIT | simple (depth=16)",
+            "value": 5.157651379696797,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 1130.748 us/op; CPython 17.863 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 219.237 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / CPython | simple (depth=256)",
+            "value": 21.21967563709286,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 3395.891 us/op; CPython 160.035 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 2408.034 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / GraalPy no guest JIT | simple (depth=256)",
+            "value": 1.4102337176155355,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 3395.891 us/op; CPython 160.035 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 2408.034 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / CPython | superChain (depth=16, hierarchyDepth=32)",
+            "value": 5.62019083762619,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 5257.964 us/op; CPython 935.549 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 4626.351 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / GraalPy no guest JIT | superChain (depth=16, hierarchyDepth=32)",
+            "value": 1.1365251554560567,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 5257.964 us/op; CPython 935.549 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 4626.351 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / CPython | superChain (depth=16, hierarchyDepth=4)",
+            "value": 25.13729111673275,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 1830.214 us/op; CPython 72.809 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 640.481 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / GraalPy no guest JIT | superChain (depth=16, hierarchyDepth=4)",
+            "value": 2.857564223143878,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 1830.214 us/op; CPython 72.809 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 640.481 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / CPython | superChain (depth=256, hierarchyDepth=32)",
+            "value": 47.35832863844589,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 213335.843 us/op; CPython 4504.716 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 47120.539 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / GraalPy no guest JIT | superChain (depth=256, hierarchyDepth=32)",
+            "value": 4.52744907613119,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 213335.843 us/op; CPython 4504.716 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 47120.539 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / CPython | superChain (depth=256, hierarchyDepth=4)",
+            "value": 20.612656924720383,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 12985.988 us/op; CPython 630.001 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 7722.837 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
+          },
+          {
+            "name": "VarioHyve+GC / GraalPy no guest JIT | superChain (depth=256, hierarchyDepth=4)",
+            "value": 1.681504942575466,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC 12985.988 us/op; CPython 630.001 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 7722.837 us/op (3.12.8 (Fri Oct 09 12:48:58 UTC 2026), guest JIT disabled)"
           }
         ]
       }
