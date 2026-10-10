@@ -27,7 +27,7 @@
       const key = keyOf(name, params, profile, timingScope, batchSize);
       const details = [paramsKey(params), batchSize ? `batch=${batchSize}` : ''].filter(Boolean).join(' · ');
       if (!cases.has(key)) cases.set(key, {key, name, params, profile, timingScope, batchSize,
-        family: timingScope === 'runtime-setup-v1' ? 'setup' : ['literal','methodSend','closureSend'].includes(name) ? 'core' : 'recursion',
+        family: timingScope === 'runtime-setup-v1' ? 'setup' : ['literal','methodSend','closureSend'].includes(name) ? 'core' : ['manyArguments','mixinContributions','classContributions','receiverShapes'].includes(name) ? 'dispatch' : 'recursion',
         label: name + (details ? ` · ${details}` : ''), runs: []});
       return cases.get(key);
     }
@@ -38,7 +38,7 @@
         const base = {branch, commit: entry.commit, date: Number(entry.date), id: `${branch}:${entry.commit.id}:${entry.date}`, legacy: true};
         for (const bench of entry.benches || []) {
           if (entry.tool === 'jmh' && bench.unit === 'us/op' && positive(bench.value)) {
-            const match = bench.name.match(/^vh\.benchmarks\.(PreparedVisitorSemanticsBenchmark|PreparedRecursionBenchmark|VisitorSemanticsBenchmark|RecursionBenchmark)\.(\w+)(?: \( (\{.*\}) \))?$/);
+            const match = bench.name.match(/^vh\.benchmarks\.(PreparedVisitorSemanticsBenchmark|PreparedRecursionBenchmark|PreparedDispatchBenchmark|VisitorSemanticsBenchmark|RecursionBenchmark)\.(\w+)(?: \( (\{.*\}) \))?$/);
             if (!match) continue;
             let params;
             try { params = match[3] ? JSON.parse(match[3]) : {}; } catch { continue; }
