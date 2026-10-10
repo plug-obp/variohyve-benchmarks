@@ -1,11 +1,55 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Test your program · Learn VarioHyve</title><link rel="stylesheet" href="../preview.css"><link rel="stylesheet" href="./learn.css"></head>
+<title>Test your program · Learn VarioHyve</title><link rel="stylesheet" href="../preview.css"><link rel="stylesheet" href="./highlight.css"><link rel="stylesheet" href="./learn.css"></head>
 <body><a class="skip" href="#lesson">Skip to lesson</a><header class="site-header wrap"><a class="wordmark" href="../">VarioHyve<span aria-hidden="true">.</span></a><nav aria-label="Tutorial navigation"><a href="./">All lessons</a><a href="../#downloads">Downloads</a></nav></header>
 <main id="lesson" class="lesson"><p class="eyebrow">LEARN VARIOHYVE · V0.1.0</p><h1>Test your program</h1>
 <p>Open <a href="examples/tests/lessons.vh">tests/lessons.vh</a>, then run:</p>
-<pre><code class="language-sh">../bin/vh test examples/tests/lessons.vh
+<pre><code class="hljs language-sh">../bin/vh <span class="hljs-built_in">test</span> examples/tests/lessons.vh
 </code></pre>
+
+<pre><code class="hljs language-vh"><span class="hljs-keyword">class</span> <span class="hljs-title">Tests</span>(kernel, testing) {
+    Collections = kernel<span class="hljs-title">.Collections</span>;
+    Testing = testing;
+
+    <span class="hljs-keyword">class</span> <span class="hljs-title">Counter</span>(start) {
+        count = start;
+        <span class="hljs-title">increment</span> { count = count<span class="hljs-title">.plus</span>(<span class="hljs-number">1</span>) }
+    }
+
+    <span class="hljs-title">fahrenheit</span>(celsius) { celsius<span class="hljs-title">.times</span>(<span class="hljs-number">1.8</span>)<span class="hljs-title">.plus</span>(<span class="hljs-number">32.0</span>) }
+
+    <span class="hljs-title">tests</span> {
+        <span class="hljs-keyword">var</span> suite = Testing<span class="hljs-title">.suite</span>(<span class="hljs-string">&quot;Lesson tests&quot;</span>);
+        suite<span class="hljs-title">.add</span>(<span class="hljs-string">&quot;arithmetic&quot;</span>, <span class="hljs-keyword">fun</span>(assert) {
+            assert<span class="hljs-title">.assertEquals</span>(<span class="hljs-number">20</span>, <span class="hljs-number">2</span><span class="hljs-title">.plus</span>(<span class="hljs-number">3</span>)<span class="hljs-title">.times</span>(<span class="hljs-number">4</span>));
+            assert<span class="hljs-title">.assertTrue</span>(<span class="hljs-number">7</span><span class="hljs-title">.remainder</span>(<span class="hljs-number">2</span>)<span class="hljs-title">.equals</span>(<span class="hljs-number">1</span>))
+        });
+        suite<span class="hljs-title">.add</span>(<span class="hljs-string">&quot;temperature&quot;</span>, <span class="hljs-keyword">fun</span>(assert) {
+            assert<span class="hljs-title">.assertNear</span>(<span class="hljs-number">68.0</span>, fahrenheit(<span class="hljs-number">20.0</span>), <span class="hljs-number">0.000001</span>)
+        });
+        suite<span class="hljs-title">.add</span>(<span class="hljs-string">&quot;collections&quot;</span>, <span class="hljs-keyword">fun</span>(assert) {
+            <span class="hljs-keyword">var</span> values = Collections<span class="hljs-title">.list</span>;
+            values<span class="hljs-title">.add</span>(<span class="hljs-number">10</span>);
+            values<span class="hljs-title">.add</span>(<span class="hljs-number">20</span>);
+            values<span class="hljs-title">.set</span>(<span class="hljs-number">0</span>, <span class="hljs-number">15</span>);
+            <span class="hljs-keyword">var</span> counts = Collections<span class="hljs-title">.map</span>;
+            counts<span class="hljs-title">.put</span>(<span class="hljs-string">&quot;apples&quot;</span>, values<span class="hljs-title">.get</span>(<span class="hljs-number">0</span>));
+            assert<span class="hljs-title">.assertEquals</span>(<span class="hljs-number">2</span>, values<span class="hljs-title">.size</span>);
+            assert<span class="hljs-title">.assertEquals</span>(<span class="hljs-number">15</span>, counts<span class="hljs-title">.get</span>(<span class="hljs-string">&quot;apples&quot;</span>));
+            assert<span class="hljs-title">.assertEquals</span>(<span class="hljs-string">&quot;apples&quot;</span>, counts<span class="hljs-title">.keys</span><span class="hljs-title">.get</span>(<span class="hljs-number">0</span>))
+        });
+        suite<span class="hljs-title">.add</span>(<span class="hljs-string">&quot;fresh counter&quot;</span>, <span class="hljs-keyword">fun</span>(assert) {
+            <span class="hljs-keyword">var</span> counter = Counter(<span class="hljs-number">10</span>);
+            counter<span class="hljs-title">.increment</span>;
+            counter<span class="hljs-title">.increment</span>;
+            assert<span class="hljs-title">.assertEquals</span>(<span class="hljs-number">12</span>, counter<span class="hljs-title">.count</span>)
+        });
+        suite
+    }
+}
+</code></pre>
+
+<p><a href="examples/tests/lessons.vh" class="button example-download" download="lessons.vh">Download lessons.vh</a></p>
 <p>The four named cases cover arithmetic, temperature conversion, collections and
 a fresh counter. Each case should pass. The exact report is kept in the
 <a href="examples/fixtures/tests.out">expected output fixture</a>.</p>
@@ -46,8 +90,26 @@ error stops that case; the driver reports it separately and attempts the next
 case. Tests with any failure or error exit unsuccessfully, which also makes them
 useful in a build script.</p>
 <p>To practice, run the deliberately incorrect example:</p>
-<pre><code class="language-sh">../bin/vh test examples/intentional-failures/assertion.vh
+<pre><code class="hljs language-sh">../bin/vh <span class="hljs-built_in">test</span> examples/intentional-failures/assertion.vh
 </code></pre>
+
+<pre><code class="hljs language-vh"><span class="hljs-keyword">class</span> <span class="hljs-title">Tests</span>(kernel, testing) {
+    Testing = testing;
+
+    <span class="hljs-title">tests</span> {
+        <span class="hljs-keyword">var</span> suite = Testing<span class="hljs-title">.suite</span>(<span class="hljs-string">&quot;Practice reading a failure&quot;</span>);
+        suite<span class="hljs-title">.add</span>(<span class="hljs-string">&quot;two plus three&quot;</span>, <span class="hljs-keyword">fun</span>(assert) {
+            assert<span class="hljs-title">.assertEquals</span>(<span class="hljs-number">6</span>, <span class="hljs-number">2</span><span class="hljs-title">.plus</span>(<span class="hljs-number">3</span>))
+        });
+        suite<span class="hljs-title">.add</span>(<span class="hljs-string">&quot;the next case still runs&quot;</span>, <span class="hljs-keyword">fun</span>(assert) {
+            assert<span class="hljs-title">.assertEquals</span>(<span class="hljs-string">&quot;hello&quot;</span>, <span class="hljs-string">&quot; hello &quot;</span><span class="hljs-title">.trim</span>)
+        });
+        suite
+    }
+}
+</code></pre>
+
+<p><a href="examples/intentional-failures/assertion.vh" class="button example-download" download="assertion.vh">Download assertion.vh</a></p>
 <p>Its first case expects <code>6</code> from <code>2.plus(3)</code>. The report shows one failed case
 and one passed case. Change the expected value to <code>5</code>, save and run again.
 The <a href="examples/fixtures/assertion.out">original report</a> makes the comparison easy.</p>
@@ -55,6 +117,23 @@ The <a href="examples/fixtures/assertion.out">original report</a> makes the comp
 contains a hole, <code>?</code>, as unfinished code. Run it with
 <code>../bin/vh test examples/intentional-failures/runtime-error.vh</code> to see one error
 and a later passing case. The checker validates its failure kind and reason too.</p>
+<pre><code class="hljs language-vh"><span class="hljs-keyword">class</span> <span class="hljs-title">Tests</span>(kernel, testing) {
+    Testing = testing;
+
+    <span class="hljs-title">tests</span> {
+        <span class="hljs-keyword">var</span> suite = Testing<span class="hljs-title">.suite</span>(<span class="hljs-string">&quot;Practice reading an error&quot;</span>);
+        suite<span class="hljs-title">.add</span>(<span class="hljs-string">&quot;unfinished operation&quot;</span>, <span class="hljs-keyword">fun</span>(assert) {
+            <span class="hljs-keyword">?</span>
+        });
+        suite<span class="hljs-title">.add</span>(<span class="hljs-string">&quot;the next case still runs&quot;</span>, <span class="hljs-keyword">fun</span>(assert) {
+            assert<span class="hljs-title">.assertEquals</span>(<span class="hljs-number">4</span>, <span class="hljs-number">2</span><span class="hljs-title">.times</span>(<span class="hljs-number">2</span>))
+        });
+        suite
+    }
+}
+</code></pre>
+
+<p><a href="examples/intentional-failures/runtime-error.vh" class="button example-download" download="runtime-error.vh">Download runtime-error.vh</a></p>
 <p><a href="07-java-capability.html">Next: Add a capability written in Java</a></p>
 </main>
 <footer class="wrap"><p>Public preview v0.1.0 · These examples are included in your starter ZIP.</p><a href="../">Back to the preview</a></footer></body></html>

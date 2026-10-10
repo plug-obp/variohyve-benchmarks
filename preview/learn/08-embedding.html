@@ -1,12 +1,24 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Call VarioHyve from Java · Learn VarioHyve</title><link rel="stylesheet" href="../preview.css"><link rel="stylesheet" href="./learn.css"></head>
+<title>Call VarioHyve from Java · Learn VarioHyve</title><link rel="stylesheet" href="../preview.css"><link rel="stylesheet" href="./highlight.css"><link rel="stylesheet" href="./learn.css"></head>
 <body><a class="skip" href="#lesson">Skip to lesson</a><header class="site-header wrap"><a class="wordmark" href="../">VarioHyve<span aria-hidden="true">.</span></a><nav aria-label="Tutorial navigation"><a href="./">All lessons</a><a href="../#downloads">Downloads</a></nav></header>
 <main id="lesson" class="lesson"><p class="eyebrow">LEARN VARIOHYVE · V0.1.0</p><h1>Call VarioHyve from Java</h1>
 <p>An existing Java application can use a VarioHyve module as a component.
 <a href="examples/java/calculator.vh">calculator.vh</a> exposes <code>twice(value)</code>, which returns
 <code>value.times(2)</code>. There is no required <code>run</code> method when Java chooses the entry
 message itself.</p>
+<pre><code class="hljs language-vh"><span class="hljs-keyword">class</span> <span class="hljs-title">Calculator</span>(kernel) {
+    <span class="hljs-title">twice</span>(value) {
+        value<span class="hljs-title">.times</span>(<span class="hljs-number">2</span>)
+    }
+
+    <span class="hljs-title">unfinished</span> {
+        <span class="hljs-keyword">?</span>
+    }
+}
+</code></pre>
+
+<p><a href="examples/java/calculator.vh" class="button example-download" download="calculator.vh">Download calculator.vh</a></p>
 <p>Read <a href="examples/java/Embed.java">Embed.java</a>. The important steps are:</p>
 <ol>
 <li>Create <code>JavaHostKernel</code> with the input and output streams the application owns.</li>
@@ -15,19 +27,60 @@ message itself.</p>
 <code>runtime.instantiateModule</code>.</li>
 <li>Send <code>calculator.send(&quot;twice&quot;, 21L)</code> through the returned <code>VHExpat</code>.</li>
 </ol>
+<pre><code class="hljs language-java"><span class="hljs-keyword">import</span> java.nio.file.Files;
+<span class="hljs-keyword">import</span> java.nio.file.Path;
+<span class="hljs-keyword">import</span> vh.host.JavaHostKernel;
+<span class="hljs-keyword">import</span> vh.vm.boundary.BoundaryException;
+<span class="hljs-keyword">import</span> vh.vm.boundary.Diagnostic;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Embed</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] arguments)</span> <span class="hljs-keyword">throws</span> Exception </span>{
+        <span class="hljs-keyword">var</span> source = Path.of(arguments[<span class="hljs-number">0</span>]).toAbsolutePath();
+        <span class="hljs-keyword">var</span> kernel = <span class="hljs-keyword">new</span> JavaHostKernel(System.in, System.out);
+        <span class="hljs-keyword">var</span> runtime = kernel.newRuntime();
+        <span class="hljs-keyword">var</span> calculator = runtime.instantiateModule(
+                source.toString(), Files.readString(source), <span class="hljs-number">100_000</span>, kernel);
+
+        Object answer = calculator.send(<span class="hljs-string">&quot;twice&quot;</span>, <span class="hljs-number">21L</span>);
+        <span class="hljs-keyword">if</span> (!(answer <span class="hljs-keyword">instanceof</span> Long value) || value != <span class="hljs-number">42L</span>) {
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> AssertionError(<span class="hljs-string">&quot;Expected the Java Long result 42&quot;</span>);
+        }
+        System.out.println(<span class="hljs-string">&quot;twice(21) = &quot;</span> + answer);
+
+        <span class="hljs-keyword">try</span> {
+            calculator.send(<span class="hljs-string">&quot;unfinished&quot;</span>);
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> AssertionError(<span class="hljs-string">&quot;Expected an unresolved hole&quot;</span>);
+        } <span class="hljs-keyword">catch</span> (BoundaryException failure) {
+            <span class="hljs-keyword">if</span> (failure.kind() != BoundaryException.Kind.LANGUAGE_FAILURE
+                    || failure.diagnostic().reason() != Diagnostic.Reason.UNRESOLVED_HOLE) {
+                <span class="hljs-keyword">throw</span> failure;
+            }
+            System.out.println(<span class="hljs-string">&quot;Failure: &quot;</span> + failure.kind() + <span class="hljs-string">&quot; / &quot;</span> + failure.diagnostic().reason());
+            <span class="hljs-keyword">if</span> (failure.diagnostic().site() == <span class="hljs-keyword">null</span>) {
+                <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> AssertionError(<span class="hljs-string">&quot;Expected a source location&quot;</span>);
+            }
+            System.out.println(<span class="hljs-string">&quot;Source: &quot;</span> + Path.of(failure.diagnostic().site().sourceName()).getFileName());
+        }
+    }
+}
+</code></pre>
+
+<p><a href="examples/java/Embed.java" class="button example-download" download="Embed.java">Download Embed.java</a></p>
 <p>An <strong>Expat</strong> is a VarioHyve object exposed to Java through messages. In this
 example the result returns to Java as a <code>Long</code> with value <code>42</code>.</p>
 <p>From the starter's <code>learn</code> directory:</p>
-<pre><code class="language-sh">mkdir -p out
-javac -cp '../lib/*' -d out examples/java/Embed.java
-java -cp 'out:../lib/*' Embed examples/java/calculator.vh
+<pre><code class="hljs language-sh">mkdir -p out
+javac -cp <span class="hljs-string">&#x27;../lib/*&#x27;</span> -d out examples/java/Embed.java
+java -cp <span class="hljs-string">&#x27;out:../lib/*&#x27;</span> Embed examples/java/calculator.vh
 </code></pre>
+
 <p>On Windows PowerShell, create <code>out</code> with <code>New-Item -ItemType Directory -Force out</code>
 and use <code>&quot;out;../lib/*&quot;</code> for the Java classpath.</p>
-<pre><code class="language-text">twice(21) = 42
+<pre><code class="hljs language-text">twice(21) = 42
 Failure: LANGUAGE_FAILURE / UNRESOLVED_HOLE
 Source: calculator.vh
 </code></pre>
+
 <p>The last two lines demonstrate a call to the intentionally unfinished method.
 The Java client checks <code>failure.kind()</code> and <code>failure.diagnostic().reason()</code>;
 the diagnostic also records the source location from the snapshot we supplied.

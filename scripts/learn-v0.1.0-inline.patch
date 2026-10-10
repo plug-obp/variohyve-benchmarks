@@ -1,0 +1,544 @@
+diff --git a/01-install.md b/01-install.md
+--- a/01-install.md
++++ b/01-install.md
+@@ -46,6 +46,8 @@
+     }
+ }
+ ```
++
++[Download hello.vh](examples/hello.vh)
+
+ The launcher supplies `kernel`, our bundle of tools. The program retains its
+ `Console` in a slot. Sending `run` prints the message. Change the text, save
+diff --git a/02-values-and-input.md b/02-values-and-input.md
+--- a/02-values-and-input.md
++++ b/02-values-and-input.md
+@@ -26,6 +26,8 @@
+ }
+ ```
+
++[Download greeting.vh](examples/greeting.vh)
++
+ `Console = kernel.Console;` keeps the console in a slot so our methods can use
+ it. Constructor inputs such as `kernel` are available while the object is being
+ built; a slot retains what we need afterward.
+diff --git a/03-arithmetic-and-choices.md b/03-arithmetic-and-choices.md
+--- a/03-arithmetic-and-choices.md
++++ b/03-arithmetic-and-choices.md
+@@ -5,6 +5,22 @@
+ ```sh
+ ../bin/vh run examples/arithmetic.vh
+ ```
++
++<!-- example: arithmetic.vh -->
++```vh
++class Program(kernel) {
++    Console = kernel.Console;
++
++    run {
++        Console.printLine(2.plus(3).toString);
++        Console.printLine(2.plus(3).times(4).toString);
++        Console.printLine(7.quotient(2).toString);
++        Console.printLine(7.remainder(2).toString)
++    }
++}
++```
++
++[Download arithmetic.vh](examples/arithmetic.vh)
+
+ It prints `5`, `20`, `3` and `1`, each on a separate line.
+ `2.plus(3)` adds, and `2.plus(3).times(4)` multiplies the result by four.
+@@ -23,6 +39,26 @@
+ Celsius?
+ 68.0 F
+ ```
++
++<!-- example: temperature.vh -->
++```vh
++class Program(kernel) {
++    Console = kernel.Console;
++    Double = kernel.Double;
++
++    fahrenheit(celsius) {
++        celsius.times(1.8).plus(32.0)
++    }
++
++    run {
++        Console.printLine("Celsius?");
++        var celsius = Double.parse(Console.readLine.trim);
++        Console.printLine(fahrenheit(celsius).toString.concat(" F"))
++    }
++}
++```
++
++[Download temperature.vh](examples/temperature.vh)
+
+ `Double.parse` turns the input text into a decimal value. Our `fahrenheit`
+ method multiplies by `1.8`, then adds `32.0`. Keep both operands decimal when
+@@ -43,6 +79,28 @@
+ 7 is odd
+ ```
+
++<!-- example: choices.vh -->
++```vh
++class Program(kernel) {
++    Console = kernel.Console;
++    Integer = kernel.Integer;
++
++    describe(number) {
++        number.remainder(2).equals(0).ifTrue(
++            fun { "even" },
++            fun { "odd" })
++    }
++
++    run {
++        Console.printLine("An integer?");
++        var number = Integer.parse(Console.readLine.trim);
++        Console.printLine(number.toString.concat(" is ").concat(describe(number)))
++    }
++}
++```
++
++[Download choices.vh](examples/choices.vh)
++
+ `Integer.parse` makes an integer from text. The remainder after division by two
+ tells us whether it is even. `equals(0)` returns a Boolean, which receives
+ `ifTrue(yes, no)`. Each branch is a `fun { ... }`: a small block of work to run
+diff --git a/04-collections.md b/04-collections.md
+--- a/04-collections.md
++++ b/04-collections.md
+@@ -14,6 +14,21 @@
+ 5 x 3 = 15
+ ```
+
++<!-- example: table.vh -->
++```vh
++class Program(kernel) {
++    Console = kernel.Console;
++
++    run {
++        1.toDo(5, fun(number) {
++            Console.printLine(number.toString.concat(" x 3 = ").concat(number.times(3).toString))
++        })
++    }
++}
++```
++
++[Download table.vh](examples/table.vh)
++
+ `1.toDo(5, fun(number) { ... })` visits integers one through five, including both
+ ends. The block receives each number. To repeat work a fixed number of times
+ without an index, use `3.timesRepeat(fun { ... })`.
+@@ -28,6 +43,28 @@
+ Total: 60
+ Average: 20.0
+ ```
++
++<!-- example: average.vh -->
++```vh
++class Program(kernel) {
++    Console = kernel.Console;
++    Collections = kernel.Collections;
++
++    run {
++        var scores = Collections.list;
++        scores.add(10);
++        scores.add(20);
++        scores.add(30);
++        var total = 0;
++        scores.do(fun(score) { total = total.plus(score) });
++        var average = total.asDouble.dividedBy(scores.size.asDouble);
++        Console.printLine("Total: ".concat(total.toString));
++        Console.printLine("Average: ".concat(average.toString))
++    }
++}
++```
++
++[Download average.vh](examples/average.vh)
+
+ `Collections.list` creates an empty mutable list. `add(value)` appends a value,
+ and `do(fun(score) { ... })` visits each score in order. The block updates the
+@@ -49,6 +86,29 @@
+ green: 1
+ ```
+
++<!-- example: word-count.vh -->
++```vh
++class Program(kernel) {
++    Console = kernel.Console;
++    Collections = kernel.Collections;
++
++    run {
++        var counts = Collections.map;
++        "red blue red green blue red".split(" ").do(fun(word) {
++            var previous = counts.containsKey(word).ifTrue(
++                fun { counts.get(word) },
++                fun { 0 });
++            counts.put(word, previous.plus(1))
++        });
++        counts.do(fun(word, count) {
++            Console.printLine(word.concat(": ").concat(count.toString))
++        })
++    }
++}
++```
++
++[Download word-count.vh](examples/word-count.vh)
++
+ `split(" ")` breaks text at each space and returns a list. A map from
+ `Collections.map` associates string keys with values. This program checks
+ `containsKey(word)`, gets the previous count when present, and stores the next
+diff --git a/05-objects.md b/05-objects.md
+--- a/05-objects.md
++++ b/05-objects.md
+@@ -16,6 +16,9 @@
+
+ <!-- example: counter.vh -->
+ ```vh
++class Program(kernel) {
++    Console = kernel.Console;
++
+     class Counter(start) {
+         count = start;
+
+@@ -23,7 +26,16 @@
+             count = count.plus(1)
+         }
+     }
++
++    run {
++        var score = Counter(10);
++        3.timesRepeat(fun { score.increment });
++        Console.printLine("Score: ".concat(score.count.toString))
++    }
++}
+ ```
++
++[Download counter.vh](examples/counter.vh)
+
+ `start` is a constructor input. The slot initializer copies it into `count`
+ so methods can keep using the value. A slot has an ordinary getter and setter;
+diff --git a/06-testing.md b/06-testing.md
+--- a/06-testing.md
++++ b/06-testing.md
+@@ -5,6 +5,52 @@
+ ```sh
+ ../bin/vh test examples/tests/lessons.vh
+ ```
++
++<!-- example: tests/lessons.vh -->
++```vh
++class Tests(kernel, testing) {
++    Collections = kernel.Collections;
++    Testing = testing;
++
++    class Counter(start) {
++        count = start;
++        increment { count = count.plus(1) }
++    }
++
++    fahrenheit(celsius) { celsius.times(1.8).plus(32.0) }
++
++    tests {
++        var suite = Testing.suite("Lesson tests");
++        suite.add("arithmetic", fun(assert) {
++            assert.assertEquals(20, 2.plus(3).times(4));
++            assert.assertTrue(7.remainder(2).equals(1))
++        });
++        suite.add("temperature", fun(assert) {
++            assert.assertNear(68.0, fahrenheit(20.0), 0.000001)
++        });
++        suite.add("collections", fun(assert) {
++            var values = Collections.list;
++            values.add(10);
++            values.add(20);
++            values.set(0, 15);
++            var counts = Collections.map;
++            counts.put("apples", values.get(0));
++            assert.assertEquals(2, values.size);
++            assert.assertEquals(15, counts.get("apples"));
++            assert.assertEquals("apples", counts.keys.get(0))
++        });
++        suite.add("fresh counter", fun(assert) {
++            var counter = Counter(10);
++            counter.increment;
++            counter.increment;
++            assert.assertEquals(12, counter.count)
++        });
++        suite
++    }
++}
++```
++
++[Download lessons.vh](examples/tests/lessons.vh)
+
+ The four named cases cover arithmetic, temperature conversion, collections and
+ a fresh counter. Each case should pass. The exact report is kept in the
+@@ -36,6 +82,26 @@
+ ../bin/vh test examples/intentional-failures/assertion.vh
+ ```
+
++<!-- example: intentional-failures/assertion.vh -->
++```vh
++class Tests(kernel, testing) {
++    Testing = testing;
++
++    tests {
++        var suite = Testing.suite("Practice reading a failure");
++        suite.add("two plus three", fun(assert) {
++            assert.assertEquals(6, 2.plus(3))
++        });
++        suite.add("the next case still runs", fun(assert) {
++            assert.assertEquals("hello", " hello ".trim)
++        });
++        suite
++    }
++}
++```
++
++[Download assertion.vh](examples/intentional-failures/assertion.vh)
++
+ Its first case expects `6` from `2.plus(3)`. The report shows one failed case
+ and one passed case. Change the expected value to `5`, save and run again.
+ The [original report](examples/fixtures/assertion.out) makes the comparison easy.
+@@ -45,4 +111,24 @@
+ `../bin/vh test examples/intentional-failures/runtime-error.vh` to see one error
+ and a later passing case. The checker validates its failure kind and reason too.
+
++<!-- example: intentional-failures/runtime-error.vh -->
++```vh
++class Tests(kernel, testing) {
++    Testing = testing;
++
++    tests {
++        var suite = Testing.suite("Practice reading an error");
++        suite.add("unfinished operation", fun(assert) {
++            ?
++        });
++        suite.add("the next case still runs", fun(assert) {
++            assert.assertEquals(4, 2.times(2))
++        });
++        suite
++    }
++}
++```
++
++[Download runtime-error.vh](examples/intentional-failures/runtime-error.vh)
++
+ [Next: Add a capability written in Java](07-java-capability.md)
+diff --git a/07-java-capability.md b/07-java-capability.md
+--- a/07-java-capability.md
++++ b/07-java-capability.md
+@@ -4,6 +4,43 @@
+ label maker: it accepts a name and returns a greeting. Its behavior is implemented
+ by [LabelMaker.java](examples/java/LabelMaker.java), using the public
+ `ForeignObject` interface.
++
++<!-- example: java/LabelMaker.java -->
++```java
++import vh.vm.boundary.BoundaryException;
++import vh.vm.boundary.Diagnostic;
++import vh.vm.boundary.ForeignObject;
++import vh.vm.boundary.ForeignOperation;
++
++/** A deliberately small Java capability: format one nonblank name. */
++public final class LabelMaker implements ForeignObject {
++    @Override
++    public ForeignOperation resolve(String selector, int arity) {
++        if (selector.equals("label") && arity == 1) {
++            return arguments -> label(arguments.get(0));
++        }
++        return null;
++    }
++
++    public String label(Object value) {
++        if (!(value instanceof String name)) {
++            throw new BoundaryException(new Diagnostic(
++                    BoundaryException.Kind.CONVERSION,
++                    Diagnostic.Reason.CONVERSION_FAILED,
++                    "label needs a String", null));
++        }
++        if (name.isBlank()) {
++            throw new BoundaryException(new Diagnostic(
++                    BoundaryException.Kind.FOREIGN_FAILURE,
++                    Diagnostic.Reason.FOREIGN_REJECTION,
++                    "label needs a nonblank name", null));
++        }
++        return "Hello, " + name.trim() + "!";
++    }
++}
++```
++
++[Download LabelMaker.java](examples/java/LabelMaker.java)
+
+ The adapter's `resolve(selector, arity)` returns an operation only for
+ `label/1`. Returning `null` means that operation is absent. Resolution does no
+@@ -15,11 +52,64 @@
+ sends `labels.label("Ada")`. A Java capability used inside VarioHyve is called
+ an **Alien**; the source uses it by sending messages, just like the console.
+
++<!-- example: java/use-label.vh -->
++```vh
++class Program(kernel, labelMaker) {
++    Console = kernel.Console;
++    labels = labelMaker;
++
++    run {
++        Console.printLine(labels.label("Ada"))
++    }
++
++    rejectedLabel {
++        labels.label("   ")
++    }
++}
++```
++
++[Download use-label.vh](examples/java/use-label.vh)
++
+ [UseLabel.java](examples/java/UseLabel.java) constructs a JavaHostKernel,
+ creates a runtime, and explicitly passes both `kernel` and `new LabelMaker()`
+ to `instantiateModule`. No registration or reflection is needed. The normal
+ `vh run` command supplies only the standard kernel, so this example has its own
+ small Java launcher.
++
++<!-- example: java/UseLabel.java -->
++```java
++import java.nio.file.Files;
++import java.nio.file.Path;
++import vh.host.JavaHostKernel;
++import vh.vm.boundary.BoundaryException;
++import vh.vm.boundary.Diagnostic;
++
++public final class UseLabel {
++    public static void main(String[] arguments) throws Exception {
++        var source = Path.of(arguments[0]).toAbsolutePath();
++        var kernel = new JavaHostKernel(System.in, System.out);
++        var runtime = kernel.newRuntime();
++        var program = runtime.instantiateModule(
++                source.toString(), Files.readString(source), 100_000,
++                kernel, new LabelMaker());
++        program.send("run");
++
++        // This is a new host entry, deliberately demonstrating a selected failure.
++        try {
++            program.send("rejectedLabel");
++            throw new AssertionError("Expected the adapter to reject blank text");
++        } catch (BoundaryException failure) {
++            if (failure.kind() != BoundaryException.Kind.FOREIGN_FAILURE
++                    || failure.diagnostic().reason() != Diagnostic.Reason.FOREIGN_REJECTION) {
++                throw failure;
++            }
++            System.out.println("Rejected: " + failure.kind() + " / " + failure.diagnostic().reason());
++        }
++    }
++}
++```
++
++[Download UseLabel.java](examples/java/UseLabel.java)
+
+ From the starter's `learn` directory, using a JDK 23 `javac` and `java`:
+
+@@ -52,6 +142,17 @@
+ not the implementation and not a program to run. Descriptors never load Java
+ or fill the hole.
+
++<!-- example: java/LabelMaker.vh -->
++```vh
++class LabelMaker {
++    label(name) { ? }
++        : host("java", "LabelMaker#label(java.lang.Object)")
++        : doc("Accepts a nonblank String, trims it, and returns a greeting String. Other values fail with CONVERSION; blank text fails with FOREIGN_FAILURE / FOREIGN_REJECTION. No I/O or callbacks.");
++}
++```
++
++[Download LabelMaker.vh](examples/java/LabelMaker.vh)
++
+ The example checker parses the declaration without executing it, verifies the
+ adapter's selector/arity, and runs the actual Java launcher.
+
+diff --git a/08-embedding.md b/08-embedding.md
+--- a/08-embedding.md
++++ b/08-embedding.md
+@@ -4,6 +4,21 @@
+ [calculator.vh](examples/java/calculator.vh) exposes `twice(value)`, which returns
+ `value.times(2)`. There is no required `run` method when Java chooses the entry
+ message itself.
++
++<!-- example: java/calculator.vh -->
++```vh
++class Calculator(kernel) {
++    twice(value) {
++        value.times(2)
++    }
++
++    unfinished {
++        ?
++    }
++}
++```
++
++[Download calculator.vh](examples/java/calculator.vh)
+
+ Read [Embed.java](examples/java/Embed.java). The important steps are:
+
+@@ -12,6 +27,48 @@
+ 3. Read a source snapshot and pass its name, text and constructor arguments to
+    `runtime.instantiateModule`.
+ 4. Send `calculator.send("twice", 21L)` through the returned `VHExpat`.
++
++<!-- example: java/Embed.java -->
++```java
++import java.nio.file.Files;
++import java.nio.file.Path;
++import vh.host.JavaHostKernel;
++import vh.vm.boundary.BoundaryException;
++import vh.vm.boundary.Diagnostic;
++
++public final class Embed {
++    public static void main(String[] arguments) throws Exception {
++        var source = Path.of(arguments[0]).toAbsolutePath();
++        var kernel = new JavaHostKernel(System.in, System.out);
++        var runtime = kernel.newRuntime();
++        var calculator = runtime.instantiateModule(
++                source.toString(), Files.readString(source), 100_000, kernel);
++
++        Object answer = calculator.send("twice", 21L);
++        if (!(answer instanceof Long value) || value != 42L) {
++            throw new AssertionError("Expected the Java Long result 42");
++        }
++        System.out.println("twice(21) = " + answer);
++
++        try {
++            calculator.send("unfinished");
++            throw new AssertionError("Expected an unresolved hole");
++        } catch (BoundaryException failure) {
++            if (failure.kind() != BoundaryException.Kind.LANGUAGE_FAILURE
++                    || failure.diagnostic().reason() != Diagnostic.Reason.UNRESOLVED_HOLE) {
++                throw failure;
++            }
++            System.out.println("Failure: " + failure.kind() + " / " + failure.diagnostic().reason());
++            if (failure.diagnostic().site() == null) {
++                throw new AssertionError("Expected a source location");
++            }
++            System.out.println("Source: " + Path.of(failure.diagnostic().site().sourceName()).getFileName());
++        }
++    }
++}
++```
++
++[Download Embed.java](examples/java/Embed.java)
+
+ An **Expat** is a VarioHyve object exposed to Java through messages. In this
+ example the result returns to Java as a `Long` with value `42`.
+diff --git a/README.md b/README.md
+--- a/README.md
++++ b/README.md
+@@ -5,7 +5,7 @@
+ communicate by sending messages, and how a program receives the tools it needs.
+
+ Start with [Install and say hello](01-install.md). Each chapter has a complete
+-example you can open, run and change.
++example shown inline, with a download link so you can run and change it.
+
+ 1. [Install and say hello](01-install.md)
+ 2. [Values, messages and input](02-values-and-input.md)

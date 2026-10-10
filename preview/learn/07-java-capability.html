@@ -1,12 +1,46 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Add a capability written in Java · Learn VarioHyve</title><link rel="stylesheet" href="../preview.css"><link rel="stylesheet" href="./learn.css"></head>
+<title>Add a capability written in Java · Learn VarioHyve</title><link rel="stylesheet" href="../preview.css"><link rel="stylesheet" href="./highlight.css"><link rel="stylesheet" href="./learn.css"></head>
 <body><a class="skip" href="#lesson">Skip to lesson</a><header class="site-header wrap"><a class="wordmark" href="../">VarioHyve<span aria-hidden="true">.</span></a><nav aria-label="Tutorial navigation"><a href="./">All lessons</a><a href="../#downloads">Downloads</a></nav></header>
 <main id="lesson" class="lesson"><p class="eyebrow">LEARN VARIOHYVE · V0.1.0</p><h1>Add a capability written in Java</h1>
 <p>Sometimes a program needs a tool supplied by Java. Our example is a small
 label maker: it accepts a name and returns a greeting. Its behavior is implemented
 by <a href="examples/java/LabelMaker.java">LabelMaker.java</a>, using the public
 <code>ForeignObject</code> interface.</p>
+<pre><code class="hljs language-java"><span class="hljs-keyword">import</span> vh.vm.boundary.BoundaryException;
+<span class="hljs-keyword">import</span> vh.vm.boundary.Diagnostic;
+<span class="hljs-keyword">import</span> vh.vm.boundary.ForeignObject;
+<span class="hljs-keyword">import</span> vh.vm.boundary.ForeignOperation;
+
+<span class="hljs-comment">/** A deliberately small Java capability: format one nonblank name. */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LabelMaker</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">ForeignObject</span> </span>{
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> ForeignOperation <span class="hljs-title">resolve</span><span class="hljs-params">(String selector, <span class="hljs-keyword">int</span> arity)</span> </span>{
+        <span class="hljs-keyword">if</span> (selector.equals(<span class="hljs-string">&quot;label&quot;</span>) &amp;&amp; arity == <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> arguments -&gt; label(arguments.get(<span class="hljs-number">0</span>));
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">label</span><span class="hljs-params">(Object value)</span> </span>{
+        <span class="hljs-keyword">if</span> (!(value <span class="hljs-keyword">instanceof</span> String name)) {
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> BoundaryException(<span class="hljs-keyword">new</span> Diagnostic(
+                    BoundaryException.Kind.CONVERSION,
+                    Diagnostic.Reason.CONVERSION_FAILED,
+                    <span class="hljs-string">&quot;label needs a String&quot;</span>, <span class="hljs-keyword">null</span>));
+        }
+        <span class="hljs-keyword">if</span> (name.isBlank()) {
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> BoundaryException(<span class="hljs-keyword">new</span> Diagnostic(
+                    BoundaryException.Kind.FOREIGN_FAILURE,
+                    Diagnostic.Reason.FOREIGN_REJECTION,
+                    <span class="hljs-string">&quot;label needs a nonblank name&quot;</span>, <span class="hljs-keyword">null</span>));
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Hello, &quot;</span> + name.trim() + <span class="hljs-string">&quot;!&quot;</span>;
+    }
+}
+</code></pre>
+
+<p><a href="examples/java/LabelMaker.java" class="button example-download" download="LabelMaker.java">Download LabelMaker.java</a></p>
 <p>The adapter's <code>resolve(selector, arity)</code> returns an operation only for
 <code>label/1</code>. Returning <code>null</code> means that operation is absent. Resolution does no
 work; the selected operation calls <code>label</code> exactly once. That method checks its
@@ -15,23 +49,72 @@ input, formats the greeting and returns a Java string.</p>
 <code>class Program(kernel, labelMaker)</code>. It retains the label maker in a slot and
 sends <code>labels.label(&quot;Ada&quot;)</code>. A Java capability used inside VarioHyve is called
 an <strong>Alien</strong>; the source uses it by sending messages, just like the console.</p>
+<pre><code class="hljs language-vh"><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span>(kernel, labelMaker) {
+    Console = kernel<span class="hljs-title">.Console</span>;
+    labels = labelMaker;
+
+    <span class="hljs-title">run</span> {
+        Console<span class="hljs-title">.printLine</span>(labels<span class="hljs-title">.label</span>(<span class="hljs-string">&quot;Ada&quot;</span>))
+    }
+
+    <span class="hljs-title">rejectedLabel</span> {
+        labels<span class="hljs-title">.label</span>(<span class="hljs-string">&quot;   &quot;</span>)
+    }
+}
+</code></pre>
+
+<p><a href="examples/java/use-label.vh" class="button example-download" download="use-label.vh">Download use-label.vh</a></p>
 <p><a href="examples/java/UseLabel.java">UseLabel.java</a> constructs a JavaHostKernel,
 creates a runtime, and explicitly passes both <code>kernel</code> and <code>new LabelMaker()</code>
 to <code>instantiateModule</code>. No registration or reflection is needed. The normal
 <code>vh run</code> command supplies only the standard kernel, so this example has its own
 small Java launcher.</p>
-<p>From the starter's <code>learn</code> directory, using a JDK 23 <code>javac</code> and <code>java</code>:</p>
-<pre><code class="language-sh">mkdir -p out
-javac -cp '../lib/*' -d out examples/java/LabelMaker.java examples/java/UseLabel.java
-java -cp 'out:../lib/*' UseLabel examples/java/use-label.vh
+<pre><code class="hljs language-java"><span class="hljs-keyword">import</span> java.nio.file.Files;
+<span class="hljs-keyword">import</span> java.nio.file.Path;
+<span class="hljs-keyword">import</span> vh.host.JavaHostKernel;
+<span class="hljs-keyword">import</span> vh.vm.boundary.BoundaryException;
+<span class="hljs-keyword">import</span> vh.vm.boundary.Diagnostic;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UseLabel</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] arguments)</span> <span class="hljs-keyword">throws</span> Exception </span>{
+        <span class="hljs-keyword">var</span> source = Path.of(arguments[<span class="hljs-number">0</span>]).toAbsolutePath();
+        <span class="hljs-keyword">var</span> kernel = <span class="hljs-keyword">new</span> JavaHostKernel(System.in, System.out);
+        <span class="hljs-keyword">var</span> runtime = kernel.newRuntime();
+        <span class="hljs-keyword">var</span> program = runtime.instantiateModule(
+                source.toString(), Files.readString(source), <span class="hljs-number">100_000</span>,
+                kernel, <span class="hljs-keyword">new</span> LabelMaker());
+        program.send(<span class="hljs-string">&quot;run&quot;</span>);
+
+        <span class="hljs-comment">// This is a new host entry, deliberately demonstrating a selected failure.</span>
+        <span class="hljs-keyword">try</span> {
+            program.send(<span class="hljs-string">&quot;rejectedLabel&quot;</span>);
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> AssertionError(<span class="hljs-string">&quot;Expected the adapter to reject blank text&quot;</span>);
+        } <span class="hljs-keyword">catch</span> (BoundaryException failure) {
+            <span class="hljs-keyword">if</span> (failure.kind() != BoundaryException.Kind.FOREIGN_FAILURE
+                    || failure.diagnostic().reason() != Diagnostic.Reason.FOREIGN_REJECTION) {
+                <span class="hljs-keyword">throw</span> failure;
+            }
+            System.out.println(<span class="hljs-string">&quot;Rejected: &quot;</span> + failure.kind() + <span class="hljs-string">&quot; / &quot;</span> + failure.diagnostic().reason());
+        }
+    }
+}
 </code></pre>
+
+<p><a href="examples/java/UseLabel.java" class="button example-download" download="UseLabel.java">Download UseLabel.java</a></p>
+<p>From the starter's <code>learn</code> directory, using a JDK 23 <code>javac</code> and <code>java</code>:</p>
+<pre><code class="hljs language-sh">mkdir -p out
+javac -cp <span class="hljs-string">&#x27;../lib/*&#x27;</span> -d out examples/java/LabelMaker.java examples/java/UseLabel.java
+java -cp <span class="hljs-string">&#x27;out:../lib/*&#x27;</span> UseLabel examples/java/use-label.vh
+</code></pre>
+
 <p>On Windows PowerShell, use <code>New-Item -ItemType Directory -Force out</code> in place of
 <code>mkdir -p out</code>, and use <code>&quot;out;../lib/*&quot;</code> for Java's classpath. The <code>javac</code>
 classpath remains <code>&quot;../lib/*&quot;</code>.</p>
 <p>The output is:</p>
-<pre><code class="language-text">Hello, Ada!
+<pre><code class="hljs language-text">Hello, Ada!
 Rejected: FOREIGN_FAILURE / FOREIGN_REJECTION
 </code></pre>
+
 <p>The second line comes from a deliberate blank-name request. The Java client
 catches <code>BoundaryException</code> and checks its structured kind and reason. A selected
 operation's rejection is a failure; it must not be returned as a lookup miss or
@@ -42,6 +125,14 @@ Its <code>label(name) { ? }</code> body marks the missing VarioHyve implementati
 the file in VS Code to browse it like VarioHyve source. It is documentation,
 not the implementation and not a program to run. Descriptors never load Java
 or fill the hole.</p>
+<pre><code class="hljs language-vh"><span class="hljs-keyword">class</span> <span class="hljs-title">LabelMaker</span> {
+    <span class="hljs-title">label</span>(name) { <span class="hljs-keyword">?</span> }
+        : host(<span class="hljs-string">&quot;java&quot;</span>, <span class="hljs-string">&quot;LabelMaker#label(java.lang.Object)&quot;</span>)
+        : doc(<span class="hljs-string">&quot;Accepts a nonblank String, trims it, and returns a greeting String. Other values fail with CONVERSION; blank text fails with FOREIGN_FAILURE / FOREIGN_REJECTION. No I/O or callbacks.&quot;</span>);
+}
+</code></pre>
+
+<p><a href="examples/java/LabelMaker.vh" class="button example-download" download="LabelMaker.vh">Download LabelMaker.vh</a></p>
 <p>The example checker parses the declaration without executing it, verifies the
 adapter's selector/arity, and runs the actual Java launcher.</p>
 <p><a href="08-embedding.html">Next: Call VarioHyve from Java</a></p>

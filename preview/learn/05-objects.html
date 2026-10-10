@@ -1,24 +1,38 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Objects that remember · Learn VarioHyve</title><link rel="stylesheet" href="../preview.css"><link rel="stylesheet" href="./learn.css"></head>
+<title>Objects that remember · Learn VarioHyve</title><link rel="stylesheet" href="../preview.css"><link rel="stylesheet" href="./highlight.css"><link rel="stylesheet" href="./learn.css"></head>
 <body><a class="skip" href="#lesson">Skip to lesson</a><header class="site-header wrap"><a class="wordmark" href="../">VarioHyve<span aria-hidden="true">.</span></a><nav aria-label="Tutorial navigation"><a href="./">All lessons</a><a href="../#downloads">Downloads</a></nav></header>
 <main id="lesson" class="lesson"><p class="eyebrow">LEARN VARIOHYVE · V0.1.0</p><h1>Objects that remember</h1>
 <p>Run <a href="examples/counter.vh">counter.vh</a>:</p>
-<pre><code class="language-sh">../bin/vh run examples/counter.vh
+<pre><code class="hljs language-sh">../bin/vh run examples/counter.vh
 </code></pre>
-<pre><code class="language-text">Score: 13
+
+<pre><code class="hljs language-text">Score: 13
 </code></pre>
+
 <p>The program declares a <code>Counter</code> class inside <code>Program</code>. <code>Counter(10)</code> makes an
 object whose <code>count</code> slot starts at ten. Sending <code>increment</code> updates that slot;
 sending <code>count</code> reads it. Each new counter has its own count.</p>
-<pre><code class="language-vh">    class Counter(start) {
+<pre><code class="hljs language-vh"><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span>(kernel) {
+    Console = kernel<span class="hljs-title">.Console</span>;
+
+    <span class="hljs-keyword">class</span> <span class="hljs-title">Counter</span>(start) {
         count = start;
 
-        increment {
-            count = count.plus(1)
+        <span class="hljs-title">increment</span> {
+            count = count<span class="hljs-title">.plus</span>(<span class="hljs-number">1</span>)
         }
     }
+
+    <span class="hljs-title">run</span> {
+        <span class="hljs-keyword">var</span> score = Counter(<span class="hljs-number">10</span>);
+        <span class="hljs-number">3</span><span class="hljs-title">.timesRepeat</span>(<span class="hljs-keyword">fun</span> { score<span class="hljs-title">.increment</span> });
+        Console<span class="hljs-title">.printLine</span>(<span class="hljs-string">&quot;Score: &quot;</span><span class="hljs-title">.concat</span>(score<span class="hljs-title">.count</span><span class="hljs-title">.toString</span>))
+    }
+}
 </code></pre>
+
+<p><a href="examples/counter.vh" class="button example-download" download="counter.vh">Download counter.vh</a></p>
 <p><code>start</code> is a constructor input. The slot initializer copies it into <code>count</code>
 so methods can keep using the value. A slot has an ordinary getter and setter;
 <code>count = count.plus(1)</code> is convenient setter syntax.</p>

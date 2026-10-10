@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Install and say hello · Learn VarioHyve</title><link rel="stylesheet" href="../preview.css"><link rel="stylesheet" href="./learn.css"></head>
+<title>Install and say hello · Learn VarioHyve</title><link rel="stylesheet" href="../preview.css"><link rel="stylesheet" href="./highlight.css"><link rel="stylesheet" href="./learn.css"></head>
 <body><a class="skip" href="#lesson">Skip to lesson</a><header class="site-header wrap"><a class="wordmark" href="../">VarioHyve<span aria-hidden="true">.</span></a><nav aria-label="Tutorial navigation"><a href="./">All lessons</a><a href="../#downloads">Downloads</a></nav></header>
 <main id="lesson" class="lesson"><p class="eyebrow">LEARN VARIOHYVE · V0.1.0</p><h1>Install and say hello</h1>
 <p>You need a Java 23 JDK and a matching VarioHyve starter archive and VS Code
@@ -8,31 +8,36 @@ extension (<code>.vsix</code>). Use the artifacts supplied with this checkout or
 If you are building them yourself, follow the contributor commands below first.</p>
 <p>Extract the starter archive into a folder of your choice. It contains <code>bin</code>,
 <code>lib</code>, <code>contracts</code> and <code>learn</code>. Check your Java installation:</p>
-<pre><code class="language-sh">java -version
+<pre><code class="hljs language-sh">java -version
 javac -version
 </code></pre>
+
 <p>Make sure both commands select Java 23. Set <code>JAVA_HOME</code> to that JDK and put its
 <code>bin</code> directory first on your <code>PATH</code> if another Java installation is the default.
 The launcher reads <code>JAVA_HOME</code>; the later Java lessons also need <code>java</code> and
 <code>javac</code> on <code>PATH</code>. In a terminal, change into the extracted starter's <code>learn</code>
 directory and run:</p>
-<pre><code class="language-sh">../bin/vh run examples/hello.vh
+<pre><code class="hljs language-sh">../bin/vh run examples/hello.vh
 </code></pre>
+
 <p>On Windows PowerShell, the corresponding command is:</p>
 <pre><code class="language-powershell">..\bin\vh.bat run examples\hello.vh
 </code></pre>
 <p>You should see:</p>
-<pre><code class="language-text">Hello, VarioHyve!
+<pre><code class="hljs language-text">Hello, VarioHyve!
 </code></pre>
-<p>That is your first program. Open <a href="examples/hello.vh">hello.vh</a>:</p>
-<pre><code class="language-vh">class Program(kernel) {
-    Console = kernel.Console;
 
-    run {
-        Console.printLine(&quot;Hello, VarioHyve!&quot;)
+<p>That is your first program. Open <a href="examples/hello.vh">hello.vh</a>:</p>
+<pre><code class="hljs language-vh"><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span>(kernel) {
+    Console = kernel<span class="hljs-title">.Console</span>;
+
+    <span class="hljs-title">run</span> {
+        Console<span class="hljs-title">.printLine</span>(<span class="hljs-string">&quot;Hello, VarioHyve!&quot;</span>)
     }
 }
 </code></pre>
+
+<p><a href="examples/hello.vh" class="button example-download" download="hello.vh">Download hello.vh</a></p>
 <p>The launcher supplies <code>kernel</code>, our bundle of tools. The program retains its
 <code>Console</code> in a slot. Sending <code>run</code> prints the message. Change the text, save
 the file and run it again.</p>
@@ -69,16 +74,18 @@ on the required version and <code>vh.javaHome</code>.</p>
 <p>This section is for contributors. Running the extracted lessons only needs
 Java; it does not need Gradle, Node or repository credentials.</p>
 <p>From the repository root, with the documented build prerequisites:</p>
-<pre><code class="language-sh">./gradlew :vh-host:installDist :vh-host:distZip :vh-lsp:installDist
+<pre><code class="hljs language-sh">./gradlew :vh-host:installDist :vh-host:distZip :vh-lsp:installDist
 npm --prefix vh-lsp-vscode ci
 npm --prefix vh-lsp-vscode run bundle-server
 npm --prefix vh-lsp-vscode run package
 </code></pre>
+
 <p>The installed starter is <code>vh-host/build/install/vh-host</code>; archives are in
 <code>vh-host/build/distributions</code>. The VSIX is written to <code>vh-lsp-vscode</code>.
 For a source checkout you can run the same first example with:</p>
-<pre><code class="language-sh">vh-host/build/install/vh-host/bin/vh run &quot;docs/Learn VarioHyve/examples/hello.vh&quot;
+<pre><code class="hljs language-sh">vh-host/build/install/vh-host/bin/vh run <span class="hljs-string">&quot;docs/Learn VarioHyve/examples/hello.vh&quot;</span>
 </code></pre>
+
 <p>The repository starter contract records packaging prerequisites and current
 platform validation. A generated Windows launcher is provided; availability of
 that file alone is not evidence of a Windows smoke test.</p>

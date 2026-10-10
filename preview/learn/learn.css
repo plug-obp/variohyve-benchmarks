@@ -10,3 +10,9 @@
 .lesson a { overflow-wrap: anywhere; }
 .lesson code { overflow-wrap: anywhere; }
 .lesson pre code { overflow-wrap: normal; }
+/* The specification palette uses a light surface; retain its exact token colors. */
+.lesson pre:has(.hljs) { background: #f6f7f6; color-scheme: light; }
+.lesson .hljs { background: transparent; color: #000; }
+.lesson .example-download { max-width: 100%; gap: .6rem; padding: .65rem .9rem; font-size: .82rem; }
+.lesson .example-download::before { content: "↓"; font-size: 1.1em; }
+.lesson .example-download:hover { background: var(--soft); }
