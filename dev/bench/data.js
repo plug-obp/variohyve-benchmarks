@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1791739419468,
+  "lastUpdate": 1791739421538,
   "repoUrl": "https://github.com/plug-obp/variohyve",
   "entries": {
     "VarioHyve / shared-name-bootstrap": [
@@ -10638,6 +10638,378 @@ window.BENCHMARK_DATA = {
             "value": 20.443824758184522,
             "unit": "us/op",
             "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ciprian.teodorov@gmail.com",
+            "name": "Ciprian Teodorov",
+            "username": "teodorov"
+          },
+          "committer": {
+            "email": "ciprian.teodorov@gmail.com",
+            "name": "Ciprian Teodorov",
+            "username": "teodorov"
+          },
+          "distinct": true,
+          "id": "aad0a6345e3526f135aa17395bdc16cb3bd358d1",
+          "message": "Keep descriptor payloads opaque until tools interpret them",
+          "timestamp": "2026-10-11T19:03:05+02:00",
+          "tree_id": "35d6ae200449ac3f1eca10d93a5147278500b9fd",
+          "url": "https://github.com/plug-obp/variohyve/commit/aad0a6345e3526f135aa17395bdc16cb3bd358d1"
+        },
+        "date": 1791739420938,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "VarioHyve+GC prepared / CPython | classContributions (callCount=256, contributionCount=1, payloadBatchSize=16)",
+            "value": 19.483288436737972,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 664.029 us/op; CPython 34.082 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 290.621 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | classContributions (callCount=256, contributionCount=1, payloadBatchSize=16)",
+            "value": 2.2848628767676633,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 664.029 us/op; CPython 34.082 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 290.621 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | classContributions (callCount=256, contributionCount=32, payloadBatchSize=16)",
+            "value": 2.3114135305302983,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 1872.007 us/op; CPython 809.897 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 2454.424 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | classContributions (callCount=256, contributionCount=32, payloadBatchSize=16)",
+            "value": 0.7627074565744875,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 1872.007 us/op; CPython 809.897 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 2454.424 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | classContributions (callCount=256, contributionCount=8, payloadBatchSize=16)",
+            "value": 6.5453807999767015,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 909.383 us/op; CPython 138.935 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 564.304 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | classContributions (callCount=256, contributionCount=8, payloadBatchSize=16)",
+            "value": 1.6115122579935504,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 909.383 us/op; CPython 138.935 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 564.304 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | closureSend (payloadBatchSize=256)",
+            "value": 23.42434953286179,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 4.406 us/op; CPython 0.188 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 2.453 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 256 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | closureSend (payloadBatchSize=256)",
+            "value": 1.7965388669751257,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 4.406 us/op; CPython 0.188 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 2.453 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 256 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | inherited (depth=16, hierarchyDepth=32, payloadBatchSize=16)",
+            "value": 1.0752329167860126,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 738.677 us/op; CPython 686.993 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 1955.660 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | inherited (depth=16, hierarchyDepth=32, payloadBatchSize=16)",
+            "value": 0.37771258685637216,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 738.677 us/op; CPython 686.993 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 1955.660 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | inherited (depth=16, hierarchyDepth=4, payloadBatchSize=16)",
+            "value": 7.213518435256049,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 365.736 us/op; CPython 50.701 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 322.988 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | inherited (depth=16, hierarchyDepth=4, payloadBatchSize=16)",
+            "value": 1.132352921280841,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 365.736 us/op; CPython 50.701 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 322.988 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | inherited (depth=256, hierarchyDepth=32, payloadBatchSize=16)",
+            "value": 4.535034918247454,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 3802.344 us/op; CPython 838.438 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 4201.963 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | inherited (depth=256, hierarchyDepth=32, payloadBatchSize=16)",
+            "value": 0.9048971519457999,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 3802.344 us/op; CPython 838.438 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 4201.963 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | inherited (depth=256, hierarchyDepth=4, payloadBatchSize=16)",
+            "value": 12.232784316412426,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 2363.341 us/op; CPython 193.197 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 2598.969 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | inherited (depth=256, hierarchyDepth=4, payloadBatchSize=16)",
+            "value": 0.9093381543458536,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 2363.341 us/op; CPython 193.197 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 2598.969 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | literal (payloadBatchSize=256)",
+            "value": 42.393391022597065,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 3.101 us/op; CPython 0.073 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 7.090 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 256 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | literal (payloadBatchSize=256)",
+            "value": 0.43732272169205494,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 3.101 us/op; CPython 0.073 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 7.090 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 256 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | manyArguments (argumentCount=0, callCount=256, payloadBatchSize=16)",
+            "value": 25.90237110079129,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 592.272 us/op; CPython 22.866 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 261.265 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | manyArguments (argumentCount=0, callCount=256, payloadBatchSize=16)",
+            "value": 2.2669426329102866,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 592.272 us/op; CPython 22.866 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 261.265 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | manyArguments (argumentCount=16, callCount=256, payloadBatchSize=16)",
+            "value": 56.222477612573684,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 2097.328 us/op; CPython 37.304 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 394.015 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | manyArguments (argumentCount=16, callCount=256, payloadBatchSize=16)",
+            "value": 5.32296815157909,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 2097.328 us/op; CPython 37.304 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 394.015 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | manyArguments (argumentCount=4, callCount=256, payloadBatchSize=16)",
+            "value": 49.460282385109295,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 1208.430 us/op; CPython 24.432 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 331.129 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | manyArguments (argumentCount=4, callCount=256, payloadBatchSize=16)",
+            "value": 3.6494216730372306,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 1208.430 us/op; CPython 24.432 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 331.129 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | manyArguments (argumentCount=64, callCount=256, payloadBatchSize=16)",
+            "value": 93.47954600179068,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 8929.366 us/op; CPython 95.522 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 798.709 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | manyArguments (argumentCount=64, callCount=256, payloadBatchSize=16)",
+            "value": 11.179750627633565,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 8929.366 us/op; CPython 95.522 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 798.709 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | methodSend (payloadBatchSize=256)",
+            "value": 3.0952899969826344,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 20.444 us/op; CPython 6.605 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 255.622 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 256 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | methodSend (payloadBatchSize=256)",
+            "value": 0.0799768357105263,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 20.444 us/op; CPython 6.605 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 255.622 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 256 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | mutual (depth=16, payloadBatchSize=16)",
+            "value": 13.421552539858975,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 250.320 us/op; CPython 18.651 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 275.299 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | mutual (depth=16, payloadBatchSize=16)",
+            "value": 0.9092655629905937,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 250.320 us/op; CPython 18.651 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 275.299 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | mutual (depth=256, payloadBatchSize=16)",
+            "value": 12.971440151844025,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 2070.379 us/op; CPython 159.611 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 2523.311 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | mutual (depth=256, payloadBatchSize=16)",
+            "value": 0.8205006879180083,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 2070.379 us/op; CPython 159.611 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 2523.311 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | partners (depth=16, partnerCount=3, payloadBatchSize=16)",
+            "value": 14.05446739220836,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 395.991 us/op; CPython 28.175 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 384.189 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | partners (depth=16, partnerCount=3, payloadBatchSize=16)",
+            "value": 1.0307197214434807,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 395.991 us/op; CPython 28.175 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 384.189 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | partners (depth=16, partnerCount=8, payloadBatchSize=16)",
+            "value": 14.02280629084535,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 492.314 us/op; CPython 35.108 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 424.081 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | partners (depth=16, partnerCount=8, payloadBatchSize=16)",
+            "value": 1.1608963653415791,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 492.314 us/op; CPython 35.108 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 424.081 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | partners (depth=256, partnerCount=3, payloadBatchSize=16)",
+            "value": 15.861524774467005,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 2642.476 us/op; CPython 166.597 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 2546.251 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | partners (depth=256, partnerCount=3, payloadBatchSize=16)",
+            "value": 1.0377908263396312,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 2642.476 us/op; CPython 166.597 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 2546.251 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | partners (depth=256, partnerCount=8, payloadBatchSize=16)",
+            "value": 15.768970314191922,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 2785.081 us/op; CPython 176.618 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 2628.974 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | partners (depth=256, partnerCount=8, payloadBatchSize=16)",
+            "value": 1.0593796979378776,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 2785.081 us/op; CPython 176.618 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 2628.974 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | receiverShapes (callCount=256, receiverClasses=1, payloadBatchSize=16)",
+            "value": 30.826762112836146,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 983.817 us/op; CPython 31.914 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 370.844 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | receiverShapes (callCount=256, receiverClasses=1, payloadBatchSize=16)",
+            "value": 2.6529096510155363,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 983.817 us/op; CPython 31.914 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 370.844 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | receiverShapes (callCount=256, receiverClasses=16, payloadBatchSize=16)",
+            "value": 9.408247191044834,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 1432.043 us/op; CPython 152.211 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 2177.283 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | receiverShapes (callCount=256, receiverClasses=16, payloadBatchSize=16)",
+            "value": 0.6577204732235605,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 1432.043 us/op; CPython 152.211 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 2177.283 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | receiverShapes (callCount=256, receiverClasses=4, payloadBatchSize=16)",
+            "value": 16.24731265239916,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 1036.998 us/op; CPython 63.826 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 682.170 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | receiverShapes (callCount=256, receiverClasses=4, payloadBatchSize=16)",
+            "value": 1.5201471386811285,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 1036.998 us/op; CPython 63.826 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 682.170 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | simple (depth=16, payloadBatchSize=16)",
+            "value": 12.549136169721448,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 230.082 us/op; CPython 18.334 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 261.904 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | simple (depth=16, payloadBatchSize=16)",
+            "value": 0.8784970684354537,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 230.082 us/op; CPython 18.334 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 261.904 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | simple (depth=256, payloadBatchSize=16)",
+            "value": 12.348527845751029,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 1949.030 us/op; CPython 157.835 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 2533.357 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | simple (depth=256, payloadBatchSize=16)",
+            "value": 0.769346538688535,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 1949.030 us/op; CPython 157.835 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 2533.357 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | superChain (depth=16, hierarchyDepth=32, payloadBatchSize=16)",
+            "value": 4.042112035720288,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 3707.636 us/op; CPython 917.252 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 4732.812 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | superChain (depth=16, hierarchyDepth=32, payloadBatchSize=16)",
+            "value": 0.7833898043173774,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 3707.636 us/op; CPython 917.252 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 4732.812 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | superChain (depth=16, hierarchyDepth=4, payloadBatchSize=16)",
+            "value": 11.234417360745839,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 804.294 us/op; CPython 71.592 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 708.340 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | superChain (depth=16, hierarchyDepth=4, payloadBatchSize=16)",
+            "value": 1.1354641761127413,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 804.294 us/op; CPython 71.592 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 708.340 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | superChain (depth=256, hierarchyDepth=32, payloadBatchSize=16)",
+            "value": 39.448454938144145,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 178598.746 us/op; CPython 4527.395 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 48594.254 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | superChain (depth=256, hierarchyDepth=32, payloadBatchSize=16)",
+            "value": 3.6753058786050152,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 178598.746 us/op; CPython 4527.395 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 48594.254 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / CPython | superChain (depth=256, hierarchyDepth=4, payloadBatchSize=16)",
+            "value": 16.740890791808575,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 10487.577 us/op; CPython 626.465 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 7881.605 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          },
+          {
+            "name": "VarioHyve+GC prepared / GraalPy no guest JIT | superChain (depth=256, hierarchyDepth=4, payloadBatchSize=16)",
+            "value": 1.3306398029844615,
+            "unit": "times baseline (lower is better)",
+            "extra": "VarioHyve+GC prepared 10487.577 us/op; CPython 626.465 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 7881.605 us/op (3.12.8 (Sun Oct 11 17:19:19 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
           }
         ]
       }
