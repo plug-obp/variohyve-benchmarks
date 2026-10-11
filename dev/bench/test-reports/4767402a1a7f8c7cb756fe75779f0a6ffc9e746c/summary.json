@@ -1,0 +1,12 @@
+{
+  "sha": "4767402a1a7f8c7cb756fe75779f0a6ffc9e746c",
+  "branch": "codex/frontend-consolidation-audit",
+  "run_url": "https://github.com/plug-obp/variohyve/actions/runs/38154754153",
+  "outcome": "success",
+  "reported_at": "2026-10-11T16:36:58.353079+00:00",
+  "tests": 915,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "duration_seconds": 21.714999999999993
+}
