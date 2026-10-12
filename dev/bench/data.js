@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1791753889676,
+  "lastUpdate": 1791802673450,
   "repoUrl": "https://github.com/plug-obp/variohyve",
   "entries": {
     "VarioHyve / shared-name-bootstrap": [
@@ -13458,6 +13458,248 @@ window.BENCHMARK_DATA = {
             "value": 1.3129774902437081,
             "unit": "times baseline (lower is better)",
             "extra": "VarioHyve+GC prepared 10505.096 us/op; CPython 628.926 us/op (CPython 3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]); GraalPy 8000.972 us/op (3.12.8 (Sun Oct 11 21:20:26 UTC 2026), guest JIT disabled); prepared-runtime-v1, 16 fresh fixtures per invocation, JMH normalized per payload operation"
+          }
+        ]
+      }
+    ],
+    "VarioHyve / codex/aam-first-experiment": [
+      {
+        "commit": {
+          "author": {
+            "email": "ciprian.teodorov@gmail.com",
+            "name": "Ciprian Teodorov",
+            "username": "teodorov"
+          },
+          "committer": {
+            "email": "ciprian.teodorov@gmail.com",
+            "name": "Ciprian Teodorov",
+            "username": "teodorov"
+          },
+          "distinct": true,
+          "id": "c9135e2f637f851c47cec6837efc88aa91149a3f",
+          "message": "Update AAM plan with fixer correctness follow-up",
+          "timestamp": "2026-10-12T12:37:23+02:00",
+          "tree_id": "ddbc5a463943f816a1ef3e6f23bbcfd222da94ad",
+          "url": "https://github.com/plug-obp/variohyve/commit/c9135e2f637f851c47cec6837efc88aa91149a3f"
+        },
+        "date": 1791802671992,
+        "tool": "jmh",
+        "benches": [
+          {
+            "name": "vh.benchmarks.PreparedDispatchBenchmark.classContributions ( {\"callCount\":\"256\",\"contributionCount\":\"1\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 577.7930543408221,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedDispatchBenchmark.classContributions ( {\"callCount\":\"256\",\"contributionCount\":\"8\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 776.6526753693901,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedDispatchBenchmark.classContributions ( {\"callCount\":\"256\",\"contributionCount\":\"32\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 1671.6571826938657,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedDispatchBenchmark.manyArguments ( {\"argumentCount\":\"0\",\"callCount\":\"256\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 481.6901181474359,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedDispatchBenchmark.manyArguments ( {\"argumentCount\":\"4\",\"callCount\":\"256\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 927.2741810484706,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedDispatchBenchmark.manyArguments ( {\"argumentCount\":\"16\",\"callCount\":\"256\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 2246.8289807254273,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedDispatchBenchmark.manyArguments ( {\"argumentCount\":\"64\",\"callCount\":\"256\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 8921.91167470238,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedDispatchBenchmark.mixinContributions ( {\"callCount\":\"256\",\"contributionCount\":\"1\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 499.3404724631454,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedDispatchBenchmark.mixinContributions ( {\"callCount\":\"256\",\"contributionCount\":\"8\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 639.6275530037988,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedDispatchBenchmark.mixinContributions ( {\"callCount\":\"256\",\"contributionCount\":\"32\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 1044.4312340705749,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedDispatchBenchmark.receiverShapes ( {\"callCount\":\"256\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"16\",\"receiverClasses\":\"1\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 764.1630481639862,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedDispatchBenchmark.receiverShapes ( {\"callCount\":\"256\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"16\",\"receiverClasses\":\"4\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 883.1826931200397,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedDispatchBenchmark.receiverShapes ( {\"callCount\":\"256\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"16\",\"receiverClasses\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 1085.6969171835226,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedRecursionBenchmark.families ( {\"depth\":\"16\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"nestingDepth\":\"1\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 478.59040471067874,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedRecursionBenchmark.families ( {\"depth\":\"16\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"nestingDepth\":\"8\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 791.1633999888393,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedRecursionBenchmark.families ( {\"depth\":\"256\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"nestingDepth\":\"1\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 2960.9058023550724,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedRecursionBenchmark.families ( {\"depth\":\"256\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"nestingDepth\":\"8\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 4488.815288055555,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedRecursionBenchmark.inherited ( {\"depth\":\"16\",\"hierarchyDepth\":\"4\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 252.05820047351068,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedRecursionBenchmark.inherited ( {\"depth\":\"16\",\"hierarchyDepth\":\"32\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 556.6262876442431,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedRecursionBenchmark.inherited ( {\"depth\":\"256\",\"hierarchyDepth\":\"4\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 2047.7047127789046,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedRecursionBenchmark.inherited ( {\"depth\":\"256\",\"hierarchyDepth\":\"32\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 2937.594824826708,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedRecursionBenchmark.mutual ( {\"depth\":\"16\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 181.71883540975963,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedRecursionBenchmark.mutual ( {\"depth\":\"256\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 1776.7244551933006,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedRecursionBenchmark.partners ( {\"depth\":\"16\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"partnerCount\":\"3\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 280.89931606207074,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedRecursionBenchmark.partners ( {\"depth\":\"16\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"partnerCount\":\"8\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 344.71321426881025,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedRecursionBenchmark.partners ( {\"depth\":\"256\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"partnerCount\":\"3\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 2252.539232160714,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedRecursionBenchmark.partners ( {\"depth\":\"256\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"partnerCount\":\"8\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 2323.2164327776727,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedRecursionBenchmark.simple ( {\"depth\":\"16\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 179.79320927811344,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedRecursionBenchmark.simple ( {\"depth\":\"256\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 1755.4096786042924,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedRecursionBenchmark.superChain ( {\"depth\":\"16\",\"hierarchyDepth\":\"4\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 640.395477844002,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedRecursionBenchmark.superChain ( {\"depth\":\"16\",\"hierarchyDepth\":\"32\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 3125.270963862946,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedRecursionBenchmark.superChain ( {\"depth\":\"256\",\"hierarchyDepth\":\"4\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 9773.265441071428,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedRecursionBenchmark.superChain ( {\"depth\":\"256\",\"hierarchyDepth\":\"32\",\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"16\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 181944.5725375,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedVisitorSemanticsBenchmark.closureSend ( {\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"256\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 4.023021800595238,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedVisitorSemanticsBenchmark.literal ( {\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"256\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 2.9950697935267856,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "vh.benchmarks.PreparedVisitorSemanticsBenchmark.methodSend ( {\"nativeGc\":\"tracing\",\"nativeGcThreshold\":\"0.75\",\"nativeHeapCapacity\":\"16384\",\"payloadBatchSize\":\"256\",\"timingScope\":\"prepared-runtime-v1\"} )",
+            "value": 15.170727464657736,
+            "unit": "us/op",
+            "extra": "iterations: 5\nforks: 1\nthreads: 1"
           }
         ]
       }
