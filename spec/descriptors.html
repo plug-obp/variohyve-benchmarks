@@ -28,7 +28,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="theme/vh-2de7eb16.css">
+        <link rel="stylesheet" href="theme/vh-ce098f15.css">
 
         <!-- MathJax -->
         <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-4e2a9cbc.js";
+            window.path_to_searchindex_js = "searchindex-dcb0efca.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-1ce75dcc.js"></script>
+        <script src="toc-ce909e20.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -178,24 +178,83 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="descriptors"><a class="header" href="#descriptors">Descriptors</a></h1>
-<p>Descriptors attach optional metadata expressions to syntax for tools or
-separately specified extensions.</p>
+<p>Descriptors attach optional metadata to syntax for external tools. They have no
+operational semantics in the language. A descriptor payload is arbitrary text;
+VarioHyve does not require it to be a VarioHyve expression.</p>
 <h2 id="design-constraint"><a class="header" href="#design-constraint">Design Constraint</a></h2>
-<p>Removing all descriptors must preserve raw execution, including results,
-effects and failures. The core interpreter does not evaluate descriptor
-expressions as program behavior. An annotation named <code>immutable</code>, <code>cached</code>,
-<code>public</code> or <code>module</code> alone grants no such runtime semantics.</p>
-<p>Class, superclass and mixin clauses belong to the core grammar and affect
-execution independently of descriptors.</p>
+<p>Removing all descriptors preserves raw execution, including results, effects,
+failures and execution budgets. The ordinary frontend recognizes only descriptor
+framing, groups and attachment sites. It does not tokenize the payload as program
+code, parse an expression from it, run source checks on it, or interpret it during
+lowering or execution. A syntax error in a well-framed payload cannot prevent the
+surrounding program from executing.</p>
+<p>Consuming tools own payload parsing, validation and interpretation. They may use
+another language or explicitly request VarioHyve’s frontend and runtime as
+capabilities. An annotation named <code>immutable</code>, <code>cached</code>, <code>public</code> or <code>module</code>
+alone grants no runtime semantics. Class, superclass and mixin clauses remain
+executable language constructs independently of descriptors.</p>
 <h2 id="syntax"><a class="header" href="#syntax">Syntax</a></h2>
-<pre><code class="language-text">element : descriptor
-element : descriptor1 | descriptor2
-element : descriptor1 : descriptor2
+<pre><code class="language-text">element : payload
+element : first | second
+element : first : second
 </code></pre>
-<p><code>|</code> separates expressions within one group; <code>:</code> chains groups.
-Descriptors use ordinary expression syntax, including message sends such as
-<code>constrained(0, 100)</code>. Their interpretation is supplied by the consuming tool,
-not by the name of the annotation.</p>
+<p><code>|</code> separates entries within one group; <code>:</code> chains groups. Entries retain exact
+text, including whitespace, comments and escape spellings; groups retain order
+and multiplicity. Payload text has no language-mandated meaning.</p>
+<h3 id="short-annotations"><a class="header" href="#short-annotations">Short annotations</a></h3>
+<p>Short annotations require no extra delimiters:</p>
+<pre><code class="language-vh">class Arithmetic {
+    add!(a: int, b: int): int { a.plus(b) } : documented;
+    legacy(a: int, b: int) { a.plus(b) } : int;
+    count = 0 : tracked | nonNegative;
+}
+</code></pre>
+<p>A short payload ends at a top-level <code>:</code>, <code>|</code>, <code>,</code>, <code>;</code>, <code>)</code>, <code>}</code>, newline or end
+of input. Balanced parentheses, braces and brackets, quoted text, and comments
+protect separators inside them. This is lexical framing only: quote escapes are
+not validated, and names, operators and payload grammar are not interpreted.
+<code>&lt;:</code> remains part of a short payload rather than starting another descriptor
+group. Whitespace around a short payload is retained, not trimmed.</p>
+<p>To continue with another member on the same line after its short annotation,
+use <code>;</code>. A newline also ends a short payload. Multiline quoted text and balanced
+regions remain part of that payload. Terminate a described declaration with <code>;</code>
+before a <a href="literals.html#initializer-completion">final initializer body</a>, because
+an adjacent <code>|</code> otherwise continues the descriptor group.</p>
+<h3 id="method-headers"><a class="header" href="#method-headers">Method headers</a></h3>
+<p>Methods and factories with an explicit parameter list may also carry descriptor
+groups before the body: <code>add!(x: int): int { x.plus(2) } : something</code>. Both sets
+describe the method (or factory), in written order: header groups first, trailing
+groups second. The language assigns neither position a type or return contract.
+Formal-parameter descriptors still describe their individual parameters.</p>
+<p>In a header descriptor only, the first unquoted, unnested <code>{</code> starts the executable
+body. Braces inside parentheses, brackets, quotes or an optional verbatim fence
+remain payload text: <code>answer(): tool({key: value}) { 42 }</code> and
+<code>answer(): [=[arbitrary { unfinished]=] { 42 }</code> are both valid. Pipes and chained
+colons work in headers as elsewhere. Comments shield their contents too.</p>
+<p>Use explicit <code>()</code> for a zero-parameter header, such as <code>answer(): int { 42 }</code>.
+This preserves existing uninitialized slots: <code>answer: int {42};</code> remains a slot
+whose descriptor includes the braces. Existing trailing descriptors and omitted
+parameter lists, such as <code>answer { 42 } : int</code>, remain valid. Other attachment
+sites, including lambda descriptors, retain their existing framing.</p>
+<h3 id="verbatim-annotations"><a class="header" href="#verbatim-annotations">Verbatim annotations</a></h3>
+<p>An optional fence permits arbitrary text, including unmatched brackets or
+quotes, newlines, and every short-form separator:</p>
+<pre><code class="language-vh">(42 : [=[@foreign { syntax: "unfinished; ) | anything]=])
+</code></pre>
+<p>At the beginning of an entry, after optional spaces or tabs, an opening <code>[</code> followed
+by one or more <code>=</code> characters and another <code>[</code> is matched by <code>]</code>, the same number
+of <code>=</code> characters, and <code>]</code>. The payload is exactly the
+text between these markers. Nothing inside it is parsed, decoded, balanced or
+normalized. Choose more <code>=</code> characters when the payload contains a closing
+marker with fewer: <code>[==[text containing ]=] remains intact]==]</code>. <code>[=[]=]</code> is
+an empty payload. Fences are optional at every descriptor attachment site and
+can be mixed with short entries in the same group. A closing fence is an explicit
+boundary, so another member can follow it on the same line without a semicolon.</p>
+<p>The framing must identify where program code resumes. An unterminated fence, quote, block comment or
+unbalanced short-form enclosure is a framing error; use a fence when unmatched
+delimiters are intentional payload content. This boundary requirement does not
+validate the payload’s own language. Empty short entries are retained; the
+optional trailing <code>|</code> does not create an additional entry.</p>
 <h2 id="where-descriptors-apply"><a class="header" href="#where-descriptors-apply">Where Descriptors Apply</a></h2>
 <div class="table-wrapper">
 <table>
@@ -204,7 +263,7 @@ not by the name of the annotation.</p>
 </thead>
 <tbody>
 <tr><td>Slot or local</td><td><code>x = 0 : tracked;</code> / <code>var x = 0 : tracked;</code></td></tr>
-<tr><td>Method</td><td><code>move(dx, dy) { ... } : cached</code></td></tr>
+<tr><td>Method or factory</td><td><code>move(dx, dy): result { ... } : cached;</code> / <code>factory make(): tag { ... }</code></td></tr>
 <tr><td>Class or object</td><td><code>class { ... } : typed</code> / <code>{ ... } : module</code></td></tr>
 <tr><td>Lambda</td><td><code>fun(x) { x } : annotation</code></td></tr>
 <tr><td>Formal parameter</td><td><code>(x : nonNeg, y : nonNeg)</code></td></tr>
@@ -218,14 +277,27 @@ its surrounding declaration:</p>
 <pre><code class="language-vh">x = (3 : annotation);  // describes the expression
 x = 3 : annotation;    // describes the slot
 </code></pre>
-<p>Groups may chain at every attachment point. When <code>|</code> would otherwise extend a
-descriptor list, terminate a described declaration with <code>;</code> before a
-<a href="literals.html#initializer-completion">final initializer body</a>.</p>
+<p>Groups may chain at every attachment point. Text that resembles nested
+annotations inside a payload is still one opaque entry: <code>(42 : (Shape : Tag))</code>
+does not create an annotation on <code>Shape</code> in the surrounding program AST. A tool
+may choose to parse that entry later and own the resulting structure separately.</p>
 <h2 id="semantics"><a class="header" href="#semantics">Semantics</a></h2>
-<p>Compilation hints, documentation, contracts and analysis constraints need
-explicit tooling or extension contracts. The syntax itself promises none of
-those features and cannot replace core construction, lookup or boundary rules.
-See <a href="tooling-architecture.html">tooling architecture</a> for external annotations.</p>
+<p>Compilation hints, documentation, types, contracts and analyses belong to
+external tooling agreements. They cannot replace construction, lookup or
+capability rules. <code>(1 : class &lt; super.Base {})</code>, <code>(1 : @unknown =&gt; syntax)</code> and
+<code>(1 : [=[unfinished (]=])</code> all execute as <code>1</code>. A tool’s later decision to parse
+or execute an entry cannot retroactively change the original read result.</p>
+<h2 id="metadata-retention"><a class="header" href="#metadata-retention">Metadata Retention</a></h2>
+<p>Surface and core artifacts retain raw entries and their groups. Core tools need
+no surface AST, parser object or source snapshot. Exact payload text is intrinsic
+metadata content; source locations and the enclosing document are optional
+provenance. Neither retaining nor erasing provenance changes payloads or execution.</p>
+<p>An attachment describes a particular occurrence and role. Lowering preserves
+its identity, grouping, ordering and role when it removes a statement wrapper or
+rewrites a constructor target. Tools can find descriptors from surviving core
+elements and find described elements from descriptors. The runtime never reads
+this index. See <a href="tooling-architecture.html#inert-core-metadata">inert core metadata</a>
+for the implementation and explicit interpretation examples.</p>
 
                     </main>
 

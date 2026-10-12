@@ -28,7 +28,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="theme/vh-2de7eb16.css">
+        <link rel="stylesheet" href="theme/vh-ce098f15.css">
 
         <!-- MathJax -->
         <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-4e2a9cbc.js";
+            window.path_to_searchindex_js = "searchindex-dcb0efca.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-1ce75dcc.js"></script>
+        <script src="toc-ce909e20.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -246,10 +246,13 @@ no public raw-slot operation. Use a distinct backing slot when needed:</p>
 backend-private activation object. All locals in a source scope are reserved
 before its initializers run. A reference to a later local therefore selects
 that local and fails if it is still uninitialized; it does not fall through
-to an outer name. This supports <a href="recursion.html#mutual-recursion">mutual recursion</a>
+to an outer name. Duplicate local declarations in the same statement list are
+errors; a local may shadow a parameter or a binding from an enclosing scope.
+This supports <a href="recursion.html#mutual-recursion">mutual recursion</a>
 when the lambdas run after their bindings are initialized.</p>
 <h2 id="parameter-immutability"><a class="header" href="#parameter-immutability">Parameter Immutability</a></h2>
-<p>Parameters have immutable getter accessors and no synthesized setter.
+<p>Each formal parameter list requires distinct names. Parameters have immutable
+getter accessors and no synthesized setter.
 A request for <code>parameter!</code> therefore cannot mutate the parameter; ordinary
 lookup may find another applicable setter or fail. Use a <code>var</code> local for a
 mutable copy. Constructor-parameter lifetime is specified with

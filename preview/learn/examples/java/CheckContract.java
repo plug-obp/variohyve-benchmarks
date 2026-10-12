@@ -27,8 +27,14 @@ public final class CheckContract {
             throw new AssertionError("Expected label(name) with a hole body");
         }
         boolean hostSeen = false, docSeen = false;
-        for (var descriptor : method.descriptorExpressions()) {
-            var message = (CanonicalMessage) ((ImplicitMessageSend) descriptor).message();
+        for (var descriptor : method.descriptorEntries()) {
+            // This tool chooses VH syntax; the language retains only opaque payload text.
+            var metadata = Reader.parseExpression(descriptor.text());
+            if (!metadata.result().isSuccess()) {
+                throw new AssertionError("Invalid contract metadata: " + metadata.result().formatErrors());
+            }
+            var expression = metadata.result().toOptional().orElseThrow();
+            var message = (CanonicalMessage) ((ImplicitMessageSend) expression).message();
             switch (message.selector()) {
                 case "host" -> {
                     hostSeen = message.arguments().size() == 2

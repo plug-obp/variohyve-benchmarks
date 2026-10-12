@@ -29,7 +29,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="theme/vh-2de7eb16.css">
+        <link rel="stylesheet" href="theme/vh-ce098f15.css">
 
         <!-- MathJax -->
         <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -39,10 +39,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-4e2a9cbc.js";
+            window.path_to_searchindex_js = "searchindex-dcb0efca.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-1ce75dcc.js"></script>
+        <script src="toc-ce909e20.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -440,6 +440,54 @@ such as <code>null</code>, <code>true</code> and <code>false</code> select behav
 their spelling establishes no canonical identity. See
 <a href="#names-and-contracts">names and contracts</a>. The current
 tooling bundle is described in <a href="#module-entry">the Java implementation</a>.</p>
+<h2 id="startup-seed-installation"><a class="header" href="#startup-seed-installation">Startup Seed Installation</a></h2>
+<p>This contract governs atomic finalization before publishing a runtime. It grants
+no authority to replace the seed during application execution. The accepted
+profiles are described in <a href="#possible-seeds-and-worlds">Possible Seeds and Worlds</a>;
+the <a href="../../design-notes/staged-runtime-seed.html">staged seed design</a> records the
+rationale and implementation evidence.</p>
+<p>When a builder adopts a replacement seed before publishing its runtime, it
+must substitute every retained reference to a retired seed identity using a
+validated old-to-new map. Updating only the canonical roles is insufficient.
+The substitution includes values in ordinary/immutable slots and captures,
+class and contribution relationships, private construction code, derived
+layouts/caches, root owners and VM-managed boundary state. Newly supplied
+objects are part of the rewrite too. Unchanged objects preserve their identities;
+references to a deliberately retired object consistently select its replacement.</p>
+<p>The map’s final targets must be fixed points, and conflicting mappings,
+unresolved cycles, incompatible structural uses and unsupported key collisions
+must fail before publication. Every retained use of a retired identity needs a
+valid replacement. Old machinery with no retained use can instead be reclaimed.
+Reused structural infrastructure is not implicitly retired.</p>
+<p>The provider’s <code>Object/0</code> must return an ordinary native class whose direct
+superclass is the provisional Object by identity. Its owned contribution and
+each directly applied mixin must have no instance slots, no constructor
+parameters, no initializer body, and no routed argument expressions. Stateless
+mixins, methods, member classes, and owned factories are permitted. Support
+for state in Object, owned or contributed, is indefinitely deferred.</p>
+<p>Root Object adoption removes the candidate’s edge to the provisional Object
+before substitution, representing Top and preventing self-inheritance. The
+installed root therefore has <strong>no superclass and no instance state</strong>. Repair
+preserves valid flat metaclasses, definition scopes, application occurrences,
+owned-contribution boundaries and construction semantics. Pointer substitution
+alone does not define new slot initialization or repair arbitrary data derived
+from replaced identities; unsupported cases require rejection or a separately
+specified preparation contract.</p>
+<p>Finalization requires exclusive builder ownership and no active execution or
+callbacks. It performs reference repair, invariant validation, bootstrap-owner
+retirement and a forced full native collection before publishing the result as
+one atomic operation. The collection must run even below normal GC thresholds.
+Success requires no retired store entries or operative references to them in
+the final world. A partially installed runtime must never become usable.
+Preparation failure preserves the preceding private stage or discards the
+unpublished builder; it does not roll back or replay earlier foreign effects.</p>
+<p>Foreign payloads remain opaque. The builder must prevent unmanaged provisional
+references from escaping and repair or close controlled bootstrap handles.
+Retiring a provisional Alien includes removing its native ownership roots and
+wrapper; it does not imply destroying the foreign payload or general foreign
+garbage collection. If the boundary cannot establish these conditions,
+installation fails. Published boundary identity laws then apply to the final
+world; this startup operation grants no live object-replacement authority.</p>
 <h2 id="bootstrap-conformance-requirements"><a class="header" href="#bootstrap-conformance-requirements">Bootstrap Conformance Requirements</a></h2>
 <p>Definition, construction and synchronous callbacks share the requested execution
 budget. Host sends supply an empty caller activation; the target’s definition
@@ -534,7 +582,9 @@ one hole merely because their spelling is equal.</p>
 <h2 id="lambda-literals"><a class="header" href="#lambda-literals">Lambda Literals</a></h2>
 <p><code>fun</code> and <code>λ</code> introduce lambdas. Parentheses around the parameter list are
 optional when it is empty. Bodies are semicolon-separated statement lists;
-an empty body and a trailing semicolon are allowed.</p>
+an empty body and a trailing semicolon are allowed.
+Formal lists follow the <a href="#list-separators">shared comma policy</a>:
+a trailing comma adds no parameter, while an interior missing parameter is an error.</p>
 <pre><code class="language-vh">fun { 42 }
 fun(x) { x.plus(1) }
 λ(x, y) { x.plus(y) }
@@ -636,7 +686,7 @@ defines initializer completion and returns. Backend records belong to
 <p><code>Top</code> is the empty constructor of the mixin–class algebra. At the level of
 instance-side composition, the inductive structure is:</p>
 <pre><code class="language-text">ClassShape ::= Top | Apply(Mixin, ClassShape)
-Object       = Apply(ObjectMixin, Top)
+Object       = Apply(ObjectMixin, Apply(M1, ... Apply(Mn, Top)))
 </code></pre>
 <p>Like zero in an inductive definition of natural numbers, <code>Top</code> supplies the base
 case. Every nonempty class shape is a mixin applied to another shape, so even
@@ -645,9 +695,13 @@ composition, not the source <code>apply</code> selector or a factory invocation.
 <p><code>Top</code> contributes no methods, slots, member declarations, definition scope,
 capabilities or initialization. Lookup ends there with a miss and its layout is
 empty. Only <code>Object</code> has <code>Top</code> as its direct superclass; other native class
-chains reach it through <code>Object</code>. The owned Object mixin supplies the root
-protocol below. Thus adding the empty base does not remove that protocol or
-change the capabilities available through it.</p>
+chains reach it through <code>Object</code>. The selected seed supplies Object’s owned contribution and any direct mixin
+applications. All these root contributions are stateless: no instance slots,
+constructor parameters, initializer bodies, or routed argument expressions.
+When there are no direct applications, its shape is simply
+<code>Apply(ObjectMixin, Top)</code>. State in Object is indefinitely deferred; a provider
+module may still hold capabilities in its own slots. The VM requires no instance
+methods on Object; one native seed supplies the protocol below.</p>
 <p>The algebra describes composition structure, not class identity. A realized
 class retains its owned contribution, ordered direct applications, superclass,
 routes and metaclass. Expanding its shape neither manufactures intermediate
@@ -682,18 +736,20 @@ states the mapping and the conditions for reconsidering runtime reification.</p>
 </div>
 <h3 id="class-literal-syntax"><a class="header" href="#class-literal-syntax">Class Literal Syntax</a></h3>
 <pre><code class="language-antlr">namedClassLiteral
-    : CLASS IDENT arguments mixinApplications superclassApplication
+    : CLASS IDENT arguments? mixinApplications superclassApplication
       LB classBodyElement* initializerBody? RB (COLON descriptorList)* ;
 anonymousClassLiteral
-    : CLASS arguments mixinApplications superclassApplication
+    : CLASS arguments? mixinApplications superclassApplication
       LB classBodyElement* initializerBody? RB (COLON descriptorList)* ;
 classLiteral         : namedClassLiteral | anonymousClassLiteral ;
-arguments            : (LP formalList? RP)? ;
+arguments            : LP formalList? RP ;
 mixinApplications    : (WITH expressionList)? ;
 superclassApplication: (EXTENDS expression)? ;
 classBodyElement     : namedClassLiteral SEMICOLON? | methodDecl SEMICOLON?
                      | slotDecl SEMICOLON | factoryDecl SEMICOLON? ;
 factoryDecl          : FACTORY methodDecl ;
+methodDecl           : IDENT BANG* (arguments (COLON descriptorList)*)?
+                       methodBody (COLON descriptorList)* ;
 initializerBody      : PIPE statementList? ;
 </code></pre>
 <p><code>WITH</code> is <code>&lt;:</code> or <code>with</code>; <code>EXTENDS</code> is <code>&lt;</code> or <code>extends</code>. Empty parameter
@@ -747,7 +803,8 @@ Nested literals may use explicitly supplied module inputs, under the existing
 <code>config = { debug = false; };</code>, the slot already holds the initialized object.
 See <a href="#invocation-at-arity-zero">zero-arity invocation</a>.</p>
 <h2 id="root-object-protocol"><a class="header" href="#root-object-protocol">Root Object Protocol</a></h2>
-<p>In the current runtime seed, native objects, including lambdas, inherit these
+<p>In the <a href="#one-possible-native-seed">Current Native Seed</a>, native objects, including
+lambdas, inherit these
 ordinary methods from root <code>Object</code>:</p>
 <pre><code class="language-vh">equals(other) { _vm.same(self, other) }
 hash { _vm.identityHash(self) }
@@ -755,8 +812,10 @@ toString { "an Object" }
 </code></pre>
 <p>These are normative defaults of this seed. Another seed may choose different
 root methods without changing lookup, invocation or boundary laws. Replacing an
-application kernel does not replace the structural root; selecting another seed
-is not a current runtime API.</p>
+application kernel does not replace the structural root. The
+<a href="#startup-seed-installation">startup installation contract</a>
+requires complete reference substitution and collection before publication,
+including class/contribution metadata affected by root adoption.</p>
 <p>Root Object does not supply <code>same</code> or <code>identityHash</code>. Reliable identity and
 classification observations belong to an explicitly supplied
 <a href="#identitymirror">IdentityMirror capability</a>.
@@ -764,8 +823,8 @@ The mirror observes subjects without invoking their methods. Defining these
 selector names on an application object cannot intercept mirror observations
 or the root defaults’ direct use of <code>_vm</code>; no selector is thereby reserved on Aliens.</p>
 <p><code>equals</code> defaults to native identity equality, including identity recovered from
-an owned Expat. Canonical null and Booleans participate with their native
-identities. The default <code>hash</code> returns an integer stable for the identity’s
+an owned Expat. This seed’s canonical null and Booleans participate with their
+native identities. The default <code>hash</code> returns an integer stable for the identity’s
 lifetime; equal identities have equal hashes, but collisions are permitted.
 Hashes are neither addresses nor persistent identifiers across runtime sessions.</p>
 <p><code>equals</code>, <code>hash</code> and <code>toString</code> remain overridable. Equality overrides should
@@ -777,8 +836,9 @@ name nor an instance or class identity hash. Named and anonymous instances,
 class objects, metaclasses and lambdas retain this generic answer unless they
 override it. Canonical values keep their explicit <code>null</code>, <code>true</code> and <code>false</code>
 overrides. Diagnostic detail is therefore chosen by the object’s own protocol.</p>
-<p><code>_vm</code> is a narrow seed capability in Object’s detached definition scope, not an
-inherited slot, ambient module binding or accessor for IdentityMirror. Its
+<p><code>_vm</code> is a narrow seed capability stored on the provider module and retained
+through Object’s definition scope. It is not an inherited Object slot, ambient
+module binding or accessor for IdentityMirror. Its
 operations cross the normal Alien/Expat boundary and expose no backend
 representation. Aliens retain their own protocols and do not acquire these
 methods by inheritance. Scalar Object behavior and identity remain subject to
@@ -866,17 +926,30 @@ occurrences and initializer invocations. A contributed method’s <code>super</c
 from its application occurrence; see <a href="#name-resolution">Name Resolution</a>.
 Public mixin extraction and reflection are not part of the current language.</p>
 <h2 id="constructor-clauses"><a class="header" href="#constructor-clauses">Constructor Clauses</a></h2>
-<p>The terminal application in a superclass or mixin clause has construction
-semantics. It selects a contributor during class realization and retains the
-argument expressions for each later construction; it does not call a factory.
+<p>A terminal ordinary invocation in a superclass or mixin clause has construction
+semantics. Its selector is read with an exact zero-argument send during class
+realization to select the contributor; its argument expressions are retained for
+each later construction. That terminal operation does not call a factory.
 Bare targets route zero arguments, and parentheses around the whole clause do
-not change its meaning.</p>
+not change its meaning. Other target expressions are evaluated normally during
+realization and must produce a native class.</p>
+<p>The special exact-send form <a href="#invoking-the-current-receiver"><code>self(args)</code></a>
+is therefore an ordinary target computation: <code>&lt; self(x)</code> evaluates <code>x</code> and
+sends exact <code>apply/1</code> during realization, then routes no construction arguments.
+By contrast, <code>&lt; self.apply(x)</code> reads exact <code>apply/0</code> during realization and routes
+<code>x</code> to the resulting contributor during each construction. In the first form,
+<code>x</code> uses the surrounding definition scope; in the second it uses the new class’s
+initializer scope. These forms are not interchangeable.</p>
 <h3 id="computed-contributor-targets"><a class="header" href="#computed-contributor-targets">Computed Contributor Targets</a></h3>
 <p>For <code>&lt; registry.choose(kind).Base(x)</code>, realization evaluates
 <code>registry.choose(kind)</code> and reads <code>Base</code>; construction later evaluates <code>x</code>.
-Receiver subexpressions perform ordinary computations. Direct mixin targets
-run left-to-right, then the superclass target. Their choices are fixed for the
-realized class. This applies to class expressions and cached member classes.</p>
+Receiver subexpressions perform ordinary computations in the surrounding
+definition scope. The class being realized does not yet supply its own named
+<code>outer</code> qualifier there. Routed terminal arguments run later in that class’s
+initializer scope and may qualify it; both contexts retain their enclosing named
+declarations. Direct mixin targets run left-to-right, then the superclass target.
+Their choices are fixed for the realized class. This applies to class expressions
+and cached member classes.</p>
 <h3 id="construction-order"><a class="header" href="#construction-order">Construction Order</a></h3>
 <p>For <code>class C(x) &lt;: A(a), B(b) &lt; S(s) { ... }</code>, successful primary construction:</p>
 <ol>
@@ -1046,10 +1119,13 @@ no public raw-slot operation. Use a distinct backing slot when needed:</p>
 backend-private activation object. All locals in a source scope are reserved
 before its initializers run. A reference to a later local therefore selects
 that local and fails if it is still uninitialized; it does not fall through
-to an outer name. This supports <a href="#mutual-recursion">mutual recursion</a>
+to an outer name. Duplicate local declarations in the same statement list are
+errors; a local may shadow a parameter or a binding from an enclosing scope.
+This supports <a href="#mutual-recursion">mutual recursion</a>
 when the lambdas run after their bindings are initialized.</p>
 <h2 id="parameter-immutability"><a class="header" href="#parameter-immutability">Parameter Immutability</a></h2>
-<p>Parameters have immutable getter accessors and no synthesized setter.
+<p>Each formal parameter list requires distinct names. Parameters have immutable
+getter accessors and no synthesized setter.
 A request for <code>parameter!</code> therefore cannot mutate the parameter; ordinary
 lookup may find another applicable setter or fail. Use a <code>var</code> local for a
 mutable copy. Constructor-parameter lifetime is specified with
@@ -1088,6 +1164,16 @@ namespace. Receiver origins are defined in <a href="#name-resolution">Name Resol
 </div>
 <p>Parentheses remain semantically significant through lowering and dispatch.
 In particular, invocation cannot always be lowered to getter-then-apply.</p>
+<h3 id="list-separators"><a class="header" href="#list-separators">List Separators</a></h3>
+<p>A single trailing comma is permitted in a nonempty argument or formal list,
+including constructor parameters and mixin application lists. <code>f(1,)</code> has one
+argument; <code>fun(x,) {x}</code> has one formal. Empty parentheses have no items. A leading
+comma or a missing item between commas is an error, not an omitted value or a
+new formal: <code>f(,1)</code>, <code>f(1,,2)</code> and <code>fun(x,,y) {y}</code> are invalid. Descriptor lists
+use their separately specified optional trailing pipe.</p>
+<p>The current reader reports a nonblocking style warning for trailing commas.
+It preserves warnings on successful reads and still runs source checks; warnings
+do not alter arity or execution admission.</p>
 <h2 id="self-dispatch-message-send-leading-dot"><a class="header" href="#self-dispatch-message-send-leading-dot">Self-Dispatch Message Send (Leading Dot)</a></h2>
 <p><code>.m(args)</code> is equivalent to <code>self.m(args)</code>; both skip lexical receiver selection.
 Leading <code>..</code> likewise cascades on <code>self</code>. Prefer the explicit forms when nested
@@ -1097,6 +1183,21 @@ scopes would make the receiver unclear.</p>
 at the written arity. Evaluate the receiver first, then arguments once from
 left to right, then select behavior. Dot chains send each message to the
 previous result: <code>a.b.c(3)</code> sends <code>c/1</code> to the result of <code>a.b</code>.</p>
+<h3 id="invoking-the-current-receiver"><a class="header" href="#invoking-the-current-receiver">Invoking the Current Receiver</a></h3>
+<p><code>self(args)</code> sends exact <code>apply/N</code> to the current receiver after evaluating its
+arguments once from left to right. <code>self.apply(args)</code> instead invokes <code>apply/N</code>
+under the ordinary candidate rules below. An exact <code>apply/N</code> method behaves the
+same in both forms; a generated accessor can distinguish them:</p>
+<pre><code class="language-vh">{
+    apply = fun { 42 };
+    exact { self() }
+    invoked { self.apply() }
+}
+</code></pre>
+<p>Here <code>exact</code> returns the stored lambda, while <code>invoked</code> returns <code>42</code>. With a
+one-argument lambda stored in <code>apply</code>, <code>self(42)</code> has no exact <code>apply/1</code> and fails;
+<code>self.apply(42)</code> may invoke that stored callable. Neither form invokes a callable
+returned by a selected ordinary method a second time.</p>
 <h3 id="no-operator-precedence"><a class="header" href="#no-operator-precedence">No Operator Precedence</a></h3>
 <p>Arithmetic and comparisons use messages. Consequently
 <code>3.plus(4).times(2)</code> groups as <code>(3.plus(4)).times(2)</code>; use
@@ -1414,6 +1515,12 @@ identifier but is not an ordinary getter; native declarations cannot shadow it.
 It can be passed as a value and used in chains such as <code>self.x</code>.
 An explicit native receiver has no <code>self</code> selector. <code>alien.self</code> is instead an
 ordinary foreign selector with adapter-defined meaning.</p>
+<p><code>self(args)</code> is a special receiver form: it sends exact <code>apply/N</code> to the current
+receiver, with N equal to the argument count. It does not invoke a selector named
+<code>self</code>, perform lexical receiver selection or use a generated accessor to find
+a callable. <code>self.apply(args)</code> is an ordinary explicit invocation and follows
+the <a href="#invoking-the-current-receiver">invocation selection rules</a>.
+The distinction also affects <a href="#constructor-clauses">constructor clauses</a>.</p>
 <h3 id="leading-dot-shorthand-for-self"><a class="header" href="#leading-dot-shorthand-for-self">Leading-Dot Shorthand for Self</a></h3>
 <p><code>.m(args)</code> equals <code>self.m(args)</code>; <code>..m..n</code> equals <code>self..m..n</code>.
 Both bypass lexical receiver selection. See <a href="#cascade-">cascades</a>.</p>
@@ -1452,11 +1559,23 @@ and ordinary sends are allowed. It grants no public parent getter, activation
 reflection or additional access authority. Bare <code>outer</code>, unqualified
 <code>outer.message</code> and native <code>object.outer</code> are invalid. <code>alien.outer</code> is an
 ordinary foreign selector; repeated sends follow that adapter’s protocol.</p>
-<p>An unknown or non-enclosing qualifier is a semantic error. The bootstrap
-validates it when evaluated, before evaluating arguments of a send using that
-receiver. Static qualifier validation is deferred. Qualifying a normal module’s
-own declaration can select its instance; it cannot expose the instantiation
-service, tooling capabilities or empty top activation.</p>
+<p>An unknown or non-enclosing qualifier is a compile-time semantic error, including
+in an unused method or lambda. The <a href="#source-checks">source checks</a>
+validate the qualifier against the named declarations enclosing that occurrence
+before lowering or execution. This is lexical declaration lookup, independent
+of same-named parameters, locals or accessors.</p>
+<p>A class’s own qualifier is available in its body, factories and routed terminal
+constructor arguments. Contributor target expressions run in the surrounding
+definition scope, so they cannot use the new class’s qualifier; surrounding
+named declarations remain available there. See
+<a href="#constructor-clauses">constructor clauses</a>.</p>
+<p>The runtime retains a defensive check for directly supplied core trees and
+explicitly unchecked tooling input. It follows captured lexical scopes and
+rejects an invalid qualifier before evaluating arguments of a send using that
+receiver. Source validation does not replace the exact application ancestry
+with a new runtime binding mechanism. Qualifying a normal module’s own declaration
+can select its instance; it cannot expose the instantiation service, tooling
+capabilities or empty top activation.</p>
 <h2 id="super--lookup-redirector"><a class="header" href="#super--lookup-redirector"><code>super</code> — Lookup Redirector</a></h2>
 <p><code>super.m(args)</code> retains <code>self</code> and starts lookup immediately after the
 executing contribution’s exact application occurrence. It continues through
@@ -1509,12 +1628,13 @@ also allowed as explicit foreign selector spellings.</p>
 <tr><th>Identifier</th><th>Restriction</th></tr>
 </thead>
 <tbody>
-<tr><td><code>self</code></td><td>Cannot name a native slot, parameter, local or method, or be sent as a native selector.</td></tr>
+<tr><td><code>self</code></td><td>Cannot name a native slot, parameter, local, member class, method or factory, or be sent as a native selector.</td></tr>
 <tr><td><code>new</code></td><td><code>factory new</code> is rejected because the primary source-class factory is reserved. Ordinary instance methods named <code>new</code> remain allowed.</td></tr>
 </tbody>
 </table>
 </div>
-<p>These spellings parse as identifiers and are checked semantically. See
+<p>These spellings parse as identifiers; the standard source checks reject invalid
+declarations before execution. See
 <a href="#the-primary-factory-new">primary construction</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="recursion"><a class="header" href="#recursion">Recursion</a></h1>
@@ -1563,24 +1683,83 @@ Foreign callback depth and other execution limits are separate; see
 <a href="#java-interpreter">implementation</a> and <a href="#tail-call-optimization-1">future TCO</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="descriptors"><a class="header" href="#descriptors">Descriptors</a></h1>
-<p>Descriptors attach optional metadata expressions to syntax for tools or
-separately specified extensions.</p>
+<p>Descriptors attach optional metadata to syntax for external tools. They have no
+operational semantics in the language. A descriptor payload is arbitrary text;
+VarioHyve does not require it to be a VarioHyve expression.</p>
 <h2 id="design-constraint"><a class="header" href="#design-constraint">Design Constraint</a></h2>
-<p>Removing all descriptors must preserve raw execution, including results,
-effects and failures. The core interpreter does not evaluate descriptor
-expressions as program behavior. An annotation named <code>immutable</code>, <code>cached</code>,
-<code>public</code> or <code>module</code> alone grants no such runtime semantics.</p>
-<p>Class, superclass and mixin clauses belong to the core grammar and affect
-execution independently of descriptors.</p>
+<p>Removing all descriptors preserves raw execution, including results, effects,
+failures and execution budgets. The ordinary frontend recognizes only descriptor
+framing, groups and attachment sites. It does not tokenize the payload as program
+code, parse an expression from it, run source checks on it, or interpret it during
+lowering or execution. A syntax error in a well-framed payload cannot prevent the
+surrounding program from executing.</p>
+<p>Consuming tools own payload parsing, validation and interpretation. They may use
+another language or explicitly request VarioHyve’s frontend and runtime as
+capabilities. An annotation named <code>immutable</code>, <code>cached</code>, <code>public</code> or <code>module</code>
+alone grants no runtime semantics. Class, superclass and mixin clauses remain
+executable language constructs independently of descriptors.</p>
 <h2 id="syntax"><a class="header" href="#syntax">Syntax</a></h2>
-<pre><code class="language-text">element : descriptor
-element : descriptor1 | descriptor2
-element : descriptor1 : descriptor2
+<pre><code class="language-text">element : payload
+element : first | second
+element : first : second
 </code></pre>
-<p><code>|</code> separates expressions within one group; <code>:</code> chains groups.
-Descriptors use ordinary expression syntax, including message sends such as
-<code>constrained(0, 100)</code>. Their interpretation is supplied by the consuming tool,
-not by the name of the annotation.</p>
+<p><code>|</code> separates entries within one group; <code>:</code> chains groups. Entries retain exact
+text, including whitespace, comments and escape spellings; groups retain order
+and multiplicity. Payload text has no language-mandated meaning.</p>
+<h3 id="short-annotations"><a class="header" href="#short-annotations">Short annotations</a></h3>
+<p>Short annotations require no extra delimiters:</p>
+<pre><code class="language-vh">class Arithmetic {
+    add!(a: int, b: int): int { a.plus(b) } : documented;
+    legacy(a: int, b: int) { a.plus(b) } : int;
+    count = 0 : tracked | nonNegative;
+}
+</code></pre>
+<p>A short payload ends at a top-level <code>:</code>, <code>|</code>, <code>,</code>, <code>;</code>, <code>)</code>, <code>}</code>, newline or end
+of input. Balanced parentheses, braces and brackets, quoted text, and comments
+protect separators inside them. This is lexical framing only: quote escapes are
+not validated, and names, operators and payload grammar are not interpreted.
+<code>&lt;:</code> remains part of a short payload rather than starting another descriptor
+group. Whitespace around a short payload is retained, not trimmed.</p>
+<p>To continue with another member on the same line after its short annotation,
+use <code>;</code>. A newline also ends a short payload. Multiline quoted text and balanced
+regions remain part of that payload. Terminate a described declaration with <code>;</code>
+before a <a href="#initializer-completion">final initializer body</a>, because
+an adjacent <code>|</code> otherwise continues the descriptor group.</p>
+<h3 id="method-headers"><a class="header" href="#method-headers">Method headers</a></h3>
+<p>Methods and factories with an explicit parameter list may also carry descriptor
+groups before the body: <code>add!(x: int): int { x.plus(2) } : something</code>. Both sets
+describe the method (or factory), in written order: header groups first, trailing
+groups second. The language assigns neither position a type or return contract.
+Formal-parameter descriptors still describe their individual parameters.</p>
+<p>In a header descriptor only, the first unquoted, unnested <code>{</code> starts the executable
+body. Braces inside parentheses, brackets, quotes or an optional verbatim fence
+remain payload text: <code>answer(): tool({key: value}) { 42 }</code> and
+<code>answer(): [=[arbitrary { unfinished]=] { 42 }</code> are both valid. Pipes and chained
+colons work in headers as elsewhere. Comments shield their contents too.</p>
+<p>Use explicit <code>()</code> for a zero-parameter header, such as <code>answer(): int { 42 }</code>.
+This preserves existing uninitialized slots: <code>answer: int {42};</code> remains a slot
+whose descriptor includes the braces. Existing trailing descriptors and omitted
+parameter lists, such as <code>answer { 42 } : int</code>, remain valid. Other attachment
+sites, including lambda descriptors, retain their existing framing.</p>
+<h3 id="verbatim-annotations"><a class="header" href="#verbatim-annotations">Verbatim annotations</a></h3>
+<p>An optional fence permits arbitrary text, including unmatched brackets or
+quotes, newlines, and every short-form separator:</p>
+<pre><code class="language-vh">(42 : [=[@foreign { syntax: "unfinished; ) | anything]=])
+</code></pre>
+<p>At the beginning of an entry, after optional spaces or tabs, an opening <code>[</code> followed
+by one or more <code>=</code> characters and another <code>[</code> is matched by <code>]</code>, the same number
+of <code>=</code> characters, and <code>]</code>. The payload is exactly the
+text between these markers. Nothing inside it is parsed, decoded, balanced or
+normalized. Choose more <code>=</code> characters when the payload contains a closing
+marker with fewer: <code>[==[text containing ]=] remains intact]==]</code>. <code>[=[]=]</code> is
+an empty payload. Fences are optional at every descriptor attachment site and
+can be mixed with short entries in the same group. A closing fence is an explicit
+boundary, so another member can follow it on the same line without a semicolon.</p>
+<p>The framing must identify where program code resumes. An unterminated fence, quote, block comment or
+unbalanced short-form enclosure is a framing error; use a fence when unmatched
+delimiters are intentional payload content. This boundary requirement does not
+validate the payload’s own language. Empty short entries are retained; the
+optional trailing <code>|</code> does not create an additional entry.</p>
 <h2 id="where-descriptors-apply"><a class="header" href="#where-descriptors-apply">Where Descriptors Apply</a></h2>
 <div class="table-wrapper">
 <table>
@@ -1589,7 +1768,7 @@ not by the name of the annotation.</p>
 </thead>
 <tbody>
 <tr><td>Slot or local</td><td><code>x = 0 : tracked;</code> / <code>var x = 0 : tracked;</code></td></tr>
-<tr><td>Method</td><td><code>move(dx, dy) { ... } : cached</code></td></tr>
+<tr><td>Method or factory</td><td><code>move(dx, dy): result { ... } : cached;</code> / <code>factory make(): tag { ... }</code></td></tr>
 <tr><td>Class or object</td><td><code>class { ... } : typed</code> / <code>{ ... } : module</code></td></tr>
 <tr><td>Lambda</td><td><code>fun(x) { x } : annotation</code></td></tr>
 <tr><td>Formal parameter</td><td><code>(x : nonNeg, y : nonNeg)</code></td></tr>
@@ -1603,14 +1782,27 @@ its surrounding declaration:</p>
 <pre><code class="language-vh">x = (3 : annotation);  // describes the expression
 x = 3 : annotation;    // describes the slot
 </code></pre>
-<p>Groups may chain at every attachment point. When <code>|</code> would otherwise extend a
-descriptor list, terminate a described declaration with <code>;</code> before a
-<a href="#initializer-completion">final initializer body</a>.</p>
+<p>Groups may chain at every attachment point. Text that resembles nested
+annotations inside a payload is still one opaque entry: <code>(42 : (Shape : Tag))</code>
+does not create an annotation on <code>Shape</code> in the surrounding program AST. A tool
+may choose to parse that entry later and own the resulting structure separately.</p>
 <h2 id="semantics"><a class="header" href="#semantics">Semantics</a></h2>
-<p>Compilation hints, documentation, contracts and analysis constraints need
-explicit tooling or extension contracts. The syntax itself promises none of
-those features and cannot replace core construction, lookup or boundary rules.
-See <a href="#tooling-architecture">tooling architecture</a> for external annotations.</p>
+<p>Compilation hints, documentation, types, contracts and analyses belong to
+external tooling agreements. They cannot replace construction, lookup or
+capability rules. <code>(1 : class &lt; super.Base {})</code>, <code>(1 : @unknown =&gt; syntax)</code> and
+<code>(1 : [=[unfinished (]=])</code> all execute as <code>1</code>. A tool’s later decision to parse
+or execute an entry cannot retroactively change the original read result.</p>
+<h2 id="metadata-retention"><a class="header" href="#metadata-retention">Metadata Retention</a></h2>
+<p>Surface and core artifacts retain raw entries and their groups. Core tools need
+no surface AST, parser object or source snapshot. Exact payload text is intrinsic
+metadata content; source locations and the enclosing document are optional
+provenance. Neither retaining nor erasing provenance changes payloads or execution.</p>
+<p>An attachment describes a particular occurrence and role. Lowering preserves
+its identity, grouping, ordering and role when it removes a statement wrapper or
+rewrites a constructor target. Tools can find descriptors from surviving core
+elements and find described elements from descriptors. The runtime never reads
+this index. See <a href="#inert-core-metadata">inert core metadata</a>
+for the implementation and explicit interpretation examples.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="foreign-semantic-values-and-the-alienexpat-boundary"><a class="header" href="#foreign-semantic-values-and-the-alienexpat-boundary">Foreign Semantic Values and the Alien/Expat Boundary</a></h1>
 <p><a id="design-principles"></a></p>
@@ -1658,8 +1850,9 @@ foreign identity law or an implemented C FFI.</p>
 <p>An Expat reenters native semantics through a behavioral interface. Its public
 contract exposes no store, address, activation, private initializer or VM
 representation. Adapters may privately retain what execution requires.
-The current exact-send interface, <code>VHExpat.send</code>, includes zero-argument access;
-it does not apply source invocation’s callable-binding fallback. To use a
+The exact-send interfaces, <code>VHExpat.send</code> within an attached invocation and
+<code>ExpatReceipt.send</code> under an explicit retention receipt, include zero-argument
+access; they do not apply source invocation’s callable-binding fallback. To use a
 stored callable, read the binding and send <code>apply/N</code> to the result explicitly.</p>
 <h3 id="expat-surface"><a class="header" href="#expat-surface">Expat Surface</a></h3>
 <p>Without language access control, an Expat exposes the same source-visible
@@ -1669,7 +1862,11 @@ Backend-private construction routines are not selectors. Proposed
 native external interface and the foreign export interface.</p>
 <h3 id="expat-identity"><a class="header" href="#expat-identity">Expat Identity</a></h3>
 <p>A native object has at most one Expat proxy per compatible foreign runtime.
-Exporting it repeatedly through different paths returns the same proxy.</p>
+Exporting it repeatedly through different paths returns the same proxy.
+Retention receipts are separate capabilities for this identity. Independent
+receipts may concern the same proxy; their own host identities are not the native
+object’s identity. A proxy alone does not keep its native referent alive or
+authorize use after its invocation attachment expires.</p>
 <h2 id="the-symmetry"><a class="header" href="#the-symmetry">The Symmetry</a></h2>
 <div class="table-wrapper">
 <table>
@@ -1682,8 +1879,9 @@ Exporting it repeatedly through different paths returns the same proxy.</p>
 </tbody>
 </table>
 </div>
-<p>For compatible references, importing an owned Expat recovers the original native
-identity, and exporting an Alien to its originating adapter recovers its foreign
+<p>For compatible references with valid lifetime evidence, importing an owned Expat
+recovers the original native identity, and exporting an Alien to its originating
+adapter recovers its foreign
 identity. Cross-runtime references require an explicit bridge. Conversion by
 value instead follows a declared codec and may normalize host representations;
 it does not promise preservation of their object identity.</p>
@@ -1701,17 +1899,30 @@ truth value. Defined exceptional completions remain diagnostics under
 proxies. Each adapter must state its supported domains and reject unsupported
 conversions. A numeric encoding must not silently turn a pointer into an integer
 while claiming to preserve its provenance.</p>
-<p>Canonical null and Booleans are ordinary native objects with language methods.
-Their Java boundary representations are exactly <code>null</code>, <code>Boolean.TRUE</code> and
-<code>Boolean.FALSE</code>, never Expats. Incoming scalars recover the corresponding
-canonical native identities, equally for arguments, results and callbacks.
-Conversion recognizes those identities; it never invokes <code>toString</code>, <code>isNull</code>,
-<code>not</code> or a truth-testing protocol to classify another native object. Similar
-behavior or a source name such as <code>null</code>, <code>true</code> or <code>false</code> does not make
-an object canonical. The internal core null constant and empty expressions
-select canonical null directly; those source names use ordinary message lookup.
-The current integer/string subset is recorded
-in <a href="#java-boundary">the implementation</a>.</p>
+<p>Canonical null and Boolean roles may hold native objects or Aliens. Assigning
+one of these roles adds neither methods nor a native class. The internal core
+null constant and empty expressions select canonical null directly; source
+names such as <code>null</code>, <code>true</code>, and <code>false</code> use ordinary message lookup.</p>
+<p>Each world selects an explicit conversion profile. The
+<a href="#one-possible-native-seed">Current Native Seed profile</a>
+uses ordinary native objects and maps their exact identities to Java <code>null</code>,
+<code>Boolean.TRUE</code>, and <code>Boolean.FALSE</code>, without Expats. Incoming host scalars recover
+those canonical identities. Conversion never sends <code>toString</code>, <code>isNull</code>, <code>not</code>,
+or a truth-testing message to classify another object. Similar behavior or a
+source name does not make an object canonical.</p>
+<p>The <a href="#the-host-seed">Host Seed</a> instead preserves its
+foreign canonical payloads. A world may separately preserve numbers and strings
+as foreign values while using native canonical null and Booleans. Preserved
+values obey the originating adapter’s identity laws; by-value codecs obey their
+declared value relation. Neither policy silently overrides the other. The
+supported Java subset is recorded in
+<a href="#java-boundary">the implementation</a>.</p>
+<p>The <a href="#startup-seed-installation">startup installation contract</a>
+requires a participating boundary to repair its managed references and retire
+provisional ownership before publication, consistently with the final codec.
+It cannot rewrite opaque foreign heaps or leave obsolete mappings that recover
+retired native addresses. This adds no live-replacement exception to published
+identity laws and supplies no general foreign garbage collector.</p>
 <h2 id="explicit-wrappers"><a class="header" href="#explicit-wrappers">Explicit Wrappers</a></h2>
 <p>A native wrapper supplies its own identity, scope and behavior around foreign
 values. Multiple wrappers may share one Alien without sharing native identity.
@@ -1746,6 +1957,25 @@ further callbacks and return normally, or propagate a failure. The outer NF send
 observes the foreign operation’s completion, subject to normal result conversion
 and execution limits. A propagated diagnostic preserves its kind; a later foreign
 failure is reported as that failure, not replaced by an earlier handled one.</p>
+<p>The Java diagnostic also carries detached best-effort crossing evidence:
+direction (native to foreign, foreign to native, or host entry), phase, selector
+and arity, optional source site, and invocation progress. It distinguishes
+admission, selection, argument conversion, execution/callback and result
+conversion. Not dispatched describes this invocation only, not earlier argument
+effects. Completed records a normal invocation return even when result conversion
+then fails. A thrown foreign failure conservatively records completion unknown;
+these fields do not promise rollback, cancellation or safe retry.</p>
+<p>The original failure kind, reason, source and semantic trace survive propagation.
+Each actually crossed boundary adds its own evidence, innermost first. Reusing
+the same crossing during propagation does not duplicate it; recursive calls with
+the same selector remain distinct. Crossing evidence uses the configured trace
+limit (five by default, or all), independently of semantic and private physical
+frames, and reports truncation. Handling a callback failure adds no evidence to
+later independent outcomes.</p>
+<p>Selector absence remains a lookup result until lookup has finally failed; a
+foreign callable eligibility probe must not become fatal merely to produce a
+diagnostic. Explicit adapter rejection can carry <code>FOREIGN_REJECTION</code>; arbitrary
+exception text is never interpreted as rejection or as permission to retry.</p>
 <p>Effects already performed are not rolled back. Handling a callback failure does
 not resume the aborted callback, revive its homes, replay the operation or grant
 NLR crossing. The suspended caller’s homes remain live until its own completion
@@ -1753,6 +1983,23 @@ or failure. Callbacks continue to share the active execution budget; handling an
 exhaustion diagnostic does not replenish it. There are no native resumable
 conditions in the current language. See the
 <a href="../../design-notes/synchronous-foreign-interactions.html#accepted-decision-foreign-handling-of-callback-failure">accepted recovery agreement</a>.</p>
+<h4 id="java-host-exit-limits"><a class="header" href="#java-host-exit-limits">Java host exit limits</a></h4>
+<p>The adapter preserves a supplied <code>BoundaryException</code> and its defined kind. It
+translates other <code>RuntimeException</code>s thrown by <code>ForeignObject.resolve</code> into
+<code>FOREIGN_FAILURE</code> with a resolution reason. Effect-free lifetime metadata
+selection uses the same failure category and selection evidence, before argument
+conversion or invocation. Host scalar protocol resolution
+remains outside that translation catch. Before invocation, argument export
+annotates defined boundary failures without broadening its catch to other host
+failures. The existing invocation catch translates <code>Exception</code> from suspension,
+the selected operation, resumption and result import into <code>FOREIGN_FAILURE</code>;
+defined conversion/ownership/policy exceptions retain their original kind.
+Phase/progress evidence locates the translated failure without retaining its
+host exception object or cause.</p>
+<p>JVM <code>Error</code> and native backend invariant failures outside these existing catches
+are not translated into ordinary language failures. No additional host-loss,
+cleanup or recovery contract is introduced here; abnormal host exit handling
+beyond today’s adapter remains deferred.</p>
 <h3 id="non-local-returns-across-the-boundary"><a class="header" href="#non-local-returns-across-the-boundary">Non-local Returns Across the Boundary</a></h3>
 <p>The boundary is the agreement between native and foreign participants. That
 agreement owns whether a non-local return may cross a foreign invocation and how
@@ -1846,11 +2093,13 @@ native continuation, and shares the active budget. Nested NF calls repeat this
 protocol.</p>
 <p>Foreign code captures a <code>CallbackContext</code> on its own active operation thread and
 may explicitly pass it to a worker. Its <code>send</code> requires an Expat from the same
-runtime; the context grants permission to request admission, not receiver
-authority or possession of the control token. Contexts may be copied among
+runtime with valid attachment or receipt evidence; the context grants permission
+to request admission, not receiver authority or possession of the control token.
+Contexts may be copied among
 workers; competing requests negotiate access to the unique token. Expats obtained
-before the NF invocation remain valid targets. Unassociated entry on another
-thread during an active execution is rejected, as is callback entry during
+before the NF invocation remain valid targets under open retention receipts.
+Unassociated entry on another thread during an active execution is rejected,
+as is callback entry during
 selection. Neither thread identity alone nor possession of an Expat grants
 admission to an outstanding foreign call.</p>
 <p>Only callbacks associated with the innermost active foreign invocation may
@@ -1872,9 +2121,112 @@ Independent-entry scheduling, detached asynchronous native tasks and parallel
 native execution remain outside this contract. Execution limits belong to
 <a href="#java-boundary">the implementation policy</a>.</p>
 <h3 id="lifecycle-and-garbage-collection"><a class="header" href="#lifecycle-and-garbage-collection">Lifecycle and Garbage Collection</a></h3>
-<p>Ownership, resource expiry, callback lifetime and cross-boundary cycles belong
-to each adapter’s contract. No universal reclamation protocol is defined.
-Public raw addresses are not a substitute for that contract.</p>
+<p>The boundary registers <strong>shared retention obligations</strong>, independently of
+execution authority, mutation permission and resource validity. Several holders
+may retain the same referent. A holder releases its own obligation; it neither
+releases another holder’s claim nor closes a shared resource. Public raw
+addresses are not a substitute for a lifetime contract.</p>
+<h4 id="invocation-attachment"><a class="header" href="#invocation-attachment">Invocation attachment</a></h4>
+<p>Expats exported as NF arguments are attached to that particular
+invocation by default. The attachment starts before exposure to foreign code
+and protects their native graphs until result conversion and all admitted
+descendants finish. Callback entry and return transfer the conceptual control
+token but do not end the enclosing invocation’s attachments. Nested NF
+invocations register their own attachments independently. A live ancestor’s
+attachment also protects use and transport within its descendant interaction
+tree; nested foreign helpers need not detach or re-export every alias merely to
+use it before the ancestor completes. This does not widen detachment permission:
+registration still cites an authorized argument or result of its owning invocation.
+Closing callback admission does not itself expire attachment or detachment
+authority: already admitted work may register authorized receipts while the
+invocation waits for its descendants and completes result conversion.</p>
+<p>The selected operation declares which argument positions permit detachment.
+This metadata is available before argument conversion and operation execution;
+it does not cause automatic retention. An explicit detach registers an
+independent receipt while the authorized attachment is open, before publishing
+the retained reference. Permission belongs to an argument occurrence, including
+when several positions contain the same native object. Missing permission means
+attached-only. Undeclared or late detachment fails without creating a lasting
+root and without repeating selection or execution.
+Detachment also requires possession of the Expat being retained; naming an
+argument position through a callback admission context does not grant access to
+that argument. The boundary validates the supplied proxy against the occurrence.</p>
+<p>An adapter may perform this registration on behalf of a foreign API that stores
+its arguments. The foreign implementation need not adopt VarioHyve’s collector
+or a static ownership discipline. The declaration is a promise on which the
+boundary may act; a proof of foreign code is not required. Optional analysis or
+review evidence may support the promise, but grants no additional authority and
+does not replace runtime checks under this agreement.</p>
+<h4 id="results-receipts-and-checked-use"><a class="header" href="#results-receipts-and-checked-use">Results, receipts and checked use</a></h4>
+<p>Native results from FN callbacks attach to the enclosing NF invocation. They may
+outlive the callback but need a separate declared callback-result permission and
+explicit detachment to outlive that invocation. Permission to detach a parent
+argument does not authorize detaching every object returned by its accessors.
+An independent host native result, including module construction, has no enclosing
+invocation: by-reference export delivers a host retention receipt. Public opaque
+boundary references likewise carry an explicit releasable hold. By-value codec
+results need no receipt; compatible Alien round trips follow the foreign
+domain’s own retention rules.</p>
+<p>A receipt supplies checked sending and transport for its canonical Expat.
+Closing it is idempotent and ends only that receipt’s obligation. Acquiring an
+independent co-hold creates another receipt; copying one receipt shares the same
+obligation. Closing one co-hold leaves the others valid. The last release makes
+an otherwise unreachable native graph eligible for collection, without requiring
+immediate collection.</p>
+<p>Every mediated use and conversion validates the evidence supplied for that use.
+An expired attachment or closed receipt fails before native access even when
+another holder keeps the referent alive. Re-export does not revive a closed
+receipt. A bare canonical proxy is usable only under a currently applicable
+invocation attachment; outside that context it requires receipt evidence. Copies
+of a proxy used within the same valid attachment are ordinary aliases: the
+boundary cannot infer which foreign variable originally acquired that identity.
+Nor can it observe every hidden store into an opaque foreign heap. It diagnoses
+observable use without valid evidence, not necessarily the earlier hidden escape.</p>
+<p>Lifetime violations use <code>OWNERSHIP</code>, independently of <code>EXECUTION_POLICY</code> for
+callback admission and <code>LANGUAGE_FAILURE</code> for retired return homes. Retention
+keeps captured data available; it never revives a return home, extends a
+<code>CallbackContext</code>, enables NLR crossing or replenishes an execution budget.
+Checked handles do not make arbitrary foreign raw-pointer operations safe.</p>
+<p>Receipt release and admission coordinate so an already admitted use retains its
+target through completion; subsequent use of a closed receipt fails. Every
+handoff establishes the receiving root before dropping the sending protection,
+including an NF result that returns an attached argument unchanged. Partial
+argument conversion and defined exceptional completion close the invocation’s
+own attachments. A failed callback does not close its enclosing invocation, and
+an outer failure does not revoke detached receipts already published by foreign
+code. Such retention is an effect, not a transaction to roll back. Broader host
+termination remains subject to the <a href="#java-host-exit-limits">host exit limits</a>.</p>
+<h4 id="alien-holds-and-cycles"><a class="header" href="#alien-holds-and-cycles">Alien holds and cycles</a></h4>
+<p>An imported Alien establishes an adapter hold before publication. Native GC
+traces references to it normally and relinquishes that hold when the Alien
+becomes unreachable. Slots, captures and returns need no native detachment
+annotation. The adapter counts obligations between participants, not every native
+alias. Java may realize a hold as a strong payload reference; a foreign reference
+counted domain may use its own retain/release protocol. Expiring resources and
+temporary pointers still need an appropriate domain contract: native reachability
+cannot prolong an allocation that the foreign participant cannot retain.</p>
+<p>Identity caches are non-owning indexes. A live observable proxy remains canonical
+without making its expired native graph a root. Reclamation and reimport must
+preserve the foreign referent’s identity and identity hash while that identity
+remains live, including distinctions between restricted capability views.
+Expired receipts and diagnostic records must not retain their former targets.
+Releasing a hold is distinct from globally closing a resource. Observable foreign
+cleanup requires the adapter’s safe cleanup agreement; it must not run arbitrary
+foreign code inside native tracing. GC makes no prompt resource-cleanup promise.</p>
+<p>Cross-boundary cycles are legal by default. Without collector cooperation the
+boundary conservatively retains cycles that neither participant can prove
+unreachable. Every retained strong edge still obeys the attachment/receipt
+contract; allowing cycles does not authorize unregistered escape. An explicit
+release can break a cycle, but strong relationships must not silently become
+weak to obtain collection.</p>
+<p>An optional future agreement may distinguish foreign external roots from edges
+whose retaining owners are traceable, preserving opaque edge identities and
+provenance. Safe collection requires coordinated reachability and mutation
+observations, validation before reclamation, and agreed weak-reference,
+finalization and participant-loss behavior. Missing or incomplete cooperation
+retains conservatively. No universal foreign collector, introspection mechanism
+or cycle-collection algorithm is prescribed. See the
+<a href="../../design-notes/alien-expat-lifetimes.html">accepted lifetime decision</a>.</p>
 <h3 id="foreign-kinds-and-capability-contracts"><a class="header" href="#foreign-kinds-and-capability-contracts">Foreign Kinds and Capability Contracts</a></h3>
 <p>An adapter may classify a value as callable, pointer, struct or endpoint; these
 are foreign contracts, not native classes. Analysis needs explicit assumptions
@@ -1904,8 +2256,9 @@ selector allowlist or native invocation path is introduced.</p>
 native-function invocation path. The trusted backend may privately allocate
 values, maintain stores and implement lookup/continuations. Those internal
 operations are not language services.</p>
-<p>A service returning a native object must return its Expat, so import recovers
-the object. Returning its raw backend representation as a foreign value is
+<p>A service returning a native object must return its Expat with valid attachment
+or receipt evidence, so import recovers the object. Returning its raw backend
+representation as a foreign value is
 invalid. Any future representation-sensitive service requires explicit authority
 and private unwrapping without adding raw-world access to public Expats. See
 <a href="../../design-notes/vm-lang-boundary.html">the VM boundary decision</a>.</p>
@@ -1948,15 +2301,18 @@ Hashes are neither addresses nor stable across sessions. A wrapper and its
 payload differ; differently restricted handles must not be merged merely because
 they refer to the same resource. Ownership failures require an explicit bridge.</p>
 <p>The supported kind labels are exactly <code>"Object"</code> and <code>"Alien"</code>, case sensitive.
-Object includes native instances, class objects, metaclasses, canonical null and
-Booleans, and lambdas. Alien includes opaque foreign references and VM services
-exposed through the adapter. It does not imply callability or trust. Classification
+Object includes native instances, class objects, metaclasses, and lambdas.
+Native canonical null and Booleans belong to Object; canonical values implemented
+as Aliens belong to Alien. Canonical roles do not override representation kind.
+Alien also includes opaque foreign references, preserved host scalars, and VM
+services exposed through the adapter. It does not imply callability or trust. Classification
 is relative to the observing runtime; importing its owned Expat recovers a native
 object.</p>
 <p>Current integer/string codec values belong to neither kind and have no native
 class or mixin membership. Identity operations on them, including mixed <code>same</code>
 queries, fail with <code>CONVERSION</code>; interning does not specify scalar identity.
-Future native or preserved foreign scalars require their own specified contracts.
+Preserved foreign scalars instead use their adapter’s identity and Alien kind;
+see <a href="#possible-seeds-and-worlds">Possible Seeds and Worlds</a>.
 Thus <code>isNative</code> is not implemented as the negation of <code>isAlien</code>. Object’s default
 <code>equals</code> with a codec scalar still returns false because its receiver is native.
 An unknown kind label fails with <code>LANGUAGE_FAILURE</code>, a non-string kind label
@@ -2006,6 +2362,259 @@ establish trust in a subclass or authorize its behavior. The
 <a href="../../design-notes/mirrors-identity-and-alien-classification.html">design note</a>
 records the routing and capability tradeoffs.</p>
 <div style="break-before: page; page-break-before: always;"></div>
+<h1 id="possible-seeds-and-worlds"><a class="header" href="#possible-seeds-and-worlds">Possible Seeds and Worlds</a></h1>
+<p>A seed is an object graph providing capabilities; its library contents are
+deliberately independent of the language definition. The VM specifies structural
+roles and startup invariants, not a mandatory library namespace or collection of
+primitive methods. A seed chooses the objects that occupy the VM’s canonical roles and the behavior
+of its structural root. A world also chooses boundary conversion and the
+capabilities explicitly supplied to programs. These choices do not change
+lookup, lexical scope, construction, or the native rules for return homes.</p>
+<p>The VM sends <strong>no required selectors</strong> to canonical null, true, or false.
+It supplies canonical null directly for empty expressions and omitted
+initializers; Boolean identities are used by the selected boundary conversion
+policy. Nor does the VM require any instance methods on root Object.
+<code>null/0</code>, <code>true/0</code>, <code>false/0</code>, and <code>Object/0</code> are the optional seed <em>provider’s</em>
+discovery protocol, not methods required on the returned values.</p>
+<p>Every native world retains classes, objects, activations, closures, and message
+dispatch even when all its data values are foreign. Root Object is a native
+class with <strong>no superclass and no instance state</strong>, whether owned or contributed
+by applied mixins. Its absent superclass represents semantic Top, not canonical
+null. Zero-parameter, stateless mixin contributions may supply behavior. Root
+initialization bodies and routed argument effects are unsupported; support for
+stateful roots is indefinitely deferred.</p>
+<p>Installation finishes before publication under the
+<a href="#startup-seed-installation">atomic startup contract</a>.
+It rewrites all retained references to retired seed identities and forces native
+GC. Selecting a new seed during application execution is unsupported. Installing
+a seed does not introduce ambient bindings into an isolated module.</p>
+<p>The following chapters describe <a href="#the-host-seed">the Host Seed</a>,
+<a href="#one-possible-native-seed">one possible native seed</a>, and
+<a href="#a-world-with-native-seed-but-host-scalars-and-strings">a native-seed world with host scalars and strings</a>.
+These are concrete choices, not an exhaustive taxonomy of valid worlds.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="the-host-seed"><a class="header" href="#the-host-seed">The Host Seed</a></h1>
+<p>The minimal host seed binds canonical null, true, and false to boundary-owned
+foreign values and installs an Object with an empty instance protocol. The Java
+host realization preserves the corresponding host payloads as Aliens. Those
+values need no <code>isNull</code>, conditional, equality, hashing, or display methods for
+the machine to execute. A client send succeeds only when the foreign adapter
+provides its selector; assigning a canonical role supplies no additional
+behavior or native superclass.</p>
+<p>The supplied Java adapter offers null tests/display and Boolean selection
+methods matching the native library’s selector inventory. These are optional
+adapter capabilities, not minimum seed requirements. In the unconfigured Host
+Seed, numbers and strings remain opaque unless an explicitly supplied foreign
+capability operates on them. The optional
+<a href="#javahostkernel-world">JavaHostKernel world</a> adds receiver protocols such as
+<code>2.plus(3)</code> through a host adapter chosen before runtime publication.</p>
+<p>The host seed can be used without loading a native library. Explicitly supplied
+foreign capabilities perform work, while native objects and closures coordinate
+them. Foreign scalar preservation avoids native data conversion; native
+coordination objects still use Expats when passed to a host capability. A
+preserved Java value does not acquire automatic Java reflection or a native
+number/string protocol.</p>
+<p><code>BootstrapRuntime(capabilities, BoundaryProfile.HOST_VALUES, adapter)</code> selects
+an explicit <code>HostValueAdapter</code> for preserved values. This is independent of the
+kernel bundle passed to a module: passing a bundle cannot install or change the
+runtime adapter. Its foreign selector resolution obeys the same no-effects,
+no-callback selection contract as <code>ForeignObject.resolve</code>; selected operations
+execute through the ordinary boundary. Known null/Boolean operations retain
+precedence, and explicit <code>ForeignObject</code> receivers retain their own resolver.
+The optional adapter adds no native class, slot, implicit namespace or I/O grant.</p>
+<p>Host Boolean control behavior is a boundary agreement. If a host Boolean
+adapter executes a native thunk, that execution crosses the Alien/Expat
+boundary. A non-local return from the thunk can cross this call only when every
+intervening boundary implements the required transfer. A supporting host and
+boundary can permit it; foreign Boolean representation is not intrinsically a
+limitation. The current Java implementation forbids this crossing and reports
+<code>LANGUAGE_FAILURE</code>. Ordinary callback returns and returns to homes created
+inside the callback remain possible. See
+<a href="#non-local-returns-across-the-boundary">non-local returns across the boundary</a>.</p>
+<p>The Java bootstrap selects this world explicitly:</p>
+<pre><code class="language-java">var runtime = new BootstrapRuntime(Map.of(), BoundaryProfile.HOST_VALUES);
+Object result = runtime.evaluate("true.ifTrue(fun { 7 })", 1_000);
+</code></pre>
+<p>The tooling bundle supplies <code>true</code> for this expression. An isolated module must
+receive its capabilities as constructor arguments, even in the Host Seed.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="javahostkernel-world"><a class="header" href="#javahostkernel-world">JavaHostKernel world</a></h1>
+<p>JavaHostKernel is an optional Java-backed library over the Host Seed. The starter
+selects <code>HOST_VALUES</code> and an explicit <code>HostValueAdapter</code> before publishing its
+runtime. Its kernel bundle, factories, collections and data values are Aliens.
+Receiver sends such as <code>2.plus(3)</code> use foreign selector/arity dispatch; they do
+not introduce native Integer classes or alter native lookup.</p>
+<p>Normal modules retain their empty top activation. The host explicitly passes the
+kernel to <code>class Program(kernel)</code> and then sends <code>run/0</code>. This is the starter’s
+convention, not a required language entry selector. Literal receiver behavior
+comes from the selected world; named factories and Console come from explicit
+inputs. Iteration callbacks can use their own captured capabilities. Numeric
+operations grant no console, filesystem or other ambient authority.</p>
+<h2 id="receiver-adapter"><a class="header" href="#receiver-adapter">Receiver adapter</a></h2>
+<p><code>HostValueAdapter.resolve(receiver, selector, arity)</code> selects an operation over
+the original host payload. Selection must have no effects or callbacks and may
+return null only for a genuine miss. Selected failures never retry another
+adapter. Configured resolution receives the same reentry guards and detached
+failure translation as ordinary <code>ForeignObject</code> resolution. Such objects keep
+their own resolver; built-in null/Boolean selectors retain precedence.</p>
+<p>The adapter is supplied at runtime construction, with no public replacement or
+global registry. Its decimal-literal support flag is captured once. Foreign
+payload identity and compatible round trips are unchanged; no value interning
+or extra language wrapper is used to attach behavior. Arithmetic results are
+ordinary host results and need not share the receiver’s identity. Value equality
+does not establish IdentityMirror identity.</p>
+<h2 id="numbers-and-strings"><a class="header" href="#numbers-and-strings">Numbers and strings</a></h2>
+<p>Integral literals retain the signed 64-bit domain. The configured world accepts
+decimal syntax as Java binary64 (<code>Double</code>), with Java rounding and underflow;
+literal overflow to infinity fails explicitly. Exponent syntax remains absent.
+Unconfigured worlds still reject decimal literals. <code>HOST_SCALARS</code> may use the
+same adapter while retaining native canonical values; <code>NATIVE_VALUES</code> rejects
+optional host receiver adapters and retains its existing codec.</p>
+<p>Integer receivers provide <code>plus</code>, <code>minus</code>, <code>times</code>, <code>quotient</code>, <code>remainder</code>,
+comparison, <code>asDouble</code> and <code>toString</code>. Arithmetic uses Java signed 64-bit
+wraparound, division truncates toward zero, and division by zero fails. Byte,
+Short, Integer and Long payloads retain their imported identities; operations
+read their integral values and arithmetic returns Long results. Mixed integral/floating
+arithmetic requires explicit conversion.</p>
+<p>Double/Float receivers provide <code>plus</code>, <code>minus</code>, <code>times</code>, <code>dividedBy</code>, comparison,
+<code>abs</code> and <code>toString</code>. Floating operations use binary64, including IEEE special
+results. String receivers provide concatenation, UTF-16 length, equality, trim
+and literal-delimiter split. No universal native Object display/equality method
+is implied. The API declarations and conformance tests define the exact selectors
+and input validation of each protocol.</p>
+<p>Kernel factories supply parsing and mutable collections. Lists use zero-based
+indices; maps use string keys and insertion order. Elements preserve boundary
+identity. Collection iteration is sequential and visits a snapshot; integer
+iteration fixes its bounds before calling back. Both invoke native callbacks
+through Expats, preserving shared budgets and the foreign return barrier.
+List <code>add</code>/<code>set</code> and Map <code>put</code> declare the stored-value argument detachable and
+register a receipt before retaining a native object. Replacement releases only
+the collection’s previous receipt. <code>get</code> returns the stored reference through
+ordinary conversion, preserving identity and the collection’s hold. Snapshot
+iteration acquires independent co-holds for its native elements and releases
+them on normal or failed completion, so mutations during callbacks do not
+invalidate the remaining snapshot.</p>
+<p>List and Map <code>close/0</code> idempotently release their native receipts and empty the
+collection; it returns host null. Further collection operations fail as foreign
+rejection. Closing a collection never closes unrelated foreign elements.
+The Java collection constructor likewise acquires independent co-holds for
+receipt inputs and rejects bare Expats lacking durable evidence. These are
+adapter retention obligations under the
+<a href="#lifecycle-and-garbage-collection">boundary agreement</a>, not
+native ownership annotations or a universal collection protocol.</p>
+<p>Console uses explicitly injected streams; line input returns host null at EOF.</p>
+<h2 id="api-declarations"><a class="header" href="#api-declarations">API declarations</a></h2>
+<p><a href="../../../vh-source/contracts/JavaHostKernel.vh"><code>JavaHostKernel.vh</code></a> is a
+module-like API document. Class-shaped declarations describe receiver protocols;
+method bodies containing <code>?</code> denote absent VarioHyve implementations. Reaching
+such a hole still fails normally. <code>_value</code> documents host state and supplies no
+slot or exported accessor on the real Alien. If someone instantiates the API
+sketch as source, its declaration has ordinary native slot semantics instead;
+that object is not the host value. An underscore is not access control.</p>
+<p>Descriptors document host adapter entry points, help text and results. Tools
+read known literal metadata structurally; they do not evaluate it. Removing
+descriptors preserves raw execution, including unresolved-hole failures.
+Neither descriptors nor declarations install adapters, import capabilities or
+choose dispatch. Java implementations and the API document are checked together
+and shipped at the same version. This is a concrete tooling convention, not a
+general binding generator or interface-definition extension to the language.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="one-possible-native-seed"><a class="header" href="#one-possible-native-seed">One Possible Native Seed</a></h1>
+<p>The repository’s <a href="../../../vh-source/bootstrap/current-native-seed.vh">Current Native Seed module</a>
+is one library choice. It is an ordinary isolated module whose sole constructor
+input is a narrow host identity service. The module stores that service in its
+<code>_vm</code> slot because constructor parameters are not method bindings. Its members
+and ordinary object literals implement the native canonical values and root
+behavior. The provider module has state; the Object it supplies has none.</p>
+<p>The builder sends <code>null/0</code>, <code>true/0</code>, <code>false/0</code>, then <code>Object/0</code>, once each. The
+returned Object class initially inherits the provisional structural root. After
+validation, adoption removes that superclass edge, redirects the provisional
+root and scalar references throughout the retained graph, retires obsolete
+bootstrap ownership, and collects. The provider’s Object is then the actual
+root; its methods keep their original definition scope. No duplicate ancestor
+Object or forwarding wrapper is retained.</p>
+<p>This module supplies the following protocols:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Provider</th><th>Selectors</th><th>Behavior</th></tr>
+</thead>
+<tbody>
+<tr><td>Null</td><td><code>isNull/0</code>, <code>notNull/0</code>, <code>toString/0</code></td><td>Returns canonical true, canonical false, and <code>"null"</code>, respectively.</td></tr>
+<tr><td>True and false</td><td><code>and/1</code>, <code>or/1</code>, <code>not/0</code></td><td>Select an already evaluated argument or canonical Boolean according to the receiver.</td></tr>
+<tr><td>True and false</td><td><code>andThen/1</code>, <code>orElse/1</code></td><td>Invoke the selected thunk with <code>apply/0</code>; otherwise return the receiver.</td></tr>
+<tr><td>True and false</td><td><code>ifTrue/1</code>, <code>ifFalse/1</code></td><td>Invoke the selected thunk once; the unselected case returns canonical null.</td></tr>
+<tr><td>True and false</td><td><code>ifTrue/2</code>, <code>ifFalse/2</code></td><td>Invoke exactly one of the two thunks with <code>apply/0</code>.</td></tr>
+<tr><td>True and false</td><td><code>isNull/0</code>, <code>notNull/0</code>, <code>toString/0</code></td><td>Return false, true, and the receiver’s Boolean spelling.</td></tr>
+<tr><td>Object</td><td><code>equals/1</code>, <code>hash/0</code>, <code>toString/0</code></td><td>Identity equality, an identity hash, and <code>"an Object"</code>.</td></tr>
+</tbody>
+</table>
+</div>
+<p>Null and Booleans inherit Object’s methods. Object delegates identity operations
+to the supplied service over the ordinary Alien/Expat boundary. Its methods are
+overridable client defaults, not VM instructions; independent observations use
+an explicitly supplied IdentityMirror. No number, string, or collection class
+is supplied by this module.</p>
+<p>Boolean branch methods execute as native methods. A thunk that returns to an
+accessible native home does not cross foreign execution merely because its
+receiver is a canonical Boolean. If that thunk or its caller invokes foreign
+code, the boundary’s return-transfer agreement still applies. The current Java
+agreement forbids non-local return through an active foreign call; using this
+native seed does not disable that barrier.</p>
+<p>With the compatibility Java codec, these three native identities cross as host
+<code>null</code>, <code>Boolean.TRUE</code>, and <code>Boolean.FALSE</code>; incoming host values recover the
+same native identities. Classification uses exact identities, without sending
+methods or recognizing names. Supported integral values and strings use the
+existing by-value transport. This conversion profile is a world choice, not a
+requirement imposed on all possible seeds.</p>
+<p>Number/string transport is selected before the provider executes and stays
+consistent across adoption. Canonical null/Boolean conversion becomes active
+after the replacement commits, so bootstrap provisioning does not depend on
+the native roles already existing.</p>
+<p>The source module records this library’s contract. Another provider may offer
+other methods or return Aliens for the scalar roles, provided it satisfies the
+structural and atomic-installation invariants. Missing library methods fail when
+sent; the machine does not preflight a Boolean or null protocol.</p>
+<p>To load the checked source module through the public Java bootstrap API:</p>
+<pre><code class="language-java">String source = Files.readString(Path.of("vh-source/bootstrap/current-native-seed.vh"));
+var runtime = BootstrapRuntime.fromNativeSeedModule(
+        source, BoundaryProfile.NATIVE_VALUES, Map.of());
+Object result = runtime.evaluate("false.not", 1_000); // Java Boolean.TRUE
+</code></pre>
+<p>The convenience entry explicitly supplies the module’s narrow identity service.
+For a different provider ABI, <code>fromSeedModule(source, profile, capabilities, inputs...)</code> supplies exactly the listed constructor inputs. Tooling capabilities
+are assembled after seed installation, so they are not ambient module inputs.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="a-world-with-native-seed-but-host-scalars-and-strings"><a class="header" href="#a-world-with-native-seed-but-host-scalars-and-strings">A World with Native Seed but Host Scalars and Strings</a></h1>
+<p>A world may install the same native null, Booleans, and Object while preserving
+host numeric scalars and strings as Aliens. Native control protocols are then
+available without assigning native classes or by-value wrapper semantics to
+numbers and strings. Canonical null and Boolean conversion remains explicit and
+independent of numeric/string preservation.</p>
+<p>Supported number/string source literals use the configured Java import path.
+With host preservation they produce foreign Java values; Java integral literals
+remain limited by the parser’s supported signed 64-bit domain. Preservation does
+not add arbitrary precision, Python literals, native arithmetic, or a reflected
+Java method interface. Programs use explicitly supplied foreign operations for
+those values, and repeated compatible boundary crossings preserve foreign
+identity instead of normalizing it by value.</p>
+<p>This world can coordinate Java data directly while retaining native conditional
+control and Object defaults. Additional foreign domains require explicit
+ownership and translation agreements. Java Booleans and Python integers could
+coexist in a future multi-domain world, but this choice alone provides neither
+a Python adapter nor a cross-domain conversion bridge.</p>
+<p>The public Java bootstrap selects this combination with
+<code>new BootstrapRuntime(capabilities, BoundaryProfile.HOST_SCALARS)</code>. To load the
+native source provider itself, pass <code>BoundaryProfile.HOST_SCALARS</code> to
+<code>BootstrapRuntime.fromNativeSeedModule</code>. The default <code>NATIVE_VALUES</code> profile
+instead retains the compatibility integer/string codec.</p>
+<p>The public constructor also accepts an explicit <code>HostValueAdapter</code> as its third
+argument. Selecting JavaHostKernel’s adapter enables its numeric/string receiver
+protocols and finite binary64 decimal literals while retaining native canonical
+null/Booleans. Omitting the adapter preserves the existing opaque scalar behavior.
+The native codec profile rejects this adapter configuration. See
+<a href="#javahostkernel-world">JavaHostKernel</a> for the optional library contract.</p>
+<div style="break-before: page; page-break-before: always;"></div>
 <h1 id="runtime-object-representation"><a class="header" href="#runtime-object-representation">Runtime Object Representation</a></h1>
 <p>This implementation chapter describes <code>VisitorSemanticsVM</code>’s records and links.
 The language contracts are in <a href="#objects-and-classes">Objects and Classes</a>,
@@ -2016,12 +2625,14 @@ none is a required representation for foreign clients.</p>
 <p>The following sketches abbreviate the current value types:</p>
 <pre><code class="language-text">VMObject       = { ValueRef[] slots, slotLayout, classRef?, lexicalParentRef?, memberCache }
 VMMixinClosure = { definitionScope, declarationName, mixinSyntax, parameters, initializer }
-VMClass        = VMObject + { mixins, superclassRef, initializationEdges, instanceLayout, initializer }
+VMClass        = VMObject + { name, definition }
+ClassDefinition = { complete structural snapshot }
+snapshot       = { mixins, superclassRef, initializationEdges, instanceLayout, initializer }
 VMMetaclass    = VMClass
 </code></pre>
 <p><code>VMObject</code> has no per-instance method dictionary. Reified contributions retain
 method syntax and declarations; <a href="../../../vh-core/src/main/java/vh/vm/ObjectProtocol.java">ObjectProtocol</a>
-selects their operations. <code>VMClass.mixins[0]</code> is its owned mixin; later entries
+selects their operations. <code>VMClass.ownedContribution()</code> names <code>mixins[0]</code>; later entries
 are direct applications. Class objects currently have empty value-slot arrays:
 instance declarations belong to their contributions, and instance values belong
 to allocated receivers.</p>
@@ -2046,10 +2657,23 @@ These are object-graph counts, not total backend allocations: contributions, act
 continuations also occupy representation space.</p>
 <p><code>VMObject.MemberClassKey</code> contains applying class, contribution index and member
 declaration. The cache lives on the enclosing receiver, completing the semantic
-key. Each entry records a realized value, a retained failure, or an in-progress
-flag. <code>ClassTargetFrame</code> sequences target computations; <code>MemberClassReturnFrame</code>
-publishes a result. Failure and unwind clear the in-progress state and cache the
-failure, preventing retries and permanently busy entries.</p>
+key. Each stable <code>MemberClassBinding</code> owns one private disjoint state: unrealized,
+realizing, realized(class reference), or failed(error). Its guarded <code>begin</code>,
+<code>complete</code> and <code>failPending</code> operations implement the formal cache transitions.
+<code>ClassTargetFrame</code> sequences target computations; <code>MemberClassReturnFrame</code>
+reports completion to the binding. Failure and unwind report abandonment;
+repeated cleanup retains the first failure rather than retrying realization.
+These transitions cover supported language failures and non-local abandonment;
+raw Java host/JVM exits remain subject to the
+<a href="#java-host-exit-limits">host exit limits</a>.</p>
+<p>Observing a realizing binding reports a cycle without independently failing the
+original attempt. A foreign handler may recover from a reentrant callback failure
+while the suspended original continues. Only abandonment of that original
+realization caches its failure. Failure diagnostics remain detached data; later
+observation adds context without changing the retained diagnostic. Startup
+relocation prepares a replacement successful payload while preserving binding
+identity and the cache key’s full declaration/application origin. See the
+<a href="../../design-notes/realization-lifecycle.html">lifecycle decision</a>.</p>
 <p><a id="mixin-application"></a>
 <a id="mixin-identity"></a></p>
 <h2 id="contribution-occurrences-and-layouts"><a class="header" href="#contribution-occurrences-and-layouts">Contribution Occurrences and Layouts</a></h2>
@@ -2073,15 +2697,45 @@ operation. See the <a href="../../design-notes/occurrence-slot-layout.html">acce
 <p><a id="bootstrap-metaclasses-1"></a>
 <a id="metaclass-details"></a></p>
 <h2 id="class-assembly"><a class="header" href="#class-assembly">Class Assembly</a></h2>
+<p>Private initialization routes distinguish a complete superclass coordinator from
+an applied owned contribution. Named route constructors validate the target and
+occurrence; consumers use that distinction directly. A mixin route retains its
+positive application index, while superclass entry uses coordinator index zero.
+The representation’s superclass sentinel is confined to the route owner.</p>
 <p><a href="../../../vh-core/src/main/java/vh/vm/ClassConstruction.java">ClassConstruction</a>
-resolves contributor targets, creates each distinct metaclass, installs owned
-factories and finalizes layouts and coordinators. <code>VisitorSemanticsVM</code> retains
+resolves contributor targets, reserves identities, creates each distinct metaclass
+and installs owned factories. <a href="../../../vh-core/src/main/java/vh/vm/internal/ClassDefinition.java">ClassDefinition</a>
+derives a complete structural snapshot from the ordered contributions and routes
+before the class is installed. Its immutable lists, layout and coordinator agree;
+<code>VMClass</code> exposes no independent setters or mutable contribution list. A definition
+owner belongs to one class identity. <code>VisitorSemanticsVM</code> retains
 backend entry points that delegate trusted seeding and anonymous assembly to it.
 <code>seedClassGraph</code> installs the six root identities implementing
 the <a href="#bootstrap-metaclasses">flat graph</a>, plus Lambda and
 its metaclass. Lambda extends Object and has no public factories. The metaclass
 has no additional constructor arity, argument routes or initializer fields.
 The <a href="#factories">factory contracts</a> specify their public selectors.</p>
+<p>Flat metaclasses use an explicit definition with no construction coordinator;
+this is distinct from an unfinished ordinary class. Identity reservation preserves
+bootstrap class-of cycles without publishing partially assembled class metadata.
+Assembly remains inside one machine transition, with no collector safepoint or
+language execution inside finalization. Context-aware allocation remains intact.
+These are trusted backend assembly APIs: correct class/metaclass handle pairing
+and whole-graph validity remain assembler responsibilities.</p>
+<p>Exclusive startup replacement is a separate lifecycle. It prepares root-edge
+removal, complete layouts and replacement snapshots before rewriting the graph.
+<code>NativeRelocation</code> commits whole snapshots through package-private definition
+operations while preserving class and definition-owner identities. Normal
+finalization and startup use the same contribution-layout derivation; startup
+additionally checks inheritance cycles and unchanged physical storage. Generated
+code and captured references still undergo the complete graph repair required by
+<a href="#startup-seed-installation">startup installation</a>.
+These structural snapshots are not persistent stores or deeply immutable syntax.</p>
+<p>Finalization validates route identity/order and instance-contribution kinds.
+Omitting a superclass initialization route is permitted only when its complete
+chain has no parameters, slots, post-initializer bodies or routed argument
+expressions. This covers the implicit stateless root and primordial structural
+classes without silently omitting superclass work in backend assembly.</p>
 <h3 id="representing-top-without-reification"><a class="header" href="#representing-top-without-reification">Representing Top without Reification</a></h3>
 <p>The specification’s <a href="#top-and-the-class-algebra"><code>Top</code></a>
 is the empty constructor of the class algebra. <code>VisitorSemanticsVM</code> deliberately
@@ -2103,8 +2757,8 @@ levels.</p>
 <tr><th>Semantic empty case</th><th>Current implementation</th></tr>
 </thead>
 <tbody>
-<tr><td><code>lin(Top) = []</code>; exact/invocation search over it misses</td><td><code>ObjectProtocol</code> stops when the superclass reference is absent, after searching Object’s contribution. No extra operation is selected or executed.</td></tr>
-<tr><td><code>Top</code> has an empty layout and no contribution</td><td><code>ClassConstruction.finish</code> adds no superclass layout when that reference is absent; Object retains its ordinary owned mixin.</td></tr>
+<tr><td><code>lin(Top) = []</code>; exact/invocation search over it misses</td><td><code>ObjectProtocol</code> stops when the superclass reference is absent, after searching Object’s owned and directly applied contributions. No extra operation is selected or executed.</td></tr>
+<tr><td><code>Top</code> has an empty layout and no contribution</td><td>Class-definition derivation uses an empty inherited layout when the superclass reference is absent; Object retains its owned and stateless directly applied mixins.</td></tr>
 <tr><td>No initialization dependency on <code>Top</code></td><td>Object has no superclass initialization edge. No terminal initializer, activation, return home or argument evaluation is introduced.</td></tr>
 </tbody>
 </table>
@@ -2248,8 +2902,10 @@ The native collector currently runs serially at safepoints; the
 permits other correctly coordinated refinements, including concurrent collection.
 See <a href="../../design-notes/native-heap-gc.html">native heap collection</a> for roots,
 boundary retention, measurements and limitations.</p>
-<p>Backend-only root provenance and shortest retention paths share the collector’s
-root enumerator and graph tracer. Reports are non-owning observations rejected
+<p>Backend-only root provenance, shortest retention paths and Graphviz snapshots
+share the collector’s root enumerator and graph tracer. Graph snapshots can
+start at the complete root set or selected addresses, including an idle seed
+before any execution configuration exists. Reports are non-owning observations rejected
 by the public boundary; no language selector or activation API is added. Audited
 field signatures, randomized graph oracles and GC-on/off execution comparisons
 guard coverage. See <a href="../../design-notes/native-heap-gc-hardening.html">graph hardening</a>
@@ -2258,8 +2914,36 @@ for guarantees and limits.</p>
 <p><a href="#runtime-object-representation">Runtime Object Representation</a> describes objects, classes,
 contributions, scopes, caches and occurrence layouts. <code>VMUninitialized</code> is an
 allocated backend sentinel, corresponding to the reference machine’s non-value
-marker. Canonical null and Booleans are native objects; integer/string transport
-and Aliens use separate private entries.</p>
+marker. Canonical null and Booleans are role references: native objects in the
+Current Native Seed, and Aliens in the Host Seed. Integer/string codec transport
+and Aliens use separate private entries; preserving host scalars selects Aliens.</p>
+<h3 id="contribution-declaration-indexes"><a class="header" href="#contribution-declaration-indexes">Contribution declaration indexes</a></h3>
+<p>Immutable core mixins expose unbound declaration positions by selector and arity.
+Lists of up to four declarations use direct scans; larger method, member and slot
+lists use immutable indexes prepared on first lookup and atomically published.
+Concurrent first readers may prepare equivalent indexes. Entries contain spellings, arities and local integer
+positions, never native references or cached receivers. The original declaration
+lists remain authoritative and preserve order.</p>
+<p><code>ObjectProtocol</code> still walks contributions and superclasses in semantic order,
+selects methods before members before slot accessors within a contribution, and
+binds the result to the current receiver and exact application occurrence. Physical
+slots are resolved through that receiver’s layout. Mutable callable eligibility
+is checked on each invocation. This is not a polymorphic inline cache, and neither
+Alien resolution nor lexical receiver selection is bypassed.</p>
+<h3 id="prepared-binding-metadata"><a class="header" href="#prepared-binding-metadata">Prepared binding metadata</a></h3>
+<p>Function syntax owns reusable immutable parameter slot declarations, prepared
+on first invocation (with a shared empty case); let syntax
+owns reusable binding declarations and step-to-slot positions. An immutable parameter record keeps its layout and validation result together.
+Structural name checks are prepared with that metadata but reported only at the existing function
+invocation or let evaluation point. Unused malformed raw core code therefore does
+not fail just because its metadata was prepared. Surface syntactic checks retain
+their separate earlier validation contract.</p>
+<p>Every call and let evaluation still creates fresh activation storage. Captures,
+return homes, uninitialized values and ordered evaluation are unchanged. Shared
+metadata contains no activation or world reference. Graph inspection traces cached
+parameter metadata without preparing unused functions. Generated expressions retained
+by prepared slots participate in the native graph scan and startup pointer repair.
+This is a representation refinement of the binding rules, not a new scope model.</p>
 <h3 id="continuations"><a class="header" href="#continuations">Continuations</a></h3>
 <p>Frames retain their next reference and the scope/operands needed on resumption:</p>
 <div class="table-wrapper">
@@ -2309,17 +2993,50 @@ Root registration and lease release must themselves occur under the current
 guard or while the runtime is exclusively idle. These backend helpers do not
 acquire coordination internally; leases protect reachability rather than
 authorizing execution or concurrent store access.
-Public Expats and boundary references are pinned automatically for this increment.
-Alien entries remain boundary-owned and are retained without inspecting foreign
-payloads. Collection preserves captured lexical data and retired return-home
+Boundary roots follow the <a href="#lifecycle-and-garbage-collection">lifetime agreement</a>:
+open invocation attachments, host/detached receipts, public references and
+admitted uses retain native referents. Canonical Expat proxies and identity
+caches supply no independent root. Alien wrappers follow ordinary native
+reachability; collection drops their Java payload holds without inspecting
+foreign graphs. Collection preserves captured lexical data and retired return-home
 state, without restoring return authority or introducing activation reflection.</p>
 <p><a id="module-instantiation-requirements"></a></p>
+<h2 id="staged-seed-construction"><a class="header" href="#staged-seed-construction">Staged Seed Construction</a></h2>
+<p><code>RuntimeSeed.host(store)</code> publishes the structural Host Seed directly.
+<code>RuntimeSeed.create(store)</code> loads the parser-independent <code>CurrentNativeSeed</code>
+module definition with the compatibility boundary profile.
+<code>RuntimeSeed.currentNative(store, profile)</code> selects another boundary profile
+with that same native module. These are host construction choices; no language
+capability can reseed a published runtime.</p>
+<p><code>RuntimeSeed.fromModule(store, module, profile, arguments...)</code> accepts an
+ordinary core module definition and explicit constructor arguments. The
+<code>fromNativeModule</code> convenience entry supplies the narrow root identity service
+as its sole argument; parser integration lowers
+<a href="../../../vh-source/bootstrap/current-native-seed.vh"><code>current-native-seed.vh</code></a>
+and exercises that same installer. The parser-independent definition keeps the
+dependency-free bootstrap checks available; it does not install singleton method
+records by a separate semantic path.</p>
+<p>Public source clients select the same choices through
+<code>BootstrapRuntime(capabilities, profile)</code>,
+<code>BootstrapRuntime.fromSeedModule(source, profile, capabilities, inputs...)</code>, or
+<code>BootstrapRuntime.fromNativeSeedModule(source, profile, capabilities)</code>. The last
+entry grants the narrow identity service explicitly; the generic entry grants
+only its supplied inputs. Tooling capabilities are assembled after adoption and
+are not lent to the seed module’s definition scope.</p>
+<p>The builder owns a private unpublished world through module construction,
+exact-once discovery, validation, reference substitution, obsolete boundary-owner
+retirement and forced collection. It returns only a completed world. Failure
+closes provisional access and returns no usable partial world. Platform assembly
+occurs after this step. The full installation invariants are in
+<a href="#startup-seed-installation">Program Structure</a>.</p>
 <h2 id="module-entry"><a class="header" href="#module-entry">Module Entry</a></h2>
 <p><code>BootstrapRuntime.instantiateModule</code> checks a class literal’s declared arity and
 module restrictions, evaluates it in a fresh empty top activation, then uses an
 exact Expat <code>new</code> send. Definition, construction and synchronous callbacks share
-one transition budget. It returns an Expat; the host explicitly sends any entry
-message. Host sends contribute an empty caller scope.</p>
+one transition budget. It returns an <code>ExpatReceipt</code>; the host explicitly sends
+any entry message and closes its receipt when finished. The intermediate class
+receipt is released after construction. Host sends contribute an empty caller
+scope.</p>
 <p><code>BootstrapRuntime.evaluate</code> is the distinct expression harness, using the
 assembled kernel as parent and receiver. Its supplied capability context may
 become part of returned closures/classes. The
@@ -2332,34 +3049,134 @@ These are this tooling bundle’s assembly rules, not reserved language names; n
 declarations can shadow its slots through ordinary lexical lookup. Normal
 modules do not receive these bindings implicitly.</p>
 <h2 id="java-boundary"><a class="header" href="#java-boundary">Java Boundary</a></h2>
+<h3 id="runtime-diagnostics"><a class="header" href="#runtime-diagnostics">Runtime diagnostics</a></h3>
+<p><code>BoundaryException.diagnostic()</code> returns immutable <code>Diagnostic</code> data: the
+existing failure kind and short message, a stable reason, an optional source
+site, semantic trace and related declaration/observation sites. Native reads,
+returns, construction, unsupported features and limits have specific reasons.
+Legacy constructors and <code>kind()</code> /
+<code>getMessage()</code> remain supported. A diagnostic retains no host exception cause,
+native value or execution configuration.</p>
+<p>Named source-entry overloads on <code>BootstrapRuntime</code> preserve a source label and
+revision digest in an optional <code>SourceMap</code>, separate from executable core nodes.
+Compilation projects parser/lowering evidence into copied scalar <code>SourceOrigin</code>
+records and explicitly transfers this table to the runtime. The runtime owns
+weak identity associations, not source snapshots, surface trees or ANTLR data;
+escaped core code keeps its evidence available after later evaluations without
+making unreachable code a metadata root. The same core tree can execute in a
+world with no evidence and must produce coherent source-free diagnostics.</p>
+<p>Sites use zero-based lines and UTF-16 columns with exclusive ends, matching the
+<a href="#optional-metadata-and-source-coordinates">shared source basis</a>.
+Optional bounded excerpts are copied during compilation and rendering never
+reopens source files. Generated code may inherit supplied declaration evidence;
+shared singletons remain unattributed. Missing evidence is reported explicitly,
+never fabricated from AST strings or another execution’s source. Metadata does
+not change execution, effects, transition budgets, failure kinds or cleanup.</p>
+<p>The bootstrap CLI prints defined runtime failures to stderr and exits with
+status 1. It renders detached diagnostic data rather than a Java exception
+stack. <code>--diagnostics=semantic</code> is the default; <code>--diagnostics=vm-developer</code>
+additionally prints private physical frames, addresses and implementation names.
+<code>--trace-frames=N</code> selects a nonnegative frame limit, default five;
+<code>--trace-frames=all</code> requests the complete trace. <code>--no-source-excerpts</code> omits
+copied snippets. Parser/source-check failures remain a separate frontend path.</p>
+<p><code>DiagnosticFormatter.summary</code> provides one escaped line; <code>format</code> adds locations,
+optional excerpts, semantic frames and boundary markers. Missing locations and
+excerpts are explicit. Rendered labels are bounded to 512 UTF-16 units and
+messages/excerpts to 4096, including a visible truncation marker when needed;
+the structured data and legacy short message remain intact. Rendering escapes
+controls and preserves Unicode boundaries. The
+<a href="#runtime-diagnostics-1">editor adapter</a> accepts only
+matching source revisions and does not introduce execution on editing.</p>
+<p><code>DiagnosticOptions</code> on the source runtime configures native capture and persists
+for later Expat calls. <code>DISABLED</code> preserves execution and explicitly supplied
+foreign evidence while omitting native enrichment. Method/lambda/factory and
+initializer frames describe actual invocations, without let-scope frames.
+Finite capture bounds both diagnostic scanning and output; truncation is explicit.
+Semantic cleanup always covers every affected continuation. Repeated access to
+a failed member realization retains its original trace and adds the new access
+as related evidence, without retrying realization.</p>
+<p>Developer reports contain detached scalars and remain backend-private. They are
+available through the explicit tooling entry and are rejected by the value
+boundary; callbacks preserve public evidence without exporting physical VM
+frames. Step exhaustion remains <code>LANGUAGE_FAILURE</code>; callback-depth and admission
+limits remain <code>EXECUTION_POLICY</code>. See the
+<a href="../../design-notes/vm-diagnostics.html">diagnostics decisions and evidence</a>.</p>
+<h3 id="boundary-implementation"><a class="header" href="#boundary-implementation">Boundary implementation</a></h3>
 <p><code>ForeignBoundary.identityMirror()</code> returns a stable, boundary-owned capability.
 It is supplied explicitly to modules and observes identity and membership through
 the <a href="#identitymirror">ordinary mirror protocol</a>, never a
 special evaluator dispatch branch. The narrow root Object service shares private
-identity helpers without exposing the mirror. Current identity hashes use the
-retained native/Alien representation’s Java identity hash; that algorithm is a
-backend policy, not a portable identifier.</p>
+identity helpers without exposing the mirror. Native identity hashes follow the
+stable native identity; preserved foreign values use their payload identity so
+collecting and recreating an Alien wrapper does not change the hash of a still
+live foreign referent. The concrete hashing algorithm is a backend policy, not
+a portable identifier.</p>
 <p><a href="../../../vh-core/src/main/java/vh/vm/internal/DefaultJavaBoundary.java">DefaultJavaBoundary</a>
 owns the <a href="#foreign-semantic-values-and-the-alienexpat-boundary">Alien/Expat contract</a>. <code>BootstrapRuntime.boundary()</code>
 returns a narrow <code>PublicFacet</code>; package-private <code>VmServices</code> provisions the seed
-identity service. Both delegate to the same private owner. It uses a Java
-identity cache for Aliens and a per-native-identity Expat cache, both retaining
-strong references, which are roots for native collection and implement the
-specified identity round trips.</p>
+identity service. Both delegate to the same private owner. Canonical Expat and
+Alien indexes preserve compatible round trips without acting as native roots.
+Native GC reclaims unreferenced Alien wrappers and prunes their identity-cache
+entries, relinquishing the Java payload holds. Foreign heaps remain opaque.
+Startup retirement advances an export epoch, preventing old construction proxies
+from becoming valid under later attachments to a surviving identity.</p>
+<p><code>VHExpat</code> is the canonical proxy; a bare proxy is usable through its current
+invocation attachment. <code>ExpatReceipt</code> supplies durable lifetime evidence for
+checked sending and transport, independently of proxy identity. <code>expat()</code>
+returns that canonical proxy, <code>retain()</code> creates an independent co-hold, and
+idempotent <code>close()</code> ends only this holder’s claim. Independent host native
+results, including evaluation, module construction and the tooling kernel, use
+receipts. Host clients pass open receipts when reimporting those targets;
+extracting a bare proxy does not transfer the receipt’s authority.</p>
+<p>Selected <code>ForeignOperation</code>s default to attached arguments. The effect-free
+<code>detachable(int... positions)</code> declaration permits explicit detachment at
+zero-based argument positions; <code>detachableCallbackResults()</code> separately permits
+retaining callback results. <code>ForeignCallable</code> supplies corresponding fluent
+declarations. <code>CallbackContext.detachArgument(int, VHExpat)</code> and
+<code>detachResult(VHExpat)</code> register receipts while the authorized invocation is
+open, validating the supplied proxy against the authorized occurrence. An
+admission context alone supplies no receiver authority.
+<code>ForeignOperation.retainArgument(List, int)</code> is the simple adapter helper;
+non-native arguments keep their foreign/by-value transport. Its <code>release(Object)</code>
+helper closes a native receipt only, never an unrelated resource.</p>
+<p>Callback native results attach to the enclosing NF invocation. A worker combines
+its <code>CallbackContext</code> with an attachment or uses the <code>send(ExpatReceipt, ...)</code>
+overload. Callback admission, receipt validity and return-home liveness remain
+separate checks. <code>EXPIRED_ATTACHMENT</code>, <code>RELEASED_RECEIPT</code> and
+<code>UNDECLARED_DETACHMENT</code> use <code>OWNERSHIP</code>; admission uses <code>EXECUTION_POLICY</code> and
+dead-home failure uses <code>LANGUAGE_FAILURE</code>.</p>
+<p>Host/detached receipt records and admitted-use holds are the actual roots. Java
+Cleaner assistance may eventually release an unreachable host receipt, without
+its cleanup registration strongly retaining the receipt. Explicit close ends the
+hold deterministically. Released receipt records retain no native target graph.
+This is local retention management, not cross-boundary cycle collection:
+otherwise unreachable native/foreign cycles remain legal and conservatively
+retained until an edge is released or a future cooperating collector can prove
+them unreachable.</p>
 <p>Integer/string interning is a non-owning native cache: collection removes cache
-entries whose native transport values were reclaimed. An explicit public boundary
-reference still pins its value. Conversion by value does not promise host identity.</p>
-<p>Exact native null/Boolean identities map to Java <code>null</code>/<code>Boolean</code> without Expats.
-<code>Byte</code>, <code>Short</code>, <code>Integer</code> and in-range <code>BigInteger</code> normalize to <code>Long</code>; <code>Long</code>
-and <code>String</code> use by-value transport. Other numeric forms and raw VM representation
-values are rejected. Arbitrary objects become opaque Aliens, not reflected Java
-method collections. Integers and strings currently have no native class dispatch.</p>
+entries whose native transport values were reclaimed. An open public boundary
+reference retains its value until <code>close()</code>; <code>ForeignBoundary.Reference</code> is
+<code>AutoCloseable</code>. Conversion by value does not promise host identity.</p>
+<p>The selected boundary profile defines conversion. <code>NATIVE_VALUES</code> maps exact
+native null/Boolean identities to Java <code>null</code>/<code>Boolean</code> without Expats. <code>Byte</code>,
+<code>Short</code>, <code>Integer</code> and in-range <code>BigInteger</code> normalize to <code>Long</code>; <code>Long</code> and
+<code>String</code> use by-value transport. Other numeric forms are rejected by that codec.
+<code>HOST_VALUES</code> preserves host null, Booleans, numbers, and strings as Aliens.
+<code>HOST_SCALARS</code> combines native null/Boolean conversion with preserved host numbers
+and strings. Preservation supplies foreign identity, not Java reflection or
+native class dispatch. Raw VM representation values are rejected by all profiles.
+See <a href="#possible-seeds-and-worlds">Possible Seeds and Worlds</a> for the corresponding
+seed choices.</p>
 <p>For the specified <a href="#concurrency-boundary">callback admission protocol</a>,
 <code>DefaultJavaBoundary.Call</code> records the suspended
 configuration, parent call, originating thread, admission state and active
 callback count. <code>NativeHeap</code> transition leases root suspended configurations
 until their native thread resumes; closed calls clear their configuration and
-ancestry references.</p>
+ancestry references.
+<code>Control.ForeignCall</code> retains the selected Alien receiver as well as arguments;
+native tracing follows both. The receiver’s adapter hold therefore survives
+selection and active invocation even when the selected operation does not capture
+the receiver in its Java closure.</p>
 <p><code>CallbackContext.send</code> uses a permit to serialize native execution and short
 representation-sensitive services. <code>invoke</code> releases permission around the
 selected foreign operation and reacquires it before result conversion. Selection
@@ -2400,12 +3217,13 @@ any claim of unlimited execution.</p>
 <tr><th>Area</th><th>Current implementation status</th></tr>
 </thead>
 <tbody>
-<tr><td>Numbers and strings</td><td>Signed 64-bit integer literals and string transport. Decimal literals are rejected; native arithmetic/string protocols are absent. Broader numeric range, overflow and string contracts remain underdeveloped.</td></tr>
-<tr><td>Qualified <code>outer</code></td><td>Runtime name scan over lexical scopes; frontend binding to declaration identities remains unfinished. Exact captured application ancestry at every depth implements the accepted lexical-origin rule.</td></tr>
+<tr><td>Numbers and strings</td><td>Signed 64-bit integers and decoded strings. An explicit host-preserving adapter may enable finite binary64 decimal literals and receiver protocols; unconfigured worlds still reject decimals. JavaHostKernel is an optional foreign library, not native arithmetic/string classes. See <a href="#javahostkernel-world">its contract</a>.</td></tr>
+<tr><td>Source checks</td><td>Independent configurable surface-AST traversals reject statically inadmissible forms before lowering; the bootstrap runner and LSP use the standard set. Parser-only and direct core entry remain available. See <a href="#source-checks">source checks</a>.</td></tr>
+<tr><td>Qualified <code>outer</code></td><td>Frontend validation rejects unknown/non-enclosing qualifiers before execution, including unused bodies. Runtime selection still scans captured lexical scopes by name and preserves exact application ancestry at every depth; core nodes do not yet carry bound declaration identities.</td></tr>
 <tr><td>Holes</td><td>A reached hole is fatal (<code>UnresolvedHole</code>); no configurable concrete policy.</td></tr>
 <tr><td>Composition</td><td>Whole-declaration member override and the specified shared-name state; no deep family merge or adaptation algebra.</td></tr>
 <tr><td>Non-local returns across foreign execution</td><td>Boundary-owned agreement; only default no crossing is implemented. A supporting transfer protocol is deferred.</td></tr>
-<tr><td>Tail calls and reclamation</td><td>Native tracing and entry compaction at occupancy safepoints; no TCO, foreign reclamation or hard memory bound. Expats and Alien entries remain pinned.</td></tr>
+<tr><td>Tail calls and reclamation</td><td>Native tracing and entry compaction at occupancy safepoints; invocation attachments and explicit receipts replace permanent boundary pins, and unreachable Alien wrappers release Java payload holds. No TCO, cooperative foreign cycle collection or hard memory bound.</td></tr>
 <tr><td>Execution agreements</td><td>Sequential ordinary execution with scoped worker callbacks. The conceptual token is not reified; parallel native execution, concurrent native GC and general monitor/intervention capabilities are permitted extension directions, not implemented APIs.</td></tr>
 <tr><td>Analysis and persistence</td><td>No sound abstract interpreter, persistent snapshots, rollback or portable runtime persistence.</td></tr>
 </tbody>
@@ -2424,6 +3242,17 @@ the reference stack; map mutable entries to the current <code>σ</code>; and pre
 occurrence, cache, <code>H</code>, <code>B</code> and active failure control. The allocated uninitialized
 sentinel maps to the private marker. Fresh identities and physical slot positions may be
 renamed while preserving identity, sharing and logical mappings.</p>
+<p>The member binding’s private unrealized/realizing/realized/failed states decode
+directly to the formal cache’s absent/busy/ready/failed cases. Its shared identity
+connects cache entries and addressed completion frames; idempotent abandonment
+adds no retry or extra language effect. Detecting a reentrant cycle and abandoning
+the owning attempt remain distinct operations.</p>
+<p>Class assembly installs a complete definition whose ordered contributions,
+superclass, routes, logical layout and generated coordinator decode to one formal
+realized-class record. Private snapshot preparation is administrative work inside
+a transition; no source-visible partial class or extra target/argument evaluation
+is introduced. Startup can replace a complete snapshot under its unpublished-world
+contract; this does not provide persistent configurations or live class mutation.</p>
 <p>It must reconstruct control ownership from the coordinator according to
 <a href="#runtime-admission-and-conceptual-control">runtime admission</a>.
 Representation maintenance may stutter; declared interventions would need
@@ -2454,11 +3283,376 @@ and concurrent foreign computation and consumption of previously published
 immutable diagnostics while native execution owns the guard.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="tooling-architecture"><a class="header" href="#tooling-architecture">Tooling Architecture</a></h1>
-<p>The interpreter executes without consulting analysis annotations. Tools may add
-naming, diagnostics, inferred types, contracts or analysis results around the
-<a href="#descriptors">descriptor layer</a>. This chapter specifies intended tooling
-interfaces and their current limits; it does not claim an implemented analyzer
-or debugger.</p>
+<p>This chapter defines reusable frontend and tooling contracts, followed by the
+starter editor’s supported scope. <a href="#descriptors">Descriptors</a> define inert
+annotation syntax; <a href="#runtime-diagnostics">runtime diagnostics</a>
+define detached failures. Tooling does not add an operational meaning to either
+annotations or syntactic observations.</p>
+<h2 id="optional-metadata-and-source-coordinates"><a class="header" href="#optional-metadata-and-source-coordinates">Optional Metadata and Source Coordinates</a></h2>
+<p>Each layer requires only its semantic input. Surface syntax stands alone without
+ANTLR tokens or contexts; core syntax stands alone without surface syntax; the
+runtime requires core code but no parser or source information. Required
+execution information missing from core is a defect in core/lowering; the runtime
+must never consult surface syntax to compensate. Position maps,
+core-to-surface mappings and descriptor associations are optional tooling data
+outside the trees. Execution diagnostics may use separately supplied evidence,
+but its absence must preserve coherent failure kinds, reasons, messages and
+semantic traces. It is a defect to fabricate a source location or recover absent
+surface/parser data through another execution’s metadata.</p>
+<p>Declaration-relative scopes, contribution/application identities and return
+homes are required semantic information, not optional source provenance.
+Removing diagnostic evidence must not remove these language distinctions.</p>
+<p>The implementation shares the <code>reader-infra</code> 2.0.0 <code>SourceText</code> coordinate basis:
+zero-based lines, zero-based UTF-16 columns and absolute UTF-16 offsets, with
+half-open ranges. LF, CRLF and CR each delimit one line. ANTLR code-point indices
+are converted at the reader boundary; lowering, runtime source projection and
+LSP consume the resulting coordinates without another conversion. EOF is a
+zero-width position at the actual end of the snapshot; recovery ranges are
+bounded by that snapshot, never by synthetic token spellings. Human-readable
+CLI formatting alone adds one for conventional line/column display.</p>
+<p>The coordinate contract follows the
+<a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#position">LSP position</a>
+and <a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#range">range</a>
+contracts, selecting UTF-16. Revision digests hash the exact UTF-16 code units.</p>
+<h2 id="inert-core-metadata"><a class="header" href="#inert-core-metadata">Inert Core Metadata</a></h2>
+<p><code>vh.syntax.core.metadata</code> stores opaque descriptor data independently of surface
+syntax, parser objects and runtime values. <code>CoreSyntax(root, descriptors)</code> pairs
+an executable core root with an optional <code>CoreDescriptorMap</code>; an artifact without
+descriptors uses an empty map. Core nodes hold no pointer to it.
+<code>CoreLoweringResult.core()</code> exposes this artifact without retaining the frontend
+tracing maps.</p>
+<p><code>CoreDescriptor.Entry.text()</code> returns exact raw payload text. Identity-bearing
+entries and groups retain nesting, ordering and repeated occurrences; equal text
+does not merge entries. <code>CoreDescriptorAttachment</code> adds a stable occurrence and
+role, such as <code>EXPRESSION</code>, <code>STATEMENT</code>, <code>RETURN</code> or <code>SLOT</code>. Queries return
+immutable snapshots. <code>descriptorsOf(owner)</code> preserves groups;
+<code>descriptorEntriesOf(owner)</code> and <code>descriptorTextsOf(owner)</code> explicitly flatten
+those groups. <code>describedElements(descriptor)</code> and <code>attachmentsOf(descriptor)</code>
+provide reverse queries. Text that resembles nested annotations inside a payload
+is opaque; it creates no inner AST or reverse index automatically.</p>
+<pre><code class="language-java">var root = num("42");
+var map = new CoreDescriptorMap();
+var entry = new CoreDescriptor.Entry("@foreign any syntax");
+var attachment = map.attach(root, CoreDescriptorAttachment.Role.EXPRESSION,
+                            List.of(entry));
+var syntax = new CoreSyntax(root, map);
+syntax.descriptors().descriptorEntriesOf(root); // [entry]
+syntax.descriptors().describedElements(entry);  // [root]
+syntax.descriptors().ownerOf(attachment);       // Optional containing root
+</code></pre>
+<p>A member class’s declaration and class literal intentionally share the same
+entry/group identities through <code>CLASS_DECLARATION</code> and <code>CLASS</code> attachments.
+A local declaration has one <code>CoreBindStep</code> and one <code>LOCAL</code> attachment. A final
+ordinary statement moves its attachment to the surviving expression, retaining
+<code>STATEMENT</code>. A final return keeps <code>RETURN</code> on its surviving return operation,
+separate from annotations on the returned value. Rewritten constructor roots
+move their attachments to the application edge. Relocation preserves attachment
+identity and role, rather than cloning payloads or leaving orphaned owners.</p>
+<p><code>DescriptorProjection</code> only copies raw leaves and groups, caching occurrence
+identities. Optional <code>MetadataOriginMap</code> traces entries, groups and attachments
+to surface nodes; no metadata entry retains this map. <code>CoreOriginMap</code> separately
+records executable origins and aliases for eliminated wrappers.
+<code>directlyFromSurface()</code> selects produced roots; <code>originsOf()</code> returns recorded
+associations; <code>originOf()</code> retains the preferred diagnostic origin. Adding an
+alias must not replace an expression’s narrower diagnostic origin.</p>
+<h3 id="explicit-interpretation-by-tools"><a class="header" href="#explicit-interpretation-by-tools">Explicit interpretation by tools</a></h3>
+<p>VarioHyve is one available payload language, not the required one. A tool chooses
+which entries to interpret and may call existing capabilities separately:</p>
+<pre><code class="language-java">// Opt into VarioHyve syntax, without source-admissibility checks or execution.
+var parsed = Reader.parseExpression(entry.text());
+// Alternatively opt into chosen checks, including the standard collection.
+var checked = Reader.readExpression(entry.text(), SyntacticChecks.standard());
+// After explicitly accepting a successful result, obtain ordinary core syntax.
+var lowered = new SurfaceToCore().lower(checked.result().toOptional().orElseThrow());
+// Execution is another explicit choice, with tool-provided capabilities/budget.
+var runtime = new BootstrapRuntime(Map.of("types", toolTypes));
+var meaning = runtime.evaluate(entry.text(), 10_000);
+</code></pre>
+<p>These are the normal APIs; no duplicated descriptor AST, automatic parse cache,
+or separate descriptor evaluator exists. A tool can use another parser, skip
+checks, analyze without execution, or supply an explicit type module/capability
+when executing. Attaching metadata imports neither the enclosing program’s
+lexical scope nor its authority into the tool’s interpretation. Any such binding
+must be part of the tool’s explicit agreement and capability inputs.</p>
+<p>Payload parsing returns an independent read result with payload-local zero-based
+UTF-16 ranges. Its errors belong to the tool and never invalidate the surrounding
+program’s read result. When retained, a <code>SimpleDescriptor</code> source range denotes
+its exact payload substring, excluding verbatim fence markers. A tool may use
+that evidence to translate local ranges back to the containing document; without
+it the tool reports payload-local diagnostics. Whole-source snapshots and
+locations remain optional even though an entry retains its own required text.</p>
+<p>The default editor highlights <a href="#syntax">descriptor islands</a> as
+opaque annotations. Its API-help consumer is an explicit opt-in interpretation,
+described under <a href="#starter-editor">Starter Editor</a>.</p>
+<h2 id="source-checks"><a class="header" href="#source-checks">Source Checks</a></h2>
+<p>The frontend rejects language-invalid constructs established from source alone,
+including in unexecuted method and lambda bodies. It does not evaluate code or
+resolve ordinary sends against a presumed runtime world. Dynamic calls, computed
+contributor targets, holes and valid numeric syntax remain admissible even when
+a particular execution will fail. Descriptor payloads are excluded under the
+<a href="#design-constraint">descriptor contract</a>.</p>
+<p><code>Reader.readExpression</code> parses a complete expression and runs selected checks
+before lowering; the bootstrap source runner and LSP use this checked entry.
+<code>Reader.parseExpression</code> is the parser-only entry for syntax tools and fragments
+without their enclosing context. Results separate admission, diagnostics and
+analysis completion:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Result</th><th>Retained information</th></tr>
+</thead>
+<tbody>
+<tr><td>Completed, no errors</td><td>Successful surface tree and positions. Warnings remain in <code>diagnostics()</code> and do not skip later checks.</td></tr>
+<tr><td>Parser error</td><td>Diagnostics and a recovery AST when available; source checks do not run.</td></tr>
+<tr><td>Source-check error</td><td>Diagnostics, complete surface tree and positions as a partial result.</td></tr>
+<tr><td>Cancellation/resource limit</td><td>Distinct <code>completion()</code>, no successful execution tree and a tooling warning; source validity is unknown.</td></tr>
+</tbody>
+</table>
+</div>
+<p>Callers must inspect <code>ReadResult.diagnostics()</code> even on success. The bootstrap
+execution entry currently consumes admission but does not print successful-read
+warnings; CLI analysis clients can consume the same Reader result directly.</p>
+<p>Each <code>SyntacticCheck</code> owns its rule and traversal. <code>SyntacticChecks</code> selects an
+immutable ordered collection using <code>standard()</code>, <code>none()</code>, <code>with(check)</code> and
+<code>without(id)</code>. Independent rules share a diagnostic collector, not semantic
+state. The <a href="../../design-notes/syntactic-checks.html">check catalog</a> lists standard
+rules and their stable identifiers. Disabling a check is tooling configuration,
+not a different language contract. Runtime guards remain necessary for direct
+core or unchecked inputs; source checks prove neither binding nor executability.</p>
+<h3 id="bounded-reading-and-delimited-fragments"><a class="header" href="#bounded-reading-and-delimited-fragments">Bounded reading and delimited fragments</a></h3>
+<p><code>ReadLimits</code> selects source-size, delimiter-depth, parse-tree-depth, work and
+elapsed-time limits per request. These are implementation policies, not language
+limits. Default batch reads use structural and work bounds without a wall-clock
+deadline (<code>Duration.ZERO</code>), so ordinary execution does not fail merely because
+the machine is slow or busy. Interactive reads retain their 750 ms deadline;
+callers may explicitly select a positive elapsed-time limit. Cancellation remains
+active in both policies. The reader checks cancellation during lexing, token prediction and
+between source checks, bounds token storage and prediction configurations/caches, and guards tree
+depth before mapping or recursive consumers. Prediction caches belong to the
+request. SLL parsing with bail falls back to ordinary LL recovery within the
+same budget. A stack exhaustion is reported as incomplete analysis rather than
+escaping as a JVM error. A caller-supplied check must bound and cooperate inside
+its own work; these APIs cannot preempt arbitrary foreign Java code.</p>
+<p><code>Reader.parseMethodBody("{ ... }")</code> invokes the same delimited-body rule used by
+methods, factories and lambdas and requires end of input. It returns statements,
+positions and diagnostics without synthesizing a class, formals, receiver or
+return home. It does not run enclosing-context source checks. The overload taking
+a parent string and start/end offsets returns a <code>FragmentResult</code> with explicit
+parent-snapshot range translation. The fragment retains its own exact source;
+it must never borrow the full document’s revision digest for execution results.</p>
+<p>This permits small, independently selected regions to be parsed now. Automatic
+incremental replacement is not yet implemented: it needs reliable token-level
+boundaries through comments, strings and descriptor islands, rebuilt ancestor
+nodes and ranges, and invalidation of affected source checks. A parsed statement
+list alone does not establish those conditions or the enclosing lookup context.</p>
+<p><code>vh.syntax.analysis.SnapshotAnalysis</code> owns replaceable document analysis outside
+the LSP: it coalesces pending edits, cooperatively cancels obsolete work and uses
+two workers. Exact submission identity distinguishes even reopenings with the
+same revision number. Consumers recheck that identity under their publication
+lock before applying a result. The LSP invalidates old syntax/runtime ranges
+before scheduling work; queries await their snapshot without holding that lock.
+A resource outcome appears as a document-level warning, never a red syntax error.</p>
+<h2 id="analysis-evidence-and-client-policies"><a class="header" href="#analysis-evidence-and-client-policies">Analysis Evidence and Client Policies</a></h2>
+<p>Analysis belongs to the frontend or explicitly selected tools. The LSP adapts
+requests, ranges and presentation; the same APIs serve CLI analysis, tests and
+documentation tools. It owns no language facts or second operational semantics.
+A future VarioHyve-specific protocol could use these APIs too, but is not implemented.</p>
+<p><code>AnalysisResult&lt;T&gt;</code> reports <code>must ⊆ actual ⊆ may</code> for a stated query domain,
+snapshot, model and accepted assumptions. These qualifications travel with the
+result; a guaranteed fact must not be presented as an unconditional claim about
+an arbitrary foreign system.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Bound</th><th>Meaning under the recorded assumptions</th></tr>
+</thead>
+<tbody>
+<tr><td>Inside <code>must</code></td><td>Definitely present.</td></tr>
+<tr><td>Outside a sound <code>may</code></td><td>Definitely absent. An open upper bound excludes nothing.</td></tr>
+<tr><td>Inside <code>may</code>, outside <code>must</code></td><td>Unresolved: possible, not guaranteed.</td></tr>
+</tbody>
+</table>
+</div>
+<p>Equal finite bounds are exact. An informative upper bound alone is an
+overapproximation; an informative lower bound alone is an underapproximation;
+both provide mixed knowledge. Empty lower and open upper bounds mean unknown.
+Suggested candidates are separate: a finite completion list is not an exhaustive
+upper bound, and absence from it proves nothing. Evidence explains syntax,
+repairs, profiles and contract locations.
+Results with different domains, snapshots or assumptions cannot be combined
+without justification; no automatic cross-analysis proof/trust aggregation exists.</p>
+<p>Initially, exact facts concern structural declaration occurrences in a complete
+matching syntax snapshot. A selector declared in a local mixin does not establish
+receiver selection, accessor eligibility, dispatch, execution success or absence
+of dynamic references. There is no conventional static binder inferred from
+enclosing declarations. Independently justified source checks remain separate.
+Starter API suggestions have empty runtime <code>must</code>, open runtime <code>may</code> and
+<strong>possible</strong> labels explaining the selected documentation contract.</p>
+<p>Alien providers may supply analysis-specific contracts about selectors, results,
+effects or callbacks. A consumer decides whether it trusts the identified
+provider’s promise and evidence for its purpose. Universal fully proved bounds
+are not required: proofs have model/checker assumptions, while tests, attestations
+or accountable promises may suffice for one mission and not another.</p>
+<p>Evidence separates these records:</p>
+<ul>
+<li>Provider attribution, which is not authentication; a file path establishes neither.</li>
+<li>The promised contract, applicability and optional revision. An absent revision
+is not an immutable identity.</li>
+<li>Evidence kind/artifact. A proof claim is not a verified proof.</li>
+<li>The consumer’s purpose and rationale, with an unassessed, accepted-for-purpose
+or rejected trust assessment.</li>
+</ul>
+<p>Accepting evidence neither runs an analysis nor promotes candidates to <code>must</code>.
+Recording an assessment does not mutate reported bounds. Missing/rejected evidence
+leaves usable knowledge open where no independent accepted model supports a bound;
+it does not block ordinary execution or replace foreign semantics. Descriptors
+may carry agreements but establish no trust merely by being present. The
+implementation carries records, not a universal trust policy or proof checker.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Client purpose</th><th>Required evidence</th></tr>
+</thead>
+<tbody>
+<tr><td>Red errors</td><td>Established language violations or definite failures under stated accepted assumptions. Unknown/incomplete/possible failures and rejected provider evidence alone are not source errors.</td></tr>
+<tr><td>Completion</td><td>Favor coverage; distinguish guaranteed, possible and unknown. Claim exhaustiveness only with a justified upper bound.</td></tr>
+<tr><td>Navigation</td><td>Jump to an execution target only when uniquely established; otherwise show alternatives or unknown. Starter API links navigate selected documentation.</td></tr>
+<tr><td>Refactoring</td><td>Require coverage of affected references and preservation of relevant behavior. Unique navigation or absence of diagnostics is insufficient; unknown dynamic references cannot be silently skipped.</td></tr>
+</tbody>
+</table>
+</div>
+<p>Bounded ambient authority may enable finite upper bounds through explicit module
+inputs and accepted models of reachable capabilities. Unmodeled foreign behavior
+and reflection remain open where necessary. AAM derivation, semantic dispatch
+analysis and guaranteed refactoring are deferred; this protocol implements none
+of them.</p>
+<h2 id="runtime-diagnostics-1"><a class="header" href="#runtime-diagnostics-1">Runtime Diagnostics</a></h2>
+<p>An explicit evaluation may produce a detached
+<a href="#runtime-diagnostics">runtime diagnostic</a>. Optional origins
+and excerpts describe the compiled snapshot and its revision digest; the runtime
+chapter defines failure payloads, semantic traces and source-free formatting.</p>
+<p>Lowering preserves the most specific recorded occurrence for generated code.
+Each cascade send uses its original message arm; failures in its receiver or
+arguments retain their narrower origins. Enclosing fallback evidence must not
+overwrite those sites. Constructor-target rewrites and synthetic return wrappers
+follow the same rule. Generated temporaries remain private, and absent provenance
+still produces a coherent source-free failure.</p>
+<p><code>RuntimeDiagnosticAdapter</code> in <code>vh-lsp</code> maps a diagnostic to an LSP error only
+when the caller supplies a document URI, source name and revision digest that
+match its primary site. Zero-based, end-exclusive UTF-16 ranges are already
+LSP ranges. The stable reason becomes the diagnostic code; matching declaration,
+call and definition sites become related information. Absent primary origins,
+stale revisions and unmapped cross-source sites are not assigned invented ranges.
+The caller is responsible for verifying the document snapshot before publication.</p>
+<p>The adapter itself neither executes nor publishes. The language server records
+each open document’s URI, version, absolute source name and digest of its exact
+UTF-16 code units. The explicit <code>vh/runtimeDiagnostics</code> notification publishes a
+runner result only when all four match the current snapshot, then combines it
+with source-check diagnostics. Editing clears prior runtime results immediately;
+closing clears all results. Open, edit and save never execute source.</p>
+<h2 id="starter-editor"><a class="header" href="#starter-editor">Starter Editor</a></h2>
+<p>The VS Code extension selects the <a href="#javahostkernel-world">JavaHostKernel</a> starter
+world explicitly. Run File saves a local module and launches <code>vh.host.Main run</code>
+in a separate JVM; Test File selects the SUnit runner. The module receives its
+kernel (and, for tests, testing library) through ordinary constructor inputs.
+Console input and output use an integrated terminal separate from LSP traffic.
+Stop Program terminates that run’s process. Restart Language Server restarts
+editor assistance. Starting Java or running programs requires workspace trust.
+Run/Test uses its own Java/runner preparation; unavailable or still-starting
+assistance does not block execution. Runtime Problems publication is best effort
+when the language server is available; the terminal retains execution results.</p>
+<p>Source analysis and API assistance support local files and untitled VarioHyve
+buffers; only file execution requires a saved local path. The status item
+separates restricted/unavailable assistance, server startup, pending analysis,
+completed source checks and incomplete/failed analysis. A completed status
+requires a matching document URI, version and source digest; empty Problems alone is not proof
+that analysis ran. Source-error/warning counts remain distinct from completion.
+The checkmark means source checks completed, not that execution will succeed.
+TextMate highlighting remains available without Java or workspace trust; its
+word selection includes legal bang selectors. Opaque descriptor payloads have the
+dedicated semantic token type <code>descriptor</code> and TextMate scope
+<code>comment.block.descriptor.vh</code>, with comment-style theme fallback so inert metadata
+is distinguishable from executable parameters and names. Themes and user token
+customizations retain control of the actual colors; payload content is never
+highlighted as program declarations.</p>
+<p>The language server distinguishes shutdown from exit. Shutdown releases document
+state and cancels pending diagnostic publication before replying; later requests
+receive <code>InvalidRequest</code>. The subsequent exit notification terminates the
+server process, with status 0 after shutdown and 1 otherwise. The process entry
+point owns termination; embedded services can be closed without exiting their
+host JVM. Client disconnection also releases the launcher and document services.</p>
+<p>The packaged runner writes a detached diagnostic sidecar for the executed
+snapshot. The extension verifies it against the launch snapshot and the current
+document before forwarding it; the server independently verifies the snapshot.
+Source changed while a run is active therefore cannot receive obsolete ranges.
+An explicit run may still report its original failure in the terminal.</p>
+<p>Run/Test retains the requested document across saves, Save As, server startup
+and disk verification. A newer Run/Test supersedes older preparation and execution;
+Stop also cancels a launch that has not spawned yet. Snapshot changes during
+preparation require another explicit run. Switching the active editor never
+changes the file selected by a pending command.</p>
+<p>The program console provides line input with Backspace, Enter, EOF and interrupt.
+Unsupported terminal navigation/control sequences are consumed as whole sequences,
+including when split across input events, rather than leaking their bytes into
+program input. Multiline pasted text submits successive lines. This is a line
+console, not a terminal emulator with cursor-based editing.</p>
+<p>Completion, hover, signature help and API-definition navigation read the bundled
+class-shaped API contract. Its consumer parses only the documented literal
+<code>host</code>, <code>doc</code> and <code>returns</code> schema; malformed/unknown payloads are ignored, and
+annotations are never evaluated. The <a href="#analysis-evidence-and-client-policies">analysis evidence policy</a>
+defines the conditional status of these suggestions and documentation links.</p>
+<p>The declared starter convention supports:</p>
+<ul>
+<li>Literal receivers and documented result chains.</li>
+<li>The plain module’s first constructor input during slot/final initialization,
+including nested lambdas, regardless of parameter spelling.</li>
+<li>Direct unmodified slots retaining that input or one of its selected services
+in instance code. Constructor parameters do not become method bindings and
+factories do not receive instance-slot evidence.</li>
+</ul>
+<p>Only enclosing routine parameters/locals shadow this structural evidence;
+unrelated routines do not. A lambda’s own declarations can invalidate it. Any
+matching executable setter marker conservatively invalidates retained-slot
+help, even if it might target a different object/local: resolving writes would
+require operational analysis. Absence of such a marker proves neither absence
+of mutation nor absence of overrides.</p>
+<p>Named receivers across nested classes/objects, invoked getters, mutable aliases,
+slot-to-slot propagation, composition and unknown dynamic receivers receive no
+guessed protocol. Editing repairs may fill a missing selector/argument or close
+delimiters for parsing; arbitrary recovery does not establish a protocol. These
+are structural filters for the starter convention, not lexical selection,
+accessor resolution or execution simulation.</p>
+<p>Folding uses mapped class, method, factory, lambda and initializer ranges, plus
+multiline opaque descriptor ranges. Selection returns one entry per requested
+cursor, in the same order. Unmapped text, including trailing comments or an empty
+document, receives a zero-width fallback. Parent selections strictly contain
+their children; absent, duplicate or incompatible recovery ranges are skipped.</p>
+<h3 id="independent-scratch-evaluation"><a class="header" href="#independent-scratch-evaluation">Independent scratch evaluation</a></h3>
+<p><strong>Evaluate Selection in Scratch</strong> copies exactly one nonempty selection into a
+separate, editable untitled VarioHyve document and evaluates its complete text.
+<strong>Evaluate Scratch</strong> reruns that document. Each invocation uses a fresh process
+with the declared starter tooling context: <code>kernel</code> is JavaHostKernel, alongside
+the bootstrap <code>Object</code>, <code>null</code>, <code>true</code> and <code>false</code>. These are explicit tool inputs,
+not ambient module authority. No receiver, locals or return home is captured,
+and no earlier evaluation state is reused. Each invocation’s effects remain real
+and are not rolled back.</p>
+<p>The ordinary checked expression entry remains in force. The tool introduces no
+wrapper, relaxes no source check and executes no unrelated source text. Multiple
+statements can be written explicitly as <code>(fun { ... }).apply()</code>. Native/foreign
+object results get generic labels; displaying a result performs no extra message
+send or arbitrary foreign <code>toString</code>. Returned native receipts are released.</p>
+<p>The host entry is <code>vh eval &lt;file&gt; [--source-name &lt;label&gt;] [--diagnostics &lt;file&gt;]</code>.
+The label is diagnostic identity, never a path to reopen. The editor writes the
+exact scratch snapshot to a temporary UTF-8 transport file and uses the scratch
+URI as its source name; invalid UTF-16 is rejected rather than silently replaced.
+Runtime Problems are published only to the matching scratch URI/version/digest.
+The original document and its diagnostics are unaffected. Stop and newer explicit
+execution cancel pending scratch launches too; temporary files are removed when
+the run ends or preparation is cancelled.</p>
+<p>Scratch context membership lasts for the editor session and is not inferred from
+a saved filename. Saving the text does not turn ordinary Run File into expression
+evaluation. Object inspection, persistent sessions, customizable contexts and
+debugger activation evaluation remain independent future features.</p>
 <h2 id="evaluation-contexts"><a class="header" href="#evaluation-contexts">Evaluation Contexts</a></h2>
 <p>A tool can evaluate with explicitly supplied objects or select a debug activation.
 The context uses activation objects, ordinary lexical lookup and the same
@@ -2523,10 +3717,9 @@ not solve identity across edits.</p>
 <a href="#connections-and-comparisons">AAM and ADI</a> are research approaches, not modes enabled by
 an allocator or an “abstract kernel.” The required derivation is described under
 <a href="#persistence-and-analysis">Persistence and Analysis</a>.</p>
-<p>Annotations may supply domains or assumptions to a particular analysis, which
-must state their meaning and justify its results. Descriptors alone perform no
-checking. Analysis, mirror tooling and persistence remain
-<a href="#future-directions">future work</a>.</p>
+<p>Annotations may supply domains or assumptions subject to the
+<a href="#analysis-evidence-and-client-policies">analysis evidence policy</a>. General semantic
+analysis, mirror tooling and persistence remain <a href="#future-directions">future work</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="future-directions"><a class="header" href="#future-directions">Future Directions</a></h1>
 <p>This chapter separates accepted extension directions from unresolved proposals;
@@ -2943,8 +4136,8 @@ X=(\sigma,H,B),\cr
 \end{gathered}
 \]</p>
 <p>\(A\) contains private runtime identities; \(u\) is uninitialized storage.
-\(B\) is the boundary state, including identity maps and canonical native
-null/Boolean identities. Failure is carried by the active control and is
+\(B\) is the boundary state, including identity maps and canonical
+null/Boolean role identities. Failure is carried by the active control and is
 reported at the nearest callback boundary or independent entry. Fresh identities
 are always distinct from existing ones. An omitted
 configuration component is unchanged; \(X[\sigma(v).p:=w]\) denotes a field
@@ -2992,8 +4185,9 @@ Q&amp;::=\mathrm{Top}\mid\mathrm{Apply}(\mu,Q),\cr
 \]</p>
 <p>For no direct applications the last equation is
 \(\mathrm{shape}(C)=\mathrm{Apply}(\mu_C,\mathrm{shape}(S_C))\);
-in particular,
+for Object without direct applications,
 \(\mathrm{shape}(\mathrm{Object})=\mathrm{Apply}(\mu_{\mathrm{Object}},\mathrm{Top})\).
+A root with stateless direct applications follows the general projection above.
 This is a projection of instance-side composition, not an equality of runtime
 identities: occurrences, scopes, routes and metaclasses remain in their records.
 It introduces no intermediate classes. Every realized superclass chain is
@@ -3482,10 +4676,11 @@ _\leftarrow\mathrm{init}(\mathrm{whole}(C);z,\bar x);z),\cr
 \end{aligned}
 \]</p>
 <p>Names \(z,\bar x\) in generated code denote exact accessor sends; \(z\) is
-fresh. An owned <code>apply/k</code> replaces the generated default at that arity. <code>Object</code>
-has no direct applications and its superclass is <code>Top</code>, so its dependency list
-is empty by <code>superRoute</code>. Its owned initializer is also empty; an empty implicit
-Object call may be omitted. No route targets <code>Top</code> and no initializer activation,
+fresh. An owned <code>apply/k</code> replaces the generated default at that arity. Object’s
+superclass is <code>Top</code>, so it has no superclass dependency by <code>superRoute</code>. Any
+direct root mixins and its owned contribution are stateless, zero-parameter, and
+have empty initializers; an empty implicit Object call may be omitted. No route
+targets <code>Top</code> and no initializer activation,
 return home or effects are created for it. The base equation admits no arguments;
 there is no \(\mathrm{whole}(\mathrm{Top})\) routine.
 A direct mixin imports neither its source class’s routes nor
@@ -3616,10 +4811,23 @@ interaction with foreign execution; merely removing <code>Barrier</code> is insu
 <p>The adapter provides stateful, identity-preserving conversions
 \(B,\sigma\vdash\bar v\Uparrow(\bar f,B’)\) and
 \(B,\sigma\vdash\bar f\Downarrow(\bar v,\sigma’,B’)\), or failure with the
-state reached before failure. Lists convert left-to-right. Exact canonical
-null/Booleans convert by identity; scalars follow <strong>S</strong>. Compatible identity
+state reached before failure. Lists convert left-to-right. When the selected
+profile defines a canonical codec, null/Booleans convert by exact role identity;
+foreign-preserving profiles retain Alien payloads. Other scalars follow <strong>S</strong>. Compatible identity
 round trips satisfy \(\Downarrow\Uparrow v=v\) and \(\Uparrow\Downarrow\phi=\phi\).
 These are boundary obligations, not privileged native service operations.</p>
+<p>Conversions and foreign actions also satisfy the
+<a href="#lifecycle-and-garbage-collection">lifetime agreement</a>.
+Adapter state <code>B</code> records invocation attachments, declared detachment permissions
+and open retention receipts. Export establishes its protecting root before
+publication; import validates the supplied evidence and establishes the receiving
+root before sender protection ends. Callback exports attach to the enclosing NF
+invocation; independent host exports carry receipts. Completion closes only that
+invocation’s attachments after descendants and result conversion, including
+defined failure paths. Detachment and release are boundary bookkeeping, not
+additional ordinary native control tokens. These rules abstract the collector
+and foreign retention machinery; they do not formalize cooperative collection
+of cross-boundary cycles.</p>
 <p>\[
 \frac{B,\sigma\vdash\bar v\Uparrow(\bar f,B’)}
 {\langle\mathrm{call}(\mathrm{foreignOp}(\phi,op),\bar v),\rho,\kappa\rangle_X

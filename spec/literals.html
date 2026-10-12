@@ -28,7 +28,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="theme/vh-2de7eb16.css">
+        <link rel="stylesheet" href="theme/vh-ce098f15.css">
 
         <!-- MathJax -->
         <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-4e2a9cbc.js";
+            window.path_to_searchindex_js = "searchindex-dcb0efca.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-1ce75dcc.js"></script>
+        <script src="toc-ce909e20.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -249,7 +249,9 @@ one hole merely because their spelling is equal.</p>
 <h2 id="lambda-literals"><a class="header" href="#lambda-literals">Lambda Literals</a></h2>
 <p><code>fun</code> and <code>λ</code> introduce lambdas. Parentheses around the parameter list are
 optional when it is empty. Bodies are semicolon-separated statement lists;
-an empty body and a trailing semicolon are allowed.</p>
+an empty body and a trailing semicolon are allowed.
+Formal lists follow the <a href="message-sends.html#list-separators">shared comma policy</a>:
+a trailing comma adds no parameter, while an interior missing parameter is an error.</p>
 <pre><code class="language-vh">fun { 42 }
 fun(x) { x.plus(1) }
 λ(x, y) { x.plus(y) }

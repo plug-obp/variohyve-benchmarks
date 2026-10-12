@@ -28,7 +28,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="theme/vh-2de7eb16.css">
+        <link rel="stylesheet" href="theme/vh-ce098f15.css">
 
         <!-- MathJax -->
         <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-4e2a9cbc.js";
+            window.path_to_searchindex_js = "searchindex-dcb0efca.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-1ce75dcc.js"></script>
+        <script src="toc-ce909e20.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -223,8 +223,9 @@ foreign identity law or an implemented C FFI.</p>
 <p>An Expat reenters native semantics through a behavioral interface. Its public
 contract exposes no store, address, activation, private initializer or VM
 representation. Adapters may privately retain what execution requires.
-The current exact-send interface, <code>VHExpat.send</code>, includes zero-argument access;
-it does not apply source invocation’s callable-binding fallback. To use a
+The exact-send interfaces, <code>VHExpat.send</code> within an attached invocation and
+<code>ExpatReceipt.send</code> under an explicit retention receipt, include zero-argument
+access; they do not apply source invocation’s callable-binding fallback. To use a
 stored callable, read the binding and send <code>apply/N</code> to the result explicitly.</p>
 <h3 id="expat-surface"><a class="header" href="#expat-surface">Expat Surface</a></h3>
 <p>Without language access control, an Expat exposes the same source-visible
@@ -234,7 +235,11 @@ Backend-private construction routines are not selectors. Proposed
 native external interface and the foreign export interface.</p>
 <h3 id="expat-identity"><a class="header" href="#expat-identity">Expat Identity</a></h3>
 <p>A native object has at most one Expat proxy per compatible foreign runtime.
-Exporting it repeatedly through different paths returns the same proxy.</p>
+Exporting it repeatedly through different paths returns the same proxy.
+Retention receipts are separate capabilities for this identity. Independent
+receipts may concern the same proxy; their own host identities are not the native
+object’s identity. A proxy alone does not keep its native referent alive or
+authorize use after its invocation attachment expires.</p>
 <h2 id="the-symmetry"><a class="header" href="#the-symmetry">The Symmetry</a></h2>
 <div class="table-wrapper">
 <table>
@@ -247,8 +252,9 @@ Exporting it repeatedly through different paths returns the same proxy.</p>
 </tbody>
 </table>
 </div>
-<p>For compatible references, importing an owned Expat recovers the original native
-identity, and exporting an Alien to its originating adapter recovers its foreign
+<p>For compatible references with valid lifetime evidence, importing an owned Expat
+recovers the original native identity, and exporting an Alien to its originating
+adapter recovers its foreign
 identity. Cross-runtime references require an explicit bridge. Conversion by
 value instead follows a declared codec and may normalize host representations;
 it does not promise preservation of their object identity.</p>
@@ -266,17 +272,30 @@ truth value. Defined exceptional completions remain diagnostics under
 proxies. Each adapter must state its supported domains and reject unsupported
 conversions. A numeric encoding must not silently turn a pointer into an integer
 while claiming to preserve its provenance.</p>
-<p>Canonical null and Booleans are ordinary native objects with language methods.
-Their Java boundary representations are exactly <code>null</code>, <code>Boolean.TRUE</code> and
-<code>Boolean.FALSE</code>, never Expats. Incoming scalars recover the corresponding
-canonical native identities, equally for arguments, results and callbacks.
-Conversion recognizes those identities; it never invokes <code>toString</code>, <code>isNull</code>,
-<code>not</code> or a truth-testing protocol to classify another native object. Similar
-behavior or a source name such as <code>null</code>, <code>true</code> or <code>false</code> does not make
-an object canonical. The internal core null constant and empty expressions
-select canonical null directly; those source names use ordinary message lookup.
-The current integer/string subset is recorded
-in <a href="./interpreter-design.html#java-boundary">the implementation</a>.</p>
+<p>Canonical null and Boolean roles may hold native objects or Aliens. Assigning
+one of these roles adds neither methods nor a native class. The internal core
+null constant and empty expressions select canonical null directly; source
+names such as <code>null</code>, <code>true</code>, and <code>false</code> use ordinary message lookup.</p>
+<p>Each world selects an explicit conversion profile. The
+<a href="current-native-seed.html">Current Native Seed profile</a>
+uses ordinary native objects and maps their exact identities to Java <code>null</code>,
+<code>Boolean.TRUE</code>, and <code>Boolean.FALSE</code>, without Expats. Incoming host scalars recover
+those canonical identities. Conversion never sends <code>toString</code>, <code>isNull</code>, <code>not</code>,
+or a truth-testing message to classify another object. Similar behavior or a
+source name does not make an object canonical.</p>
+<p>The <a href="host-seed.html">Host Seed</a> instead preserves its
+foreign canonical payloads. A world may separately preserve numbers and strings
+as foreign values while using native canonical null and Booleans. Preserved
+values obey the originating adapter’s identity laws; by-value codecs obey their
+declared value relation. Neither policy silently overrides the other. The
+supported Java subset is recorded in
+<a href="interpreter-design.html#java-boundary">the implementation</a>.</p>
+<p>The <a href="program-structure.html#startup-seed-installation">startup installation contract</a>
+requires a participating boundary to repair its managed references and retire
+provisional ownership before publication, consistently with the final codec.
+It cannot rewrite opaque foreign heaps or leave obsolete mappings that recover
+retired native addresses. This adds no live-replacement exception to published
+identity laws and supplies no general foreign garbage collector.</p>
 <h2 id="explicit-wrappers"><a class="header" href="#explicit-wrappers">Explicit Wrappers</a></h2>
 <p>A native wrapper supplies its own identity, scope and behavior around foreign
 values. Multiple wrappers may share one Alien without sharing native identity.
@@ -311,6 +330,25 @@ further callbacks and return normally, or propagate a failure. The outer NF send
 observes the foreign operation’s completion, subject to normal result conversion
 and execution limits. A propagated diagnostic preserves its kind; a later foreign
 failure is reported as that failure, not replaced by an earlier handled one.</p>
+<p>The Java diagnostic also carries detached best-effort crossing evidence:
+direction (native to foreign, foreign to native, or host entry), phase, selector
+and arity, optional source site, and invocation progress. It distinguishes
+admission, selection, argument conversion, execution/callback and result
+conversion. Not dispatched describes this invocation only, not earlier argument
+effects. Completed records a normal invocation return even when result conversion
+then fails. A thrown foreign failure conservatively records completion unknown;
+these fields do not promise rollback, cancellation or safe retry.</p>
+<p>The original failure kind, reason, source and semantic trace survive propagation.
+Each actually crossed boundary adds its own evidence, innermost first. Reusing
+the same crossing during propagation does not duplicate it; recursive calls with
+the same selector remain distinct. Crossing evidence uses the configured trace
+limit (five by default, or all), independently of semantic and private physical
+frames, and reports truncation. Handling a callback failure adds no evidence to
+later independent outcomes.</p>
+<p>Selector absence remains a lookup result until lookup has finally failed; a
+foreign callable eligibility probe must not become fatal merely to produce a
+diagnostic. Explicit adapter rejection can carry <code>FOREIGN_REJECTION</code>; arbitrary
+exception text is never interpreted as rejection or as permission to retry.</p>
 <p>Effects already performed are not rolled back. Handling a callback failure does
 not resume the aborted callback, revive its homes, replay the operation or grant
 NLR crossing. The suspended caller’s homes remain live until its own completion
@@ -318,6 +356,23 @@ or failure. Callbacks continue to share the active execution budget; handling an
 exhaustion diagnostic does not replenish it. There are no native resumable
 conditions in the current language. See the
 <a href="../../design-notes/synchronous-foreign-interactions.html#accepted-decision-foreign-handling-of-callback-failure">accepted recovery agreement</a>.</p>
+<h4 id="java-host-exit-limits"><a class="header" href="#java-host-exit-limits">Java host exit limits</a></h4>
+<p>The adapter preserves a supplied <code>BoundaryException</code> and its defined kind. It
+translates other <code>RuntimeException</code>s thrown by <code>ForeignObject.resolve</code> into
+<code>FOREIGN_FAILURE</code> with a resolution reason. Effect-free lifetime metadata
+selection uses the same failure category and selection evidence, before argument
+conversion or invocation. Host scalar protocol resolution
+remains outside that translation catch. Before invocation, argument export
+annotates defined boundary failures without broadening its catch to other host
+failures. The existing invocation catch translates <code>Exception</code> from suspension,
+the selected operation, resumption and result import into <code>FOREIGN_FAILURE</code>;
+defined conversion/ownership/policy exceptions retain their original kind.
+Phase/progress evidence locates the translated failure without retaining its
+host exception object or cause.</p>
+<p>JVM <code>Error</code> and native backend invariant failures outside these existing catches
+are not translated into ordinary language failures. No additional host-loss,
+cleanup or recovery contract is introduced here; abnormal host exit handling
+beyond today’s adapter remains deferred.</p>
 <h3 id="non-local-returns-across-the-boundary"><a class="header" href="#non-local-returns-across-the-boundary">Non-local Returns Across the Boundary</a></h3>
 <p>The boundary is the agreement between native and foreign participants. That
 agreement owns whether a non-local return may cross a foreign invocation and how
@@ -411,11 +466,13 @@ native continuation, and shares the active budget. Nested NF calls repeat this
 protocol.</p>
 <p>Foreign code captures a <code>CallbackContext</code> on its own active operation thread and
 may explicitly pass it to a worker. Its <code>send</code> requires an Expat from the same
-runtime; the context grants permission to request admission, not receiver
-authority or possession of the control token. Contexts may be copied among
+runtime with valid attachment or receipt evidence; the context grants permission
+to request admission, not receiver authority or possession of the control token.
+Contexts may be copied among
 workers; competing requests negotiate access to the unique token. Expats obtained
-before the NF invocation remain valid targets. Unassociated entry on another
-thread during an active execution is rejected, as is callback entry during
+before the NF invocation remain valid targets under open retention receipts.
+Unassociated entry on another thread during an active execution is rejected,
+as is callback entry during
 selection. Neither thread identity alone nor possession of an Expat grants
 admission to an outstanding foreign call.</p>
 <p>Only callbacks associated with the innermost active foreign invocation may
@@ -437,9 +494,112 @@ Independent-entry scheduling, detached asynchronous native tasks and parallel
 native execution remain outside this contract. Execution limits belong to
 <a href="./interpreter-design.html#java-boundary">the implementation policy</a>.</p>
 <h3 id="lifecycle-and-garbage-collection"><a class="header" href="#lifecycle-and-garbage-collection">Lifecycle and Garbage Collection</a></h3>
-<p>Ownership, resource expiry, callback lifetime and cross-boundary cycles belong
-to each adapter’s contract. No universal reclamation protocol is defined.
-Public raw addresses are not a substitute for that contract.</p>
+<p>The boundary registers <strong>shared retention obligations</strong>, independently of
+execution authority, mutation permission and resource validity. Several holders
+may retain the same referent. A holder releases its own obligation; it neither
+releases another holder’s claim nor closes a shared resource. Public raw
+addresses are not a substitute for a lifetime contract.</p>
+<h4 id="invocation-attachment"><a class="header" href="#invocation-attachment">Invocation attachment</a></h4>
+<p>Expats exported as NF arguments are attached to that particular
+invocation by default. The attachment starts before exposure to foreign code
+and protects their native graphs until result conversion and all admitted
+descendants finish. Callback entry and return transfer the conceptual control
+token but do not end the enclosing invocation’s attachments. Nested NF
+invocations register their own attachments independently. A live ancestor’s
+attachment also protects use and transport within its descendant interaction
+tree; nested foreign helpers need not detach or re-export every alias merely to
+use it before the ancestor completes. This does not widen detachment permission:
+registration still cites an authorized argument or result of its owning invocation.
+Closing callback admission does not itself expire attachment or detachment
+authority: already admitted work may register authorized receipts while the
+invocation waits for its descendants and completes result conversion.</p>
+<p>The selected operation declares which argument positions permit detachment.
+This metadata is available before argument conversion and operation execution;
+it does not cause automatic retention. An explicit detach registers an
+independent receipt while the authorized attachment is open, before publishing
+the retained reference. Permission belongs to an argument occurrence, including
+when several positions contain the same native object. Missing permission means
+attached-only. Undeclared or late detachment fails without creating a lasting
+root and without repeating selection or execution.
+Detachment also requires possession of the Expat being retained; naming an
+argument position through a callback admission context does not grant access to
+that argument. The boundary validates the supplied proxy against the occurrence.</p>
+<p>An adapter may perform this registration on behalf of a foreign API that stores
+its arguments. The foreign implementation need not adopt VarioHyve’s collector
+or a static ownership discipline. The declaration is a promise on which the
+boundary may act; a proof of foreign code is not required. Optional analysis or
+review evidence may support the promise, but grants no additional authority and
+does not replace runtime checks under this agreement.</p>
+<h4 id="results-receipts-and-checked-use"><a class="header" href="#results-receipts-and-checked-use">Results, receipts and checked use</a></h4>
+<p>Native results from FN callbacks attach to the enclosing NF invocation. They may
+outlive the callback but need a separate declared callback-result permission and
+explicit detachment to outlive that invocation. Permission to detach a parent
+argument does not authorize detaching every object returned by its accessors.
+An independent host native result, including module construction, has no enclosing
+invocation: by-reference export delivers a host retention receipt. Public opaque
+boundary references likewise carry an explicit releasable hold. By-value codec
+results need no receipt; compatible Alien round trips follow the foreign
+domain’s own retention rules.</p>
+<p>A receipt supplies checked sending and transport for its canonical Expat.
+Closing it is idempotent and ends only that receipt’s obligation. Acquiring an
+independent co-hold creates another receipt; copying one receipt shares the same
+obligation. Closing one co-hold leaves the others valid. The last release makes
+an otherwise unreachable native graph eligible for collection, without requiring
+immediate collection.</p>
+<p>Every mediated use and conversion validates the evidence supplied for that use.
+An expired attachment or closed receipt fails before native access even when
+another holder keeps the referent alive. Re-export does not revive a closed
+receipt. A bare canonical proxy is usable only under a currently applicable
+invocation attachment; outside that context it requires receipt evidence. Copies
+of a proxy used within the same valid attachment are ordinary aliases: the
+boundary cannot infer which foreign variable originally acquired that identity.
+Nor can it observe every hidden store into an opaque foreign heap. It diagnoses
+observable use without valid evidence, not necessarily the earlier hidden escape.</p>
+<p>Lifetime violations use <code>OWNERSHIP</code>, independently of <code>EXECUTION_POLICY</code> for
+callback admission and <code>LANGUAGE_FAILURE</code> for retired return homes. Retention
+keeps captured data available; it never revives a return home, extends a
+<code>CallbackContext</code>, enables NLR crossing or replenishes an execution budget.
+Checked handles do not make arbitrary foreign raw-pointer operations safe.</p>
+<p>Receipt release and admission coordinate so an already admitted use retains its
+target through completion; subsequent use of a closed receipt fails. Every
+handoff establishes the receiving root before dropping the sending protection,
+including an NF result that returns an attached argument unchanged. Partial
+argument conversion and defined exceptional completion close the invocation’s
+own attachments. A failed callback does not close its enclosing invocation, and
+an outer failure does not revoke detached receipts already published by foreign
+code. Such retention is an effect, not a transaction to roll back. Broader host
+termination remains subject to the <a href="#java-host-exit-limits">host exit limits</a>.</p>
+<h4 id="alien-holds-and-cycles"><a class="header" href="#alien-holds-and-cycles">Alien holds and cycles</a></h4>
+<p>An imported Alien establishes an adapter hold before publication. Native GC
+traces references to it normally and relinquishes that hold when the Alien
+becomes unreachable. Slots, captures and returns need no native detachment
+annotation. The adapter counts obligations between participants, not every native
+alias. Java may realize a hold as a strong payload reference; a foreign reference
+counted domain may use its own retain/release protocol. Expiring resources and
+temporary pointers still need an appropriate domain contract: native reachability
+cannot prolong an allocation that the foreign participant cannot retain.</p>
+<p>Identity caches are non-owning indexes. A live observable proxy remains canonical
+without making its expired native graph a root. Reclamation and reimport must
+preserve the foreign referent’s identity and identity hash while that identity
+remains live, including distinctions between restricted capability views.
+Expired receipts and diagnostic records must not retain their former targets.
+Releasing a hold is distinct from globally closing a resource. Observable foreign
+cleanup requires the adapter’s safe cleanup agreement; it must not run arbitrary
+foreign code inside native tracing. GC makes no prompt resource-cleanup promise.</p>
+<p>Cross-boundary cycles are legal by default. Without collector cooperation the
+boundary conservatively retains cycles that neither participant can prove
+unreachable. Every retained strong edge still obeys the attachment/receipt
+contract; allowing cycles does not authorize unregistered escape. An explicit
+release can break a cycle, but strong relationships must not silently become
+weak to obtain collection.</p>
+<p>An optional future agreement may distinguish foreign external roots from edges
+whose retaining owners are traceable, preserving opaque edge identities and
+provenance. Safe collection requires coordinated reachability and mutation
+observations, validation before reclamation, and agreed weak-reference,
+finalization and participant-loss behavior. Missing or incomplete cooperation
+retains conservatively. No universal foreign collector, introspection mechanism
+or cycle-collection algorithm is prescribed. See the
+<a href="../../design-notes/alien-expat-lifetimes.html">accepted lifetime decision</a>.</p>
 <h3 id="foreign-kinds-and-capability-contracts"><a class="header" href="#foreign-kinds-and-capability-contracts">Foreign Kinds and Capability Contracts</a></h3>
 <p>An adapter may classify a value as callable, pointer, struct or endpoint; these
 are foreign contracts, not native classes. Analysis needs explicit assumptions
@@ -469,8 +629,9 @@ selector allowlist or native invocation path is introduced.</p>
 native-function invocation path. The trusted backend may privately allocate
 values, maintain stores and implement lookup/continuations. Those internal
 operations are not language services.</p>
-<p>A service returning a native object must return its Expat, so import recovers
-the object. Returning its raw backend representation as a foreign value is
+<p>A service returning a native object must return its Expat with valid attachment
+or receipt evidence, so import recovers the object. Returning its raw backend
+representation as a foreign value is
 invalid. Any future representation-sensitive service requires explicit authority
 and private unwrapping without adding raw-world access to public Expats. See
 <a href="../../design-notes/vm-lang-boundary.html">the VM boundary decision</a>.</p>
@@ -513,15 +674,18 @@ Hashes are neither addresses nor stable across sessions. A wrapper and its
 payload differ; differently restricted handles must not be merged merely because
 they refer to the same resource. Ownership failures require an explicit bridge.</p>
 <p>The supported kind labels are exactly <code>"Object"</code> and <code>"Alien"</code>, case sensitive.
-Object includes native instances, class objects, metaclasses, canonical null and
-Booleans, and lambdas. Alien includes opaque foreign references and VM services
-exposed through the adapter. It does not imply callability or trust. Classification
+Object includes native instances, class objects, metaclasses, and lambdas.
+Native canonical null and Booleans belong to Object; canonical values implemented
+as Aliens belong to Alien. Canonical roles do not override representation kind.
+Alien also includes opaque foreign references, preserved host scalars, and VM
+services exposed through the adapter. It does not imply callability or trust. Classification
 is relative to the observing runtime; importing its owned Expat recovers a native
 object.</p>
 <p>Current integer/string codec values belong to neither kind and have no native
 class or mixin membership. Identity operations on them, including mixed <code>same</code>
 queries, fail with <code>CONVERSION</code>; interning does not specify scalar identity.
-Future native or preserved foreign scalars require their own specified contracts.
+Preserved foreign scalars instead use their adapter’s identity and Alien kind;
+see <a href="possible-seeds-and-worlds.html">Possible Seeds and Worlds</a>.
 Thus <code>isNative</code> is not implemented as the negation of <code>isAlien</code>. Object’s default
 <code>equals</code> with a codec scalar still returns false because its receiver is native.
 An unknown kind label fails with <code>LANGUAGE_FAILURE</code>, a non-string kind label
@@ -579,7 +743,7 @@ records the routing and capability tradeoffs.</p>
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="object-model.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="possible-seeds-and-worlds.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -593,7 +757,7 @@ records the routing and capability tradeoffs.</p>
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="object-model.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="possible-seeds-and-worlds.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

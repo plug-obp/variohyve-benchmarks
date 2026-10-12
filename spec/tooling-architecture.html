@@ -28,7 +28,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="theme/vh-2de7eb16.css">
+        <link rel="stylesheet" href="theme/vh-ce098f15.css">
 
         <!-- MathJax -->
         <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-4e2a9cbc.js";
+            window.path_to_searchindex_js = "searchindex-dcb0efca.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-1ce75dcc.js"></script>
+        <script src="toc-ce909e20.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -178,11 +178,376 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="tooling-architecture"><a class="header" href="#tooling-architecture">Tooling Architecture</a></h1>
-<p>The interpreter executes without consulting analysis annotations. Tools may add
-naming, diagnostics, inferred types, contracts or analysis results around the
-<a href="./descriptors.html">descriptor layer</a>. This chapter specifies intended tooling
-interfaces and their current limits; it does not claim an implemented analyzer
-or debugger.</p>
+<p>This chapter defines reusable frontend and tooling contracts, followed by the
+starter editor’s supported scope. <a href="./descriptors.html">Descriptors</a> define inert
+annotation syntax; <a href="./interpreter-design.html#runtime-diagnostics">runtime diagnostics</a>
+define detached failures. Tooling does not add an operational meaning to either
+annotations or syntactic observations.</p>
+<h2 id="optional-metadata-and-source-coordinates"><a class="header" href="#optional-metadata-and-source-coordinates">Optional Metadata and Source Coordinates</a></h2>
+<p>Each layer requires only its semantic input. Surface syntax stands alone without
+ANTLR tokens or contexts; core syntax stands alone without surface syntax; the
+runtime requires core code but no parser or source information. Required
+execution information missing from core is a defect in core/lowering; the runtime
+must never consult surface syntax to compensate. Position maps,
+core-to-surface mappings and descriptor associations are optional tooling data
+outside the trees. Execution diagnostics may use separately supplied evidence,
+but its absence must preserve coherent failure kinds, reasons, messages and
+semantic traces. It is a defect to fabricate a source location or recover absent
+surface/parser data through another execution’s metadata.</p>
+<p>Declaration-relative scopes, contribution/application identities and return
+homes are required semantic information, not optional source provenance.
+Removing diagnostic evidence must not remove these language distinctions.</p>
+<p>The implementation shares the <code>reader-infra</code> 2.0.0 <code>SourceText</code> coordinate basis:
+zero-based lines, zero-based UTF-16 columns and absolute UTF-16 offsets, with
+half-open ranges. LF, CRLF and CR each delimit one line. ANTLR code-point indices
+are converted at the reader boundary; lowering, runtime source projection and
+LSP consume the resulting coordinates without another conversion. EOF is a
+zero-width position at the actual end of the snapshot; recovery ranges are
+bounded by that snapshot, never by synthetic token spellings. Human-readable
+CLI formatting alone adds one for conventional line/column display.</p>
+<p>The coordinate contract follows the
+<a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#position">LSP position</a>
+and <a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#range">range</a>
+contracts, selecting UTF-16. Revision digests hash the exact UTF-16 code units.</p>
+<h2 id="inert-core-metadata"><a class="header" href="#inert-core-metadata">Inert Core Metadata</a></h2>
+<p><code>vh.syntax.core.metadata</code> stores opaque descriptor data independently of surface
+syntax, parser objects and runtime values. <code>CoreSyntax(root, descriptors)</code> pairs
+an executable core root with an optional <code>CoreDescriptorMap</code>; an artifact without
+descriptors uses an empty map. Core nodes hold no pointer to it.
+<code>CoreLoweringResult.core()</code> exposes this artifact without retaining the frontend
+tracing maps.</p>
+<p><code>CoreDescriptor.Entry.text()</code> returns exact raw payload text. Identity-bearing
+entries and groups retain nesting, ordering and repeated occurrences; equal text
+does not merge entries. <code>CoreDescriptorAttachment</code> adds a stable occurrence and
+role, such as <code>EXPRESSION</code>, <code>STATEMENT</code>, <code>RETURN</code> or <code>SLOT</code>. Queries return
+immutable snapshots. <code>descriptorsOf(owner)</code> preserves groups;
+<code>descriptorEntriesOf(owner)</code> and <code>descriptorTextsOf(owner)</code> explicitly flatten
+those groups. <code>describedElements(descriptor)</code> and <code>attachmentsOf(descriptor)</code>
+provide reverse queries. Text that resembles nested annotations inside a payload
+is opaque; it creates no inner AST or reverse index automatically.</p>
+<pre><code class="language-java">var root = num("42");
+var map = new CoreDescriptorMap();
+var entry = new CoreDescriptor.Entry("@foreign any syntax");
+var attachment = map.attach(root, CoreDescriptorAttachment.Role.EXPRESSION,
+                            List.of(entry));
+var syntax = new CoreSyntax(root, map);
+syntax.descriptors().descriptorEntriesOf(root); // [entry]
+syntax.descriptors().describedElements(entry);  // [root]
+syntax.descriptors().ownerOf(attachment);       // Optional containing root
+</code></pre>
+<p>A member class’s declaration and class literal intentionally share the same
+entry/group identities through <code>CLASS_DECLARATION</code> and <code>CLASS</code> attachments.
+A local declaration has one <code>CoreBindStep</code> and one <code>LOCAL</code> attachment. A final
+ordinary statement moves its attachment to the surviving expression, retaining
+<code>STATEMENT</code>. A final return keeps <code>RETURN</code> on its surviving return operation,
+separate from annotations on the returned value. Rewritten constructor roots
+move their attachments to the application edge. Relocation preserves attachment
+identity and role, rather than cloning payloads or leaving orphaned owners.</p>
+<p><code>DescriptorProjection</code> only copies raw leaves and groups, caching occurrence
+identities. Optional <code>MetadataOriginMap</code> traces entries, groups and attachments
+to surface nodes; no metadata entry retains this map. <code>CoreOriginMap</code> separately
+records executable origins and aliases for eliminated wrappers.
+<code>directlyFromSurface()</code> selects produced roots; <code>originsOf()</code> returns recorded
+associations; <code>originOf()</code> retains the preferred diagnostic origin. Adding an
+alias must not replace an expression’s narrower diagnostic origin.</p>
+<h3 id="explicit-interpretation-by-tools"><a class="header" href="#explicit-interpretation-by-tools">Explicit interpretation by tools</a></h3>
+<p>VarioHyve is one available payload language, not the required one. A tool chooses
+which entries to interpret and may call existing capabilities separately:</p>
+<pre><code class="language-java">// Opt into VarioHyve syntax, without source-admissibility checks or execution.
+var parsed = Reader.parseExpression(entry.text());
+// Alternatively opt into chosen checks, including the standard collection.
+var checked = Reader.readExpression(entry.text(), SyntacticChecks.standard());
+// After explicitly accepting a successful result, obtain ordinary core syntax.
+var lowered = new SurfaceToCore().lower(checked.result().toOptional().orElseThrow());
+// Execution is another explicit choice, with tool-provided capabilities/budget.
+var runtime = new BootstrapRuntime(Map.of("types", toolTypes));
+var meaning = runtime.evaluate(entry.text(), 10_000);
+</code></pre>
+<p>These are the normal APIs; no duplicated descriptor AST, automatic parse cache,
+or separate descriptor evaluator exists. A tool can use another parser, skip
+checks, analyze without execution, or supply an explicit type module/capability
+when executing. Attaching metadata imports neither the enclosing program’s
+lexical scope nor its authority into the tool’s interpretation. Any such binding
+must be part of the tool’s explicit agreement and capability inputs.</p>
+<p>Payload parsing returns an independent read result with payload-local zero-based
+UTF-16 ranges. Its errors belong to the tool and never invalidate the surrounding
+program’s read result. When retained, a <code>SimpleDescriptor</code> source range denotes
+its exact payload substring, excluding verbatim fence markers. A tool may use
+that evidence to translate local ranges back to the containing document; without
+it the tool reports payload-local diagnostics. Whole-source snapshots and
+locations remain optional even though an entry retains its own required text.</p>
+<p>The default editor highlights <a href="descriptors.html#syntax">descriptor islands</a> as
+opaque annotations. Its API-help consumer is an explicit opt-in interpretation,
+described under <a href="#starter-editor">Starter Editor</a>.</p>
+<h2 id="source-checks"><a class="header" href="#source-checks">Source Checks</a></h2>
+<p>The frontend rejects language-invalid constructs established from source alone,
+including in unexecuted method and lambda bodies. It does not evaluate code or
+resolve ordinary sends against a presumed runtime world. Dynamic calls, computed
+contributor targets, holes and valid numeric syntax remain admissible even when
+a particular execution will fail. Descriptor payloads are excluded under the
+<a href="descriptors.html#design-constraint">descriptor contract</a>.</p>
+<p><code>Reader.readExpression</code> parses a complete expression and runs selected checks
+before lowering; the bootstrap source runner and LSP use this checked entry.
+<code>Reader.parseExpression</code> is the parser-only entry for syntax tools and fragments
+without their enclosing context. Results separate admission, diagnostics and
+analysis completion:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Result</th><th>Retained information</th></tr>
+</thead>
+<tbody>
+<tr><td>Completed, no errors</td><td>Successful surface tree and positions. Warnings remain in <code>diagnostics()</code> and do not skip later checks.</td></tr>
+<tr><td>Parser error</td><td>Diagnostics and a recovery AST when available; source checks do not run.</td></tr>
+<tr><td>Source-check error</td><td>Diagnostics, complete surface tree and positions as a partial result.</td></tr>
+<tr><td>Cancellation/resource limit</td><td>Distinct <code>completion()</code>, no successful execution tree and a tooling warning; source validity is unknown.</td></tr>
+</tbody>
+</table>
+</div>
+<p>Callers must inspect <code>ReadResult.diagnostics()</code> even on success. The bootstrap
+execution entry currently consumes admission but does not print successful-read
+warnings; CLI analysis clients can consume the same Reader result directly.</p>
+<p>Each <code>SyntacticCheck</code> owns its rule and traversal. <code>SyntacticChecks</code> selects an
+immutable ordered collection using <code>standard()</code>, <code>none()</code>, <code>with(check)</code> and
+<code>without(id)</code>. Independent rules share a diagnostic collector, not semantic
+state. The <a href="../../design-notes/syntactic-checks.html">check catalog</a> lists standard
+rules and their stable identifiers. Disabling a check is tooling configuration,
+not a different language contract. Runtime guards remain necessary for direct
+core or unchecked inputs; source checks prove neither binding nor executability.</p>
+<h3 id="bounded-reading-and-delimited-fragments"><a class="header" href="#bounded-reading-and-delimited-fragments">Bounded reading and delimited fragments</a></h3>
+<p><code>ReadLimits</code> selects source-size, delimiter-depth, parse-tree-depth, work and
+elapsed-time limits per request. These are implementation policies, not language
+limits. Default batch reads use structural and work bounds without a wall-clock
+deadline (<code>Duration.ZERO</code>), so ordinary execution does not fail merely because
+the machine is slow or busy. Interactive reads retain their 750 ms deadline;
+callers may explicitly select a positive elapsed-time limit. Cancellation remains
+active in both policies. The reader checks cancellation during lexing, token prediction and
+between source checks, bounds token storage and prediction configurations/caches, and guards tree
+depth before mapping or recursive consumers. Prediction caches belong to the
+request. SLL parsing with bail falls back to ordinary LL recovery within the
+same budget. A stack exhaustion is reported as incomplete analysis rather than
+escaping as a JVM error. A caller-supplied check must bound and cooperate inside
+its own work; these APIs cannot preempt arbitrary foreign Java code.</p>
+<p><code>Reader.parseMethodBody("{ ... }")</code> invokes the same delimited-body rule used by
+methods, factories and lambdas and requires end of input. It returns statements,
+positions and diagnostics without synthesizing a class, formals, receiver or
+return home. It does not run enclosing-context source checks. The overload taking
+a parent string and start/end offsets returns a <code>FragmentResult</code> with explicit
+parent-snapshot range translation. The fragment retains its own exact source;
+it must never borrow the full document’s revision digest for execution results.</p>
+<p>This permits small, independently selected regions to be parsed now. Automatic
+incremental replacement is not yet implemented: it needs reliable token-level
+boundaries through comments, strings and descriptor islands, rebuilt ancestor
+nodes and ranges, and invalidation of affected source checks. A parsed statement
+list alone does not establish those conditions or the enclosing lookup context.</p>
+<p><code>vh.syntax.analysis.SnapshotAnalysis</code> owns replaceable document analysis outside
+the LSP: it coalesces pending edits, cooperatively cancels obsolete work and uses
+two workers. Exact submission identity distinguishes even reopenings with the
+same revision number. Consumers recheck that identity under their publication
+lock before applying a result. The LSP invalidates old syntax/runtime ranges
+before scheduling work; queries await their snapshot without holding that lock.
+A resource outcome appears as a document-level warning, never a red syntax error.</p>
+<h2 id="analysis-evidence-and-client-policies"><a class="header" href="#analysis-evidence-and-client-policies">Analysis Evidence and Client Policies</a></h2>
+<p>Analysis belongs to the frontend or explicitly selected tools. The LSP adapts
+requests, ranges and presentation; the same APIs serve CLI analysis, tests and
+documentation tools. It owns no language facts or second operational semantics.
+A future VarioHyve-specific protocol could use these APIs too, but is not implemented.</p>
+<p><code>AnalysisResult&lt;T&gt;</code> reports <code>must ⊆ actual ⊆ may</code> for a stated query domain,
+snapshot, model and accepted assumptions. These qualifications travel with the
+result; a guaranteed fact must not be presented as an unconditional claim about
+an arbitrary foreign system.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Bound</th><th>Meaning under the recorded assumptions</th></tr>
+</thead>
+<tbody>
+<tr><td>Inside <code>must</code></td><td>Definitely present.</td></tr>
+<tr><td>Outside a sound <code>may</code></td><td>Definitely absent. An open upper bound excludes nothing.</td></tr>
+<tr><td>Inside <code>may</code>, outside <code>must</code></td><td>Unresolved: possible, not guaranteed.</td></tr>
+</tbody>
+</table>
+</div>
+<p>Equal finite bounds are exact. An informative upper bound alone is an
+overapproximation; an informative lower bound alone is an underapproximation;
+both provide mixed knowledge. Empty lower and open upper bounds mean unknown.
+Suggested candidates are separate: a finite completion list is not an exhaustive
+upper bound, and absence from it proves nothing. Evidence explains syntax,
+repairs, profiles and contract locations.
+Results with different domains, snapshots or assumptions cannot be combined
+without justification; no automatic cross-analysis proof/trust aggregation exists.</p>
+<p>Initially, exact facts concern structural declaration occurrences in a complete
+matching syntax snapshot. A selector declared in a local mixin does not establish
+receiver selection, accessor eligibility, dispatch, execution success or absence
+of dynamic references. There is no conventional static binder inferred from
+enclosing declarations. Independently justified source checks remain separate.
+Starter API suggestions have empty runtime <code>must</code>, open runtime <code>may</code> and
+<strong>possible</strong> labels explaining the selected documentation contract.</p>
+<p>Alien providers may supply analysis-specific contracts about selectors, results,
+effects or callbacks. A consumer decides whether it trusts the identified
+provider’s promise and evidence for its purpose. Universal fully proved bounds
+are not required: proofs have model/checker assumptions, while tests, attestations
+or accountable promises may suffice for one mission and not another.</p>
+<p>Evidence separates these records:</p>
+<ul>
+<li>Provider attribution, which is not authentication; a file path establishes neither.</li>
+<li>The promised contract, applicability and optional revision. An absent revision
+is not an immutable identity.</li>
+<li>Evidence kind/artifact. A proof claim is not a verified proof.</li>
+<li>The consumer’s purpose and rationale, with an unassessed, accepted-for-purpose
+or rejected trust assessment.</li>
+</ul>
+<p>Accepting evidence neither runs an analysis nor promotes candidates to <code>must</code>.
+Recording an assessment does not mutate reported bounds. Missing/rejected evidence
+leaves usable knowledge open where no independent accepted model supports a bound;
+it does not block ordinary execution or replace foreign semantics. Descriptors
+may carry agreements but establish no trust merely by being present. The
+implementation carries records, not a universal trust policy or proof checker.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Client purpose</th><th>Required evidence</th></tr>
+</thead>
+<tbody>
+<tr><td>Red errors</td><td>Established language violations or definite failures under stated accepted assumptions. Unknown/incomplete/possible failures and rejected provider evidence alone are not source errors.</td></tr>
+<tr><td>Completion</td><td>Favor coverage; distinguish guaranteed, possible and unknown. Claim exhaustiveness only with a justified upper bound.</td></tr>
+<tr><td>Navigation</td><td>Jump to an execution target only when uniquely established; otherwise show alternatives or unknown. Starter API links navigate selected documentation.</td></tr>
+<tr><td>Refactoring</td><td>Require coverage of affected references and preservation of relevant behavior. Unique navigation or absence of diagnostics is insufficient; unknown dynamic references cannot be silently skipped.</td></tr>
+</tbody>
+</table>
+</div>
+<p>Bounded ambient authority may enable finite upper bounds through explicit module
+inputs and accepted models of reachable capabilities. Unmodeled foreign behavior
+and reflection remain open where necessary. AAM derivation, semantic dispatch
+analysis and guaranteed refactoring are deferred; this protocol implements none
+of them.</p>
+<h2 id="runtime-diagnostics"><a class="header" href="#runtime-diagnostics">Runtime Diagnostics</a></h2>
+<p>An explicit evaluation may produce a detached
+<a href="./interpreter-design.html#runtime-diagnostics">runtime diagnostic</a>. Optional origins
+and excerpts describe the compiled snapshot and its revision digest; the runtime
+chapter defines failure payloads, semantic traces and source-free formatting.</p>
+<p>Lowering preserves the most specific recorded occurrence for generated code.
+Each cascade send uses its original message arm; failures in its receiver or
+arguments retain their narrower origins. Enclosing fallback evidence must not
+overwrite those sites. Constructor-target rewrites and synthetic return wrappers
+follow the same rule. Generated temporaries remain private, and absent provenance
+still produces a coherent source-free failure.</p>
+<p><code>RuntimeDiagnosticAdapter</code> in <code>vh-lsp</code> maps a diagnostic to an LSP error only
+when the caller supplies a document URI, source name and revision digest that
+match its primary site. Zero-based, end-exclusive UTF-16 ranges are already
+LSP ranges. The stable reason becomes the diagnostic code; matching declaration,
+call and definition sites become related information. Absent primary origins,
+stale revisions and unmapped cross-source sites are not assigned invented ranges.
+The caller is responsible for verifying the document snapshot before publication.</p>
+<p>The adapter itself neither executes nor publishes. The language server records
+each open document’s URI, version, absolute source name and digest of its exact
+UTF-16 code units. The explicit <code>vh/runtimeDiagnostics</code> notification publishes a
+runner result only when all four match the current snapshot, then combines it
+with source-check diagnostics. Editing clears prior runtime results immediately;
+closing clears all results. Open, edit and save never execute source.</p>
+<h2 id="starter-editor"><a class="header" href="#starter-editor">Starter Editor</a></h2>
+<p>The VS Code extension selects the <a href="./java-host-kernel.html">JavaHostKernel</a> starter
+world explicitly. Run File saves a local module and launches <code>vh.host.Main run</code>
+in a separate JVM; Test File selects the SUnit runner. The module receives its
+kernel (and, for tests, testing library) through ordinary constructor inputs.
+Console input and output use an integrated terminal separate from LSP traffic.
+Stop Program terminates that run’s process. Restart Language Server restarts
+editor assistance. Starting Java or running programs requires workspace trust.
+Run/Test uses its own Java/runner preparation; unavailable or still-starting
+assistance does not block execution. Runtime Problems publication is best effort
+when the language server is available; the terminal retains execution results.</p>
+<p>Source analysis and API assistance support local files and untitled VarioHyve
+buffers; only file execution requires a saved local path. The status item
+separates restricted/unavailable assistance, server startup, pending analysis,
+completed source checks and incomplete/failed analysis. A completed status
+requires a matching document URI, version and source digest; empty Problems alone is not proof
+that analysis ran. Source-error/warning counts remain distinct from completion.
+The checkmark means source checks completed, not that execution will succeed.
+TextMate highlighting remains available without Java or workspace trust; its
+word selection includes legal bang selectors. Opaque descriptor payloads have the
+dedicated semantic token type <code>descriptor</code> and TextMate scope
+<code>comment.block.descriptor.vh</code>, with comment-style theme fallback so inert metadata
+is distinguishable from executable parameters and names. Themes and user token
+customizations retain control of the actual colors; payload content is never
+highlighted as program declarations.</p>
+<p>The language server distinguishes shutdown from exit. Shutdown releases document
+state and cancels pending diagnostic publication before replying; later requests
+receive <code>InvalidRequest</code>. The subsequent exit notification terminates the
+server process, with status 0 after shutdown and 1 otherwise. The process entry
+point owns termination; embedded services can be closed without exiting their
+host JVM. Client disconnection also releases the launcher and document services.</p>
+<p>The packaged runner writes a detached diagnostic sidecar for the executed
+snapshot. The extension verifies it against the launch snapshot and the current
+document before forwarding it; the server independently verifies the snapshot.
+Source changed while a run is active therefore cannot receive obsolete ranges.
+An explicit run may still report its original failure in the terminal.</p>
+<p>Run/Test retains the requested document across saves, Save As, server startup
+and disk verification. A newer Run/Test supersedes older preparation and execution;
+Stop also cancels a launch that has not spawned yet. Snapshot changes during
+preparation require another explicit run. Switching the active editor never
+changes the file selected by a pending command.</p>
+<p>The program console provides line input with Backspace, Enter, EOF and interrupt.
+Unsupported terminal navigation/control sequences are consumed as whole sequences,
+including when split across input events, rather than leaking their bytes into
+program input. Multiline pasted text submits successive lines. This is a line
+console, not a terminal emulator with cursor-based editing.</p>
+<p>Completion, hover, signature help and API-definition navigation read the bundled
+class-shaped API contract. Its consumer parses only the documented literal
+<code>host</code>, <code>doc</code> and <code>returns</code> schema; malformed/unknown payloads are ignored, and
+annotations are never evaluated. The <a href="#analysis-evidence-and-client-policies">analysis evidence policy</a>
+defines the conditional status of these suggestions and documentation links.</p>
+<p>The declared starter convention supports:</p>
+<ul>
+<li>Literal receivers and documented result chains.</li>
+<li>The plain module’s first constructor input during slot/final initialization,
+including nested lambdas, regardless of parameter spelling.</li>
+<li>Direct unmodified slots retaining that input or one of its selected services
+in instance code. Constructor parameters do not become method bindings and
+factories do not receive instance-slot evidence.</li>
+</ul>
+<p>Only enclosing routine parameters/locals shadow this structural evidence;
+unrelated routines do not. A lambda’s own declarations can invalidate it. Any
+matching executable setter marker conservatively invalidates retained-slot
+help, even if it might target a different object/local: resolving writes would
+require operational analysis. Absence of such a marker proves neither absence
+of mutation nor absence of overrides.</p>
+<p>Named receivers across nested classes/objects, invoked getters, mutable aliases,
+slot-to-slot propagation, composition and unknown dynamic receivers receive no
+guessed protocol. Editing repairs may fill a missing selector/argument or close
+delimiters for parsing; arbitrary recovery does not establish a protocol. These
+are structural filters for the starter convention, not lexical selection,
+accessor resolution or execution simulation.</p>
+<p>Folding uses mapped class, method, factory, lambda and initializer ranges, plus
+multiline opaque descriptor ranges. Selection returns one entry per requested
+cursor, in the same order. Unmapped text, including trailing comments or an empty
+document, receives a zero-width fallback. Parent selections strictly contain
+their children; absent, duplicate or incompatible recovery ranges are skipped.</p>
+<h3 id="independent-scratch-evaluation"><a class="header" href="#independent-scratch-evaluation">Independent scratch evaluation</a></h3>
+<p><strong>Evaluate Selection in Scratch</strong> copies exactly one nonempty selection into a
+separate, editable untitled VarioHyve document and evaluates its complete text.
+<strong>Evaluate Scratch</strong> reruns that document. Each invocation uses a fresh process
+with the declared starter tooling context: <code>kernel</code> is JavaHostKernel, alongside
+the bootstrap <code>Object</code>, <code>null</code>, <code>true</code> and <code>false</code>. These are explicit tool inputs,
+not ambient module authority. No receiver, locals or return home is captured,
+and no earlier evaluation state is reused. Each invocation’s effects remain real
+and are not rolled back.</p>
+<p>The ordinary checked expression entry remains in force. The tool introduces no
+wrapper, relaxes no source check and executes no unrelated source text. Multiple
+statements can be written explicitly as <code>(fun { ... }).apply()</code>. Native/foreign
+object results get generic labels; displaying a result performs no extra message
+send or arbitrary foreign <code>toString</code>. Returned native receipts are released.</p>
+<p>The host entry is <code>vh eval &lt;file&gt; [--source-name &lt;label&gt;] [--diagnostics &lt;file&gt;]</code>.
+The label is diagnostic identity, never a path to reopen. The editor writes the
+exact scratch snapshot to a temporary UTF-8 transport file and uses the scratch
+URI as its source name; invalid UTF-16 is rejected rather than silently replaced.
+Runtime Problems are published only to the matching scratch URI/version/digest.
+The original document and its diagnostics are unaffected. Stop and newer explicit
+execution cancel pending scratch launches too; temporary files are removed when
+the run ends or preparation is cancelled.</p>
+<p>Scratch context membership lasts for the editor session and is not inferred from
+a saved filename. Saving the text does not turn ordinary Run File into expression
+evaluation. Object inspection, persistent sessions, customizable contexts and
+debugger activation evaluation remain independent future features.</p>
 <h2 id="evaluation-contexts"><a class="header" href="#evaluation-contexts">Evaluation Contexts</a></h2>
 <p>A tool can evaluate with explicitly supplied objects or select a debug activation.
 The context uses activation objects, ordinary lexical lookup and the same
@@ -247,10 +612,9 @@ not solve identity across edits.</p>
 <a href="./related-works.html">AAM and ADI</a> are research approaches, not modes enabled by
 an allocator or an “abstract kernel.” The required derivation is described under
 <a href="./future.html#persistence-and-analysis">Persistence and Analysis</a>.</p>
-<p>Annotations may supply domains or assumptions to a particular analysis, which
-must state their meaning and justify its results. Descriptors alone perform no
-checking. Analysis, mirror tooling and persistence remain
-<a href="./future.html">future work</a>.</p>
+<p>Annotations may supply domains or assumptions subject to the
+<a href="#analysis-evidence-and-client-policies">analysis evidence policy</a>. General semantic
+analysis, mirror tooling and persistence remain <a href="./future.html">future work</a>.</p>
 
                     </main>
 

@@ -28,7 +28,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="theme/vh-2de7eb16.css">
+        <link rel="stylesheet" href="theme/vh-ce098f15.css">
 
         <!-- MathJax -->
         <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-4e2a9cbc.js";
+            window.path_to_searchindex_js = "searchindex-dcb0efca.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-1ce75dcc.js"></script>
+        <script src="toc-ce909e20.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -248,8 +248,10 @@ The native collector currently runs serially at safepoints; the
 permits other correctly coordinated refinements, including concurrent collection.
 See <a href="../../design-notes/native-heap-gc.html">native heap collection</a> for roots,
 boundary retention, measurements and limitations.</p>
-<p>Backend-only root provenance and shortest retention paths share the collector’s
-root enumerator and graph tracer. Reports are non-owning observations rejected
+<p>Backend-only root provenance, shortest retention paths and Graphviz snapshots
+share the collector’s root enumerator and graph tracer. Graph snapshots can
+start at the complete root set or selected addresses, including an idle seed
+before any execution configuration exists. Reports are non-owning observations rejected
 by the public boundary; no language selector or activation API is added. Audited
 field signatures, randomized graph oracles and GC-on/off execution comparisons
 guard coverage. See <a href="../../design-notes/native-heap-gc-hardening.html">graph hardening</a>
@@ -258,8 +260,36 @@ for guarantees and limits.</p>
 <p><a href="./object-model.html">Runtime Object Representation</a> describes objects, classes,
 contributions, scopes, caches and occurrence layouts. <code>VMUninitialized</code> is an
 allocated backend sentinel, corresponding to the reference machine’s non-value
-marker. Canonical null and Booleans are native objects; integer/string transport
-and Aliens use separate private entries.</p>
+marker. Canonical null and Booleans are role references: native objects in the
+Current Native Seed, and Aliens in the Host Seed. Integer/string codec transport
+and Aliens use separate private entries; preserving host scalars selects Aliens.</p>
+<h3 id="contribution-declaration-indexes"><a class="header" href="#contribution-declaration-indexes">Contribution declaration indexes</a></h3>
+<p>Immutable core mixins expose unbound declaration positions by selector and arity.
+Lists of up to four declarations use direct scans; larger method, member and slot
+lists use immutable indexes prepared on first lookup and atomically published.
+Concurrent first readers may prepare equivalent indexes. Entries contain spellings, arities and local integer
+positions, never native references or cached receivers. The original declaration
+lists remain authoritative and preserve order.</p>
+<p><code>ObjectProtocol</code> still walks contributions and superclasses in semantic order,
+selects methods before members before slot accessors within a contribution, and
+binds the result to the current receiver and exact application occurrence. Physical
+slots are resolved through that receiver’s layout. Mutable callable eligibility
+is checked on each invocation. This is not a polymorphic inline cache, and neither
+Alien resolution nor lexical receiver selection is bypassed.</p>
+<h3 id="prepared-binding-metadata"><a class="header" href="#prepared-binding-metadata">Prepared binding metadata</a></h3>
+<p>Function syntax owns reusable immutable parameter slot declarations, prepared
+on first invocation (with a shared empty case); let syntax
+owns reusable binding declarations and step-to-slot positions. An immutable parameter record keeps its layout and validation result together.
+Structural name checks are prepared with that metadata but reported only at the existing function
+invocation or let evaluation point. Unused malformed raw core code therefore does
+not fail just because its metadata was prepared. Surface syntactic checks retain
+their separate earlier validation contract.</p>
+<p>Every call and let evaluation still creates fresh activation storage. Captures,
+return homes, uninitialized values and ordered evaluation are unchanged. Shared
+metadata contains no activation or world reference. Graph inspection traces cached
+parameter metadata without preparing unused functions. Generated expressions retained
+by prepared slots participate in the native graph scan and startup pointer repair.
+This is a representation refinement of the binding rules, not a new scope model.</p>
 <h3 id="continuations"><a class="header" href="#continuations">Continuations</a></h3>
 <p>Frames retain their next reference and the scope/operands needed on resumption:</p>
 <div class="table-wrapper">
@@ -309,17 +339,50 @@ Root registration and lease release must themselves occur under the current
 guard or while the runtime is exclusively idle. These backend helpers do not
 acquire coordination internally; leases protect reachability rather than
 authorizing execution or concurrent store access.
-Public Expats and boundary references are pinned automatically for this increment.
-Alien entries remain boundary-owned and are retained without inspecting foreign
-payloads. Collection preserves captured lexical data and retired return-home
+Boundary roots follow the <a href="foreign-objects.html#lifecycle-and-garbage-collection">lifetime agreement</a>:
+open invocation attachments, host/detached receipts, public references and
+admitted uses retain native referents. Canonical Expat proxies and identity
+caches supply no independent root. Alien wrappers follow ordinary native
+reachability; collection drops their Java payload holds without inspecting
+foreign graphs. Collection preserves captured lexical data and retired return-home
 state, without restoring return authority or introducing activation reflection.</p>
 <p><a id="module-instantiation-requirements"></a></p>
+<h2 id="staged-seed-construction"><a class="header" href="#staged-seed-construction">Staged Seed Construction</a></h2>
+<p><code>RuntimeSeed.host(store)</code> publishes the structural Host Seed directly.
+<code>RuntimeSeed.create(store)</code> loads the parser-independent <code>CurrentNativeSeed</code>
+module definition with the compatibility boundary profile.
+<code>RuntimeSeed.currentNative(store, profile)</code> selects another boundary profile
+with that same native module. These are host construction choices; no language
+capability can reseed a published runtime.</p>
+<p><code>RuntimeSeed.fromModule(store, module, profile, arguments...)</code> accepts an
+ordinary core module definition and explicit constructor arguments. The
+<code>fromNativeModule</code> convenience entry supplies the narrow root identity service
+as its sole argument; parser integration lowers
+<a href="../../../vh-source/bootstrap/current-native-seed.vh"><code>current-native-seed.vh</code></a>
+and exercises that same installer. The parser-independent definition keeps the
+dependency-free bootstrap checks available; it does not install singleton method
+records by a separate semantic path.</p>
+<p>Public source clients select the same choices through
+<code>BootstrapRuntime(capabilities, profile)</code>,
+<code>BootstrapRuntime.fromSeedModule(source, profile, capabilities, inputs...)</code>, or
+<code>BootstrapRuntime.fromNativeSeedModule(source, profile, capabilities)</code>. The last
+entry grants the narrow identity service explicitly; the generic entry grants
+only its supplied inputs. Tooling capabilities are assembled after adoption and
+are not lent to the seed module’s definition scope.</p>
+<p>The builder owns a private unpublished world through module construction,
+exact-once discovery, validation, reference substitution, obsolete boundary-owner
+retirement and forced collection. It returns only a completed world. Failure
+closes provisional access and returns no usable partial world. Platform assembly
+occurs after this step. The full installation invariants are in
+<a href="program-structure.html#startup-seed-installation">Program Structure</a>.</p>
 <h2 id="module-entry"><a class="header" href="#module-entry">Module Entry</a></h2>
 <p><code>BootstrapRuntime.instantiateModule</code> checks a class literal’s declared arity and
 module restrictions, evaluates it in a fresh empty top activation, then uses an
 exact Expat <code>new</code> send. Definition, construction and synchronous callbacks share
-one transition budget. It returns an Expat; the host explicitly sends any entry
-message. Host sends contribute an empty caller scope.</p>
+one transition budget. It returns an <code>ExpatReceipt</code>; the host explicitly sends
+any entry message and closes its receipt when finished. The intermediate class
+receipt is released after construction. Host sends contribute an empty caller
+scope.</p>
 <p><code>BootstrapRuntime.evaluate</code> is the distinct expression harness, using the
 assembled kernel as parent and receiver. Its supplied capability context may
 become part of returned closures/classes. The
@@ -332,34 +395,134 @@ These are this tooling bundle’s assembly rules, not reserved language names; n
 declarations can shadow its slots through ordinary lexical lookup. Normal
 modules do not receive these bindings implicitly.</p>
 <h2 id="java-boundary"><a class="header" href="#java-boundary">Java Boundary</a></h2>
+<h3 id="runtime-diagnostics"><a class="header" href="#runtime-diagnostics">Runtime diagnostics</a></h3>
+<p><code>BoundaryException.diagnostic()</code> returns immutable <code>Diagnostic</code> data: the
+existing failure kind and short message, a stable reason, an optional source
+site, semantic trace and related declaration/observation sites. Native reads,
+returns, construction, unsupported features and limits have specific reasons.
+Legacy constructors and <code>kind()</code> /
+<code>getMessage()</code> remain supported. A diagnostic retains no host exception cause,
+native value or execution configuration.</p>
+<p>Named source-entry overloads on <code>BootstrapRuntime</code> preserve a source label and
+revision digest in an optional <code>SourceMap</code>, separate from executable core nodes.
+Compilation projects parser/lowering evidence into copied scalar <code>SourceOrigin</code>
+records and explicitly transfers this table to the runtime. The runtime owns
+weak identity associations, not source snapshots, surface trees or ANTLR data;
+escaped core code keeps its evidence available after later evaluations without
+making unreachable code a metadata root. The same core tree can execute in a
+world with no evidence and must produce coherent source-free diagnostics.</p>
+<p>Sites use zero-based lines and UTF-16 columns with exclusive ends, matching the
+<a href="tooling-architecture.html#optional-metadata-and-source-coordinates">shared source basis</a>.
+Optional bounded excerpts are copied during compilation and rendering never
+reopens source files. Generated code may inherit supplied declaration evidence;
+shared singletons remain unattributed. Missing evidence is reported explicitly,
+never fabricated from AST strings or another execution’s source. Metadata does
+not change execution, effects, transition budgets, failure kinds or cleanup.</p>
+<p>The bootstrap CLI prints defined runtime failures to stderr and exits with
+status 1. It renders detached diagnostic data rather than a Java exception
+stack. <code>--diagnostics=semantic</code> is the default; <code>--diagnostics=vm-developer</code>
+additionally prints private physical frames, addresses and implementation names.
+<code>--trace-frames=N</code> selects a nonnegative frame limit, default five;
+<code>--trace-frames=all</code> requests the complete trace. <code>--no-source-excerpts</code> omits
+copied snippets. Parser/source-check failures remain a separate frontend path.</p>
+<p><code>DiagnosticFormatter.summary</code> provides one escaped line; <code>format</code> adds locations,
+optional excerpts, semantic frames and boundary markers. Missing locations and
+excerpts are explicit. Rendered labels are bounded to 512 UTF-16 units and
+messages/excerpts to 4096, including a visible truncation marker when needed;
+the structured data and legacy short message remain intact. Rendering escapes
+controls and preserves Unicode boundaries. The
+<a href="./tooling-architecture.html#runtime-diagnostics">editor adapter</a> accepts only
+matching source revisions and does not introduce execution on editing.</p>
+<p><code>DiagnosticOptions</code> on the source runtime configures native capture and persists
+for later Expat calls. <code>DISABLED</code> preserves execution and explicitly supplied
+foreign evidence while omitting native enrichment. Method/lambda/factory and
+initializer frames describe actual invocations, without let-scope frames.
+Finite capture bounds both diagnostic scanning and output; truncation is explicit.
+Semantic cleanup always covers every affected continuation. Repeated access to
+a failed member realization retains its original trace and adds the new access
+as related evidence, without retrying realization.</p>
+<p>Developer reports contain detached scalars and remain backend-private. They are
+available through the explicit tooling entry and are rejected by the value
+boundary; callbacks preserve public evidence without exporting physical VM
+frames. Step exhaustion remains <code>LANGUAGE_FAILURE</code>; callback-depth and admission
+limits remain <code>EXECUTION_POLICY</code>. See the
+<a href="../../design-notes/vm-diagnostics.html">diagnostics decisions and evidence</a>.</p>
+<h3 id="boundary-implementation"><a class="header" href="#boundary-implementation">Boundary implementation</a></h3>
 <p><code>ForeignBoundary.identityMirror()</code> returns a stable, boundary-owned capability.
 It is supplied explicitly to modules and observes identity and membership through
 the <a href="./foreign-objects.html#identitymirror">ordinary mirror protocol</a>, never a
 special evaluator dispatch branch. The narrow root Object service shares private
-identity helpers without exposing the mirror. Current identity hashes use the
-retained native/Alien representation’s Java identity hash; that algorithm is a
-backend policy, not a portable identifier.</p>
+identity helpers without exposing the mirror. Native identity hashes follow the
+stable native identity; preserved foreign values use their payload identity so
+collecting and recreating an Alien wrapper does not change the hash of a still
+live foreign referent. The concrete hashing algorithm is a backend policy, not
+a portable identifier.</p>
 <p><a href="../../../vh-core/src/main/java/vh/vm/internal/DefaultJavaBoundary.java">DefaultJavaBoundary</a>
 owns the <a href="./foreign-objects.html">Alien/Expat contract</a>. <code>BootstrapRuntime.boundary()</code>
 returns a narrow <code>PublicFacet</code>; package-private <code>VmServices</code> provisions the seed
-identity service. Both delegate to the same private owner. It uses a Java
-identity cache for Aliens and a per-native-identity Expat cache, both retaining
-strong references, which are roots for native collection and implement the
-specified identity round trips.</p>
+identity service. Both delegate to the same private owner. Canonical Expat and
+Alien indexes preserve compatible round trips without acting as native roots.
+Native GC reclaims unreferenced Alien wrappers and prunes their identity-cache
+entries, relinquishing the Java payload holds. Foreign heaps remain opaque.
+Startup retirement advances an export epoch, preventing old construction proxies
+from becoming valid under later attachments to a surviving identity.</p>
+<p><code>VHExpat</code> is the canonical proxy; a bare proxy is usable through its current
+invocation attachment. <code>ExpatReceipt</code> supplies durable lifetime evidence for
+checked sending and transport, independently of proxy identity. <code>expat()</code>
+returns that canonical proxy, <code>retain()</code> creates an independent co-hold, and
+idempotent <code>close()</code> ends only this holder’s claim. Independent host native
+results, including evaluation, module construction and the tooling kernel, use
+receipts. Host clients pass open receipts when reimporting those targets;
+extracting a bare proxy does not transfer the receipt’s authority.</p>
+<p>Selected <code>ForeignOperation</code>s default to attached arguments. The effect-free
+<code>detachable(int... positions)</code> declaration permits explicit detachment at
+zero-based argument positions; <code>detachableCallbackResults()</code> separately permits
+retaining callback results. <code>ForeignCallable</code> supplies corresponding fluent
+declarations. <code>CallbackContext.detachArgument(int, VHExpat)</code> and
+<code>detachResult(VHExpat)</code> register receipts while the authorized invocation is
+open, validating the supplied proxy against the authorized occurrence. An
+admission context alone supplies no receiver authority.
+<code>ForeignOperation.retainArgument(List, int)</code> is the simple adapter helper;
+non-native arguments keep their foreign/by-value transport. Its <code>release(Object)</code>
+helper closes a native receipt only, never an unrelated resource.</p>
+<p>Callback native results attach to the enclosing NF invocation. A worker combines
+its <code>CallbackContext</code> with an attachment or uses the <code>send(ExpatReceipt, ...)</code>
+overload. Callback admission, receipt validity and return-home liveness remain
+separate checks. <code>EXPIRED_ATTACHMENT</code>, <code>RELEASED_RECEIPT</code> and
+<code>UNDECLARED_DETACHMENT</code> use <code>OWNERSHIP</code>; admission uses <code>EXECUTION_POLICY</code> and
+dead-home failure uses <code>LANGUAGE_FAILURE</code>.</p>
+<p>Host/detached receipt records and admitted-use holds are the actual roots. Java
+Cleaner assistance may eventually release an unreachable host receipt, without
+its cleanup registration strongly retaining the receipt. Explicit close ends the
+hold deterministically. Released receipt records retain no native target graph.
+This is local retention management, not cross-boundary cycle collection:
+otherwise unreachable native/foreign cycles remain legal and conservatively
+retained until an edge is released or a future cooperating collector can prove
+them unreachable.</p>
 <p>Integer/string interning is a non-owning native cache: collection removes cache
-entries whose native transport values were reclaimed. An explicit public boundary
-reference still pins its value. Conversion by value does not promise host identity.</p>
-<p>Exact native null/Boolean identities map to Java <code>null</code>/<code>Boolean</code> without Expats.
-<code>Byte</code>, <code>Short</code>, <code>Integer</code> and in-range <code>BigInteger</code> normalize to <code>Long</code>; <code>Long</code>
-and <code>String</code> use by-value transport. Other numeric forms and raw VM representation
-values are rejected. Arbitrary objects become opaque Aliens, not reflected Java
-method collections. Integers and strings currently have no native class dispatch.</p>
+entries whose native transport values were reclaimed. An open public boundary
+reference retains its value until <code>close()</code>; <code>ForeignBoundary.Reference</code> is
+<code>AutoCloseable</code>. Conversion by value does not promise host identity.</p>
+<p>The selected boundary profile defines conversion. <code>NATIVE_VALUES</code> maps exact
+native null/Boolean identities to Java <code>null</code>/<code>Boolean</code> without Expats. <code>Byte</code>,
+<code>Short</code>, <code>Integer</code> and in-range <code>BigInteger</code> normalize to <code>Long</code>; <code>Long</code> and
+<code>String</code> use by-value transport. Other numeric forms are rejected by that codec.
+<code>HOST_VALUES</code> preserves host null, Booleans, numbers, and strings as Aliens.
+<code>HOST_SCALARS</code> combines native null/Boolean conversion with preserved host numbers
+and strings. Preservation supplies foreign identity, not Java reflection or
+native class dispatch. Raw VM representation values are rejected by all profiles.
+See <a href="possible-seeds-and-worlds.html">Possible Seeds and Worlds</a> for the corresponding
+seed choices.</p>
 <p>For the specified <a href="./foreign-objects.html#concurrency-boundary">callback admission protocol</a>,
 <code>DefaultJavaBoundary.Call</code> records the suspended
 configuration, parent call, originating thread, admission state and active
 callback count. <code>NativeHeap</code> transition leases root suspended configurations
 until their native thread resumes; closed calls clear their configuration and
-ancestry references.</p>
+ancestry references.
+<code>Control.ForeignCall</code> retains the selected Alien receiver as well as arguments;
+native tracing follows both. The receiver’s adapter hold therefore survives
+selection and active invocation even when the selected operation does not capture
+the receiver in its Java closure.</p>
 <p><code>CallbackContext.send</code> uses a permit to serialize native execution and short
 representation-sensitive services. <code>invoke</code> releases permission around the
 selected foreign operation and reacquires it before result conversion. Selection
@@ -400,12 +563,13 @@ any claim of unlimited execution.</p>
 <tr><th>Area</th><th>Current implementation status</th></tr>
 </thead>
 <tbody>
-<tr><td>Numbers and strings</td><td>Signed 64-bit integer literals and string transport. Decimal literals are rejected; native arithmetic/string protocols are absent. Broader numeric range, overflow and string contracts remain underdeveloped.</td></tr>
-<tr><td>Qualified <code>outer</code></td><td>Runtime name scan over lexical scopes; frontend binding to declaration identities remains unfinished. Exact captured application ancestry at every depth implements the accepted lexical-origin rule.</td></tr>
+<tr><td>Numbers and strings</td><td>Signed 64-bit integers and decoded strings. An explicit host-preserving adapter may enable finite binary64 decimal literals and receiver protocols; unconfigured worlds still reject decimals. JavaHostKernel is an optional foreign library, not native arithmetic/string classes. See <a href="java-host-kernel.html">its contract</a>.</td></tr>
+<tr><td>Source checks</td><td>Independent configurable surface-AST traversals reject statically inadmissible forms before lowering; the bootstrap runner and LSP use the standard set. Parser-only and direct core entry remain available. See <a href="tooling-architecture.html#source-checks">source checks</a>.</td></tr>
+<tr><td>Qualified <code>outer</code></td><td>Frontend validation rejects unknown/non-enclosing qualifiers before execution, including unused bodies. Runtime selection still scans captured lexical scopes by name and preserves exact application ancestry at every depth; core nodes do not yet carry bound declaration identities.</td></tr>
 <tr><td>Holes</td><td>A reached hole is fatal (<code>UnresolvedHole</code>); no configurable concrete policy.</td></tr>
 <tr><td>Composition</td><td>Whole-declaration member override and the specified shared-name state; no deep family merge or adaptation algebra.</td></tr>
 <tr><td>Non-local returns across foreign execution</td><td>Boundary-owned agreement; only default no crossing is implemented. A supporting transfer protocol is deferred.</td></tr>
-<tr><td>Tail calls and reclamation</td><td>Native tracing and entry compaction at occupancy safepoints; no TCO, foreign reclamation or hard memory bound. Expats and Alien entries remain pinned.</td></tr>
+<tr><td>Tail calls and reclamation</td><td>Native tracing and entry compaction at occupancy safepoints; invocation attachments and explicit receipts replace permanent boundary pins, and unreachable Alien wrappers release Java payload holds. No TCO, cooperative foreign cycle collection or hard memory bound.</td></tr>
 <tr><td>Execution agreements</td><td>Sequential ordinary execution with scoped worker callbacks. The conceptual token is not reified; parallel native execution, concurrent native GC and general monitor/intervention capabilities are permitted extension directions, not implemented APIs.</td></tr>
 <tr><td>Analysis and persistence</td><td>No sound abstract interpreter, persistent snapshots, rollback or portable runtime persistence.</td></tr>
 </tbody>
@@ -424,6 +588,17 @@ the reference stack; map mutable entries to the current <code>σ</code>; and pre
 occurrence, cache, <code>H</code>, <code>B</code> and active failure control. The allocated uninitialized
 sentinel maps to the private marker. Fresh identities and physical slot positions may be
 renamed while preserving identity, sharing and logical mappings.</p>
+<p>The member binding’s private unrealized/realizing/realized/failed states decode
+directly to the formal cache’s absent/busy/ready/failed cases. Its shared identity
+connects cache entries and addressed completion frames; idempotent abandonment
+adds no retry or extra language effect. Detecting a reentrant cycle and abandoning
+the owning attempt remain distinct operations.</p>
+<p>Class assembly installs a complete definition whose ordered contributions,
+superclass, routes, logical layout and generated coordinator decode to one formal
+realized-class record. Private snapshot preparation is administrative work inside
+a transition; no source-visible partial class or extra target/argument evaluation
+is introduced. Startup can replace a complete snapshot under its unpublished-world
+contract; this does not provide persistent configurations or live class mutation.</p>
 <p>It must reconstruct control ownership from the coordinator according to
 <a href="./formal-core.html#runtime-admission-and-conceptual-control">runtime admission</a>.
 Representation maintenance may stutter; declared interventions would need

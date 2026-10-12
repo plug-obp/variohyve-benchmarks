@@ -10,8 +10,11 @@ const MarkdownIt = require(path.resolve(process.argv[3]));
 const source = path.resolve(process.argv[2]);
 const theme = path.resolve(process.argv[4]);
 const destination = process.argv[5] ? path.resolve(process.argv[5]) : path.resolve(__dirname, '../preview/learn');
+const { version } = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../preview/manifest.json'), 'utf8'));
+if (!/^\d+\.\d+\.\d+$/.test(version)) throw new Error('Expected a preview release version in manifest.json');
 // Use the specification's bundle directly: it includes Java and the vh grammar.
 const hljs = require(path.join(theme, 'highlight.js'));
+const sharedHighlight = require(path.join(theme, '../highlighting/render.cjs'));
 for (const language of ['vh', 'java']) {
   if (!hljs.getLanguage(language)) throw new Error(`The specification highlighter must include ${language}`);
 }
@@ -20,7 +23,8 @@ const md = new MarkdownIt({
   linkify: false,
   highlight(code, language) {
     if (!language || !hljs.getLanguage(language)) return '';
-    const highlighted = hljs.highlight(language, code, true).value;
+    const highlighted = ['vh', 'java'].includes(language)
+      ? sharedHighlight.html(code, language) : hljs.highlight(language, code, true).value;
     return `<pre><code class="hljs language-${md.utils.escapeHtml(language)}">${highlighted}</code></pre>\n`;
   }
 });
@@ -68,8 +72,8 @@ function visit(directory) {
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${escaped(title)} · Learn VarioHyve</title><link rel="stylesheet" href="${back}/preview.css"><link rel="stylesheet" href="${toc}/highlight.css"><link rel="stylesheet" href="${toc}/learn.css"></head>
 <body><a class="skip" href="#lesson">Skip to lesson</a><header class="site-header wrap"><a class="wordmark" href="${back}/">VarioHyve<span aria-hidden="true">.</span></a><nav aria-label="Tutorial navigation"><a href="${toc}/">All lessons</a><a href="${back}/#downloads">Downloads</a></nav></header>
-<main id="lesson" class="lesson"><p class="eyebrow">LEARN VARIOHYVE · V0.1.0</p>${md.render(markdown)}</main>
-<footer class="wrap"><p>Public preview v0.1.0 · These examples are included in your starter ZIP.</p><a href="${back}/">Back to the preview</a></footer></body></html>\n`);
+<main id="lesson" class="lesson"><p class="eyebrow">LEARN VARIOHYVE · V${version}</p>${md.render(markdown)}</main>
+<footer class="wrap"><p>Public preview v${version} · These examples are included in your starter ZIP.</p><a href="${back}/">Back to the preview</a></footer></body></html>\n`);
   }
 }
 visit(source);

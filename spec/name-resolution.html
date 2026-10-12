@@ -28,7 +28,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="theme/vh-2de7eb16.css">
+        <link rel="stylesheet" href="theme/vh-ce098f15.css">
 
         <!-- MathJax -->
         <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-4e2a9cbc.js";
+            window.path_to_searchindex_js = "searchindex-dcb0efca.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-1ce75dcc.js"></script>
+        <script src="toc-ce909e20.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -260,6 +260,12 @@ identifier but is not an ordinary getter; native declarations cannot shadow it.
 It can be passed as a value and used in chains such as <code>self.x</code>.
 An explicit native receiver has no <code>self</code> selector. <code>alien.self</code> is instead an
 ordinary foreign selector with adapter-defined meaning.</p>
+<p><code>self(args)</code> is a special receiver form: it sends exact <code>apply/N</code> to the current
+receiver, with N equal to the argument count. It does not invoke a selector named
+<code>self</code>, perform lexical receiver selection or use a generated accessor to find
+a callable. <code>self.apply(args)</code> is an ordinary explicit invocation and follows
+the <a href="message-sends.html#invoking-the-current-receiver">invocation selection rules</a>.
+The distinction also affects <a href="objects-and-classes.html#constructor-clauses">constructor clauses</a>.</p>
 <h3 id="leading-dot-shorthand-for-self"><a class="header" href="#leading-dot-shorthand-for-self">Leading-Dot Shorthand for Self</a></h3>
 <p><code>.m(args)</code> equals <code>self.m(args)</code>; <code>..m..n</code> equals <code>self..m..n</code>.
 Both bypass lexical receiver selection. See <a href="message-sends.html#cascade-">cascades</a>.</p>
@@ -298,11 +304,23 @@ and ordinary sends are allowed. It grants no public parent getter, activation
 reflection or additional access authority. Bare <code>outer</code>, unqualified
 <code>outer.message</code> and native <code>object.outer</code> are invalid. <code>alien.outer</code> is an
 ordinary foreign selector; repeated sends follow that adapter’s protocol.</p>
-<p>An unknown or non-enclosing qualifier is a semantic error. The bootstrap
-validates it when evaluated, before evaluating arguments of a send using that
-receiver. Static qualifier validation is deferred. Qualifying a normal module’s
-own declaration can select its instance; it cannot expose the instantiation
-service, tooling capabilities or empty top activation.</p>
+<p>An unknown or non-enclosing qualifier is a compile-time semantic error, including
+in an unused method or lambda. The <a href="tooling-architecture.html#source-checks">source checks</a>
+validate the qualifier against the named declarations enclosing that occurrence
+before lowering or execution. This is lexical declaration lookup, independent
+of same-named parameters, locals or accessors.</p>
+<p>A class’s own qualifier is available in its body, factories and routed terminal
+constructor arguments. Contributor target expressions run in the surrounding
+definition scope, so they cannot use the new class’s qualifier; surrounding
+named declarations remain available there. See
+<a href="objects-and-classes.html#constructor-clauses">constructor clauses</a>.</p>
+<p>The runtime retains a defensive check for directly supplied core trees and
+explicitly unchecked tooling input. It follows captured lexical scopes and
+rejects an invalid qualifier before evaluating arguments of a send using that
+receiver. Source validation does not replace the exact application ancestry
+with a new runtime binding mechanism. Qualifying a normal module’s own declaration
+can select its instance; it cannot expose the instantiation service, tooling
+capabilities or empty top activation.</p>
 <h2 id="super--lookup-redirector"><a class="header" href="#super--lookup-redirector"><code>super</code> — Lookup Redirector</a></h2>
 <p><code>super.m(args)</code> retains <code>self</code> and starts lookup immediately after the
 executing contribution’s exact application occurrence. It continues through
@@ -355,12 +373,13 @@ also allowed as explicit foreign selector spellings.</p>
 <tr><th>Identifier</th><th>Restriction</th></tr>
 </thead>
 <tbody>
-<tr><td><code>self</code></td><td>Cannot name a native slot, parameter, local or method, or be sent as a native selector.</td></tr>
+<tr><td><code>self</code></td><td>Cannot name a native slot, parameter, local, member class, method or factory, or be sent as a native selector.</td></tr>
 <tr><td><code>new</code></td><td><code>factory new</code> is rejected because the primary source-class factory is reserved. Ordinary instance methods named <code>new</code> remain allowed.</td></tr>
 </tbody>
 </table>
 </div>
-<p>These spellings parse as identifiers and are checked semantically. See
+<p>These spellings parse as identifiers; the standard source checks reject invalid
+declarations before execution. See
 <a href="objects-and-classes.html#the-primary-factory-new">primary construction</a>.</p>
 
                     </main>

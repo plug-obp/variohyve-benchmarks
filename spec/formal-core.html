@@ -28,7 +28,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="theme/vh-2de7eb16.css">
+        <link rel="stylesheet" href="theme/vh-ce098f15.css">
 
         <!-- MathJax -->
         <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-4e2a9cbc.js";
+            window.path_to_searchindex_js = "searchindex-dcb0efca.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-1ce75dcc.js"></script>
+        <script src="toc-ce909e20.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -194,8 +194,8 @@ X=(\sigma,H,B),\cr
 \end{gathered}
 \]</p>
 <p>\(A\) contains private runtime identities; \(u\) is uninitialized storage.
-\(B\) is the boundary state, including identity maps and canonical native
-null/Boolean identities. Failure is carried by the active control and is
+\(B\) is the boundary state, including identity maps and canonical
+null/Boolean role identities. Failure is carried by the active control and is
 reported at the nearest callback boundary or independent entry. Fresh identities
 are always distinct from existing ones. An omitted
 configuration component is unchanged; \(X[\sigma(v).p:=w]\) denotes a field
@@ -243,8 +243,9 @@ Q&amp;::=\mathrm{Top}\mid\mathrm{Apply}(\mu,Q),\cr
 \]</p>
 <p>For no direct applications the last equation is
 \(\mathrm{shape}(C)=\mathrm{Apply}(\mu_C,\mathrm{shape}(S_C))\);
-in particular,
+for Object without direct applications,
 \(\mathrm{shape}(\mathrm{Object})=\mathrm{Apply}(\mu_{\mathrm{Object}},\mathrm{Top})\).
+A root with stateless direct applications follows the general projection above.
 This is a projection of instance-side composition, not an equality of runtime
 identities: occurrences, scopes, routes and metaclasses remain in their records.
 It introduces no intermediate classes. Every realized superclass chain is
@@ -733,10 +734,11 @@ _\leftarrow\mathrm{init}(\mathrm{whole}(C);z,\bar x);z),\cr
 \end{aligned}
 \]</p>
 <p>Names \(z,\bar x\) in generated code denote exact accessor sends; \(z\) is
-fresh. An owned <code>apply/k</code> replaces the generated default at that arity. <code>Object</code>
-has no direct applications and its superclass is <code>Top</code>, so its dependency list
-is empty by <code>superRoute</code>. Its owned initializer is also empty; an empty implicit
-Object call may be omitted. No route targets <code>Top</code> and no initializer activation,
+fresh. An owned <code>apply/k</code> replaces the generated default at that arity. Object’s
+superclass is <code>Top</code>, so it has no superclass dependency by <code>superRoute</code>. Any
+direct root mixins and its owned contribution are stateless, zero-parameter, and
+have empty initializers; an empty implicit Object call may be omitted. No route
+targets <code>Top</code> and no initializer activation,
 return home or effects are created for it. The base equation admits no arguments;
 there is no \(\mathrm{whole}(\mathrm{Top})\) routine.
 A direct mixin imports neither its source class’s routes nor
@@ -867,10 +869,23 @@ interaction with foreign execution; merely removing <code>Barrier</code> is insu
 <p>The adapter provides stateful, identity-preserving conversions
 \(B,\sigma\vdash\bar v\Uparrow(\bar f,B’)\) and
 \(B,\sigma\vdash\bar f\Downarrow(\bar v,\sigma’,B’)\), or failure with the
-state reached before failure. Lists convert left-to-right. Exact canonical
-null/Booleans convert by identity; scalars follow <strong>S</strong>. Compatible identity
+state reached before failure. Lists convert left-to-right. When the selected
+profile defines a canonical codec, null/Booleans convert by exact role identity;
+foreign-preserving profiles retain Alien payloads. Other scalars follow <strong>S</strong>. Compatible identity
 round trips satisfy \(\Downarrow\Uparrow v=v\) and \(\Uparrow\Downarrow\phi=\phi\).
 These are boundary obligations, not privileged native service operations.</p>
+<p>Conversions and foreign actions also satisfy the
+<a href="foreign-objects.html#lifecycle-and-garbage-collection">lifetime agreement</a>.
+Adapter state <code>B</code> records invocation attachments, declared detachment permissions
+and open retention receipts. Export establishes its protecting root before
+publication; import validates the supplied evidence and establishes the receiving
+root before sender protection ends. Callback exports attach to the enclosing NF
+invocation; independent host exports carry receipts. Completion closes only that
+invocation’s attachments after descendants and result conversion, including
+defined failure paths. Detachment and release are boundary bookkeeping, not
+additional ordinary native control tokens. These rules abstract the collector
+and foreign retention machinery; they do not formalize cooperative collection
+of cross-boundary cycles.</p>
 <p>\[
 \frac{B,\sigma\vdash\bar v\Uparrow(\bar f,B’)}
 {\langle\mathrm{call}(\mathrm{foreignOp}(\phi,op),\bar v),\rho,\kappa\rangle_X

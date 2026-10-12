@@ -28,7 +28,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="theme/vh-2de7eb16.css">
+        <link rel="stylesheet" href="theme/vh-ce098f15.css">
 
         <!-- MathJax -->
         <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-4e2a9cbc.js";
+            window.path_to_searchindex_js = "searchindex-dcb0efca.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-1ce75dcc.js"></script>
+        <script src="toc-ce909e20.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -247,6 +247,54 @@ such as <code>null</code>, <code>true</code> and <code>false</code> select behav
 their spelling establishes no canonical identity. See
 <a href="./name-resolution.html#names-and-contracts">names and contracts</a>. The current
 tooling bundle is described in <a href="./interpreter-design.html#module-entry">the Java implementation</a>.</p>
+<h2 id="startup-seed-installation"><a class="header" href="#startup-seed-installation">Startup Seed Installation</a></h2>
+<p>This contract governs atomic finalization before publishing a runtime. It grants
+no authority to replace the seed during application execution. The accepted
+profiles are described in <a href="possible-seeds-and-worlds.html">Possible Seeds and Worlds</a>;
+the <a href="../../design-notes/staged-runtime-seed.html">staged seed design</a> records the
+rationale and implementation evidence.</p>
+<p>When a builder adopts a replacement seed before publishing its runtime, it
+must substitute every retained reference to a retired seed identity using a
+validated old-to-new map. Updating only the canonical roles is insufficient.
+The substitution includes values in ordinary/immutable slots and captures,
+class and contribution relationships, private construction code, derived
+layouts/caches, root owners and VM-managed boundary state. Newly supplied
+objects are part of the rewrite too. Unchanged objects preserve their identities;
+references to a deliberately retired object consistently select its replacement.</p>
+<p>The map’s final targets must be fixed points, and conflicting mappings,
+unresolved cycles, incompatible structural uses and unsupported key collisions
+must fail before publication. Every retained use of a retired identity needs a
+valid replacement. Old machinery with no retained use can instead be reclaimed.
+Reused structural infrastructure is not implicitly retired.</p>
+<p>The provider’s <code>Object/0</code> must return an ordinary native class whose direct
+superclass is the provisional Object by identity. Its owned contribution and
+each directly applied mixin must have no instance slots, no constructor
+parameters, no initializer body, and no routed argument expressions. Stateless
+mixins, methods, member classes, and owned factories are permitted. Support
+for state in Object, owned or contributed, is indefinitely deferred.</p>
+<p>Root Object adoption removes the candidate’s edge to the provisional Object
+before substitution, representing Top and preventing self-inheritance. The
+installed root therefore has <strong>no superclass and no instance state</strong>. Repair
+preserves valid flat metaclasses, definition scopes, application occurrences,
+owned-contribution boundaries and construction semantics. Pointer substitution
+alone does not define new slot initialization or repair arbitrary data derived
+from replaced identities; unsupported cases require rejection or a separately
+specified preparation contract.</p>
+<p>Finalization requires exclusive builder ownership and no active execution or
+callbacks. It performs reference repair, invariant validation, bootstrap-owner
+retirement and a forced full native collection before publishing the result as
+one atomic operation. The collection must run even below normal GC thresholds.
+Success requires no retired store entries or operative references to them in
+the final world. A partially installed runtime must never become usable.
+Preparation failure preserves the preceding private stage or discards the
+unpublished builder; it does not roll back or replay earlier foreign effects.</p>
+<p>Foreign payloads remain opaque. The builder must prevent unmanaged provisional
+references from escaping and repair or close controlled bootstrap handles.
+Retiring a provisional Alien includes removing its native ownership roots and
+wrapper; it does not imply destroying the foreign payload or general foreign
+garbage collection. If the boundary cannot establish these conditions,
+installation fails. Published boundary identity laws then apply to the final
+world; this startup operation grants no live object-replacement authority.</p>
 <h2 id="bootstrap-conformance-requirements"><a class="header" href="#bootstrap-conformance-requirements">Bootstrap Conformance Requirements</a></h2>
 <p>Definition, construction and synchronous callbacks share the requested execution
 budget. Host sends supply an empty caller activation; the target’s definition

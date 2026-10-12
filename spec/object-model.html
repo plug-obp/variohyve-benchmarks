@@ -28,7 +28,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="theme/vh-2de7eb16.css">
+        <link rel="stylesheet" href="theme/vh-ce098f15.css">
 
         <!-- MathJax -->
         <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-4e2a9cbc.js";
+            window.path_to_searchindex_js = "searchindex-dcb0efca.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-1ce75dcc.js"></script>
+        <script src="toc-ce909e20.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -187,12 +187,14 @@ none is a required representation for foreign clients.</p>
 <p>The following sketches abbreviate the current value types:</p>
 <pre><code class="language-text">VMObject       = { ValueRef[] slots, slotLayout, classRef?, lexicalParentRef?, memberCache }
 VMMixinClosure = { definitionScope, declarationName, mixinSyntax, parameters, initializer }
-VMClass        = VMObject + { mixins, superclassRef, initializationEdges, instanceLayout, initializer }
+VMClass        = VMObject + { name, definition }
+ClassDefinition = { complete structural snapshot }
+snapshot       = { mixins, superclassRef, initializationEdges, instanceLayout, initializer }
 VMMetaclass    = VMClass
 </code></pre>
 <p><code>VMObject</code> has no per-instance method dictionary. Reified contributions retain
 method syntax and declarations; <a href="../../../vh-core/src/main/java/vh/vm/ObjectProtocol.java">ObjectProtocol</a>
-selects their operations. <code>VMClass.mixins[0]</code> is its owned mixin; later entries
+selects their operations. <code>VMClass.ownedContribution()</code> names <code>mixins[0]</code>; later entries
 are direct applications. Class objects currently have empty value-slot arrays:
 instance declarations belong to their contributions, and instance values belong
 to allocated receivers.</p>
@@ -217,10 +219,23 @@ These are object-graph counts, not total backend allocations: contributions, act
 continuations also occupy representation space.</p>
 <p><code>VMObject.MemberClassKey</code> contains applying class, contribution index and member
 declaration. The cache lives on the enclosing receiver, completing the semantic
-key. Each entry records a realized value, a retained failure, or an in-progress
-flag. <code>ClassTargetFrame</code> sequences target computations; <code>MemberClassReturnFrame</code>
-publishes a result. Failure and unwind clear the in-progress state and cache the
-failure, preventing retries and permanently busy entries.</p>
+key. Each stable <code>MemberClassBinding</code> owns one private disjoint state: unrealized,
+realizing, realized(class reference), or failed(error). Its guarded <code>begin</code>,
+<code>complete</code> and <code>failPending</code> operations implement the formal cache transitions.
+<code>ClassTargetFrame</code> sequences target computations; <code>MemberClassReturnFrame</code>
+reports completion to the binding. Failure and unwind report abandonment;
+repeated cleanup retains the first failure rather than retrying realization.
+These transitions cover supported language failures and non-local abandonment;
+raw Java host/JVM exits remain subject to the
+<a href="./foreign-objects.html#java-host-exit-limits">host exit limits</a>.</p>
+<p>Observing a realizing binding reports a cycle without independently failing the
+original attempt. A foreign handler may recover from a reentrant callback failure
+while the suspended original continues. Only abandonment of that original
+realization caches its failure. Failure diagnostics remain detached data; later
+observation adds context without changing the retained diagnostic. Startup
+relocation prepares a replacement successful payload while preserving binding
+identity and the cache key’s full declaration/application origin. See the
+<a href="../../design-notes/realization-lifecycle.html">lifecycle decision</a>.</p>
 <p><a id="mixin-application"></a>
 <a id="mixin-identity"></a></p>
 <h2 id="contribution-occurrences-and-layouts"><a class="header" href="#contribution-occurrences-and-layouts">Contribution Occurrences and Layouts</a></h2>
@@ -244,15 +259,45 @@ operation. See the <a href="../../design-notes/occurrence-slot-layout.html">acce
 <p><a id="bootstrap-metaclasses"></a>
 <a id="metaclass-details"></a></p>
 <h2 id="class-assembly"><a class="header" href="#class-assembly">Class Assembly</a></h2>
+<p>Private initialization routes distinguish a complete superclass coordinator from
+an applied owned contribution. Named route constructors validate the target and
+occurrence; consumers use that distinction directly. A mixin route retains its
+positive application index, while superclass entry uses coordinator index zero.
+The representation’s superclass sentinel is confined to the route owner.</p>
 <p><a href="../../../vh-core/src/main/java/vh/vm/ClassConstruction.java">ClassConstruction</a>
-resolves contributor targets, creates each distinct metaclass, installs owned
-factories and finalizes layouts and coordinators. <code>VisitorSemanticsVM</code> retains
+resolves contributor targets, reserves identities, creates each distinct metaclass
+and installs owned factories. <a href="../../../vh-core/src/main/java/vh/vm/internal/ClassDefinition.java">ClassDefinition</a>
+derives a complete structural snapshot from the ordered contributions and routes
+before the class is installed. Its immutable lists, layout and coordinator agree;
+<code>VMClass</code> exposes no independent setters or mutable contribution list. A definition
+owner belongs to one class identity. <code>VisitorSemanticsVM</code> retains
 backend entry points that delegate trusted seeding and anonymous assembly to it.
 <code>seedClassGraph</code> installs the six root identities implementing
 the <a href="./objects-and-classes.html#bootstrap-metaclasses">flat graph</a>, plus Lambda and
 its metaclass. Lambda extends Object and has no public factories. The metaclass
 has no additional constructor arity, argument routes or initializer fields.
 The <a href="./objects-and-classes.html#factories">factory contracts</a> specify their public selectors.</p>
+<p>Flat metaclasses use an explicit definition with no construction coordinator;
+this is distinct from an unfinished ordinary class. Identity reservation preserves
+bootstrap class-of cycles without publishing partially assembled class metadata.
+Assembly remains inside one machine transition, with no collector safepoint or
+language execution inside finalization. Context-aware allocation remains intact.
+These are trusted backend assembly APIs: correct class/metaclass handle pairing
+and whole-graph validity remain assembler responsibilities.</p>
+<p>Exclusive startup replacement is a separate lifecycle. It prepares root-edge
+removal, complete layouts and replacement snapshots before rewriting the graph.
+<code>NativeRelocation</code> commits whole snapshots through package-private definition
+operations while preserving class and definition-owner identities. Normal
+finalization and startup use the same contribution-layout derivation; startup
+additionally checks inheritance cycles and unchanged physical storage. Generated
+code and captured references still undergo the complete graph repair required by
+<a href="./program-structure.html#startup-seed-installation">startup installation</a>.
+These structural snapshots are not persistent stores or deeply immutable syntax.</p>
+<p>Finalization validates route identity/order and instance-contribution kinds.
+Omitting a superclass initialization route is permitted only when its complete
+chain has no parameters, slots, post-initializer bodies or routed argument
+expressions. This covers the implicit stateless root and primordial structural
+classes without silently omitting superclass work in backend assembly.</p>
 <h3 id="representing-top-without-reification"><a class="header" href="#representing-top-without-reification">Representing Top without Reification</a></h3>
 <p>The specification’s <a href="./objects-and-classes.html#top-and-the-class-algebra"><code>Top</code></a>
 is the empty constructor of the class algebra. <code>VisitorSemanticsVM</code> deliberately
@@ -274,8 +319,8 @@ levels.</p>
 <tr><th>Semantic empty case</th><th>Current implementation</th></tr>
 </thead>
 <tbody>
-<tr><td><code>lin(Top) = []</code>; exact/invocation search over it misses</td><td><code>ObjectProtocol</code> stops when the superclass reference is absent, after searching Object’s contribution. No extra operation is selected or executed.</td></tr>
-<tr><td><code>Top</code> has an empty layout and no contribution</td><td><code>ClassConstruction.finish</code> adds no superclass layout when that reference is absent; Object retains its ordinary owned mixin.</td></tr>
+<tr><td><code>lin(Top) = []</code>; exact/invocation search over it misses</td><td><code>ObjectProtocol</code> stops when the superclass reference is absent, after searching Object’s owned and directly applied contributions. No extra operation is selected or executed.</td></tr>
+<tr><td><code>Top</code> has an empty layout and no contribution</td><td>Class-definition derivation uses an empty inherited layout when the superclass reference is absent; Object retains its owned and stateless directly applied mixins.</td></tr>
 <tr><td>No initialization dependency on <code>Top</code></td><td>Object has no superclass initialization edge. No terminal initializer, activation, return home or argument evaluation is introduced.</td></tr>
 </tbody>
 </table>
@@ -352,7 +397,7 @@ Origins are neither inferred from a mixin’s source class nor copied to every a
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="foreign-objects.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="native-seed-host-scalars.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
@@ -366,7 +411,7 @@ Origins are neither inferred from a mixin’s source class nor copied to every a
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="foreign-objects.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="native-seed-host-scalars.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 

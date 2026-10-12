@@ -28,7 +28,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="theme/vh-2de7eb16.css">
+        <link rel="stylesheet" href="theme/vh-ce098f15.css">
 
         <!-- MathJax -->
         <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-4e2a9cbc.js";
+            window.path_to_searchindex_js = "searchindex-dcb0efca.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-1ce75dcc.js"></script>
+        <script src="toc-ce909e20.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -198,6 +198,16 @@ namespace. Receiver origins are defined in <a href="name-resolution.html">Name R
 </div>
 <p>Parentheses remain semantically significant through lowering and dispatch.
 In particular, invocation cannot always be lowered to getter-then-apply.</p>
+<h3 id="list-separators"><a class="header" href="#list-separators">List Separators</a></h3>
+<p>A single trailing comma is permitted in a nonempty argument or formal list,
+including constructor parameters and mixin application lists. <code>f(1,)</code> has one
+argument; <code>fun(x,) {x}</code> has one formal. Empty parentheses have no items. A leading
+comma or a missing item between commas is an error, not an omitted value or a
+new formal: <code>f(,1)</code>, <code>f(1,,2)</code> and <code>fun(x,,y) {y}</code> are invalid. Descriptor lists
+use their separately specified optional trailing pipe.</p>
+<p>The current reader reports a nonblocking style warning for trailing commas.
+It preserves warnings on successful reads and still runs source checks; warnings
+do not alter arity or execution admission.</p>
 <h2 id="self-dispatch-message-send-leading-dot"><a class="header" href="#self-dispatch-message-send-leading-dot">Self-Dispatch Message Send (Leading Dot)</a></h2>
 <p><code>.m(args)</code> is equivalent to <code>self.m(args)</code>; both skip lexical receiver selection.
 Leading <code>..</code> likewise cascades on <code>self</code>. Prefer the explicit forms when nested
@@ -207,6 +217,21 @@ scopes would make the receiver unclear.</p>
 at the written arity. Evaluate the receiver first, then arguments once from
 left to right, then select behavior. Dot chains send each message to the
 previous result: <code>a.b.c(3)</code> sends <code>c/1</code> to the result of <code>a.b</code>.</p>
+<h3 id="invoking-the-current-receiver"><a class="header" href="#invoking-the-current-receiver">Invoking the Current Receiver</a></h3>
+<p><code>self(args)</code> sends exact <code>apply/N</code> to the current receiver after evaluating its
+arguments once from left to right. <code>self.apply(args)</code> instead invokes <code>apply/N</code>
+under the ordinary candidate rules below. An exact <code>apply/N</code> method behaves the
+same in both forms; a generated accessor can distinguish them:</p>
+<pre><code class="language-vh">{
+    apply = fun { 42 };
+    exact { self() }
+    invoked { self.apply() }
+}
+</code></pre>
+<p>Here <code>exact</code> returns the stored lambda, while <code>invoked</code> returns <code>42</code>. With a
+one-argument lambda stored in <code>apply</code>, <code>self(42)</code> has no exact <code>apply/1</code> and fails;
+<code>self.apply(42)</code> may invoke that stored callable. Neither form invokes a callable
+returned by a selected ordinary method a second time.</p>
 <h3 id="no-operator-precedence"><a class="header" href="#no-operator-precedence">No Operator Precedence</a></h3>
 <p>Arithmetic and comparisons use messages. Consequently
 <code>3.plus(4).times(2)</code> groups as <code>(3.plus(4)).times(2)</code>; use

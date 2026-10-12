@@ -1,4 +1,4 @@
-3ce7a3039a0efdecf4649d4094f21536fedd0c8ffc2c08ce35d9a9d8ea71d91c  variohyve-0.1.0-macos.zip
-3ce7a3039a0efdecf4649d4094f21536fedd0c8ffc2c08ce35d9a9d8ea71d91c  variohyve-0.1.0-linux.zip
-41a30c64a7482be77bc64841338ec43f138a336c51d73db3a65baadde0632b49  variohyve-0.1.0-windows.zip
-6d59954cc44ce6321faf618ce769dcece398b14f28313309e2b0c10bef74bef0  vh-lsp-vscode-0.2.0.vsix
+c8fe084a18c2e455ee24b77471f5e8d5759e26139e54c9c125119fe4e8828bdb  variohyve-0.2.0-macos.zip
+c8fe084a18c2e455ee24b77471f5e8d5759e26139e54c9c125119fe4e8828bdb  variohyve-0.2.0-linux.zip
+1eddcfc1c1cc44b655f945b9fde07b089612f37014eb06a0dcf4477c38feaf00  variohyve-0.2.0-windows.zip
+b43b765fe3279fd2326546ff7421b6ad58ee9bf56ec779a0650aa257adccb561  vh-lsp-vscode-0.3.0.vsix
