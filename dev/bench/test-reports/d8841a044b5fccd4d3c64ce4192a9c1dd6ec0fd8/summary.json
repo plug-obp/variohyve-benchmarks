@@ -1,0 +1,12 @@
+{
+  "sha": "d8841a044b5fccd4d3c64ce4192a9c1dd6ec0fd8",
+  "branch": "regex-experiment",
+  "run_url": "https://github.com/plug-obp/variohyve/actions/runs/38459099163",
+  "outcome": "success",
+  "reported_at": "2026-10-13T20:20:18.033688+00:00",
+  "tests": 1036,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "duration_seconds": 34.88499999999999
+}
