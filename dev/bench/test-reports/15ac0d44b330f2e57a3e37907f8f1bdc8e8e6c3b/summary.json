@@ -1,0 +1,12 @@
+{
+  "sha": "15ac0d44b330f2e57a3e37907f8f1bdc8e8e6c3b",
+  "branch": "codex/vh-lean-coalgebra",
+  "run_url": "https://github.com/plug-obp/variohyve/actions/runs/38805751314",
+  "outcome": "success",
+  "reported_at": "2026-10-15T21:16:00.345153+00:00",
+  "tests": 1036,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "duration_seconds": 31.357000000000006
+}
