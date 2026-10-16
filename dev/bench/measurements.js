@@ -184222,5 +184222,5099 @@ window.BENCHMARK_RUNS = [
       "message": "test: make packaging output assertions portable on Windows"
     },
     "run_url": "https://github.com/plug-obp/variohyve/actions/runs/38954355668/attempts/1"
+  },
+  {
+    "schema": 2,
+    "date": "2026-10-16T19:43:49.530830+00:00",
+    "jmh_sha256": "8abccb61be10bddeebc0150e652fe4df4be87f678330cd05ccb5588e732a51f4",
+    "native_gc": {
+      "nativeGc": "tracing",
+      "nativeHeapCapacity": "16384",
+      "nativeGcThreshold": "0.75"
+    },
+    "timing_scope": "prepared-runtime-v1",
+    "payload_batch_sizes": {
+      "vh.benchmarks.PreparedVisitorSemanticsBenchmark": 256,
+      "vh.benchmarks.PreparedRecursionBenchmark": 16,
+      "vh.benchmarks.PreparedDispatchBenchmark": 16
+    },
+    "score_normalization": "per-payload-operation",
+    "cases": [
+      {
+        "name": "classContributions",
+        "params": {
+          "callCount": "256",
+          "contributionCount": "1"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 544.4970328627335,
+            "min": 448.45212295081967,
+            "q1": 461.53034479166666,
+            "median": 475.69572521551726,
+            "q3": 584.2806622340426,
+            "max": 752.5263091216216,
+            "samples": [
+              752.5263091216216,
+              584.2806622340426,
+              461.53034479166666,
+              475.69572521551726,
+              448.45212295081967
+            ],
+            "confidence99_9": [
+              50.99591356277318,
+              1037.9981521626937
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 27.622694152546163,
+            "min": 27.501930698208042,
+            "q1": 27.559417005941903,
+            "median": 27.615416483274647,
+            "q3": 27.636583819322183,
+            "max": 27.80012275598404,
+            "samples": [
+              27.559417005941903,
+              27.80012275598404,
+              27.636583819322183,
+              27.501930698208042,
+              27.615416483274647
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 253.65827924356012,
+            "min": 246.6651496062992,
+            "q1": 250.20505325,
+            "median": 252.05405972782256,
+            "q3": 256.75231378073767,
+            "max": 262.6148198529412,
+            "samples": [
+              246.6651496062992,
+              250.20505325,
+              256.75231378073767,
+              262.6148198529412,
+              252.05405972782256
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "classContributions",
+        "params": {
+          "callCount": "256",
+          "contributionCount": "32"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 1648.9388187101254,
+            "min": 1391.80880859375,
+            "q1": 1400.83801953125,
+            "median": 1424.2638830645162,
+            "q3": 1712.1554275,
+            "max": 2315.627954861111,
+            "samples": [
+              2315.627954861111,
+              1712.1554275,
+              1391.80880859375,
+              1400.83801953125,
+              1424.2638830645162
+            ],
+            "confidence99_9": [
+              124.86750006209809,
+              3173.010137358153
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 752.0694440354232,
+            "min": 749.5245718562875,
+            "q1": 750.3584116766467,
+            "median": 751.9998982035929,
+            "q3": 752.4521938622754,
+            "max": 756.0121445783133,
+            "samples": [
+              749.5245718562875,
+              756.0121445783133,
+              751.9998982035929,
+              752.4521938622754,
+              750.3584116766467
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 1813.5423417891773,
+            "min": 1807.725487410072,
+            "q1": 1809.8489280575538,
+            "median": 1814.640704710145,
+            "q3": 1815.7877880434783,
+            "max": 1819.7088007246377,
+            "samples": [
+              1807.725487410072,
+              1814.640704710145,
+              1819.7088007246377,
+              1809.8489280575538,
+              1815.7877880434783
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "classContributions",
+        "params": {
+          "callCount": "256",
+          "contributionCount": "8"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 760.9707285457441,
+            "min": 626.0954747596154,
+            "q1": 649.1302585784314,
+            "median": 651.71285125,
+            "q3": 741.8513792613636,
+            "max": 1136.0636788793104,
+            "samples": [
+              1136.0636788793104,
+              741.8513792613636,
+              651.71285125,
+              626.0954747596154,
+              649.1302585784314
+            ],
+            "confidence99_9": [
+              -64.2205122113105,
+              1586.1619693027988
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 128.35505571209018,
+            "min": 128.1240181864754,
+            "q1": 128.1591393442623,
+            "median": 128.4449440317623,
+            "q3": 128.4853820440574,
+            "max": 128.56179495389344,
+            "samples": [
+              128.4853820440574,
+              128.1240181864754,
+              128.56179495389344,
+              128.4449440317623,
+              128.1591393442623
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 423.2089127637108,
+            "min": 419.0332029166667,
+            "q1": 420.07973447986575,
+            "median": 423.4124159628378,
+            "q3": 425.8297942176871,
+            "max": 427.68941624149664,
+            "samples": [
+              419.0332029166667,
+              420.07973447986575,
+              423.4124159628378,
+              425.8297942176871,
+              427.68941624149664
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "closureSend",
+        "params": {},
+        "payload_batch_size": 256,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 3.7188556101190473,
+            "min": 3.0718934151785713,
+            "q1": 3.2516875,
+            "median": 3.2887115885416667,
+            "q3": 3.441396484375,
+            "max": 5.5405890625,
+            "samples": [
+              5.5405890625,
+              3.441396484375,
+              3.2516875,
+              3.2887115885416667,
+              3.0718934151785713
+            ],
+            "confidence99_9": [
+              -0.2351043512172155,
+              7.67281557145531
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 256
+            }
+          },
+          "CPython": {
+            "mean": 0.14962255444057587,
+            "min": 0.1482117140686628,
+            "q1": 0.14868530347509293,
+            "median": 0.1497005371392942,
+            "q3": 0.15005148569742838,
+            "max": 0.151463731822401,
+            "samples": [
+              0.1497005371392942,
+              0.151463731822401,
+              0.15005148569742838,
+              0.1482117140686628,
+              0.14868530347509293
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 0.9569731509689795,
+            "min": 0.9486415466781735,
+            "q1": 0.9520876729802568,
+            "median": 0.955323971748352,
+            "q3": 0.9628180796705832,
+            "max": 0.9659944837675319,
+            "samples": [
+              0.9659944837675319,
+              0.9486415466781735,
+              0.955323971748352,
+              0.9520876729802568,
+              0.9628180796705832
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "families",
+        "params": {
+          "depth": "16",
+          "nestingDepth": "1"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 431.78777421779716,
+            "min": 306.5981060606061,
+            "q1": 330.1464583333333,
+            "median": 426.92871568627453,
+            "q3": 508.3198854166667,
+            "max": 586.9457055921052,
+            "samples": [
+              586.9457055921052,
+              508.3198854166667,
+              426.92871568627453,
+              306.5981060606061,
+              330.1464583333333
+            ],
+            "confidence99_9": [
+              -23.656357090747974,
+              887.2319055263423
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          }
+        }
+      },
+      {
+        "name": "families",
+        "params": {
+          "depth": "16",
+          "nestingDepth": "8"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 781.2093624585038,
+            "min": 513.9165237068966,
+            "q1": 557.3753007075471,
+            "median": 793.1363322368421,
+            "q3": 926.180715909091,
+            "max": 1115.437939732143,
+            "samples": [
+              1115.437939732143,
+              926.180715909091,
+              793.1363322368421,
+              557.3753007075471,
+              513.9165237068966
+            ],
+            "confidence99_9": [
+              -189.91440333529624,
+              1752.333128252304
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          }
+        }
+      },
+      {
+        "name": "families",
+        "params": {
+          "depth": "256",
+          "nestingDepth": "1"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 2924.728226968874,
+            "min": 2196.363464673913,
+            "q1": 2231.7532357954547,
+            "median": 2404.82991875,
+            "q3": 3619.17065625,
+            "max": 4171.523859375,
+            "samples": [
+              4171.523859375,
+              3619.17065625,
+              2404.82991875,
+              2231.7532357954547,
+              2196.363464673913
+            ],
+            "confidence99_9": [
+              -582.1988014113076,
+              6431.655255349056
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          }
+        }
+      },
+      {
+        "name": "families",
+        "params": {
+          "depth": "256",
+          "nestingDepth": "8"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 4513.628497951388,
+            "min": 3319.416140625,
+            "q1": 3462.1274609375,
+            "median": 3795.38471875,
+            "q3": 5649.2042875,
+            "max": 6342.009881944445,
+            "samples": [
+              6342.009881944445,
+              5649.2042875,
+              3795.38471875,
+              3319.416140625,
+              3462.1274609375
+            ],
+            "confidence99_9": [
+              -822.043662214739,
+              9849.300658117516
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          }
+        }
+      },
+      {
+        "name": "inherited",
+        "params": {
+          "depth": "16",
+          "hierarchyDepth": "32"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 563.2827848909707,
+            "min": 389.9843525390625,
+            "q1": 422.0155850409836,
+            "median": 511.0348584183673,
+            "q3": 650.6433765625,
+            "max": 842.7357518939394,
+            "samples": [
+              842.7357518939394,
+              650.6433765625,
+              511.0348584183673,
+              389.9843525390625,
+              422.0155850409836
+            ],
+            "confidence99_9": [
+              -153.09339590628133,
+              1279.6589656882227
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 647.7907007404787,
+            "min": 644.731318943299,
+            "q1": 647.14943685567,
+            "median": 647.3922796391753,
+            "q3": 648.6050433937824,
+            "max": 651.0754248704663,
+            "samples": [
+              644.731318943299,
+              647.14943685567,
+              651.0754248704663,
+              647.3922796391753,
+              648.6050433937824
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 1371.8800864764103,
+            "min": 1365.6704769021737,
+            "q1": 1366.4274631147541,
+            "median": 1373.2933647540985,
+            "q3": 1376.466677197802,
+            "max": 1377.5424504132232,
+            "samples": [
+              1373.2933647540985,
+              1365.6704769021737,
+              1376.466677197802,
+              1366.4274631147541,
+              1377.5424504132232
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "inherited",
+        "params": {
+          "depth": "16",
+          "hierarchyDepth": "4"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 250.15466785279105,
+            "min": 161.81848418674699,
+            "q1": 179.30865666666668,
+            "median": 247.8513638392857,
+            "q3": 326.3077652777778,
+            "max": 335.48706929347827,
+            "samples": [
+              335.48706929347827,
+              326.3077652777778,
+              247.8513638392857,
+              179.30865666666668,
+              161.81848418674699
+            ],
+            "confidence99_9": [
+              -59.74835662365771,
+              560.0576923292398
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 42.32825571366713,
+            "min": 42.15208543346774,
+            "q1": 42.158793724798386,
+            "median": 42.356964780405406,
+            "q3": 42.408639070900534,
+            "max": 42.564795558763585,
+            "samples": [
+              42.408639070900534,
+              42.564795558763585,
+              42.15208543346774,
+              42.158793724798386,
+              42.356964780405406
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 234.40845838457147,
+            "min": 223.9235339285714,
+            "q1": 229.8001955422794,
+            "median": 232.66591736111113,
+            "q3": 240.66893293269231,
+            "max": 244.98371215820313,
+            "samples": [
+              223.9235339285714,
+              229.8001955422794,
+              232.66591736111113,
+              240.66893293269231,
+              244.98371215820313
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "inherited",
+        "params": {
+          "depth": "256",
+          "hierarchyDepth": "32"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 2915.115112126533,
+            "min": 2109.102168478261,
+            "q1": 2175.6961222826085,
+            "median": 2436.56000625,
+            "q3": 3892.8160865384616,
+            "max": 3961.4011770833336,
+            "samples": [
+              3961.4011770833336,
+              3892.8160865384616,
+              2436.56000625,
+              2175.6961222826085,
+              2109.102168478261
+            ],
+            "confidence99_9": [
+              -674.4751208434909,
+              6504.705345096557
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 761.7347143498573,
+            "min": 755.5245896084338,
+            "q1": 758.7155037878788,
+            "median": 759.203975,
+            "q3": 762.2466522727273,
+            "max": 772.982851080247,
+            "samples": [
+              759.203975,
+              762.2466522727273,
+              758.7155037878788,
+              772.982851080247,
+              755.5245896084338
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 3174.422451405143,
+            "min": 3164.086889937107,
+            "q1": 3169.763240506329,
+            "median": 3175.3716297468354,
+            "q3": 3181.015693037975,
+            "max": 3181.8748037974688,
+            "samples": [
+              3181.015693037975,
+              3164.086889937107,
+              3169.763240506329,
+              3181.8748037974688,
+              3175.3716297468354
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "inherited",
+        "params": {
+          "depth": "256",
+          "hierarchyDepth": "4"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 2054.756760070254,
+            "min": 1487.0492375,
+            "q1": 1543.0581185344827,
+            "median": 1840.3979817708334,
+            "q3": 2655.941599264706,
+            "max": 2747.33686328125,
+            "samples": [
+              2747.33686328125,
+              2655.941599264706,
+              1840.3979817708334,
+              1543.0581185344827,
+              1487.0492375
+            ],
+            "confidence99_9": [
+              -280.49880476916996,
+              4390.012324909678
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 152.29699409495782,
+            "min": 151.25143990384615,
+            "q1": 151.38630570652174,
+            "median": 152.45546192354368,
+            "q3": 152.5733913109756,
+            "max": 153.81837162990195,
+            "samples": [
+              151.25143990384615,
+              153.81837162990195,
+              151.38630570652174,
+              152.5733913109756,
+              152.45546192354368
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 2050.4689038784486,
+            "min": 2038.9450203252031,
+            "q1": 2048.527863821138,
+            "median": 2049.2685,
+            "q3": 2057.6683217213113,
+            "max": 2057.93481352459,
+            "samples": [
+              2038.9450203252031,
+              2049.2685,
+              2057.6683217213113,
+              2057.93481352459,
+              2048.527863821138
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "literal",
+        "params": {},
+        "payload_batch_size": 256,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 2.6620726060267854,
+            "min": 1.9143733258928572,
+            "q1": 2.077236607142857,
+            "median": 2.311969308035714,
+            "q3": 3.3400171875,
+            "max": 3.6667666015625,
+            "samples": [
+              3.6667666015625,
+              3.3400171875,
+              2.077236607142857,
+              2.311969308035714,
+              1.9143733258928572
+            ],
+            "confidence99_9": [
+              -0.3776678553926671,
+              5.701813067446238
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 256
+            }
+          },
+          "CPython": {
+            "mean": 0.06265849947893157,
+            "min": 0.06248963221108041,
+            "q1": 0.06250151266702791,
+            "median": 0.06260831232539943,
+            "q3": 0.06262434018244509,
+            "max": 0.06306870000870501,
+            "samples": [
+              0.06306870000870501,
+              0.06260831232539943,
+              0.06262434018244509,
+              0.06248963221108041,
+              0.06250151266702791
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 3.863808760469544,
+            "min": 0.76364497756958,
+            "q1": 1.9311026567903902,
+            "median": 3.6941191149259867,
+            "q3": 5.137636161444699,
+            "max": 7.7925408916170635,
+            "samples": [
+              7.7925408916170635,
+              5.137636161444699,
+              3.6941191149259867,
+              1.9311026567903902,
+              0.76364497756958
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "manyArguments",
+        "params": {
+          "argumentCount": "0",
+          "callCount": "256"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 483.98751453163766,
+            "min": 399.7329826923077,
+            "q1": 412.61552217741934,
+            "median": 427.2781322916667,
+            "q3": 490.7569435096154,
+            "max": 689.5539919871795,
+            "samples": [
+              689.5539919871795,
+              490.7569435096154,
+              412.61552217741934,
+              427.2781322916667,
+              399.7329826923077
+            ],
+            "confidence99_9": [
+              21.460645316147975,
+              946.5143837471273
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 18.3131499519554,
+            "min": 18.260748229410048,
+            "q1": 18.26835831629673,
+            "median": 18.286316077686916,
+            "q3": 18.31537041837033,
+            "max": 18.43495671801297,
+            "samples": [
+              18.31537041837033,
+              18.286316077686916,
+              18.43495671801297,
+              18.26835831629673,
+              18.260748229410048
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 232.62973369442614,
+            "min": 219.32389685314683,
+            "q1": 224.73285357142856,
+            "median": 231.95326643518518,
+            "q3": 239.50668630725193,
+            "max": 247.63196530511811,
+            "samples": [
+              219.32389685314683,
+              224.73285357142856,
+              231.95326643518518,
+              239.50668630725193,
+              247.63196530511811
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "manyArguments",
+        "params": {
+          "argumentCount": "16",
+          "callCount": "256"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 2135.915901069079,
+            "min": 1730.5857430555557,
+            "q1": 1782.3038194444443,
+            "median": 1900.692046875,
+            "q3": 2415.5295131578946,
+            "max": 2850.4683828125,
+            "samples": [
+              2850.4683828125,
+              2415.5295131578946,
+              1900.692046875,
+              1782.3038194444443,
+              1730.5857430555557
+            ],
+            "confidence99_9": [
+              275.7785386134517,
+              3996.0532635247064
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 25.421739970576297,
+            "min": 25.370260272930196,
+            "q1": 25.3890959567776,
+            "median": 25.413053292410712,
+            "q3": 25.461077465503248,
+            "max": 25.47521286525974,
+            "samples": [
+              25.47521286525974,
+              25.461077465503248,
+              25.3890959567776,
+              25.413053292410712,
+              25.370260272930196
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 335.5478861075984,
+            "min": 299.9202357142857,
+            "q1": 331.08957804232807,
+            "median": 342.7403801229508,
+            "q3": 349.0824538194445,
+            "max": 354.9067828389831,
+            "samples": [
+              342.7403801229508,
+              349.0824538194445,
+              354.9067828389831,
+              331.08957804232807,
+              299.9202357142857
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "manyArguments",
+        "params": {
+          "argumentCount": "4",
+          "callCount": "256"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 882.5957126569068,
+            "min": 678.1816151960784,
+            "q1": 758.8725475543479,
+            "median": 767.3079619565217,
+            "q3": 979.85171875,
+            "max": 1228.7647198275863,
+            "samples": [
+              1228.7647198275863,
+              979.85171875,
+              758.8725475543479,
+              678.1816151960784,
+              767.3079619565217
+            ],
+            "confidence99_9": [
+              22.264300257060086,
+              1742.9271250567535
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 19.917087738115633,
+            "min": 19.872766552241163,
+            "q1": 19.88187523794416,
+            "median": 19.90717471050127,
+            "q3": 19.958495455994896,
+            "max": 19.965126733896682,
+            "samples": [
+              19.965126733896682,
+              19.88187523794416,
+              19.872766552241163,
+              19.90717471050127,
+              19.958495455994896
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 245.27139015294395,
+            "min": 233.9413969216418,
+            "q1": 240.2006092557252,
+            "median": 242.9164215116279,
+            "q3": 249.45933531746033,
+            "max": 259.8391877582645,
+            "samples": [
+              233.9413969216418,
+              240.2006092557252,
+              242.9164215116279,
+              249.45933531746033,
+              259.8391877582645
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "manyArguments",
+        "params": {
+          "argumentCount": "64",
+          "callCount": "256"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 9263.56003720238,
+            "min": 8362.294330357143,
+            "q1": 8485.998044642856,
+            "median": 9214.61588392857,
+            "q3": 9484.4078125,
+            "max": 10770.484114583332,
+            "samples": [
+              10770.484114583332,
+              9484.4078125,
+              9214.61588392857,
+              8362.294330357143,
+              8485.998044642856
+            ],
+            "confidence99_9": [
+              5540.726116299597,
+              12986.393958105164
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 85.84320421770748,
+            "min": 85.47084161543715,
+            "q1": 85.5512793715847,
+            "median": 85.6813580942623,
+            "q3": 85.83665146857923,
+            "max": 86.67589053867404,
+            "samples": [
+              86.67589053867404,
+              85.47084161543715,
+              85.5512793715847,
+              85.83665146857923,
+              85.6813580942623
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 664.3754857222298,
+            "min": 655.5647585078534,
+            "q1": 664.4507632275132,
+            "median": 665.3305664893617,
+            "q3": 665.4247227393616,
+            "max": 671.1066176470588,
+            "samples": [
+              655.5647585078534,
+              665.3305664893617,
+              665.4247227393616,
+              671.1066176470588,
+              664.4507632275132
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "methodSend",
+        "params": {},
+        "payload_batch_size": 256,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 17.269759531250003,
+            "min": 11.10221484375,
+            "q1": 14.55367578125,
+            "median": 15.61838359375,
+            "q3": 22.10431640625,
+            "max": 22.97020703125,
+            "samples": [
+              22.10431640625,
+              15.61838359375,
+              22.97020703125,
+              14.55367578125,
+              11.10221484375
+            ],
+            "confidence99_9": [
+              -2.3657687197991457,
+              36.905287782299155
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 256
+            }
+          },
+          "CPython": {
+            "mean": 5.8502701198676865,
+            "min": 5.835400553385417,
+            "q1": 5.842736857096354,
+            "median": 5.853273466738399,
+            "q3": 5.8550998959113025,
+            "max": 5.864839826206961,
+            "samples": [
+              5.842736857096354,
+              5.853273466738399,
+              5.835400553385417,
+              5.8550998959113025,
+              5.864839826206961
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 326.64202184629767,
+            "min": 285.9519355113636,
+            "q1": 322.54600064432987,
+            "median": 325.3187867268041,
+            "q3": 340.55894599184785,
+            "max": 358.8344403571429,
+            "samples": [
+              340.55894599184785,
+              322.54600064432987,
+              285.9519355113636,
+              325.3187867268041,
+              358.8344403571429
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "mixinContributions",
+        "params": {
+          "callCount": "256",
+          "contributionCount": "1"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 512.7679847107545,
+            "min": 433.7508467741936,
+            "q1": 452.48745833333334,
+            "median": 466.36328919491524,
+            "q3": 499.90677476415095,
+            "max": 711.3315544871795,
+            "samples": [
+              711.3315544871795,
+              499.90677476415095,
+              433.7508467741936,
+              452.48745833333334,
+              466.36328919491524
+            ],
+            "confidence99_9": [
+              75.31827766032688,
+              950.2176917611821
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          }
+        }
+      },
+      {
+        "name": "mixinContributions",
+        "params": {
+          "callCount": "256",
+          "contributionCount": "32"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 1004.374364961127,
+            "min": 846.0969722222222,
+            "q1": 870.6309147727272,
+            "median": 894.2430922619047,
+            "q3": 905.0670030487805,
+            "max": 1505.8338425,
+            "samples": [
+              1505.8338425,
+              905.0670030487805,
+              894.2430922619047,
+              870.6309147727272,
+              846.0969722222222
+            ],
+            "confidence99_9": [
+              -78.59399737782633,
+              2087.3427273000802
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          }
+        }
+      },
+      {
+        "name": "mixinContributions",
+        "params": {
+          "callCount": "256",
+          "contributionCount": "8"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 607.904853640892,
+            "min": 506.01512394067794,
+            "q1": 507.6255360169491,
+            "median": 521.1170592672414,
+            "q3": 630.180118622449,
+            "max": 874.5864303571428,
+            "samples": [
+              874.5864303571428,
+              630.180118622449,
+              507.6255360169491,
+              506.01512394067794,
+              521.1170592672414
+            ],
+            "confidence99_9": [
+              0.32976375849546,
+              1215.4799435232885
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          }
+        }
+      },
+      {
+        "name": "mutual",
+        "params": {
+          "depth": "16"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 171.42901488496216,
+            "min": 112.24186538461538,
+            "q1": 143.2997397260274,
+            "median": 161.87598214285714,
+            "q3": 202.12693870192308,
+            "max": 237.60054846938775,
+            "samples": [
+              237.60054846938775,
+              202.12693870192308,
+              161.87598214285714,
+              143.2997397260274,
+              112.24186538461538
+            ],
+            "confidence99_9": [
+              -18.258387397863572,
+              361.11641716778786
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 15.46715549992286,
+            "min": 15.397024637057086,
+            "q1": 15.45679538324311,
+            "median": 15.472776405634843,
+            "q3": 15.492952294537401,
+            "max": 15.516228779141866,
+            "samples": [
+              15.45679538324311,
+              15.397024637057086,
+              15.516228779141866,
+              15.472776405634843,
+              15.492952294537401
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 196.40778136098723,
+            "min": 170.81036116803278,
+            "q1": 174.12887465277777,
+            "median": 207.35514569536426,
+            "q3": 212.6332444727891,
+            "max": 217.1112808159722,
+            "samples": [
+              212.6332444727891,
+              217.1112808159722,
+              207.35514569536426,
+              170.81036116803278,
+              174.12887465277777
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "mutual",
+        "params": {
+          "depth": "256"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 1666.2395052396794,
+            "min": 1230.1600863970589,
+            "q1": 1264.5298087121212,
+            "median": 1455.870301724138,
+            "q3": 2065.800794642857,
+            "max": 2314.836534722222,
+            "samples": [
+              2314.836534722222,
+              2065.800794642857,
+              1455.870301724138,
+              1264.5298087121212,
+              1230.1600863970589
+            ],
+            "confidence99_9": [
+              -235.95372225797087,
+              3568.4327327373294
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 127.13636351134278,
+            "min": 126.74100554435483,
+            "q1": 126.88296471774194,
+            "median": 126.97261088709678,
+            "q3": 127.3037356453252,
+            "max": 127.78150076219512,
+            "samples": [
+              126.74100554435483,
+              126.97261088709678,
+              127.78150076219512,
+              126.88296471774194,
+              127.3037356453252
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 1973.8001177692145,
+            "min": 1964.583841796875,
+            "q1": 1966.282140625,
+            "median": 1970.9882066929133,
+            "q3": 1971.9083838582676,
+            "max": 1995.238015873016,
+            "samples": [
+              1971.9083838582676,
+              1995.238015873016,
+              1966.282140625,
+              1970.9882066929133,
+              1964.583841796875
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "partners",
+        "params": {
+          "depth": "16",
+          "partnerCount": "3"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 269.30058163545334,
+            "min": 199.7356831597222,
+            "q1": 205.19945625,
+            "median": 258.1025711206897,
+            "q3": 324.2790332446809,
+            "max": 359.1861644021739,
+            "samples": [
+              359.1861644021739,
+              324.2790332446809,
+              258.1025711206897,
+              205.19945625,
+              199.7356831597222
+            ],
+            "confidence99_9": [
+              -4.174260274679625,
+              542.7754235455864
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 23.719226456222618,
+            "min": 23.643575960090363,
+            "q1": 23.72060243844697,
+            "median": 23.726611742424243,
+            "q3": 23.747199408143942,
+            "max": 23.758142732007574,
+            "samples": [
+              23.747199408143942,
+              23.726611742424243,
+              23.643575960090363,
+              23.72060243844697,
+              23.758142732007574
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 284.2359730557472,
+            "min": 244.90331201171875,
+            "q1": 258.53364566115704,
+            "median": 263.0454028361345,
+            "q3": 315.8590503778338,
+            "max": 338.8384543918919,
+            "samples": [
+              315.8590503778338,
+              338.8384543918919,
+              263.0454028361345,
+              244.90331201171875,
+              258.53364566115704
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "partners",
+        "params": {
+          "depth": "16",
+          "partnerCount": "8"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 343.7534112881488,
+            "min": 243.20597975352112,
+            "q1": 268.4543515625,
+            "median": 324.7555,
+            "q3": 410.0363607954545,
+            "max": 472.3148643292683,
+            "samples": [
+              472.3148643292683,
+              410.0363607954545,
+              324.7555,
+              268.4543515625,
+              243.20597975352112
+            ],
+            "confidence99_9": [
+              -26.90047868877184,
+              714.4073012650695
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 29.4994400293169,
+            "min": 29.376243920347743,
+            "q1": 29.387976327537594,
+            "median": 29.536168996710526,
+            "q3": 29.59321309777462,
+            "max": 29.603597804214015,
+            "samples": [
+              29.387976327537594,
+              29.59321309777462,
+              29.376243920347743,
+              29.603597804214015,
+              29.536168996710526
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 319.6570266964592,
+            "min": 271.31841314935065,
+            "q1": 299.74489144736845,
+            "median": 316.4508791035354,
+            "q3": 324.002625322165,
+            "max": 386.7683244598765,
+            "samples": [
+              386.7683244598765,
+              271.31841314935065,
+              316.4508791035354,
+              299.74489144736845,
+              324.002625322165
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "partners",
+        "params": {
+          "depth": "256",
+          "partnerCount": "3"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 2049.107075855655,
+            "min": 1641.5467008928572,
+            "q1": 1652.0671550925927,
+            "median": 1709.6144560185185,
+            "q3": 2503.7120243055556,
+            "max": 2738.59504296875,
+            "samples": [
+              2738.59504296875,
+              2503.7120243055556,
+              1652.0671550925927,
+              1709.6144560185185,
+              1641.5467008928572
+            ],
+            "confidence99_9": [
+              10.573204462040849,
+              4087.6409472492687
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 129.7406854008959,
+            "min": 129.15199741735537,
+            "q1": 129.36617833161156,
+            "median": 129.3801656766529,
+            "q3": 129.47226743285123,
+            "max": 131.3328181460084,
+            "samples": [
+              129.47226743285123,
+              129.15199741735537,
+              131.3328181460084,
+              129.3801656766529,
+              129.36617833161156
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 1986.1041237876516,
+            "min": 1977.3666062992127,
+            "q1": 1977.7465078740156,
+            "median": 1983.599149606299,
+            "q3": 1990.9717519841272,
+            "max": 2000.8366031746032,
+            "samples": [
+              1977.3666062992127,
+              1977.7465078740156,
+              1983.599149606299,
+              1990.9717519841272,
+              2000.8366031746032
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "partners",
+        "params": {
+          "depth": "256",
+          "partnerCount": "8"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 2325.0869142642196,
+            "min": 1668.983747767857,
+            "q1": 1754.5539699074075,
+            "median": 2283.004403125,
+            "q3": 2862.7884921875,
+            "max": 3056.103958333333,
+            "samples": [
+              3056.103958333333,
+              2862.7884921875,
+              2283.004403125,
+              1668.983747767857,
+              1754.5539699074075
+            ],
+            "confidence99_9": [
+              -95.96932153229045,
+              4746.14315006073
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 134.78684661550434,
+            "min": 134.5235233707265,
+            "q1": 134.54165838675212,
+            "median": 134.74122804418104,
+            "q3": 134.84026535560344,
+            "max": 135.28755792025862,
+            "samples": [
+              134.74122804418104,
+              135.28755792025862,
+              134.5235233707265,
+              134.84026535560344,
+              134.54165838675212
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 2071.8502987061374,
+            "min": 2065.2245327868854,
+            "q1": 2070.715479338843,
+            "median": 2071.404626033058,
+            "q3": 2072.342535123967,
+            "max": 2079.564320247934,
+            "samples": [
+              2065.2245327868854,
+              2070.715479338843,
+              2079.564320247934,
+              2072.342535123967,
+              2071.404626033058
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "receiverShapes",
+        "params": {
+          "callCount": "256",
+          "receiverClasses": "1"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 761.6595248463897,
+            "min": 595.2865977272727,
+            "q1": 618.8430355392156,
+            "median": 621.1672641509434,
+            "q3": 924.51053125,
+            "max": 1048.4901955645162,
+            "samples": [
+              1048.4901955645162,
+              924.51053125,
+              618.8430355392156,
+              595.2865977272727,
+              621.1672641509434
+            ],
+            "confidence99_9": [
+              -47.449694139715575,
+              1570.768743832495
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 26.865659359063713,
+            "min": 26.282494153733218,
+            "q1": 26.35899449454698,
+            "median": 26.37499006396812,
+            "q3": 26.46871291701858,
+            "max": 28.84310516605166,
+            "samples": [
+              26.35899449454698,
+              26.37499006396812,
+              26.282494153733218,
+              26.46871291701858,
+              28.84310516605166
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 296.975226309293,
+            "min": 264.8615812236287,
+            "q1": 269.6803432112069,
+            "median": 286.19493892045455,
+            "q3": 303.3129197716346,
+            "max": 360.82634841954024,
+            "samples": [
+              360.82634841954024,
+              269.6803432112069,
+              264.8615812236287,
+              286.19493892045455,
+              303.3129197716346
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "receiverShapes",
+        "params": {
+          "callCount": "256",
+          "receiverClasses": "16"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 1070.96980440226,
+            "min": 840.7657930555556,
+            "q1": 879.4727325581396,
+            "median": 903.2598734756098,
+            "q3": 1096.312044117647,
+            "max": 1635.038578804348,
+            "samples": [
+              1635.038578804348,
+              1096.312044117647,
+              903.2598734756098,
+              840.7657930555556,
+              879.4727325581396
+            ],
+            "confidence99_9": [
+              -201.2112836172971,
+              2343.150892421817
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 130.07502334839876,
+            "min": 129.55721113119836,
+            "q1": 129.92373450413223,
+            "median": 130.02367032541324,
+            "q3": 130.33099544270834,
+            "max": 130.53950533854166,
+            "samples": [
+              129.92373450413223,
+              130.53950533854166,
+              130.33099544270834,
+              130.02367032541324,
+              129.55721113119836
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 2054.5264903629904,
+            "min": 1594.7766028481012,
+            "q1": 1924.3832557692306,
+            "median": 2028.5278548387096,
+            "q3": 2063.703012295082,
+            "max": 2661.24172606383,
+            "samples": [
+              2661.24172606383,
+              2063.703012295082,
+              1924.3832557692306,
+              1594.7766028481012,
+              2028.5278548387096
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "receiverShapes",
+        "params": {
+          "callCount": "256",
+          "receiverClasses": "4"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 887.7472875949491,
+            "min": 668.9121752450981,
+            "q1": 671.0896801470589,
+            "median": 779.5064680232558,
+            "q3": 1126.1877016129033,
+            "max": 1193.0404129464287,
+            "samples": [
+              1193.0404129464287,
+              1126.1877016129033,
+              779.5064680232558,
+              671.0896801470589,
+              668.9121752450981
+            ],
+            "confidence99_9": [
+              -87.54397786724269,
+              1863.0385530571407
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 53.16785984326163,
+            "min": 53.02789400337838,
+            "q1": 53.108449324324326,
+            "median": 53.161097523384356,
+            "q3": 53.25229081632653,
+            "max": 53.28956754889455,
+            "samples": [
+              53.02789400337838,
+              53.108449324324326,
+              53.28956754889455,
+              53.161097523384356,
+              53.25229081632653
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 529.7523158549566,
+            "min": 424.56953505067565,
+            "q1": 504.8133991935484,
+            "median": 514.7992914959017,
+            "q3": 564.4554262387387,
+            "max": 640.1239272959183,
+            "samples": [
+              424.56953505067565,
+              514.7992914959017,
+              564.4554262387387,
+              640.1239272959183,
+              504.8133991935484
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "simple",
+        "params": {
+          "depth": "16"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 170.76941712956048,
+            "min": 124.41066617647058,
+            "q1": 146.18997945205479,
+            "median": 150.86105606617647,
+            "q3": 211.3169579326923,
+            "max": 221.06842602040817,
+            "samples": [
+              221.06842602040817,
+              211.3169579326923,
+              150.86105606617647,
+              146.18997945205479,
+              124.41066617647058
+            ],
+            "confidence99_9": [
+              6.002811748248575,
+              335.5360225108724
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 15.002497255028223,
+            "min": 14.804140269886364,
+            "q1": 14.846714917732008,
+            "median": 14.96291301884542,
+            "q3": 15.17003433866279,
+            "max": 15.228683730014534,
+            "samples": [
+              14.846714917732008,
+              15.17003433866279,
+              15.228683730014534,
+              14.96291301884542,
+              14.804140269886364
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 196.94029066284097,
+            "min": 172.28430460164836,
+            "q1": 176.24686358848317,
+            "median": 177.17837994350285,
+            "q3": 224.33907075892859,
+            "max": 234.6528344216418,
+            "samples": [
+              224.33907075892859,
+              234.6528344216418,
+              172.28430460164836,
+              176.24686358848317,
+              177.17837994350285
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "simple",
+        "params": {
+          "depth": "256"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 1681.1200194388264,
+            "min": 1281.0450625,
+            "q1": 1381.7283608870969,
+            "median": 1476.0930797413794,
+            "q3": 1920.6052954545455,
+            "max": 2346.128298611111,
+            "samples": [
+              2346.128298611111,
+              1920.6052954545455,
+              1476.0930797413794,
+              1381.7283608870969,
+              1281.0450625
+            ],
+            "confidence99_9": [
+              -31.573280310397877,
+              3393.8133191880506
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 123.72549116731503,
+            "min": 123.09300467519685,
+            "q1": 123.14968159448819,
+            "median": 123.8891439468504,
+            "q3": 124.01984064980158,
+            "max": 124.4757849702381,
+            "samples": [
+              124.01984064980158,
+              123.8891439468504,
+              124.4757849702381,
+              123.09300467519685,
+              123.14968159448819
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 1971.2264077066561,
+            "min": 1949.298746124031,
+            "q1": 1965.95794140625,
+            "median": 1970.3487381889763,
+            "q3": 1972.7475354330709,
+            "max": 1997.7790773809525,
+            "samples": [
+              1970.3487381889763,
+              1972.7475354330709,
+              1997.7790773809525,
+              1949.298746124031,
+              1965.95794140625
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "superChain",
+        "params": {
+          "depth": "16",
+          "hierarchyDepth": "32"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 2874.4609924480046,
+            "min": 2156.424296195652,
+            "q1": 2291.8434404761906,
+            "median": 2334.456806818182,
+            "q3": 3274.2857625,
+            "max": 4315.29465625,
+            "samples": [
+              4315.29465625,
+              3274.2857625,
+              2291.8434404761906,
+              2334.456806818182,
+              2156.424296195652
+            ],
+            "confidence99_9": [
+              -666.5018076498695,
+              6415.423792545878
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 827.7509688273353,
+            "min": 824.4371685855263,
+            "q1": 825.8632417763158,
+            "median": 827.8724461920531,
+            "q3": 828.8606307947019,
+            "max": 831.7213567880794,
+            "samples": [
+              824.4371685855263,
+              825.8632417763158,
+              828.8606307947019,
+              831.7213567880794,
+              827.8724461920531
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 3491.945182434926,
+            "min": 3477.858746527778,
+            "q1": 3487.012482638889,
+            "median": 3494.471295138889,
+            "q3": 3494.845534722222,
+            "max": 3505.5378531468527,
+            "samples": [
+              3494.845534722222,
+              3494.471295138889,
+              3487.012482638889,
+              3505.5378531468527,
+              3477.858746527778
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "superChain",
+        "params": {
+          "depth": "16",
+          "hierarchyDepth": "4"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 644.8109292459193,
+            "min": 414.6878296370968,
+            "q1": 509.25765,
+            "median": 706.7536216216216,
+            "q3": 743.0106961805556,
+            "max": 850.3448487903225,
+            "samples": [
+              850.3448487903225,
+              743.0106961805556,
+              706.7536216216216,
+              509.25765,
+              414.6878296370968
+            ],
+            "confidence99_9": [
+              -41.467420510552074,
+              1331.0892790023906
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 59.18393450396232,
+            "min": 59.03152243890977,
+            "q1": 59.04358969689849,
+            "median": 59.118123061560155,
+            "q3": 59.28811138731061,
+            "max": 59.438325935132575,
+            "samples": [
+              59.03152243890977,
+              59.28811138731061,
+              59.04358969689849,
+              59.118123061560155,
+              59.438325935132575
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 509.71093335584993,
+            "min": 480.8270283653846,
+            "q1": 483.80291298076924,
+            "median": 501.291051,
+            "q3": 539.0706276939655,
+            "max": 543.5630467391304,
+            "samples": [
+              543.5630467391304,
+              539.0706276939655,
+              501.291051,
+              480.8270283653846,
+              483.80291298076924
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "superChain",
+        "params": {
+          "depth": "256",
+          "hierarchyDepth": "32"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 172563.54387500003,
+            "min": 169174.235375,
+            "q1": 170027.0735625,
+            "median": 172820.8646875,
+            "q3": 174859.1521875,
+            "max": 175936.3935625,
+            "samples": [
+              175936.3935625,
+              174859.1521875,
+              169174.235375,
+              172820.8646875,
+              170027.0735625
+            ],
+            "confidence99_9": [
+              161233.02161350814,
+              183894.06613649192
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 3665.9773736271773,
+            "min": 3557.8945177304963,
+            "q1": 3583.6295821428575,
+            "median": 3583.8032392857144,
+            "q3": 3609.342834532374,
+            "max": 3995.2166944444443,
+            "samples": [
+              3609.342834532374,
+              3583.6295821428575,
+              3557.8945177304963,
+              3583.8032392857144,
+              3995.2166944444443
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 36128.53674285714,
+            "min": 35818.39910714286,
+            "q1": 35828.24467857143,
+            "median": 36063.66235714286,
+            "q3": 36446.97410714286,
+            "max": 36485.403464285715,
+            "samples": [
+              36063.66235714286,
+              36485.403464285715,
+              35818.39910714286,
+              36446.97410714286,
+              35828.24467857143
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "superChain",
+        "params": {
+          "depth": "256",
+          "hierarchyDepth": "4"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 9770.1666,
+            "min": 8531.069946428572,
+            "q1": 9315.252678571429,
+            "median": 9864.64125,
+            "q3": 10463.515520833333,
+            "max": 10676.353604166667,
+            "samples": [
+              9864.64125,
+              10676.353604166667,
+              9315.252678571429,
+              10463.515520833333,
+              8531.069946428572
+            ],
+            "confidence99_9": [
+              6406.005817811998,
+              13134.327382188003
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 457.0716850933566,
+            "min": 455.2388985507246,
+            "q1": 456.25564005474456,
+            "median": 456.8490278284671,
+            "q3": 458.3402030109489,
+            "max": 458.6746560218978,
+            "samples": [
+              458.3402030109489,
+              455.2388985507246,
+              456.25564005474456,
+              458.6746560218978,
+              456.8490278284671
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 6057.628274838319,
+            "min": 6022.240053892216,
+            "q1": 6035.515150602409,
+            "median": 6073.624666666667,
+            "q3": 6078.22069090909,
+            "max": 6078.540812121212,
+            "samples": [
+              6078.22069090909,
+              6035.515150602409,
+              6073.624666666667,
+              6022.240053892216,
+              6078.540812121212
+            ],
+            "runtime": {
+              "python": "3.12.8 (Fri Oct 16 19:39:32 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-6.17.0-1022-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      }
+    ],
+    "diagnostics": [
+      {
+        "name": "machineSetup",
+        "params": {},
+        "timing_scope": "runtime-setup-v1",
+        "native_gc": null,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 0.012607171676200627,
+            "min": 0.01257376009972166,
+            "q1": 0.012583794631397673,
+            "median": 0.012610036462252576,
+            "q3": 0.012631193750896443,
+            "max": 0.012637073436734786,
+            "samples": [
+              0.012631193750896443,
+              0.012637073436734786,
+              0.012583794631397673,
+              0.012610036462252576,
+              0.01257376009972166
+            ],
+            "confidence99_9": [
+              0.012499247083790592,
+              0.012715096268610662
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "runtime-setup-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "seedSetup",
+        "params": {},
+        "timing_scope": "runtime-setup-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 756.3737040080504,
+            "min": 579.8458337195829,
+            "q1": 589.391078281342,
+            "median": 709.1461835577604,
+            "q3": 894.8403821428572,
+            "max": 1008.6450423387097,
+            "samples": [
+              1008.6450423387097,
+              894.8403821428572,
+              709.1461835577604,
+              579.8458337195829,
+              589.391078281342
+            ],
+            "confidence99_9": [
+              25.538188404289144,
+              1487.2092196118115
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "runtime-setup-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "worldSetup",
+        "params": {},
+        "timing_scope": "runtime-setup-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 723.9239453768967,
+            "min": 561.2779074074074,
+            "q1": 589.5807633902295,
+            "median": 645.8307023195877,
+            "q3": 804.0624300643087,
+            "max": 1018.8679237029502,
+            "samples": [
+              1018.8679237029502,
+              804.0624300643087,
+              561.2779074074074,
+              645.8307023195877,
+              589.5807633902295
+            ],
+            "confidence99_9": [
+              -6.721169122364699,
+              1454.569059876158
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "runtime-setup-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "closureSend",
+        "params": {},
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 776.823768962822,
+            "min": 563.9653957158963,
+            "q1": 674.6496341627437,
+            "median": 682.2289168370825,
+            "q3": 943.7069265536724,
+            "max": 1019.5679715447154,
+            "samples": [
+              1019.5679715447154,
+              943.7069265536724,
+              682.2289168370825,
+              674.6496341627437,
+              563.9653957158963
+            ],
+            "confidence99_9": [
+              27.502007330428,
+              1526.1455305952159
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "families",
+        "params": {
+          "depth": "16",
+          "nestingDepth": "1"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 1413.359403414092,
+            "min": 995.3673108242303,
+            "q1": 1101.883789878988,
+            "median": 1493.9188460388639,
+            "q3": 1646.4795730706076,
+            "max": 1829.1474972577696,
+            "samples": [
+              1829.1474972577696,
+              1646.4795730706076,
+              1493.9188460388639,
+              1101.883789878988,
+              995.3673108242303
+            ],
+            "confidence99_9": [
+              44.55294302339189,
+              2782.165863804792
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "families",
+        "params": {
+          "depth": "16",
+          "nestingDepth": "8"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 1808.0270319407705,
+            "min": 1213.9461680773882,
+            "q1": 1406.687908707865,
+            "median": 1855.872314814815,
+            "q3": 2085.3351517671517,
+            "max": 2478.2936163366335,
+            "samples": [
+              2478.2936163366335,
+              2085.3351517671517,
+              1855.872314814815,
+              1406.687908707865,
+              1213.9461680773882
+            ],
+            "confidence99_9": [
+              -157.73652120358884,
+              3773.79058508513
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "families",
+        "params": {
+          "depth": "256",
+          "nestingDepth": "1"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 3906.4125749101613,
+            "min": 2854.9593874643874,
+            "q1": 2917.4778895348836,
+            "median": 3540.212932862191,
+            "q3": 4957.940753694581,
+            "max": 5261.471910994765,
+            "samples": [
+              5261.471910994765,
+              4957.940753694581,
+              3540.212932862191,
+              2917.4778895348836,
+              2854.9593874643874
+            ],
+            "confidence99_9": [
+              -466.88543259177914,
+              8279.710582412103
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "families",
+        "params": {
+          "depth": "256",
+          "nestingDepth": "8"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 5539.076235977016,
+            "min": 4069.6931943319837,
+            "q1": 4121.51495473251,
+            "median": 4867.53122815534,
+            "q3": 7152.173407142857,
+            "max": 7484.468395522388,
+            "samples": [
+              7484.468395522388,
+              7152.173407142857,
+              4867.53122815534,
+              4121.51495473251,
+              4069.6931943319837
+            ],
+            "confidence99_9": [
+              -848.2856117547954,
+              11926.438083708828
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "inherited",
+        "params": {
+          "depth": "16",
+          "hierarchyDepth": "32"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 1468.1115195944544,
+            "min": 1053.6399064143006,
+            "q1": 1071.8463265524624,
+            "median": 1492.4206154992548,
+            "q3": 1704.2724591836734,
+            "max": 2018.3782903225806,
+            "samples": [
+              2018.3782903225806,
+              1704.2724591836734,
+              1492.4206154992548,
+              1071.8463265524624,
+              1053.6399064143006
+            ],
+            "confidence99_9": [
+              -128.82584552560093,
+              3065.0488847145098
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "inherited",
+        "params": {
+          "depth": "16",
+          "hierarchyDepth": "4"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 1157.4286686578396,
+            "min": 841.178550797649,
+            "q1": 966.435303088803,
+            "median": 1134.199443438914,
+            "q3": 1373.1550958904108,
+            "max": 1472.1749500734215,
+            "samples": [
+              1472.1749500734215,
+              1373.1550958904108,
+              1134.199443438914,
+              966.435303088803,
+              841.178550797649
+            ],
+            "confidence99_9": [
+              133.86096005480238,
+              2180.9963772608767
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "inherited",
+        "params": {
+          "depth": "256",
+          "hierarchyDepth": "32"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 3891.2081993983425,
+            "min": 2847.7039119318183,
+            "q1": 2863.24762,
+            "median": 3565.7846725978648,
+            "q3": 4962.008349753694,
+            "max": 5217.296442708333,
+            "samples": [
+              5217.296442708333,
+              4962.008349753694,
+              3565.7846725978648,
+              2863.24762,
+              2847.7039119318183
+            ],
+            "confidence99_9": [
+              -480.8531790780721,
+              8263.269577874757
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "inherited",
+        "params": {
+          "depth": "256",
+          "hierarchyDepth": "4"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 3058.133903085377,
+            "min": 2079.0187593360997,
+            "q1": 2238.414964285714,
+            "median": 3047.697462006079,
+            "q3": 3696.2157011070112,
+            "max": 4229.3226286919835,
+            "samples": [
+              4229.3226286919835,
+              3696.2157011070112,
+              3047.697462006079,
+              2238.414964285714,
+              2079.0187593360997
+            ],
+            "confidence99_9": [
+              -496.9645980080095,
+              6613.232404178763
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "literal",
+        "params": {},
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 780.4619979143417,
+            "min": 611.1993520439293,
+            "q1": 679.292133152174,
+            "median": 725.7893241479333,
+            "q3": 923.9744930875576,
+            "max": 962.0546871401151,
+            "samples": [
+              962.0546871401151,
+              923.9744930875576,
+              725.7893241479333,
+              611.1993520439293,
+              679.292133152174
+            ],
+            "confidence99_9": [
+              185.64647567855593,
+              1375.2775201501277
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "methodSend",
+        "params": {},
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 798.7748514773591,
+            "min": 596.2830423122765,
+            "q1": 659.1361824769433,
+            "median": 769.4625537634408,
+            "q3": 959.0915291866029,
+            "max": 1009.9009496475327,
+            "samples": [
+              1009.9009496475327,
+              959.0915291866029,
+              769.4625537634408,
+              596.2830423122765,
+              659.1361824769433
+            ],
+            "confidence99_9": [
+              100.2337404278943,
+              1497.315962526824
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "mutual",
+        "params": {
+          "depth": "16"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 1073.9842672481714,
+            "min": 748.4747576664173,
+            "q1": 896.7659274193549,
+            "median": 1176.7941352941177,
+            "q3": 1222.3312655298416,
+            "max": 1325.5552503311258,
+            "samples": [
+              1325.5552503311258,
+              1222.3312655298416,
+              1176.7941352941177,
+              896.7659274193549,
+              748.4747576664173
+            ],
+            "confidence99_9": [
+              144.17645864588326,
+              2003.7920758504595
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "mutual",
+        "params": {
+          "depth": "256"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 2649.4680961843364,
+            "min": 1931.5600752895753,
+            "q1": 2020.2725463709678,
+            "median": 2301.3493747126436,
+            "q3": 3347.088364548495,
+            "max": 3647.07012,
+            "samples": [
+              3647.07012,
+              3347.088364548495,
+              2301.3493747126436,
+              1931.5600752895753,
+              2020.2725463709678
+            ],
+            "confidence99_9": [
+              -403.4572426824525,
+              5702.393435051125
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "partners",
+        "params": {
+          "depth": "16",
+          "partnerCount": "3"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 1174.2651295210355,
+            "min": 876.119211033275,
+            "q1": 959.6873923444977,
+            "median": 1143.1243257142858,
+            "q3": 1432.316507142857,
+            "max": 1460.0782113702624,
+            "samples": [
+              1460.0782113702624,
+              1432.316507142857,
+              1143.1243257142858,
+              959.6873923444977,
+              876.119211033275
+            ],
+            "confidence99_9": [
+              147.89700098157186,
+              2200.6332580604994
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "partners",
+        "params": {
+          "depth": "16",
+          "partnerCount": "8"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 1254.8541566871504,
+            "min": 925.5234935304991,
+            "q1": 953.5364966698382,
+            "median": 1270.911203303685,
+            "q3": 1527.900417682927,
+            "max": 1596.3991722488038,
+            "samples": [
+              1596.3991722488038,
+              1527.900417682927,
+              1270.911203303685,
+              925.5234935304991,
+              953.5364966698382
+            ],
+            "confidence99_9": [
+              51.387612064344694,
+              2458.3207013099563
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "partners",
+        "params": {
+          "depth": "256",
+          "partnerCount": "3"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 3183.7724813771947,
+            "min": 2299.582016055046,
+            "q1": 2363.9685849056605,
+            "median": 3107.5264613003096,
+            "q3": 3808.3609809885934,
+            "max": 4339.4243636363635,
+            "samples": [
+              4339.4243636363635,
+              3808.3609809885934,
+              3107.5264613003096,
+              2363.9685849056605,
+              2299.582016055046
+            ],
+            "confidence99_9": [
+              -252.44274843316362,
+              6619.987711187553
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "partners",
+        "params": {
+          "depth": "256",
+          "partnerCount": "8"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 3265.775255846782,
+            "min": 2346.7287119437938,
+            "q1": 2619.660505235602,
+            "median": 3051.670454268293,
+            "q3": 3778.323924528302,
+            "max": 4532.4926832579185,
+            "samples": [
+              4532.4926832579185,
+              3778.323924528302,
+              3051.670454268293,
+              2619.660505235602,
+              2346.7287119437938
+            ],
+            "confidence99_9": [
+              -164.99012556127718,
+              6696.5406372548405
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "simple",
+        "params": {
+          "depth": "16"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 1064.9893634391974,
+            "min": 746.9098189269747,
+            "q1": 879.8223708260106,
+            "median": 1140.0632693181817,
+            "q3": 1261.6186469849247,
+            "max": 1296.5327111398963,
+            "samples": [
+              1296.5327111398963,
+              1261.6186469849247,
+              1140.0632693181817,
+              879.8223708260106,
+              746.9098189269747
+            ],
+            "confidence99_9": [
+              134.8916494423073,
+              1995.0870774360874
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "simple",
+        "params": {
+          "depth": "256"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 2583.62147237296,
+            "min": 2024.3999656565657,
+            "q1": 2082.824132505176,
+            "median": 2405.193634615385,
+            "q3": 2894.889534682081,
+            "max": 3510.8000944055943,
+            "samples": [
+              3510.8000944055943,
+              2894.889534682081,
+              2405.193634615385,
+              2082.824132505176,
+              2024.3999656565657
+            ],
+            "confidence99_9": [
+              185.1376456371895,
+              4982.105299108731
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "superChain",
+        "params": {
+          "depth": "16",
+          "hierarchyDepth": "32"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 4278.035494818657,
+            "min": 3027.8961087613293,
+            "q1": 3090.116336419753,
+            "median": 4349.610556521739,
+            "q3": 5357.3095828877,
+            "max": 5565.244889502763,
+            "samples": [
+              5565.244889502763,
+              5357.3095828877,
+              4349.610556521739,
+              3090.116336419753,
+              3027.8961087613293
+            ],
+            "confidence99_9": [
+              -359.099152214435,
+              8915.170141851748
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "superChain",
+        "params": {
+          "depth": "16",
+          "hierarchyDepth": "4"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 1467.3813790697554,
+            "min": 1051.9684195583595,
+            "q1": 1105.9994696132596,
+            "median": 1494.2221639344261,
+            "q3": 1710.0875187713311,
+            "max": 1974.6293234714003,
+            "samples": [
+              1974.6293234714003,
+              1710.0875187713311,
+              1494.2221639344261,
+              1105.9994696132596,
+              1051.9684195583595
+            ],
+            "confidence99_9": [
+              -48.73110833761075,
+              2983.4938664771216
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "superChain",
+        "params": {
+          "depth": "256",
+          "hierarchyDepth": "32"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 178093.53025238094,
+            "min": 163329.96642857144,
+            "q1": 172116.31883333332,
+            "median": 182280.19333333333,
+            "q3": 184396.454,
+            "max": 188344.71866666665,
+            "samples": [
+              188344.71866666665,
+              182280.19333333333,
+              172116.31883333332,
+              184396.454,
+              163329.96642857144
+            ],
+            "confidence99_9": [
+              138823.01549398643,
+              217364.04501077544
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "superChain",
+        "params": {
+          "depth": "256",
+          "hierarchyDepth": "4"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 10894.6154333864,
+            "min": 10195.565919191919,
+            "q1": 10332.850226804123,
+            "median": 10459.331583333333,
+            "q3": 11556.810413793104,
+            "max": 11928.519023809524,
+            "samples": [
+              11928.519023809524,
+              11556.810413793104,
+              10459.331583333333,
+              10332.850226804123,
+              10195.565919191919
+            ],
+            "confidence99_9": [
+              7849.6950215685665,
+              13939.535845204233
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      }
+    ],
+    "diagnostic_provenance": {
+      "runtime-setup-v1": {
+        "schema": 2,
+        "suite": "runtime-setup",
+        "timing_scope": "runtime-setup-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "payload_batch_sizes": {},
+        "score_normalization": "per-invocation",
+        "source_sha256": "2489ccf1382f91cc05efe13b9d928501ec3caa573ecaba3fe498522c6a32710f",
+        "host": "runnervm8k3b6",
+        "revision": "c1c7251e34cbec11de3dc6f05b37f94577253d10",
+        "worktree_dirty": false,
+        "started": "2026-10-16T19:31:07.781406+00:00",
+        "jmh_sha256": "0efd3a17ea7a8154e0807e1bd764a4786f22ad33fa49ff72b1d6c218e5b55235",
+        "completed": "2026-10-16T19:31:33.621295+00:00"
+      },
+      "fresh-world-v1": {
+        "schema": 2,
+        "suite": "fresh-world",
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "payload_batch_sizes": {},
+        "score_normalization": "per-invocation",
+        "source_sha256": "2489ccf1382f91cc05efe13b9d928501ec3caa573ecaba3fe498522c6a32710f",
+        "host": "runnervm8k3b6",
+        "revision": "c1c7251e34cbec11de3dc6f05b37f94577253d10",
+        "worktree_dirty": false,
+        "started": "2026-10-16T19:31:43.448226+00:00",
+        "jmh_sha256": "064859b88e5d7b906be7496495fbb1407e5a7947da29db429d3a1553f17a72ad",
+        "completed": "2026-10-16T19:35:06.414490+00:00"
+      }
+    },
+    "id": "38954486835-1",
+    "branch": "main",
+    "commit": {
+      "id": "c1c7251e34cbec11de3dc6f05b37f94577253d10",
+      "url": "https://github.com/plug-obp/variohyve/commit/c1c7251e34cbec11de3dc6f05b37f94577253d10",
+      "message": "release: prepare 0.3.1 after Windows validation fixes"
+    },
+    "run_url": "https://github.com/plug-obp/variohyve/actions/runs/38954486835/attempts/1"
   }
 ];
