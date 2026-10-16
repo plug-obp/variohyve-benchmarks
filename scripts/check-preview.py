@@ -13,6 +13,8 @@ class Page(HTMLParser):
     def __init__(self, source):
         super().__init__(convert_charrefs=True)
         self.links, self.ids, self.blocks = [], set(), []
+        self.anchors, self.paragraphs = [], []
+        self.anchor, self.paragraph = None, None
         self.pre, self.code = False, None
         self.feed(source)
 
@@ -24,6 +26,13 @@ class Page(HTMLParser):
             target = attrs.get('href', attrs.get('src'))
             if target:
                 self.links.append(target)
+        if tag == 'a':
+            self.anchor = {'attrs': attrs, 'text': ''}
+            self.anchors.append(self.anchor)
+            if self.paragraph is not None:
+                self.paragraph['anchors'].append(self.anchor)
+        if tag == 'p':
+            self.paragraph = {'text': '', 'anchors': []}
         if tag == 'pre':
             self.pre = True
         if tag == 'code' and self.pre:
@@ -32,6 +41,11 @@ class Page(HTMLParser):
             self.code['tokens'].extend(attrs.get('class', '').split())
 
     def handle_endtag(self, tag):
+        if tag == 'a':
+            self.anchor = None
+        if tag == 'p' and self.paragraph is not None:
+            self.paragraphs.append(self.paragraph)
+            self.paragraph = None
         if tag == 'code' and self.code is not None:
             self.blocks.append(self.code)
             self.code = None
@@ -39,13 +53,101 @@ class Page(HTMLParser):
             self.pre = False
 
     def handle_data(self, text):
+        if self.anchor is not None:
+            self.anchor['text'] += text
+        if self.paragraph is not None:
+            self.paragraph['text'] += text
         if self.code is not None:
             self.code['text'] += text
 
 
+def check_downloads(markdown, source, learn, rendered, rendered_learn, page):
+    """A promised download must retain its source path, bytes and browser action."""
+    count = 0
+    for match in re.finditer(r'\[(Download [^\]\n]+)\]\((<[^>\n]+>|[^)\s]+)\)', markdown):
+        label, href = match.groups()
+        label = label.replace('`', '')
+        url = urlsplit(href.strip('<>'))
+        if url.scheme or url.netloc:
+            continue
+        original = (source.parent / unquote(url.path)).resolve()
+        assert original.is_relative_to(learn.resolve()), f'{source}: download escapes tutorial: {href}'
+        assert original.is_file(), f'{source}: missing download source: {href}'
+        expected = (rendered_learn / original.relative_to(learn.resolve())).resolve()
+        candidates = [anchor for anchor in page.anchors if ' '.join(anchor['text'].split()) == label]
+        matching = []
+        for anchor in candidates:
+            target_url = urlsplit(anchor['attrs'].get('href', ''))
+            if not target_url.scheme and not target_url.netloc:
+                target = (rendered.parent / unquote(target_url.path)).resolve()
+                if target == expected:
+                    matching.append(anchor)
+        assert matching, f'{source}: missing original download target for {label}: {href}'
+        assert any('download' in anchor['attrs'] and 'button' in anchor['attrs'].get('class', '').split()
+                   for anchor in matching), f'{source}: {label} needs a download attribute and button class'
+        assert expected.is_file(), f'{source}: missing published download: {href}'
+        assert expected.read_bytes() == original.read_bytes(), f'{source}: downloaded bytes differ: {href}'
+        count += 1
+    return count
+
+
+def check_full_files(markdown, source, learn):
+    marked = re.compile(r'<!-- example-file: ([^\n]+) -->\s*\n```[^\n]*\n(.*?)^```\s*$', re.M | re.S)
+    matches = list(marked.finditer(markdown))
+    assert len(matches) == markdown.count('<!-- example-file:'), f'{source}: complete-file marker must directly precede a fence'
+    for match in matches:
+        original = (learn / match[1]).resolve()
+        assert original.is_relative_to(learn.resolve()), f'{source}: complete-file source escapes tutorial'
+        assert original.is_file(), f'{source}: missing complete-file source: {match[1]}'
+        assert match[2] == original.read_bytes().decode('utf-8'), f'{source}: complete-file fence differs from {match[1]}'
+    return len(matches)
+
+
+def check_chapter_navigation(learn, rendered_learn, pages):
+    """Only require successors that belong to this tutorial's own chapter index."""
+    index = (learn / 'README.md').read_text()
+    chapters = re.findall(r'^\d+\.\s+\[[^\]]+\]\((\d{2}-[^/\n)]+\.md)\)', index, re.M)
+    checked = 0
+    for current, following in zip(chapters, chapters[1:]):
+        assert (learn / current).is_file() and (learn / following).is_file(), 'Chapter index names a missing source'
+        rendered = rendered_learn / Path(current).with_suffix('.html')
+        successor = (rendered_learn / Path(following).with_suffix('.html')).resolve()
+        page = pages[rendered]
+        next_links = [anchor['attrs'].get('href', '') for paragraph in page.paragraphs
+                      if ' '.join(paragraph['text'].split()).startswith('Next:')
+                      for anchor in paragraph['anchors']]
+        assert any(not urlsplit(href).scheme and not urlsplit(href).netloc
+                   and (rendered.parent / unquote(urlsplit(href).path)).resolve() == successor
+                   for href in next_links), f'{current}: missing Next link to {following}'
+        checked += 1
+    return checked
+
+
+def check_tutorial(learn, rendered_learn, pages):
+    checked = {'vh': 0, 'java': 0, 'downloads': 0, 'complete_files': 0, 'chapter_steps': 0}
+    for source in learn.rglob('*.md'):
+        relative = source.relative_to(learn)
+        target = rendered_learn / relative.with_name('index.html' if source.name == 'README.md' else source.stem + '.html')
+        page = pages[target]
+        markdown = source.read_bytes().decode('utf-8')
+        fences = re.findall(r'^```([^\n]*)\n(.*?)^```\s*$', markdown, re.M | re.S)
+        assert len(fences) == len(page.blocks), f'{source}: code block count differs'
+        for (language, code), rendered in zip(fences, page.blocks):
+            assert rendered['text'] == code, f'{source}: rendered code changed'
+            if language in ('vh', 'java'):
+                assert f'language-{language}' in rendered['classes'], f'{source}: wrong grammar'
+                assert any(token.startswith('hljs-') for token in rendered['tokens']), f'{source}: highlighting absent'
+                checked[language] += 1
+        checked['downloads'] += check_downloads(markdown, source, learn, target, rendered_learn, page)
+        checked['complete_files'] += check_full_files(markdown, source, learn)
+    checked['chapter_steps'] = check_chapter_navigation(learn, rendered_learn, pages)
+    assert checked['vh'] and checked['java'], 'Both languages must be exercised'
+    return checked
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--learn', type=Path, help='learn/ extracted from the selected release ZIP')
+    parser.add_argument('--learn', type=Path, help='lesson source tree matching the published tutorial revision')
     parser.add_argument('--version', help='release to compare with --learn and --assets (default: latest)')
     parser.add_argument('--assets', type=Path, help='download assets to check against manifest checksums')
     args = parser.parse_args()
@@ -69,7 +171,6 @@ def main():
         assert record['source']['commit'] == entry['source_commit']
         assert entry['pages'] == sorted(str(path.relative_to(archived)) for path in archived.rglob('*.html'))
     pages = {path: Page(path.read_text()) for path in preview.rglob('*.html')}
-    checked = {'vh': 0, 'java': 0}
     for path, page in pages.items():
         if path != preview / 'versions.html':
             page_version = path.relative_to(preview).parts[1] if path.is_relative_to(preview / 'versions') else index['latest']
@@ -89,20 +190,10 @@ def main():
             if url.fragment and target.suffix == '.html':
                 target_page = pages.get(target) or Page(target.read_text())
                 assert unquote(url.fragment) in target_page.ids, f'{path}: missing fragment {link}'
-    for source in args.learn.rglob('*.md') if args.learn else []:
-        relative = source.relative_to(args.learn)
-        target = release / 'learn' / relative.with_name('index.html' if source.name == 'README.md' else source.stem + '.html')
-        page = pages[target]
-        fences = re.findall(r'^```([^\n]*)\n(.*?)^```\s*$', source.read_text(), re.M | re.S)
-        assert len(fences) == len(page.blocks), f'{source}: code block count differs'
-        for (language, code), rendered in zip(fences, page.blocks):
-            assert rendered['text'] == code, f'{source}: rendered code changed'
-            if language in checked:
-                assert f'language-{language}' in rendered['classes'], f'{source}: wrong grammar'
-                assert any(token.startswith('hljs-') for token in rendered['tokens']), f'{source}: highlighting absent'
-                checked[language] += 1
-    if args.learn:
-        assert all(checked.values()), 'Both languages must be exercised'
+    checked = check_tutorial(args.learn, release / 'learn', pages) if args.learn else None
+    if args.learn and version == index['latest']:
+        archived = check_tutorial(args.learn, preview / 'versions' / version / 'learn', pages)
+        assert archived == checked, 'Latest default and its versioned tutorial disagree'
     index_html = (release / 'index.html').read_text()
     for asset in manifest['assets']:
         assert f'/v{version}/{asset["name"]}' in index_html, f'Missing release download: {asset["name"]}'
@@ -112,7 +203,8 @@ def main():
             assert hashlib.sha256(data).hexdigest() == asset['sha256']
     print(f'Preview structure checks passed: {len(versions)} releases, {len(pages)} pages.')
     if args.learn:
-        print(f'Source comparison passed: {checked["vh"]} VarioHyve and {checked["java"]} Java blocks preserve exact packaged source and have distinct language highlighting.')
+        print(f'Source comparison passed: {checked["vh"]} VarioHyve and {checked["java"]} Java blocks preserve exact source and have distinct language highlighting.')
+        print(f'Tutorial checks passed: {checked["downloads"]} download buttons, {checked["complete_files"]} complete-file excerpts, {checked["chapter_steps"]} chapter transitions.')
 
 
 if __name__ == '__main__':

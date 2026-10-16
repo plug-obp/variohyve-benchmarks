@@ -8,6 +8,26 @@ const references = {
   'vh-packaging/CUSTOM-ALIENS.md': 'custom-aliens.html'
 };
 
+function assignHeadingIds(tokens) {
+  // Use rendered inline text, so emphasis and link destinations do not enter IDs.
+  const plainText = children => (children || []).map(token => {
+    if (token.type === 'text' || token.type === 'code_inline') return token.content;
+    if (token.type === 'image') return plainText(token.children);
+    if (token.type === 'softbreak' || token.type === 'hardbreak') return ' ';
+    return '';
+  }).join('');
+  const used = new Set(['reference']); // The page's main/skip-link target.
+  for (let index = 0; index < tokens.length; index++) {
+    if (tokens[index].type !== 'heading_open') continue;
+    const base = plainText(tokens[index + 1]?.children).trim().toLowerCase()
+      .replace(/[^\p{L}\p{N}\p{M}_ -]/gu, '').replace(/ /g, '-');
+    let id = base;
+    for (let suffix = 1; used.has(id); suffix++) id = `${base}-${suffix}`;
+    used.add(id);
+    tokens[index].attrSet('id', id);
+  }
+}
+
 function referenceTarget(href, version, commit, sourceFile = 'docs/conformance.md') {
   if (/^(?:[a-z]+:|\/\/|#)/i.test(href)) return { href, privateSource: false };
   const hash = href.indexOf('#');
@@ -45,6 +65,7 @@ function render(sourceRepository, commit, version, destination, markdownModule) 
         return `<pre><code class="hljs language-${md.utils.escapeHtml(language)}">${highlighted}</code></pre>\n`;
       }
     });
+    md.core.ruler.push('reference_heading_ids', state => assignHeadingIds(state.tokens));
     const baseLink = md.renderer.rules.link_open || ((tokens, index, options, env, self) => self.renderToken(tokens, index, options));
     md.renderer.rules.link_open = (tokens, index, options, env, self) => {
       const token = tokens[index];
@@ -71,4 +92,4 @@ if (require.main === module) {
   }
   render(...process.argv.slice(2));
 }
-module.exports = { referenceTarget, render };
+module.exports = { referenceTarget, assignHeadingIds, render };
