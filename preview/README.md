@@ -26,7 +26,8 @@ VS Code extension, specification and release manifest to that revision. Keep
 actual platform validation distinct from checks not yet run.
 
 Stage a directory outside this checkout with `index.html`, `manifest.json`,
-`preview.css` and `learn/`. An optional `reference/` directory carries supplemental
+`preview.css` and `learn/`. Include `SHA256SUMS.txt` to preserve the release's
+checksum list with its download page. An optional `reference/` directory carries supplemental
 public documents with that same version. Write the matching release downloads and checksums in
 its manifest and download page. Render the tutorial from the extracted starter's
 `learn/` directory, supplying the staged manifest explicitly:

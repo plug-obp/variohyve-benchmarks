@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 RELEASE_FILES = ('index.html', 'manifest.json', 'preview.css', 'learn')
-OPTIONAL_RELEASE_FILES = ('reference',)
+OPTIONAL_RELEASE_FILES = ('reference', 'SHA256SUMS.txt')
 COPY_FILES = RELEASE_FILES + OPTIONAL_RELEASE_FILES
 VERSION = re.compile(r'^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$')
 BAR = re.compile(r'\n?<!-- version navigation -->.*?<!-- /version navigation -->\n?', re.S)

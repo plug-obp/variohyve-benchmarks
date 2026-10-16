@@ -5,11 +5,12 @@
 <script data-version-navigation src="../versions.js" defer></script>
 </head>
 <body><a class="skip" href="#lesson">Skip to lesson</a><header class="site-header wrap"><a class="wordmark" href="../">VarioHyve<span aria-hidden="true">.</span></a><nav aria-label="Tutorial navigation"><a href="./">All lessons</a><a href="../#downloads">Downloads</a></nav></header>
-<!-- version navigation --><div class="version-navigation wrap" data-version="0.2.0" data-page="learn/01-install.html"><span>Preview v0.2.0</span> · <a href="../versions.html">All tutorial versions</a></div><!-- /version navigation -->
+<!-- version navigation --><div class="version-navigation wrap" data-version="0.3.2" data-page="learn/01-install.html"><span>Preview v0.3.2</span> · <a href="../versions.html">All tutorial versions</a></div><!-- /version navigation -->
 
-<main id="lesson" class="lesson"><p class="eyebrow">LEARN VARIOHYVE · V0.2.0</p><h1>Install and say hello</h1>
+<main id="lesson" class="lesson"><p class="eyebrow">LEARN VARIOHYVE · V0.3.2</p><h1>Install and say hello</h1>
 <p>You need a Java 23 JDK and a matching VarioHyve starter archive and VS Code
-extension (<code>.vsix</code>). Use the artifacts supplied with this checkout or release.
+extension (<code>.vsix</code>). Get both from the
+<a href="https://obpcdl.org/variohyve-benchmarks/preview/versions/0.3.2/">matching public release downloads</a>.
 If you are building them yourself, follow the contributor commands below first.</p>
 <p>Extract the starter archive into a folder of your choice. It contains <code>bin</code>,
 <code>lib</code>, <code>contracts</code> and <code>learn</code>. Check your Java installation:</p>
@@ -53,7 +54,7 @@ and use <code>vh</code> from any directory.</p>
 <h2>Use VS Code</h2>
 <ol>
 <li>Open VS Code's Extensions view, choose <strong>Install from VSIX...</strong>, and select
-the matching <code>vh-lsp-vscode-0.3.0.vsix</code> artifact.</li>
+the matching <code>vh-lsp-vscode-0.4.0.vsix</code> artifact.</li>
 <li>Open the starter's <code>learn</code> folder and trust it when you want to run its code.</li>
 <li>If Java is not found, set <strong>Vh: Java Home</strong> (<code>vh.javaHome</code>) to the JDK folder.</li>
 <li>Open <code>examples/hello.vh</code>. In the Command Palette select
@@ -100,5 +101,10 @@ For a source checkout you can run the same first example with:</p>
 platform validation. A generated Windows launcher is provided; availability of
 that file alone is not evidence of a Windows smoke test.</p>
 <p><a href="02-values-and-input.html">Next: Values, messages and input</a></p>
+<p>For an application with explicit native dependencies and a portable deployment,
+use the <a href="../reference/getting-started.html">packaging distribution or the bundled VS Code tools</a>.
+The public release downloads include <code>variohyve-packaging-*.zip</code> alongside the
+starter archive and VSIX. The packaging guide covers creating a project, native
+tests, packaging and running the output without the original installation.</p>
 </main>
-<footer class="wrap"><p>Public preview v0.2.0 · These examples are included in your starter ZIP.</p><a href="../">Back to the preview</a></footer></body></html>
+<footer class="wrap"><p>Public preview v0.3.2 · These examples are included in your starter ZIP.</p><a href="../">Back to the preview</a></footer></body></html>

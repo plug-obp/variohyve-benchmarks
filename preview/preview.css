@@ -85,3 +85,5 @@ footer p { margin: 0; }
 @media (max-width: 420px) { .downloads { grid-template-columns: 1fr; } .date { display: block; margin: .5rem 0 0; } .code-window pre { font-size: .72rem; padding-inline: .8rem; } }
 @media (prefers-color-scheme: dark) { :root { --bg: #111d17; --surface: #17271f; --ink: #e1eee5; --muted: #a6b9ac; --line: #34473b; --accent: #a0d4b2; --accent-hover: #b5e5c4; --soft: #20362a; --code: #0c1711; } .primary { color: #12251a; } .editor-card { border-color: #54795f; } }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+.tool-downloads { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 680px) { .tool-downloads { grid-template-columns: 1fr; } }

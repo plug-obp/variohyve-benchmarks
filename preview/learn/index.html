@@ -5,9 +5,9 @@
 <script data-version-navigation src="../versions.js" defer></script>
 </head>
 <body><a class="skip" href="#lesson">Skip to lesson</a><header class="site-header wrap"><a class="wordmark" href="../">VarioHyve<span aria-hidden="true">.</span></a><nav aria-label="Tutorial navigation"><a href="./">All lessons</a><a href="../#downloads">Downloads</a></nav></header>
-<!-- version navigation --><div class="version-navigation wrap" data-version="0.2.0" data-page="learn/index.html"><span>Preview v0.2.0</span> · <a href="../versions.html">All tutorial versions</a></div><!-- /version navigation -->
+<!-- version navigation --><div class="version-navigation wrap" data-version="0.3.2" data-page="learn/index.html"><span>Preview v0.3.2</span> · <a href="../versions.html">All tutorial versions</a></div><!-- /version navigation -->
 
-<main id="lesson" class="lesson"><p class="eyebrow">LEARN VARIOHYVE · V0.2.0</p><h1>Learn VarioHyve</h1>
+<main id="lesson" class="lesson"><p class="eyebrow">LEARN VARIOHYVE · V0.3.2</p><h1>Learn VarioHyve</h1>
 <p>Welcome! Let's build small programs that greet someone, convert a temperature,
 count words and keep score. Along the way you will learn how VarioHyve objects
 communicate by sending messages, and how a program receives the tools it needs.</p>
@@ -22,16 +22,22 @@ example shown inline, with a download link so you can run and change it.</p>
 <li><a href="06-testing.html">Test your program</a></li>
 <li><a href="07-java-capability.html">Add a capability written in Java</a></li>
 <li><a href="08-embedding.html">Call VarioHyve from Java</a></li>
+<li><a href="09-worlds.html">From starter to your own world</a></li>
+<li><a href="10-native-packages.html">Publish and consume a tiny native package</a></li>
 </ol>
 <p>The <a href="examples/">examples folder</a> contains every complete program and its input
 and output fixtures. The <a href="reference.html">starter reference</a> collects details for
 when you need them. You do not need to read it before writing your first program.</p>
-<p>These lessons use the Host Seed with JavaHostKernel. The kernel gives us familiar
+<p>The first eight lessons use the Host Seed with JavaHostKernel. The last two
+assemble explicit recipe worlds and package their dependencies. The kernel gives us familiar
 numbers, text, collections and a console. A capability is simply a tool a program
 is given: our first program receives a console through its <code>kernel</code> input.</p>
 <p>Contributors can check the actual lesson files with
 <code>python3 scripts/check-learn.py --distribution vh-host/build/install/vh-host</code>
 from the repository root after building the starter distribution. The checker
 also compiles the Java lessons against the packaged jars.</p>
+<p>The <a href="packages/multiplier/index.html">native multiplier package</a> is a separate
+producer folder used by the packaging archive journey; it is not an additional
+starter-kernel lesson.</p>
 </main>
-<footer class="wrap"><p>Public preview v0.2.0 · These examples are included in your starter ZIP.</p><a href="../">Back to the preview</a></footer></body></html>
+<footer class="wrap"><p>Public preview v0.3.2 · These examples are included in your starter ZIP.</p><a href="../">Back to the preview</a></footer></body></html>
