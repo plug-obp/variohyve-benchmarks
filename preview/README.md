@@ -66,7 +66,7 @@ guide directly from the tagged source, so local
 source edits cannot enter the release:
 
 ```sh
-node scripts/render-reference.cjs /path/to/variohyve FULL_SOURCE_COMMIT 0.3.1 /path/to/staged/preview/reference /path/to/node_modules/markdown-it
+node scripts/render-reference.cjs /path/to/variohyve FULL_SOURCE_COMMIT 0.3.2 /path/to/staged/preview/reference /path/to/node_modules/markdown-it
 ```
 
 The renderer uses a fixed three-document allowlist. Tutorial links that point
@@ -79,12 +79,12 @@ revision. Specification links point to the public book; tutorial links point to
 that release's permanent tutorial. Code, tests and other source references link
 to the exact source revision on GitHub, with an explicit private-access note.
 After building the specification, map its generated conformance link to
-`/variohyve-benchmarks/preview/versions/0.3.1/reference/conformance.html` for this
+`/variohyve-benchmarks/preview/versions/0.3.2/reference/conformance.html` for this
 release. This is a publication URL transformation, not a change to tagged source.
 
 ## Release assets and evidence
 
-Starting with v0.3.1, publish both starter and packaging distributions. The
+Starting with v0.3.2, publish both starter and packaging distributions. The
 `Starter slice` workflow produces one `variohyve-starter-<runner.os>` artifact per
 platform containing both ZIPs and the VSIX. Normally, extract these artifacts
 without rebuilding or modifying their contents; renaming the outer download
@@ -100,7 +100,7 @@ files is fine. Use this public naming convention:
 | Windows tools | `variohyve-packaging-<version>-windows.zip` | `variohyve-starter-Windows` |
 | Universal extension | `vh-lsp-vscode-<extension-version>.vsix` | `variohyve-starter-Linux` |
 
-The extension version is independent: preview v0.3.1 uses extension v0.4.0.
+The extension version is independent: preview v0.3.2 uses extension v0.4.0.
 Include `SHA256SUMS.txt` alongside the seven binaries. Use the actual byte counts
 and SHA-256 values of the renamed downloads in `manifest.json`; its `assets`
 entries contain `name`, `kind` (`starter`, `packaging`, or `extension`),
