@@ -79,7 +79,10 @@ def main():
             url = urlsplit(link)
             if url.scheme or url.netloc:
                 continue
-            target = (path.parent / unquote(url.path)).resolve() if url.path else path
+            if url.path.startswith('/variohyve-benchmarks/'):
+                target = (root / unquote(url.path.removeprefix('/variohyve-benchmarks/'))).resolve()
+            else:
+                target = (path.parent / unquote(url.path)).resolve() if url.path else path
             if target.is_dir():
                 target /= 'index.html'
             assert target.is_file(), f'{path}: missing {link}'

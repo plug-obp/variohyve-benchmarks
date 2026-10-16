@@ -26,7 +26,8 @@ VS Code extension, specification and release manifest to that revision. Keep
 actual platform validation distinct from checks not yet run.
 
 Stage a directory outside this checkout with `index.html`, `manifest.json`,
-`preview.css` and `learn/`. Write the matching release downloads and checksums in
+`preview.css` and `learn/`. An optional `reference/` directory carries supplemental
+public documents with that same version. Write the matching release downloads and checksums in
 its manifest and download page. Render the tutorial from the extracted starter's
 `learn/` directory, supplying the staged manifest explicitly:
 
@@ -48,7 +49,7 @@ Promote the staged release locally after validation:
 python3 scripts/stage-preview.py promote --release /path/to/staged/preview --source-repository /path/to/variohyve
 python3 scripts/check-preview.py --learn /path/to/extracted/learn --assets /path/to/release-assets
 python3 -m unittest discover -s tests -p 'test_*.py'
-node --test tests/version-selector.test.cjs
+node --test tests/*.test.cjs
 ```
 
 Promotion verifies that the pinned source commit is on `main`, contains the
@@ -57,6 +58,24 @@ version, saves the new snapshot and makes it
 the default. It does not commit, push, upload assets or publish a release. Review
 the generated pages in a browser, commit the coherent update, and publish the
 matching assets and Pages update. Preserve benchmark reports and unrelated files.
+
+## Public conformance reference
+
+Render the supplemental contract map directly from the tagged source, so local
+source edits cannot enter the release:
+
+```sh
+node scripts/render-reference.cjs /path/to/variohyve FULL_SOURCE_COMMIT 0.3.0 /path/to/staged/preview/reference /path/to/node_modules/markdown-it
+```
+
+Promotion includes optional `reference/` content in the permanent versioned
+snapshot and the latest default. The page names its release and full source
+revision. Specification links point to the public book; tutorial links point to
+that release's permanent tutorial. Code, tests and other source references link
+to the exact source revision on GitHub, with an explicit private-access note.
+After building the specification, map its generated conformance link to
+`/variohyve-benchmarks/preview/versions/0.3.0/reference/conformance.html` for this
+release. This is a publication URL transformation, not a change to tagged source.
 
 ## Release assets and evidence
 

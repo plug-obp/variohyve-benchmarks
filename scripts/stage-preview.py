@@ -11,6 +11,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 RELEASE_FILES = ('index.html', 'manifest.json', 'preview.css', 'learn')
+OPTIONAL_RELEASE_FILES = ('reference',)
+COPY_FILES = RELEASE_FILES + OPTIONAL_RELEASE_FILES
 VERSION = re.compile(r'^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$')
 BAR = re.compile(r'\n?<!-- version navigation -->.*?<!-- /version navigation -->\n?', re.S)
 HEAD = re.compile(r'\s*<link data-version-navigation[^>]*>\s*<script data-version-navigation[^>]*></script>\s*')
@@ -38,8 +40,10 @@ def relative(target, parent):
 
 def copy_release(source, target):
     target.mkdir(parents=True, exist_ok=True)
-    for name in RELEASE_FILES:
+    for name in COPY_FILES:
         origin, destination = source / name, target / name
+        if name in OPTIONAL_RELEASE_FILES and not origin.exists():
+            continue
         if origin.is_dir():
             shutil.copytree(origin, destination)
         else:
@@ -153,7 +157,7 @@ def main():
         revision = subprocess.check_output(['git', '-C', str(ROOT), 'rev-parse', '--verify', args.revision + '^{commit}'], text=True).strip()
         with tempfile.TemporaryDirectory(prefix='vh-preview-archive-') as tmp:
             source = Path(tmp) / 'preview'
-            files = subprocess.check_output(['git', '-C', str(ROOT), 'ls-tree', '-r', '--name-only', revision, '--', *['preview/' + name for name in RELEASE_FILES]], text=True).splitlines()
+            files = subprocess.check_output(['git', '-C', str(ROOT), 'ls-tree', '-r', '--name-only', revision, '--', *['preview/' + name for name in COPY_FILES]], text=True).splitlines()
             for name in files:
                 destination = Path(tmp) / name
                 destination.parent.mkdir(parents=True, exist_ok=True)
@@ -171,7 +175,7 @@ def main():
         if not (preview / 'versions' / current).exists():
             raise ValueError('Archive the current release before promoting a new one')
         archive(source, preview)
-        for name in RELEASE_FILES:
+        for name in COPY_FILES:
             target = preview / name
             if target.is_dir():
                 shutil.rmtree(target)

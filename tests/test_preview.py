@@ -44,6 +44,18 @@ class PreviewTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'immutable'):
             stage.archive(self.preview, self.preview)
 
+    def test_optional_reference_is_archived_and_indexed(self):
+        self.release(self.preview, '0.3.0')
+        reference = self.preview / 'reference'
+        reference.mkdir()
+        (reference / 'conformance.html').write_text('<html><head></head><body><header></header>Release contract</body></html>')
+        archived = stage.archive(self.preview, self.preview)
+        self.assertEqual((archived / 'reference/conformance.html').read_bytes(), (reference / 'conformance.html').read_bytes())
+        stage.refresh(self.preview)
+        index = json.loads((self.preview / 'versions.json').read_text())
+        self.assertIn('reference/conformance.html', index['versions'][0]['pages'])
+        self.assertIn('data-page="reference/conformance.html"', (archived / 'reference/conformance.html').read_text())
+
     def test_numeric_version_order_latest_default_and_idempotent_navigation(self):
         self.release(self.preview, '0.10.0')
         old = self.root / 'old'
