@@ -11,6 +11,8 @@ VarioHyve, served from the `gh-pages` branch.
 
 Preview installers are public GitHub release assets. See
 [preview maintenance](preview/README.md) for the manifest and tutorial rendering.
+The [site maintenance skill](.agents/skills/maintain-variohyve-site/SKILL.md)
+routes preview, benchmark and specification work to their sources and checks.
 
 The performance dashboard separates three timing scopes:
 

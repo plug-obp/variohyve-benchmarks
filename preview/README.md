@@ -11,7 +11,9 @@ The recovered v0.1.0 snapshot comes from public-site commit
 `dfe2b814f7440a98732d81495d9b1c0eea980e1e` (including its checked inline examples);
 v0.2.0 comes from `f93d29f361b4dc83d64a2c9608f75ed321d7677d`. Their examples,
 release manifests and instructional content are preserved. Shared navigation may
-be refreshed; published lesson content and assets must not be overwritten.
+be refreshed. Preserve published lesson content except for explicitly requested
+documentation corrections with recorded provenance, as described below. Published
+binary assets must not be overwritten.
 
 Release binaries are assets on this public repository, not the private language
 repository. Each manifest records the exact source revision, CI run, checksums
@@ -37,12 +39,14 @@ node scripts/render-learn.cjs /path/to/extracted/learn /path/to/node_modules/mar
 ```
 
 The renderer traverses every lesson and copies every supporting file, including
-`examples/` and `packages/`. It imports the specification's shared
+`examples/`, `packages/` and `projects/`. It imports the specification's shared
 `highlighting/render.cjs`: VarioHyve has its own grammar and Java retains the
 bundled Java grammar. Generated highlighting uses the deployed mdBook palette
 and `theme/vh.css`. `learn.css` is carried into a new output directory. Local
-links labelled `Download filename.vh` or `Download filename.java` become download
-buttons. The renderer does not change `spec/`.
+links labelled `Download filename.vh`, `Download filename.java`,
+`Download filename.json` or `Download filename.md` become download buttons.
+Markdown files are copied alongside their rendered HTML so a contract's Download
+button delivers its original text. The renderer does not change `spec/`.
 
 Promote the staged release locally after validation:
 
@@ -140,7 +144,7 @@ names. Say that the files are byte-identical aliases of a universal local build;
 do not imply that each archive was built on its named platform. Preserve existing
 GitHub artifacts: quota recovery does not authorize deleting unrelated history.
 
-The source tag, CI run head, packaged runtime and documentation must all resolve
+For a new release, the source tag, CI run head, packaged runtime and documentation must all resolve
 to the same source revision. Build the specification HTML/PDF from that revision
 and render the tutorial from its extracted starter. The current starter archive
 contains the whole `learn/` tree, including native `packages/`; its checker
@@ -152,6 +156,33 @@ check also covers all earlier versions. Finally, check the dropdown and matching
 downloads in a browser before pushing the Pages commit.
 
 ## Historical releases and maintenance
+
+### Correct a published tutorial
+
+An explicitly requested documentation correction can update the affected
+tutorial without replacing its software release. Fix and commit the source
+Markdown and downloadable files in the language repository first. A complete
+file uses `<!-- example-file: path/from/learn/root -->` immediately before its
+fence and an explicit Download link; the source and site checks compare the full
+contents, including the final newline. The older `example` marker still supports
+excerpts relative to `examples/`.
+
+Record a `tutorial_revision` object in both the selected version's site manifest
+and the latest manifest when it is the default. Include its full `source_commit`,
+the original `runtime_source_commit`, date, correction description and actual
+validation results. Preserve `source`, `assets`, CI evidence and release checksum
+files. The release-attached manifest remains the original binary release record;
+the site manifest adds the later tutorial revision.
+
+Render the corrected Learn tree into `versions/<version>/learn/` and, if current,
+`learn/`, using their existing manifests. Run `stage-preview.py refresh`, then
+`check-preview.py --learn /path/to/corrected/learn --assets /path/to/release-assets`
+for the default and `--version <version>` for the selected snapshot. Do not use
+`promote` to overwrite an existing version. Check Next links, complete code and
+Download buttons (including JSON and raw Markdown) in a browser. Older tutorial
+content and every binary asset remain intact unless separately in scope.
+
+### Recover an earlier version
 
 An existing published release can be recovered once from a full public-site
 revision. Archive the current release before replacing it:

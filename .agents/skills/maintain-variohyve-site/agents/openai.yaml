@@ -1,0 +1,4 @@
+interface:
+  display_name: "Maintain VarioHyve Site"
+  short_description: "Maintain VarioHyve previews, benchmarks and spec"
+  default_prompt: "Use $maintain-variohyve-site to update the VarioHyve public site and verify its published content."
