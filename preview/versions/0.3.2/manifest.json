@@ -301,5 +301,39 @@
       "reason": "The final Windows job never started because GitHub reported an account billing/spending-limit block. Publication proceeds with this limitation explicitly accepted; no current-tag Windows success is claimed.",
       "previous_candidate": "The v0.3.1 candidate passed Windows Java tasks and the 16 starter cases, then failed frozen-byte verification. Version 0.3.2 fixes checkout byte preservation, covered by the new checkout simulation; it still requires a fresh Windows run."
     }
-  ]
+  ],
+  "tutorial_revision": {
+    "source_commit": "7152a342fee47d141b223f966f96f80f4b41a6d5",
+    "runtime_source_commit": "f1c5c8cc77dc1dca4a1058d7a0e1369798535df8",
+    "date": "2026-10-16",
+    "description": "Connect lessons 8, 9 and 10; show ten complete files with matching downloads, including launch JSON, native contract Markdown and custom-Alien recipe alternatives.",
+    "release_assets": "Unchanged. The release-attached manifest remains the original binary release record.",
+    "validation": {
+      "source_python_regressions": {
+        "passed": 48
+      },
+      "source_documentation_files": 164,
+      "learn_cases_outside_checkout": 16,
+      "downloaded_project_checks": {
+        "passed": 14,
+        "tools_sha256": "09e5ea15e500d5bdf6d48c01969cb5f3d7f87c49449faefa99e9caeb8838e909",
+        "native_and_custom_alien": true,
+        "relocated_after_removing_source_and_tools": true
+      },
+      "platform": "macOS, Java 23.0.2",
+      "windows": "Not rerun for this documentation correction; the original release limitation remains recorded under ci.",
+      "site_python_regressions": {
+        "passed": 11
+      },
+      "site_node_regressions": {
+        "passed": 8
+      },
+      "site_pages": 63,
+      "tutorial_download_buttons": 28,
+      "complete_file_excerpts": 10,
+      "chapter_transitions": 9,
+      "matching_default_and_versioned_tutorials": true,
+      "browser": "Verified lesson 8\u21929\u219210, JSON and raw Markdown download bytes, older-version fallback and custom-Alien section anchor."
+    }
+  }
 }

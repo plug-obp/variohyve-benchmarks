@@ -9,8 +9,8 @@
 
 <main id="lesson" class="lesson"><p class="eyebrow">LEARN VARIOHYVE · V0.3.2</p><h1>Publish and consume a tiny native package</h1>
 <p>A native package can be a folder containing an entry module and a short contract.
-It needs no registry or package-manager syntax. Start with this complete
-<a href="packages/multiplier/Multiplier.vh">Multiplier.vh</a>:</p>
+It needs no registry or package-manager syntax. Our complete <code>Multiplier.vh</code>
+receives its factor at construction and exposes one method, <code>multiply(value)</code>:</p>
 <pre><code class="hljs language-vh"><span class="hljs-comment">// Entry module of an independently authored native package.</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title">Multiplier</span>(factor) {
     factor = factor;
@@ -18,14 +18,36 @@ It needs no registry or package-manager syntax. Start with this complete
 }
 </code></pre>
 
-<p>Its <a href="packages/multiplier/index.html">contract</a> names the entry, constructor input
-and <code>multiply/1</code> protocol. The integer <code>times/1</code> behavior comes from the chosen
-startup value adapter. No console, filesystem or kernel is supplied.</p>
+<p><a href="packages/multiplier/Multiplier.vh" class="button example-download" download="Multiplier.vh">Download Multiplier.vh</a></p>
+<p>Put a <code>README.md</code> beside the module so consumers know its entry, inputs and
+protocol. This is the complete contract distributed with our tiny package:</p>
+<pre><code class="hljs language-markdown"><span class="hljs-section"># Tiny native multiplier package</span>
+
+Entry: <span class="hljs-code">`Multiplier.vh`</span>. Construction requires one integer <span class="hljs-code">`factor`</span>; the resulting
+object implements <span class="hljs-code">`multiply(value)`</span>. It needs the selected startup value adapter&#x27;s
+integer <span class="hljs-code">`times/1`</span> protocol, and no filesystem, console or other capabilities.
+
+Copy this folder into a consumer&#x27;s <span class="hljs-code">`packages/multiplier`</span> directory. Its native
+recipe constructs the module with `importModule(files.resolve(
+&quot;packages/multiplier/Multiplier.vh&quot;), 3)` and supplies the result to its application.
+Its native packaging policy captures that same entry file explicitly. There is
+no registry, package-name lookup or implicit dependency discovery.
+
+The extracted-archive journey copies this independent producer folder into a
+fresh consumer. The custom Alien journey substitutes a packaged Java provider
+implementing the same <span class="hljs-code">`multiply/1`</span> protocol without changing application or tests.
+</code></pre>
+
+<p><a href="packages/multiplier/README.md" class="button example-download" download="README.md">Download README.md</a></p>
+<p>The integer <code>times/1</code> behavior comes from the chosen startup value adapter. No
+console, filesystem or kernel is supplied to the multiplier.</p>
 <h2>Publish the folder, then consume it</h2>
-<p>Copy or archive the <code>multiplier</code> folder. The tools archive also ships this
-independent producer as <code>examples/native-package</code>. A consumer copies that folder
-to <code>packages/multiplier</code> inside its own source root. Use the project from the
-<a href="09-worlds.html">previous chapter</a>; it already contains this wiring.</p>
+<p>Save the two downloads together in a folder named <code>multiplier</code>, then copy or
+archive that folder. The tools archive also ships this independent producer as
+<code>examples/native-package</code>. A consumer copies the folder to <code>packages/multiplier</code>
+inside its own source root. Use the project from the
+<a href="09-worlds.html">previous chapter</a>; it already contains this wiring and a copy of
+the package.</p>
 <p>In its recipe, <code>importModule(files.resolve(&quot;packages/multiplier/Multiplier.vh&quot;), 3)</code> constructs the dependency. The recipe passes that object into <code>Main.vh</code>.
 The application sends <code>multiply(14)</code> and gets 42. It knows the protocol, not the
 file path or how the dependency was built.</p>
@@ -39,17 +61,73 @@ then deletes both source project and producing tools before the final run.</p>
 file in the consuming native policy. Directory names are distribution conventions;
 they do not add global names or implicit imports to VarioHyve.</p>
 <h2>Substitute an Alien without changing the application</h2>
-<p>The archive's <code>CUSTOM-ALIENS.md</code> explains how to compile the independently packaged
-Java multiplier and its separate dependency JAR. It implements the same
-<code>multiply/1</code> protocol. Replace only the recipe's multiplier construction with
-<code>loadAlien(&quot;aliens/multiplier&quot;)</code>, followed by calling that realizer with factor 3.
-Replace the native source declaration in the policy with
-<code>output.alien(&quot;aliens/multiplier&quot;, sources.alien(&quot;aliens/multiplier&quot;))</code>.</p>
-<p>Keep <code>Main.vh</code> and <code>Tests.vh</code> unchanged. Run, test and deploy again through the CLI
-or VS Code. The loader validates the package manifest, boundary version and JAR
-digests. Neither a built-in provider registration nor a repository checkout is
-needed. The host code is necessary here only to adapt the foreign library to the
-Alien boundary; composition and packaging policy remain native.</p>
+<p>Follow <a href="../reference/custom-aliens.html#build-a-provider">Bring your own Alien package</a>
+to compile the Java multiplier, package its separate dependency JAR and write
+<code>aliens/multiplier/alien.json</code> with their actual digests. That guide is also
+included as <code>CUSTOM-ALIENS.md</code> in the tools archive. The provider implements the
+same <code>multiply/1</code> protocol as our native package.</p>
+<p>Once that provider folder is ready, replace your project's <code>World.vh</code> with this
+complete alternative. Loading returns a callable realizer; calling it with 3
+constructs the multiplier. Application construction, console wiring and tests
+remain the same.</p>
+<pre><code class="hljs language-vh">{
+    makeMultiplier = loadAlien(<span class="hljs-string">&quot;aliens/multiplier&quot;</span>); multiplier = makeMultiplier(<span class="hljs-number">3</span>);
+    application = importModule(files<span class="hljs-title">.resolve</span>(<span class="hljs-string">&quot;Main.vh&quot;</span>), multiplier);
+    makeConsole = loadAlien(<span class="hljs-string">&quot;aliens/console&quot;</span>);
+    console = makeConsole(provisions<span class="hljs-title">.input</span>, provisions<span class="hljs-title">.output</span>);
+    <span class="hljs-title">run</span> {
+        <span class="hljs-keyword">var</span> line = console<span class="hljs-title">.readLine</span>;
+        null<span class="hljs-title">.equals</span>(line)<span class="hljs-title">.ifTrue</span>(<span class="hljs-keyword">fun</span> { console<span class="hljs-title">.printLine</span>(application<span class="hljs-title">.answer</span><span class="hljs-title">.toString</span>) },
+            <span class="hljs-keyword">fun</span> { console<span class="hljs-title">.printLine</span>(line<span class="hljs-title">.concat</span>(<span class="hljs-string">&quot;: &quot;</span>)<span class="hljs-title">.concat</span>(application<span class="hljs-title">.answer</span><span class="hljs-title">.toString</span>)) })
+    }
+    <span class="hljs-comment">// Development dependencies are constructed only for this explicit entry.</span>
+    <span class="hljs-title">test</span> {
+        <span class="hljs-keyword">var</span> suiteKernel = importModule(files<span class="hljs-title">.resolve</span>(<span class="hljs-string">&quot;lib/SuiteKernel.vh&quot;</span>));
+        <span class="hljs-keyword">var</span> testing = importModule(files<span class="hljs-title">.resolve</span>(<span class="hljs-string">&quot;lib/SUnit.vh&quot;</span>), suiteKernel);
+        <span class="hljs-keyword">var</span> tests = importModule(files<span class="hljs-title">.resolve</span>(<span class="hljs-string">&quot;Tests.vh&quot;</span>), application, testing);
+        <span class="hljs-keyword">var</span> runner = importModule(files<span class="hljs-title">.resolve</span>(<span class="hljs-string">&quot;SuiteReporter.vh&quot;</span>), console, true);
+        runner<span class="hljs-title">.run</span>(tests<span class="hljs-title">.tests</span>)
+    }
+}
+</code></pre>
+
+<p><a href="projects/alien-project/World.vh" class="button example-download" download="World.vh">Download World.vh</a></p>
+<p>Replace <code>Package.vh</code> with this complete policy too. It declares the Alien folder
+in place of the native multiplier source, so the provider and its dependency
+JAR are captured in the deployment.</p>
+<pre><code class="hljs language-vh"><span class="hljs-comment">// This ordinary native module owns the deployment inventory and launch policy.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title">Package</span>(sources, tools, importModule, output) {
+    sources = sources;
+    tools = tools;
+    output = output;
+    runtimeSource = tools<span class="hljs-title">.capture</span>(<span class="hljs-string">&quot;native/RuntimeIngredients.vh&quot;</span>);
+    runtime = importModule(tools<span class="hljs-title">.source</span>(runtimeSource), tools, output);
+    <span class="hljs-title">source</span>(path) { output<span class="hljs-title">.source</span>(path, sources<span class="hljs-title">.capture</span>(path)) }
+    <span class="hljs-title">build</span> {
+        output<span class="hljs-title">.runtime</span>(<span class="hljs-string">&quot;native/RuntimeIngredients.vh&quot;</span>, runtimeSource);
+        runtime<span class="hljs-title">.write</span>;
+        source(<span class="hljs-string">&quot;Main.vh&quot;</span>);
+        source(<span class="hljs-string">&quot;World.vh&quot;</span>);
+        output<span class="hljs-title">.alien</span>(<span class="hljs-string">&quot;aliens/starter-values&quot;</span>, sources<span class="hljs-title">.alien</span>(<span class="hljs-string">&quot;aliens/starter-values&quot;</span>));
+        output<span class="hljs-title">.alien</span>(<span class="hljs-string">&quot;aliens/console&quot;</span>, sources<span class="hljs-title">.alien</span>(<span class="hljs-string">&quot;aliens/console&quot;</span>));
+        output<span class="hljs-title">.alien</span>(<span class="hljs-string">&quot;aliens/multiplier&quot;</span>, sources<span class="hljs-title">.alien</span>(<span class="hljs-string">&quot;aliens/multiplier&quot;</span>));
+        output<span class="hljs-title">.startup</span>(<span class="hljs-string">&quot;aliens/starter-values&quot;</span>, <span class="hljs-string">&quot;host-values&quot;</span>, <span class="hljs-string">&quot;stdio&quot;</span>, <span class="hljs-string">&quot;discard&quot;</span>);
+        output<span class="hljs-title">.launch</span>(<span class="hljs-string">&quot;World.vh&quot;</span>, <span class="hljs-string">&quot;run&quot;</span>);
+        output<span class="hljs-title">.finish</span>()
+    }
+}
+</code></pre>
+
+<p><a href="projects/alien-project/Package.vh" class="button example-download" download="Package.vh">Download Package.vh</a></p>
+<p>Keep <code>Main.vh</code>, <code>Tests.vh</code>, <code>SuiteReporter.vh</code> and <code>Main.vh.launch.json</code> unchanged.
+Run, test and deploy again through the CLI or VS Code, using the commands from
+the previous chapter and a new deployment destination. Each launch opens a fresh
+provider session; editing Java source alone does not rebuild its JAR or update
+the manifest's digest.</p>
+<p>The loader validates the package manifest, boundary version and JAR digests.
+Neither a built-in provider registration nor a repository checkout is needed.
+The host code is necessary here only to adapt the foreign library to the Alien
+boundary; composition and packaging policy remain native.</p>
 <p>Back to <a href="index.html">Learn VarioHyve</a>.</p>
 </main>
-<footer class="wrap"><p>Public preview v0.3.2 · These examples are included in your starter ZIP.</p><a href="../">Back to the preview</a></footer></body></html>
+<footer class="wrap"><p>Public preview v0.3.2 · Download the files shown in each lesson. Recipe projects use the packaging tools.</p><a href="../">Back to the preview</a></footer></body></html>

@@ -6,7 +6,7 @@
 <body><a class="skip" href="#reference">Skip to reference</a><header class="site-header wrap"><a class="wordmark" href="../">VarioHyve<span aria-hidden="true">.</span></a><nav aria-label="Release navigation"><a href="../learn/">Tutorial</a><a href="../#downloads">Downloads</a></nav></header>
 <!-- version navigation --><div class="version-navigation wrap" data-version="0.3.2" data-page="reference/custom-aliens.html"><span>Preview v0.3.2</span> · <a href="../versions.html">All tutorial versions</a></div><!-- /version navigation -->
 
-<main id="reference" class="lesson"><p class="eyebrow">RELEASE REFERENCE · V0.3.2</p><p>This public reference is rendered from the v0.3.2 source commit <code>f1c5c8cc77dc1dca4a1058d7a0e1369798535df8</code>. Code, test and design-note links point to that exact revision in the private source repository and require repository access. Specification, tutorial and packaging-guide links are public.</p><h1>Bring your own Alien package</h1>
+<main id="reference" class="lesson"><p class="eyebrow">RELEASE REFERENCE · V0.3.2</p><p>This public reference is rendered from the v0.3.2 source commit <code>f1c5c8cc77dc1dca4a1058d7a0e1369798535df8</code>. Code, test and design-note links point to that exact revision in the private source repository and require repository access. Specification, tutorial and packaging-guide links are public.</p><h1 id="bring-your-own-alien-package">Bring your own Alien package</h1>
 <p>A provider does not need to be shipped by VarioHyve or registered in host code.
 The current folder convention loads Java providers implementing the public
 <code>ForeignObject</code> boundary API. The provider adapts its foreign library; the native
@@ -19,7 +19,7 @@ to the sidecar, just like <code>root</code>. It selects <strong>one</strong> pac
 adapter loading and recipe <code>loadAlien</code> calls. There is no fallback to the tools
 installation. Omit it for the older installed-provider behavior. Copy any other
 required built-in packages into your project's <code>aliens</code> directory explicitly.</p>
-<h2>Build a provider</h2>
+<h2 id="build-a-provider">Build a provider</h2>
 <p>The distribution includes two example Java sources in <code>examples/custom-alien/src</code>:
 <code>MultiplierLibrary.java</code> is an independent library; <code>MultiplierRealizer.java</code> is
 a small adapter. Neither is precompiled into the runtime or registered with it.
@@ -70,7 +70,7 @@ means the loader injects no ambient services; capabilities can still be supplied
 explicitly as realizer arguments. A provider requiring unsupported deployment
 provisioning is rejected, never silently converted into a deployable package.
 Classloader isolation does not sandbox Java code's host-process authority.</p>
-<h2>Compose, test and deploy</h2>
+<h2 id="compose-test-and-deploy">Compose, test and deploy</h2>
 <p>In <code>World.vh</code>, replace the native <code>multiplier</code> import with:</p>
 <pre><code class="hljs language-vh">makeMultiplier = loadAlien(<span class="hljs-string">&quot;aliens/multiplier&quot;</span>);
 multiplier = makeMultiplier(<span class="hljs-number">3</span>);
