@@ -51,8 +51,9 @@ python3 -m unittest discover -s tests -p 'test_*.py'
 node --test tests/version-selector.test.cjs
 ```
 
-Promotion verifies that the pinned source commit is on `main` and contains the
-bumped version, refuses an existing version, saves the new snapshot and makes it
+Promotion verifies that the pinned source commit is on `main`, contains the
+bumped version and is exactly the release tag target. It refuses an existing
+version, saves the new snapshot and makes it
 the default. It does not commit, push, upload assets or publish a release. Review
 the generated pages in a browser, commit the coherent update, and publish the
 matching assets and Pages update. Preserve benchmark reports and unrelated files.

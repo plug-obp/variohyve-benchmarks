@@ -76,12 +76,16 @@ class PreviewTests(unittest.TestCase):
         (repo / 'gradle.properties').write_text('version=0.3.0\n')
         git('commit', '-am', 'Bump version')
         commit = git('rev-parse', 'HEAD')
-        manifest = {'version': '0.3.0', 'source': {'commit': commit}}
+        manifest = {'version': '0.3.0', 'source': {'commit': commit, 'tag': 'v0.3.0'}}
+        git('tag', 'v0.3.0')
         with self.assertRaises(subprocess.CalledProcessError):
             stage.validate_source(manifest, repo)
         git('checkout', 'main')
         git('merge', '--ff-only', 'feature')
         stage.validate_source(manifest, repo)
+        git('tag', '-f', 'v0.3.0', 'HEAD^')
+        with self.assertRaisesRegex(ValueError, 'tag must resolve'):
+            stage.validate_source(manifest, repo)
         with self.assertRaisesRegex(ValueError, 'bumped release version'):
             stage.validate_source({'version': '0.4.0', 'source': {'commit': commit}}, repo)
 

@@ -132,6 +132,10 @@ def validate_source(manifest, source_repository):
     match = re.search(r'^version=(.+)$', properties, re.M)
     if not match or match[1].strip() != manifest['version']:
         raise ValueError('Pinned source must carry the bumped release version on main')
+    tagged = subprocess.check_output(['git', '-C', str(source_repository), 'rev-parse', '--verify',
+                                      manifest['source']['tag'] + '^{commit}'], text=True).strip()
+    if tagged != commit:
+        raise ValueError('Release tag must resolve to the pinned source commit')
 
 
 def main():
