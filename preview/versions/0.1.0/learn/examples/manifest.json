@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "java_sources": [
+    "java/LabelMaker.java",
+    "java/UseLabel.java",
+    "java/Embed.java",
+    "java/CheckContract.java"
+  ],
+  "cases": [
+    {
+      "name": "hello",
+      "mode": "run",
+      "source": "hello.vh",
+      "stdout": "fixtures/hello.out",
+      "exit": 0
+    },
+    {
+      "name": "greeting",
+      "mode": "run",
+      "source": "greeting.vh",
+      "stdin": "fixtures/greeting.in",
+      "stdout": "fixtures/greeting.out",
+      "exit": 0
+    },
+    {
+      "name": "arithmetic",
+      "mode": "run",
+      "source": "arithmetic.vh",
+      "stdout": "fixtures/arithmetic.out",
+      "exit": 0
+    },
+    {
+      "name": "temperature",
+      "mode": "run",
+      "source": "temperature.vh",
+      "stdin": "fixtures/temperature.in",
+      "stdout": "fixtures/temperature.out",
+      "exit": 0
+    },
+    {
+      "name": "choices",
+      "mode": "run",
+      "source": "choices.vh",
+      "stdin": "fixtures/choices.in",
+      "stdout": "fixtures/choices.out",
+      "exit": 0
+    },
+    {
+      "name": "table",
+      "mode": "run",
+      "source": "table.vh",
+      "stdout": "fixtures/table.out",
+      "exit": 0
+    },
+    {
+      "name": "average",
+      "mode": "run",
+      "source": "average.vh",
+      "stdout": "fixtures/average.out",
+      "exit": 0
+    },
+    {
+      "name": "word-count",
+      "mode": "run",
+      "source": "word-count.vh",
+      "stdout": "fixtures/word-count.out",
+      "exit": 0
+    },
+    {
+      "name": "counter",
+      "mode": "run",
+      "source": "counter.vh",
+      "stdout": "fixtures/counter.out",
+      "exit": 0
+    },
+    {
+      "name": "choices-even",
+      "mode": "run",
+      "source": "choices.vh",
+      "stdin": "fixtures/choices-even.in",
+      "stdout": "fixtures/choices-even.out",
+      "exit": 0
+    },
+    {
+      "name": "lesson-tests",
+      "mode": "test",
+      "source": "tests/lessons.vh",
+      "stdout": "fixtures/tests.out",
+      "exit": 0
+    },
+    {
+      "name": "assertion-failure",
+      "mode": "test",
+      "source": "intentional-failures/assertion.vh",
+      "stdout": "fixtures/assertion.out",
+      "exit": 1
+    },
+    {
+      "name": "runtime-error",
+      "mode": "test",
+      "source": "intentional-failures/runtime-error.vh",
+      "stdout": "fixtures/runtime-error.out",
+      "exit": 1,
+      "diagnostics": [
+        {
+          "kind": "LANGUAGE_FAILURE",
+          "reason": "UNRESOLVED_HOLE"
+        }
+      ]
+    },
+    {
+      "name": "java-capability",
+      "mode": "java",
+      "main": "UseLabel",
+      "source": "java/use-label.vh",
+      "stdout": "fixtures/use-label.out",
+      "exit": 0
+    },
+    {
+      "name": "java-embedding",
+      "mode": "java",
+      "main": "Embed",
+      "source": "java/calculator.vh",
+      "stdout": "fixtures/embed.out",
+      "exit": 0
+    },
+    {
+      "name": "api-declaration",
+      "mode": "contract",
+      "main": "CheckContract",
+      "source": "java/LabelMaker.vh",
+      "stdout": "fixtures/contract.out",
+      "exit": 0
+    }
+  ]
+}

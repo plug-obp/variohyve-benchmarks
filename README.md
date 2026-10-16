@@ -4,7 +4,8 @@ Public preview downloads, language specification and performance history for
 VarioHyve, served from the `gh-pages` branch.
 
 - [Public preview](https://obpcdl.org/variohyve-benchmarks/preview/)
-- [Learn VarioHyve](https://obpcdl.org/variohyve-benchmarks/preview/learn/)
+- [Learn VarioHyve — latest](https://obpcdl.org/variohyve-benchmarks/preview/learn/)
+- [All tutorial versions](https://obpcdl.org/variohyve-benchmarks/preview/versions.html)
 - [Performance dashboard](https://obpcdl.org/variohyve-benchmarks/dev/bench/)
 - [Language specification](https://obpcdl.org/variohyve-benchmarks/spec/)
 

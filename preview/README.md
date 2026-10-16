@@ -1,53 +1,80 @@
-# Public preview page
+# Public preview and tutorial versions
 
-`index.html` is the public v0.2.0 download page. Release binaries are hosted as
-assets on this public repository, not the private language repository. The
-manifest records the exact source revision, CI run, checksums and validation.
-Do not change an existing release asset in place; use a new version.
+`index.html` and `learn/` show the newest published release by default. Every
+published tutorial has a permanent snapshot at `versions/<version>/learn/`, next
+to its original download page and build manifest. `versions.json` records all
+versions in descending numeric order. The selector keeps the current chapter
+when the selected release has it, and otherwise opens that release's lesson
+index. [All versions](versions.html) works without browser JavaScript.
 
-The static `learn/` pages and examples must match the public preview runtime. To
-regenerate them, supply the extracted starter's `learn` directory or a checked
-tutorial staged for that release, an installed `markdown-it` module (14.2.0 was
-used for v0.2.0), and the source specification's theme directory.
+The recovered v0.1.0 snapshot comes from public-site commit
+`dfe2b814f7440a98732d81495d9b1c0eea980e1e` (including its checked inline examples);
+v0.2.0 comes from `f93d29f361b4dc83d64a2c9608f75ed321d7677d`. Their examples,
+release manifests and instructional content are preserved. Shared navigation may
+be refreshed; published lesson content and assets must not be overwritten.
 
-Only when reproducing the historical v0.1.0 site, first apply
-`scripts/learn-v0.1.0-inline.patch` from inside its extracted `learn` directory.
-The patch adds the inline examples and download links to the release's Markdown
-without changing its API instructions or example files. Check before applying;
-an already patched tutorial does not need it again:
+Release binaries are assets on this public repository, not the private language
+repository. Each manifest records the exact source revision, CI run, checksums
+and validation. Do not change an existing release asset in place.
+
+## Prepare a release
+
+Merge the implementation into the source repository's `main` branch, then bump
+its release version before publishing the new tutorial. Build and validate the
+release from that exact source revision. Match the tutorial, source, CLI tools,
+VS Code extension, specification and release manifest to that revision. Keep
+actual platform validation distinct from checks not yet run.
+
+Stage a directory outside this checkout with `index.html`, `manifest.json`,
+`preview.css` and `learn/`. Write the matching release downloads and checksums in
+its manifest and download page. Render the tutorial from the extracted starter's
+`learn/` directory, supplying the staged manifest explicitly:
 
 ```sh
-cd /path/to/extracted-starter/learn
-git apply --check /path/to/variohyve-benchmarks/scripts/learn-v0.1.0-inline.patch
-git apply /path/to/variohyve-benchmarks/scripts/learn-v0.1.0-inline.patch
+node scripts/render-learn.cjs /path/to/extracted/learn /path/to/node_modules/markdown-it /path/to/source/docs/spec/theme /path/to/staged/preview/learn /path/to/staged/preview/manifest.json
 ```
 
-Then render from the public site repository:
+The renderer traverses every lesson and copies every supporting file, including
+`examples/` and `packages/`. It imports the specification's shared
+`highlighting/render.cjs`: VarioHyve has its own grammar and Java retains the
+bundled Java grammar. Generated highlighting uses the deployed mdBook palette
+and `theme/vh.css`. `learn.css` is carried into a new output directory. Local
+links labelled `Download filename.vh` or `Download filename.java` become download
+buttons. The renderer does not change `spec/`.
+
+Promote the staged release locally after validation:
 
 ```sh
-node scripts/render-learn.cjs /path/to/learn /path/to/node_modules/markdown-it /path/to/variohyve/docs/spec/theme
-```
-
-The renderer imports the specification's shared `highlighting/render.cjs`.
-VarioHyve uses its own grammar; Java uses the bundled Java grammar unchanged.
-The PDF filter uses those same separate grammars and `highlighting/palette.json`.
-The tutorial renderer writes token markup into each code block and generates `learn/highlight.css` from the deployed mdBook's
-`spec/highlight-*.css` palette plus `theme/vh.css`; it does not modify `spec/`.
-The version label comes from `manifest.json`. Fences identify the language with
-`vh` or `java`. A local link labelled
-`Download filename.vh` or `Download filename.java` becomes an accessible download
-button; other example links keep their normal appearance.
-
-`learn/learn.css` is maintained here; the renderer preserves it. An optional
-fourth argument selects a temporary output directory for checking generated
-HTML. Check links and render the page before publishing. Readers need no browser
-JavaScript or build tools. GitHub Pages serves the repository's `gh-pages` branch.
-
-Validate generated excerpts, language classes, highlighting, local links and assets:
-
-```sh
+python3 scripts/stage-preview.py promote --release /path/to/staged/preview --source-repository /path/to/variohyve
 python3 scripts/check-preview.py --learn /path/to/extracted/learn --assets /path/to/release-assets
+python3 -m unittest discover -s tests -p 'test_*.py'
+node --test tests/version-selector.test.cjs
 ```
 
-Rebuild `spec/` with mdBook and the PDF from the tagged VarioHyve source.
-Preserve benchmark publications and unrelated local files when copying outputs.
+Promotion verifies that the pinned source commit is on `main` and contains the
+bumped version, refuses an existing version, saves the new snapshot and makes it
+the default. It does not commit, push, upload assets or publish a release. Review
+the generated pages in a browser, commit the coherent update, and publish the
+matching assets and Pages update. Preserve benchmark reports and unrelated files.
+
+## Historical releases and maintenance
+
+An existing published release can be recovered once from a full public-site
+revision. Archive the current release before replacing it:
+
+```sh
+python3 scripts/stage-preview.py archive --revision <public-site-commit>
+python3 scripts/stage-preview.py refresh
+python3 scripts/check-preview.py
+```
+
+`refresh` updates the version index and shared navigation. The checker validates
+links for the default and every archived version. Add `--version 0.1.0 --learn
+/path/to/old/learn --assets /path/to/old/assets` to compare a historical tutorial
+and its downloads with the corresponding release. Without `--learn`, only site
+structure and links are checked; no source comparison is claimed.
+
+Only when reproducing the original v0.1.0 tutorial from its starter, first apply
+`scripts/learn-v0.1.0-inline.patch` inside the extracted `learn/` directory. The
+patch adds inline examples and download links without changing its API or
+example files. Check before applying; an already patched tutorial needs no patch.

@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "latest": "0.2.0",
+  "versions": [
+    {
+      "version": "0.2.0",
+      "date": "2026-10-12",
+      "path": "versions/0.2.0/",
+      "source_commit": "e7a15d68a0fc4005a5d25d97e522d00f4b9abba4",
+      "pages": [
+        "index.html",
+        "learn/01-install.html",
+        "learn/02-values-and-input.html",
+        "learn/03-arithmetic-and-choices.html",
+        "learn/04-collections.html",
+        "learn/05-objects.html",
+        "learn/06-testing.html",
+        "learn/07-java-capability.html",
+        "learn/08-embedding.html",
+        "learn/examples/index.html",
+        "learn/index.html",
+        "learn/reference.html"
+      ]
+    },
+    {
+      "version": "0.1.0",
+      "date": "2026-10-09",
+      "path": "versions/0.1.0/",
+      "source_commit": "8a9df4191f421554ddfa538ebdd62070b24dc231",
+      "pages": [
+        "index.html",
+        "learn/01-install.html",
+        "learn/02-values-and-input.html",
+        "learn/03-arithmetic-and-choices.html",
+        "learn/04-collections.html",
+        "learn/05-objects.html",
+        "learn/06-testing.html",
+        "learn/07-java-capability.html",
+        "learn/08-embedding.html",
+        "learn/examples/index.html",
+        "learn/index.html",
+        "learn/reference.html"
+      ]
+    }
+  ]
+}

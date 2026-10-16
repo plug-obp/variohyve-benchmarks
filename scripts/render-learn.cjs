@@ -1,16 +1,17 @@
 // Render the checked tutorial; syntax highlighting is baked into the HTML.
-// Usage: node scripts/render-learn.cjs /path/to/learn /path/to/node_modules/markdown-it /path/to/docs/spec/theme [destination]
+// Usage: node scripts/render-learn.cjs /path/to/learn /path/to/node_modules/markdown-it /path/to/docs/spec/theme [destination] [release-manifest]
 const fs = require('node:fs');
 const path = require('node:path');
 if (process.argv.length < 5) {
-  console.error('Usage: node scripts/render-learn.cjs <learn> <markdown-it> <spec-theme> [destination]');
+  console.error('Usage: node scripts/render-learn.cjs <learn> <markdown-it> <spec-theme> [destination] [release-manifest]');
   process.exit(1);
 }
 const MarkdownIt = require(path.resolve(process.argv[3]));
 const source = path.resolve(process.argv[2]);
 const theme = path.resolve(process.argv[4]);
 const destination = process.argv[5] ? path.resolve(process.argv[5]) : path.resolve(__dirname, '../preview/learn');
-const { version } = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../preview/manifest.json'), 'utf8'));
+const manifest = process.argv[6] ? path.resolve(process.argv[6]) : path.resolve(__dirname, '../preview/manifest.json');
+const { version } = JSON.parse(fs.readFileSync(manifest, 'utf8'));
 if (!/^\d+\.\d+\.\d+$/.test(version)) throw new Error('Expected a preview release version in manifest.json');
 // Use the specification's bundle directly: it includes Java and the vh grammar.
 const hljs = require(path.join(theme, 'highlight.js'));
@@ -52,6 +53,10 @@ const spec = path.resolve(__dirname, '../spec');
 const palettes = fs.readdirSync(spec).filter(name => /^highlight-[^.]+\.css$/.test(name));
 if (palettes.length !== 1) throw new Error('Expected exactly one deployed mdBook highlight-*.css palette');
 fs.mkdirSync(destination, { recursive: true });
+const lessonStyle = path.join(destination, 'learn.css');
+if (!fs.existsSync(lessonStyle)) {
+  fs.copyFileSync(path.resolve(__dirname, '../preview/learn/learn.css'), lessonStyle);
+}
 fs.writeFileSync(path.join(destination, 'highlight.css'),
   '/* Generated from the specification mdBook palette and theme/vh.css. */\n' +
   fs.readFileSync(path.join(spec, palettes[0]), 'utf8') + '\n' +

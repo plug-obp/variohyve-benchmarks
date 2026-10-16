@@ -45,17 +45,36 @@ class Page(HTMLParser):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--learn', required=True, type=Path, help='learn/ extracted from the release ZIP')
+    parser.add_argument('--learn', type=Path, help='learn/ extracted from the selected release ZIP')
+    parser.add_argument('--version', help='release to compare with --learn and --assets (default: latest)')
     parser.add_argument('--assets', type=Path, help='download assets to check against manifest checksums')
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
     preview = root / 'preview'
-    manifest = json.loads((preview / 'manifest.json').read_text())
-    version = manifest['version']
+    index = json.loads((preview / 'versions.json').read_text())
+    versions = [entry['version'] for entry in index['versions']]
+    assert len(versions) == len(set(versions)), 'Duplicate archived version'
+    assert versions == sorted(versions, key=lambda value: tuple(map(int, value.split('.'))), reverse=True)
+    assert index['latest'] == versions[0], 'Latest must be the newest version'
+    assert json.loads((preview / 'manifest.json').read_text())['version'] == index['latest']
+    version = args.version or index['latest']
+    assert version in versions, f'Unknown tutorial version: {version}'
+    release = preview if version == index['latest'] else preview / 'versions' / version
+    manifest = json.loads((release / 'manifest.json').read_text())
+    for entry in index['versions']:
+        assert entry['path'] == f'versions/{entry["version"]}/'
+        archived = preview / entry['path']
+        record = json.loads((archived / 'manifest.json').read_text())
+        assert record['version'] == entry['version']
+        assert record['source']['commit'] == entry['source_commit']
+        assert entry['pages'] == sorted(str(path.relative_to(archived)) for path in archived.rglob('*.html'))
     pages = {path: Page(path.read_text()) for path in preview.rglob('*.html')}
     checked = {'vh': 0, 'java': 0}
     for path, page in pages.items():
-        assert f'v{version}' in path.read_text().lower(), f'{path}: stale release label'
+        if path != preview / 'versions.html':
+            page_version = path.relative_to(preview).parts[1] if path.is_relative_to(preview / 'versions') else index['latest']
+            assert f'v{page_version}' in path.read_text().lower(), f'{path}: stale release label'
+            assert f'data-version="{page_version}"' in path.read_text(), f'{path}: missing version selector'
         for link in page.links:
             url = urlsplit(link)
             if url.scheme or url.netloc:
@@ -67,9 +86,9 @@ def main():
             if url.fragment and target.suffix == '.html':
                 target_page = pages.get(target) or Page(target.read_text())
                 assert unquote(url.fragment) in target_page.ids, f'{path}: missing fragment {link}'
-    for source in args.learn.rglob('*.md'):
+    for source in args.learn.rglob('*.md') if args.learn else []:
         relative = source.relative_to(args.learn)
-        target = preview / 'learn' / relative.with_name('index.html' if source.name == 'README.md' else source.stem + '.html')
+        target = release / 'learn' / relative.with_name('index.html' if source.name == 'README.md' else source.stem + '.html')
         page = pages[target]
         fences = re.findall(r'^```([^\n]*)\n(.*?)^```\s*$', source.read_text(), re.M | re.S)
         assert len(fences) == len(page.blocks), f'{source}: code block count differs'
@@ -79,15 +98,18 @@ def main():
                 assert f'language-{language}' in rendered['classes'], f'{source}: wrong grammar'
                 assert any(token.startswith('hljs-') for token in rendered['tokens']), f'{source}: highlighting absent'
                 checked[language] += 1
-    assert all(checked.values()), 'Both languages must be exercised'
-    index = (preview / 'index.html').read_text()
+    if args.learn:
+        assert all(checked.values()), 'Both languages must be exercised'
+    index_html = (release / 'index.html').read_text()
     for asset in manifest['assets']:
-        assert f'/v{version}/{asset["name"]}' in index, f'Missing release download: {asset["name"]}'
+        assert f'/v{version}/{asset["name"]}' in index_html, f'Missing release download: {asset["name"]}'
         if args.assets:
             data = (args.assets / asset['name']).read_bytes()
             assert len(data) == asset['bytes']
             assert hashlib.sha256(data).hexdigest() == asset['sha256']
-    print(f'Preview checks passed: {len(pages)} pages; {checked["vh"]} VarioHyve and {checked["java"]} Java blocks preserve exact packaged source and have distinct language highlighting.')
+    print(f'Preview structure checks passed: {len(versions)} releases, {len(pages)} pages.')
+    if args.learn:
+        print(f'Source comparison passed: {checked["vh"]} VarioHyve and {checked["java"]} Java blocks preserve exact packaged source and have distinct language highlighting.')
 
 
 if __name__ == '__main__':
