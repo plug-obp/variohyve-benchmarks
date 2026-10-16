@@ -81,9 +81,9 @@ release. This is a publication URL transformation, not a change to tagged source
 
 Starting with v0.3.0, publish both starter and packaging distributions. The
 `Starter slice` workflow produces one `variohyve-starter-<runner.os>` artifact per
-platform containing both ZIPs and the VSIX. Extract these artifacts without
-rebuilding or modifying their contents; renaming the outer download files is
-fine. Use this public naming convention:
+platform containing both ZIPs and the VSIX. Normally, extract these artifacts
+without rebuilding or modifying their contents; renaming the outer download
+files is fine. Use this public naming convention:
 
 | Contents | Public filename | CI artifact |
 |---|---|---|
@@ -99,7 +99,8 @@ The extension version is independent: preview v0.3.0 uses extension v0.4.0.
 Include `SHA256SUMS.txt` alongside the seven binaries. Use the actual byte counts
 and SHA-256 values of the renamed downloads in `manifest.json`; its `assets`
 entries contain `name`, `kind` (`starter`, `packaging`, or `extension`),
-`platform`, `bytes`, `sha256` and `ci_artifact`. Never copy an old release's hashes
+`platform`, `bytes`, `sha256` and `ci_artifact` (or the local-build provenance
+below). Never copy an old release's hashes
 or validation counts into a new record.
 
 Other manifest fields follow the existing v0.2.0 record:
@@ -116,6 +117,22 @@ Other manifest fields follow the existing v0.2.0 record:
   rendered tutorial page count, source-excerpt checks and highlighting checks.
 - `packaging` explains any outer-filename changes and which job supplied the
   universal VSIX.
+
+If GitHub cannot upload artifacts because of its storage quota, a release may use
+locally built binaries from the exact tagged source after validation. Keep that
+provenance explicit: each asset has `ci_artifact: null` and a `build_origin`
+identifying the local build platform, source commit and toolchain. Record the
+actual CI conclusion and the upload failure; distinguish successful source
+validation steps from unavailable CI binaries. Local archive and VSIX checks
+apply to the actual downloaded bytes, while checks on other CI platforms apply
+to the matching source build, not those local byte hashes. Do not describe local
+binaries as unmodified CI files.
+
+When a distribution is Java-only and includes both POSIX and Windows launchers,
+the same verified local archive may be offered under all three platform download
+names. Say that the files are byte-identical aliases of a universal local build;
+do not imply that each archive was built on its named platform. Preserve existing
+GitHub artifacts: quota recovery does not authorize deleting unrelated history.
 
 The source tag, CI run head, packaged runtime and documentation must all resolve
 to the same source revision. Build the specification HTML/PDF from that revision
