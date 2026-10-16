@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-dcb0efca.js";
+            window.path_to_searchindex_js = "searchindex-dc3eaf86.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-ce909e20.js"></script>
@@ -225,6 +225,7 @@ captures; later explicit message arguments are additional inputs.</p>
 <p>Class definition precedes construction, so constructor arguments cannot provide
 that top-level class’s superclass or mixins. They can be stored and used when
 realizing <strong>nested</strong> classes:</p>
+<!-- example-id: vh-module-capability-composition -->
 <pre><code class="language-vh">class Module(baseClass, loggingMixin) {
     Base = baseClass;
     Logging = loggingMixin;
@@ -251,7 +252,7 @@ tooling bundle is described in <a href="./interpreter-design.html#module-entry">
 <p>This contract governs atomic finalization before publishing a runtime. It grants
 no authority to replace the seed during application execution. The accepted
 profiles are described in <a href="possible-seeds-and-worlds.html">Possible Seeds and Worlds</a>;
-the <a href="../../design-notes/staged-runtime-seed.html">staged seed design</a> records the
+the <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/staged-runtime-seed.md">staged seed design</a> records the
 rationale and implementation evidence.</p>
 <p>When a builder adopts a replacement seed before publishing its runtime, it
 must substitute every retained reference to a retired seed identity using a
@@ -300,7 +301,7 @@ world; this startup operation grants no live object-replacement authority.</p>
 budget. Host sends supply an empty caller activation; the target’s definition
 supplies its lexical scope. The concrete APIs and validation are documented under
 <a href="./interpreter-design.html#module-entry">module entry</a> and in the
-<a href="../../design-notes/isolated-module-entry.html">implemented entry decision</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/isolated-module-entry.md">implemented entry decision</a>.</p>
 <h2 id="development-and-debugging-contexts"><a class="header" href="#development-and-debugging-contexts">Development and Debugging Contexts</a></h2>
 <p>Richer <a href="./tooling-architecture.html#evaluation-contexts">tool evaluation contexts</a>
 are distinct from normal module entry. A class created with tooling authority
@@ -309,7 +310,9 @@ retains those captures and cannot silently be treated as an isolated module.</p>
 <p>Current execution failures abort their native continuation; they are not
 catchable language values. A failed FN callback reports its diagnostic to foreign
 code, which may handle it and complete the enclosing NF call normally.
-Missing dispatch does not invoke a language-level <code>doesNotUnderstand</code> handler.
+Missing dispatch reports <code>Message not understood: selector/arity</code>; it does not
+invoke a language-level <code>doesNotUnderstand</code> handler. Revisit this diagnostic if
+a message-interception protocol is added.
 Uninitialized reads, unresolved holes, invalid contributors and invalid returns
 also fail explicitly; <a href="./literals.html">return rules</a> specify dead homes,
 initializer completion and callback barriers. Public diagnostics expose neither

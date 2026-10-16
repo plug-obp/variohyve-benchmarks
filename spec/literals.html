@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-dcb0efca.js";
+            window.path_to_searchindex_js = "searchindex-dc3eaf86.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-ce909e20.js"></script>
@@ -213,16 +213,19 @@ or overflow behavior. The prototype’s supported subset is documented under
 </tbody>
 </table>
 </div>
-<pre><code class="language-vh">"hello"
-'it\'s fine'
-"line one\nline two"
-"\u0041" // A
+<!-- example-id: vh-string-escapes -->
+<pre><code class="language-vh">{
+    greeting = "hello";
+    apostrophe = 'it\'s fine';
+    lines = "line one\nline two";
+    unicode = "\u0041"; // A
+}
 </code></pre>
 <h3 id="multi-line-strings"><a class="header" href="#multi-line-strings">Multi-Line Strings</a></h3>
 <p>Raw newlines are allowed inside either quoted form. They preserve all whitespace
 between the quotes, including indentation; <code>"a\nb"</code> and the corresponding
 two-line literal have the same content. See the lexer in
-<a href="../../../vh-core/src/main/antlr/vh.g4">vh.g4</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/main/antlr/vh.g4">vh.g4</a>.</p>
 <h2 id="hole-literals"><a class="header" href="#hole-literals">Hole Literals</a></h2>
 <p><code>?</code> is an explicit incomplete expression, valid wherever an expression is
 expected. It has its own AST node and differs from both an omitted initializer
@@ -252,9 +255,12 @@ optional when it is empty. Bodies are semicolon-separated statement lists;
 an empty body and a trailing semicolon are allowed.
 Formal lists follow the <a href="message-sends.html#list-separators">shared comma policy</a>:
 a trailing comma adds no parameter, while an interior missing parameter is an error.</p>
-<pre><code class="language-vh">fun { 42 }
-fun(x) { x.plus(1) }
-λ(x, y) { x.plus(y) }
+<!-- example-id: vh-lambda-literals -->
+<pre><code class="language-vh">{
+    answer = fun { 42 };
+    successor = fun(x) { x.plus(1) };
+    sum = λ(x, y) { x.plus(y) };
+}
 </code></pre>
 <p>A lambda captures its evaluation scope, current receiver, contribution origin
 and lexical return home. It does not capture its later caller’s scope.
@@ -312,6 +318,7 @@ See <a href="objects-and-classes.html#object-literals">object literals</a>.</p>
 <h2 id="initializer-completion"><a class="header" href="#initializer-completion">Initializer completion</a></h2>
 <p>A class or object body may end with <code>|</code> and an optional ordinary statement list.
 This section executes after that contribution’s ordered slot initializers:</p>
+<!-- example-id: vh-final-initializer-return -->
 <pre><code class="language-vh">class Config(input) {
     saved = input;
     value { saved }
@@ -340,7 +347,7 @@ the home. Escaped data remain usable without retaining return authority.</li>
 its original home. The default Alien callback barrier remains in force; any
 future crossing support must preserve these initializer phase restrictions.
 Failures neither replay initialization nor roll back effects or retract an
-escaped receiver. See the <a href="../../design-notes/initializer-return-homes.html">accepted policy</a>.</p>
+escaped receiver. See the <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/initializer-return-homes.md">accepted policy</a>.</p>
 
                     </main>
 

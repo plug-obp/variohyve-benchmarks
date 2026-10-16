@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-dcb0efca.js";
+            window.path_to_searchindex_js = "searchindex-dc3eaf86.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-ce909e20.js"></script>
@@ -300,6 +300,7 @@ identity laws and supplies no general foreign garbage collector.</p>
 <p>A native wrapper supplies its own identity, scope and behavior around foreign
 values. Multiple wrappers may share one Alien without sharing native identity.
 For example, a callable capability can operate on an opaque handle:</p>
+<!-- example-id: vh-explicit-foreign-call -->
 <pre><code class="language-vh">class Device(deviceHandle, reader) {
     handle = deviceHandle;
     readFn = reader;
@@ -355,7 +356,7 @@ NLR crossing. The suspended caller’s homes remain live until its own completio
 or failure. Callbacks continue to share the active execution budget; handling an
 exhaustion diagnostic does not replenish it. There are no native resumable
 conditions in the current language. See the
-<a href="../../design-notes/synchronous-foreign-interactions.html#accepted-decision-foreign-handling-of-callback-failure">accepted recovery agreement</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/synchronous-foreign-interactions.md#accepted-decision-foreign-handling-of-callback-failure">accepted recovery agreement</a>.</p>
 <h4 id="java-host-exit-limits"><a class="header" href="#java-host-exit-limits">Java host exit limits</a></h4>
 <p>The adapter preserves a supplied <code>BoundaryException</code> and its defined kind. It
 translates other <code>RuntimeException</code>s thrown by <code>ForeignObject.resolve</code> into
@@ -391,7 +392,7 @@ transfer. Such support does not change the lexical target of <code>^</code>, rev
 retired home, or bypass initializer phase restrictions. Crossing support and
 its transfer protocol are deferred; the default barrier must not be disabled
 without implementing a supporting agreement. See the
-<a href="../../design-notes/synchronous-foreign-interactions.html#accepted-decision-boundary-owned-non-local-return">accepted decision and examples</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/synchronous-foreign-interactions.md#accepted-decision-boundary-owned-non-local-return">accepted decision and examples</a>.</p>
 <p><a id="execution-authority"></a></p>
 <h3 id="control-tokens-and-execution-agreements"><a class="header" href="#control-tokens-and-execution-agreements">Control Tokens and Execution Agreements</a></h3>
 <p>Ordinary native transitions require execution authority under an explicit
@@ -599,14 +600,14 @@ observations, validation before reclamation, and agreed weak-reference,
 finalization and participant-loss behavior. Missing or incomplete cooperation
 retains conservatively. No universal foreign collector, introspection mechanism
 or cycle-collection algorithm is prescribed. See the
-<a href="../../design-notes/alien-expat-lifetimes.html">accepted lifetime decision</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/alien-expat-lifetimes.md">accepted lifetime decision</a>.</p>
 <h3 id="foreign-kinds-and-capability-contracts"><a class="header" href="#foreign-kinds-and-capability-contracts">Foreign Kinds and Capability Contracts</a></h3>
 <p>An adapter may classify a value as callable, pointer, struct or endpoint; these
 are foreign contracts, not native classes. Analysis needs explicit assumptions
 about effects, callbacks, blocking, determinism and state changes. Unknown
 behavior stays opaque. General contract metadata, provenance registries and
 foreign reflection remain unimplemented; see the
-<a href="../../design-notes/alien-semantic-membrane.html">boundary assessment</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/alien-semantic-membrane.md">boundary assessment</a>.</p>
 <h2 id="vm-services-and-the-trusted-seed"><a class="header" href="#vm-services-and-the-trusted-seed">VM Services and the Trusted Seed</a></h2>
 <p>The host boundary has a public foreign facet and a privileged VM-service facet
 over one private owner. The public facet exposes only the ordinary transport,
@@ -634,7 +635,12 @@ or receipt evidence, so import recovers the object. Returning its raw backend
 representation as a foreign value is
 invalid. Any future representation-sensitive service requires explicit authority
 and private unwrapping without adding raw-world access to public Expats. See
-<a href="../../design-notes/vm-lang-boundary.html">the VM boundary decision</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/vm-lang-boundary.md">the VM boundary decision</a>.</p>
+<p>The <a href="./tooling-architecture.html#admitted-source-services">admitted source services</a>
+use this route to evaluate captured source with an explicit object context or
+instantiate an isolated module. They share active admission, budgets, callback
+depth, roots and result lifetimes. They expose source snapshots and ordinary
+values, never syntax trees, activations or the runtime world.</p>
 <h2 id="identitymirror"><a class="header" href="#identitymirror">IdentityMirror</a></h2>
 <p><code>IdentityMirror</code> is an explicitly supplied capability for observations that must
 not dispatch through the subject. A host obtains it with
@@ -732,7 +738,7 @@ Aliens and codec values return false because they have no native membership.</p>
 <p>These are structural identity tests, not proofs that a selector is supported or
 that a contribution’s behavior remains effective after overriding. They do not
 establish trust in a subclass or authorize its behavior. The
-<a href="../../design-notes/mirrors-identity-and-alien-classification.html">design note</a>
+<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/mirrors-identity-and-alien-classification.md">design note</a>
 records the routing and capability tradeoffs.</p>
 
                     </main>

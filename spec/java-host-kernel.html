@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-dcb0efca.js";
+            window.path_to_searchindex_js = "searchindex-dc3eaf86.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-ce909e20.js"></script>
@@ -202,6 +202,12 @@ payload identity and compatible round trips are unchanged; no value interning
 or extra language wrapper is used to attach behavior. Arithmetic results are
 ordinary host results and need not share the receiver’s identity. Value equality
 does not establish IdentityMirror identity.</p>
+<p>The Java starter implements this protocol in <code>StarterValueAdapter</code>, independently
+of the optional JavaHostKernel bundle. Kernel construction does not install an
+adapter. Standalone parser and collection factories can instead be wired into
+an ordinary native bundle through explicit module inputs. JavaHostKernel retains
+its historical Java adapter/factory entry points as compatibility delegates;
+the starter selects the standalone adapter during runtime construction.</p>
 <h2 id="numbers-and-strings"><a class="header" href="#numbers-and-strings">Numbers and strings</a></h2>
 <p>Integral literals retain the signed 64-bit domain. The configured world accepts
 decimal syntax as Java binary64 (<code>Double</code>), with Java rounding and underflow;
@@ -218,7 +224,18 @@ arithmetic requires explicit conversion.</p>
 <p>Double/Float receivers provide <code>plus</code>, <code>minus</code>, <code>times</code>, <code>dividedBy</code>, comparison,
 <code>abs</code> and <code>toString</code>. Floating operations use binary64, including IEEE special
 results. String receivers provide concatenation, UTF-16 length, equality, trim
-and literal-delimiter split. No universal native Object display/equality method
+and literal-delimiter split, <code>substring/1</code> (suffix), <code>substring/2</code> (exclusive end),
+<code>indexOf/1,2</code>, <code>contains/1</code>, <code>startsWith/1,2</code>, <code>isEmpty/0</code>, <code>charAt/1</code> and <code>do/1</code>.
+Indices and offsets are checked signed integral values in the UTF-16 domain:
+start/end offsets permit length; <code>charAt</code> requires an existing unit. Invalid
+ranges fail as foreign rejection, without truncating large indices to Java int.
+<code>charAt</code> returns a one-unit String, including an isolated surrogate; <code>do</code> visits
+those same units in order and returns the original string. Search returns -1
+when absent. Optional search/prefix offsets must lie between zero and length. Every JavaHostKernel capability and adapted host value supplies <code>toString/0</code>.
+Opaque Java values use their ordinary Java display only when explicitly sent
+that message; foreign objects with their own resolver keep that authority.
+Collection display uses Java Object identity text without traversing elements.
+No universal native Object display/equality method
 is implied. The API declarations and conformance tests define the exact selectors
 and input validation of each protocol.</p>
 <p>Kernel factories supply parsing and mutable collections. Lists use zero-based
@@ -226,6 +243,10 @@ indices; maps use string keys and insertion order. Elements preserve boundary
 identity. Collection iteration is sequential and visits a snapshot; integer
 iteration fixes its bounds before calling back. Both invoke native callbacks
 through Expats, preserving shared budgets and the foreign return barrier.
+List <code>isEmpty/0</code> tests its size. <code>remove/1</code> removes a zero-based index, shifts
+later elements left, releases that entry’s native receipt and returns the list,
+matching the fluent mutation style of <code>add</code>. It does not return an expired
+removed receipt. Snapshot iteration remains valid across removal.
 List <code>add</code>/<code>set</code> and Map <code>put</code> declare the stored-value argument detachable and
 register a receipt before retaining a native object. Replacement releases only
 the collection’s previous receipt. <code>get</code> returns the stored reference through
@@ -243,7 +264,7 @@ adapter retention obligations under the
 native ownership annotations or a universal collection protocol.</p>
 <p>Console uses explicitly injected streams; line input returns host null at EOF.</p>
 <h2 id="api-declarations"><a class="header" href="#api-declarations">API declarations</a></h2>
-<p><a href="../../../vh-source/contracts/JavaHostKernel.vh"><code>JavaHostKernel.vh</code></a> is a
+<p><a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-source/contracts/JavaHostKernel.vh"><code>JavaHostKernel.vh</code></a> is a
 module-like API document. Class-shaped declarations describe receiver protocols;
 method bodies containing <code>?</code> denote absent VarioHyve implementations. Reaching
 such a hole still fails normally. <code>_value</code> documents host state and supplies no
@@ -257,6 +278,17 @@ Neither descriptors nor declarations install adapters, import capabilities or
 choose dispatch. Java implementations and the API document are checked together
 and shipped at the same version. This is a concrete tooling convention, not a
 general binding generator or interface-definition extension to the language.</p>
+<h2 id="boolean-and-null-additions"><a class="header" href="#boolean-and-null-additions">Boolean and null additions</a></h2>
+<p>The Java Host Seed adapter also supplies <code>equals/1</code>: null equals only host null;
+a Boolean equals only the same Boolean value. Other kinds compare false without
+calling equality on the argument. This does not change native seed equality.</p>
+<p>Boolean <code>whileTrue/1</code> takes a zero-argument callback. False returns host null
+without invoking it. True repeatedly invokes it and ignores the result: the
+immutable receiver is not a condition thunk and is never re-evaluated. There is
+no fixed iteration bound. Native callbacks still consume the shared step budget;
+failure terminates the loop without replay, and non-local returns cannot cross
+the default foreign callback barrier. A wholly foreign callback that never fails
+may run indefinitely under the existing host-execution limits.</p>
 
                     </main>
 

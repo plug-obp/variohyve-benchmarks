@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-dcb0efca.js";
+            window.path_to_searchindex_js = "searchindex-dc3eaf86.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-ce909e20.js"></script>
@@ -222,6 +222,7 @@ previous result: <code>a.b.c(3)</code> sends <code>c/1</code> to the result of <
 arguments once from left to right. <code>self.apply(args)</code> instead invokes <code>apply/N</code>
 under the ordinary candidate rules below. An exact <code>apply/N</code> method behaves the
 same in both forms; a generated accessor can distinguish them:</p>
+<!-- example-id: vh-callable-slot-access -->
 <pre><code class="language-vh">{
     apply = fun { 42 };
     exact { self() }
@@ -330,13 +331,17 @@ realizes through that cache. A selected failure is cached and propagated.</p>
 target; their computations may have effects and must produce native classes,
 excluding metaclasses. Terminal constructor arguments remain deferred until
 construction. See <a href="objects-and-classes.html">class realization</a> and the
-<a href="../../design-notes/unified-callable-lookup.html">accepted decision</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/unified-callable-lookup.md">accepted decision</a>.</p>
 <h2 id="cascade-"><a class="header" href="#cascade-">Cascade (<code>..</code>)</a></h2>
 <p>A cascade evaluates its receiver once and sends every arm to that saved receiver.
 Arms execute left-to-right; each arm’s arguments execute immediately before its
 send. Preserve each arm’s exact-access versus invocation mode and any setter
 sugar:</p>
-<pre><code class="language-vh">p..x!(2)..y!(3)..describe
+<!-- example-id: vh-send-cascade -->
+<pre><code class="language-vh">(fun {
+    var p = { x = 0; y = 0; describe { x.toString.concat(",").concat(y.toString) } };
+    p..x!(2)..y!(3)..describe
+}).apply()
 </code></pre>
 <p>The intermediate results are discarded. By contrast, <code>p.x!(2).y!(3)</code> sends
 <code>y!/1</code> to the result of <code>x!/1</code>, which is <code>2</code> for a generated setter.
@@ -369,7 +374,7 @@ send select different receivers.</p>
 </div>
 <p>There is no <code>super..a..b</code> syntax: <code>super</code> is not a receiver value.
 Assignment has a separate <a href="syntactic-sugar.html#the-cascade-fence">cascade fence</a>.
-The precise grammar is <a href="../../../vh-core/src/main/antlr/vh.g4">vh.g4</a>.</p>
+The precise grammar is <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/main/antlr/vh.g4">vh.g4</a>.</p>
 
                     </main>
 

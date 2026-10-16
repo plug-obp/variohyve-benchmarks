@@ -3,6 +3,48 @@
 User-visible changes to the public VarioHyve preview. Preview versions may change
 the Java embedding API. Java 23 is required and is not bundled.
 
+## 0.3.1 — 2026-10-16
+
+Public release of the packaging changes below, with VS Code extension **0.4.0**.
+The tagged 0.3.0 candidate was not published: Windows validation found test
+assertions that assumed Unix line endings and unescaped JSON paths. Correct
+those assertions and bound concurrent CI JVM work without changing runtime
+behavior or relaxing test deadlines. Installed-user instructions now point to
+public downloads.
+
+## 0.3.0 — unpublished candidate, 2026-10-16
+
+Merged native world packaging into `main` before this version bump. Ships with
+VS Code extension **0.4.0** and separate starter and packaging archives.
+
+- Construct development and deployment worlds through native recipes. Modules
+  receive explicit dependencies; the host supplies bounded source access,
+  classloading, stream grants and publication.
+- Load independently packaged Alien realizers without registration. Declare JARs
+  and resources with pinned digests, compose them natively, and deploy their
+  captured bytes. RE2 and the small Learn kernel capabilities use this path.
+- Ship the packaging tools and a native project template in the archive and VSIX.
+  Run, test, package and launch a relocated deployment through CLI or VS Code.
+  Tests report native assertion details and remain outside production packages.
+- Ship a tiny native source package and the same `multiply/1` client for native
+  and Alien dependencies. Extracted-archive checks cover both journeys without a
+  checkout, build tools or credentials, plus direct embedding without sidecars.
+- Select immutable execution step budgets before runtime entry. Launch and
+  deployment metadata accept `execution.maxSteps`; native policy declares the
+  deployment budget through `output.execution`. Nested imports/callbacks share
+  the active budget; the default independent-entry limit remains 100000.
+- Remove unused OBP3 dependencies and keep ANTLR generator dependencies out of
+  installed runtimes. Document the GitHub Packages token needed for source builds.
+- Apply conservative recipe editor help throughout marked projects; bind actual
+  specification examples to stable IDs and publish a contract conformance map.
+- Add two Learn chapters for custom worlds and native packages. Preserve earlier
+  public tutorials with a version selector; the latest release is the default.
+
+**Migration:** existing launch/deployment manifests remain valid without an
+`execution` field. The project template now supplies a `multiply/1` capability
+instead of the earlier example's `factor` object. This is template policy, not a
+language-level API. Existing applications and recipes keep their own protocols.
+
 ## 0.2.0 — 2026-10-12
 
 Includes the changes on `main` since `v0.1.0`. Ships with VS Code extension

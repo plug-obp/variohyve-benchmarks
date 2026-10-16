@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-dcb0efca.js";
+            window.path_to_searchindex_js = "searchindex-dc3eaf86.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-ce909e20.js"></script>
@@ -236,6 +236,7 @@ contribution, direct mixins left-to-right, then superclass chain.</li>
 <p>A subclass <code>name/N</code> alone cannot make an ineligible declared getter qualify.
 Once eligible, that receiver’s overrides apply normally. An operation added
 on a different inner receiver cannot capture an enclosing dependency.</p>
+<!-- example-id: vh-declaration-relative-dispatch -->
 <pre><code class="language-vh">{
     class Base {
         f = fun(x) { 7 };
@@ -273,6 +274,7 @@ Both bypass lexical receiver selection. See <a href="message-sends.html#cascade-
 <p><code>outer ClassName</code> selects the ordinary receiver for the nearest matching named
 lexically enclosing declaration, including the immediately containing class.
 Subsequent messages dispatch normally on that receiver.</p>
+<!-- example-id: vh-outer-occurrence -->
 <pre><code class="language-vh">class Counter(start) {
     n = start;
     class Stepper {
@@ -296,7 +298,7 @@ Member classes also retain their bound receiver and declaration origin.
 This holds at every nesting depth: a member selected from the second of two
 applications retains that application’s farther enclosing objects, even when
 both applications share the same declaration and immediate receiver. The
-<a href="../../design-notes/outer-newspeak-comparison.html#deeper-repeated-parent-diagnostic">repeated-parent example</a>
+<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/outer-newspeak-comparison.md#deeper-repeated-parent-diagnostic">repeated-parent example</a>
 therefore returns <code>42</code>, preserving the selected <code>b.Family</code> ancestry. This is an
 intentional difference from Newspeak’s deeper nearest-parent reselection rule.</p>
 <p><code>outer C</code> is a standalone receiver value: grouping, passing it as an argument

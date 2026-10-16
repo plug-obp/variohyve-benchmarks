@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-dcb0efca.js";
+            window.path_to_searchindex_js = "searchindex-dc3eaf86.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-ce909e20.js"></script>
@@ -270,9 +270,15 @@ mixin and superclass clauses have the same syntax, order and meaning as class
 clauses: mixins precede the superclass; <code>&lt;:</code>/<code>with</code> and <code>&lt;</code>/<code>extends</code> are synonyms.
 Omitting the superclass selects structural root <code>Object</code>, without name lookup.
 Slot declarations still require their terminating semicolon.</p>
-<pre><code class="language-vh">&lt;: M1(p1), M2(p2) &lt; S(p3) { x = 5; }
-&lt; S(p) { x = 5; }
-with M(p) { x = 5; }
+<!-- example-id: vh-anonymous-composition -->
+<pre><code class="language-vh">{
+    class M1(input) { first = input; }
+    class M2(input) { second = input; }
+    class S(input) { base = input; }
+    composed = &lt;: M1(1), M2(2) &lt; S(3) { x = 5; };
+    inherited = &lt; S(4) { x = 5; };
+    mixed = with M1(6) { x = 5; };
+}
 </code></pre>
 <p>Each evaluation realizes a fresh anonymous zero-parameter class, then immediately
 sends its generated primary <code>new/0</code> using ordinary exact message dispatch.
@@ -307,10 +313,18 @@ See <a href="./message-sends.html#invocation-at-arity-zero">zero-arity invocatio
 <h2 id="root-object-protocol"><a class="header" href="#root-object-protocol">Root Object Protocol</a></h2>
 <p>In the <a href="current-native-seed.html">Current Native Seed</a>, native objects, including
 lambdas, inherit these
-ordinary methods from root <code>Object</code>:</p>
-<pre><code class="language-vh">equals(other) { _vm.same(self, other) }
-hash { _vm.identityHash(self) }
-toString { "an Object" }
+ordinary methods from root <code>Object</code>. This executable example packages the same
+method bodies with an explicitly injected IdentityMirror. The actual seed root
+captures <code>_vm</code> lexically and has no instance slots:</p>
+<!-- example-id: vh-explicit-identity-mirror -->
+<pre><code class="language-vh">class Example(vm) {
+    _vm = vm;
+    class Value {
+        equals(other) { _vm.same(self, other) }
+        hash { _vm.identityHash(self) }
+        toString { "an Object" }
+    }
+}
 </code></pre>
 <p>These are normative defaults of this seed. Another seed may choose different
 root methods without changing lookup, invocation or boundary laws. Replacing an
@@ -344,7 +358,7 @@ module binding or accessor for IdentityMirror. Its
 operations cross the normal Alien/Expat boundary and expose no backend
 representation. Aliens retain their own protocols and do not acquire these
 methods by inheritance. Scalar Object behavior and identity remain subject to
-<a href="../../design-notes/native-values-and-abstract-semantics.html">the scalar design decision</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/native-values-and-abstract-semantics.md">the scalar design decision</a>.</p>
 <h2 id="capabilities-and-definition-scope"><a class="header" href="#capabilities-and-definition-scope">Capabilities and Definition Scope</a></h2>
 <p>The <a href="./program-structure.html#sources-of-an-objects-capabilities">capability sources</a>
 do not change definition scope: calling a class does not capture its caller’s scope.
@@ -361,6 +375,7 @@ capture its parameters. Each contribution receives its own argument bindings;
 composition does not replace its captured definition dependencies.</p>
 <h3 id="member-declarations-and-class-expressions"><a class="header" href="#member-declarations-and-class-expressions">Member Declarations and Class Expressions</a></h3>
 <p>A named class in body-declaration position declares a <strong>member class</strong>:</p>
+<!-- example-id: vh-member-definition-captures -->
 <pre><code class="language-vh">class Container(input) {
     value = input;
     class Member { read { value } }
@@ -511,6 +526,7 @@ An owned <code>factory apply</code> at N replaces that default; factories at oth
 coexist with it. A custom factory controls its result and causes no automatic
 allocation or initialization. It may call <code>new</code>, return a cached instance, or
 return another value.</p>
+<!-- example-id: vh-factory-constructors -->
 <pre><code class="language-vh">class Point(xInput, yInput) {
     x = xInput;
     y = yInput;

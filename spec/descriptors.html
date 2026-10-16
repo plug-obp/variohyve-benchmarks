@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-dcb0efca.js";
+            window.path_to_searchindex_js = "searchindex-dc3eaf86.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-ce909e20.js"></script>
@@ -203,6 +203,7 @@ text, including whitespace, comments and escape spellings; groups retain order
 and multiplicity. Payload text has no language-mandated meaning.</p>
 <h3 id="short-annotations"><a class="header" href="#short-annotations">Short annotations</a></h3>
 <p>Short annotations require no extra delimiters:</p>
+<!-- example-id: vh-descriptor-declarations -->
 <pre><code class="language-vh">class Arithmetic {
     add!(a: int, b: int): int { a.plus(b) } : documented;
     legacy(a: int, b: int) { a.plus(b) } : int;
@@ -239,6 +240,7 @@ sites, including lambda descriptors, retain their existing framing.</p>
 <h3 id="verbatim-annotations"><a class="header" href="#verbatim-annotations">Verbatim annotations</a></h3>
 <p>An optional fence permits arbitrary text, including unmatched brackets or
 quotes, newlines, and every short-form separator:</p>
+<!-- example-id: vh-descriptor-foreign-payload -->
 <pre><code class="language-vh">(42 : [=[@foreign { syntax: "unfinished; ) | anything]=])
 </code></pre>
 <p>At the beginning of an entry, after optional spaces or tabs, an opening <code>[</code> followed
@@ -274,8 +276,11 @@ optional trailing <code>|</code> does not create an additional entry.</p>
 <h3 id="expression-level-descriptors"><a class="header" href="#expression-level-descriptors">Expression-Level Descriptors</a></h3>
 <p>Parenthesized expression descriptors distinguish the annotated expression from
 its surrounding declaration:</p>
-<pre><code class="language-vh">x = (3 : annotation);  // describes the expression
-x = 3 : annotation;    // describes the slot
+<!-- example-id: vh-descriptor-attachment-owner -->
+<pre><code class="language-vh">{
+    expression = (3 : annotation);  // describes the expression
+    slot = 3 : annotation;         // describes the slot
+}
 </code></pre>
 <p>Groups may chain at every attachment point. Text that resembles nested
 annotations inside a payload is still one opaque entry: <code>(42 : (Shape : Tag))</code>

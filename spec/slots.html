@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-dcb0efca.js";
+            window.path_to_searchindex_js = "searchindex-dc3eaf86.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-ce909e20.js"></script>
@@ -181,6 +181,7 @@
 <p>Slots hold object state and expose it through generated accessor messages.</p>
 <p>Operational definition: <a href="./formal-core.html#calls-and-generated-accessors">SOS accessor rules</a>.</p>
 <h2 id="slot-declaration"><a class="header" href="#slot-declaration">Slot Declaration</a></h2>
+<!-- example-id: vh-slot-initialization -->
 <pre><code class="language-vh">class Point(a, b) {
     x = a;
     y = b;
@@ -234,13 +235,16 @@ Generated-accessor invocation eligibility then follows the
 <p>Calling <code>x!(v)</code> inside a custom <code>x!/1</code> dispatches normally, potentially back
 to that method; it does not expose the overridden storage primitive. There is
 no public raw-slot operation. Use a distinct backing slot when needed:</p>
+<!-- example-id: vh-custom-setter-validation -->
 <pre><code class="language-vh">{
     _x = 0;
     x { _x }
+    validate(v) { v.greaterOrEqual(0).ifFalse(fun { ? }) }
     x!(v) { validate(v); _x!(v) }
 }
 </code></pre>
-<p>The underscore is only a naming convention, not access control.</p>
+<p>Here the example validator rejects negative values by reaching an explicit hole;
+nonnegative writes return the stored value. The underscore is only a naming convention, not access control.</p>
 <h2 id="var-locals"><a class="header" href="#var-locals"><code>var</code> Locals</a></h2>
 <p><code>var count = 0;</code> declares a mutable local with getter/setter messages on a
 backend-private activation object. All locals in a source scope are reserved

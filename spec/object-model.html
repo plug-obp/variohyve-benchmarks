@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-dcb0efca.js";
+            window.path_to_searchindex_js = "searchindex-dc3eaf86.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-ce909e20.js"></script>
@@ -193,7 +193,7 @@ snapshot       = { mixins, superclassRef, initializationEdges, instanceLayout, i
 VMMetaclass    = VMClass
 </code></pre>
 <p><code>VMObject</code> has no per-instance method dictionary. Reified contributions retain
-method syntax and declarations; <a href="../../../vh-core/src/main/java/vh/vm/ObjectProtocol.java">ObjectProtocol</a>
+method syntax and declarations; <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/main/java/vh/vm/ObjectProtocol.java">ObjectProtocol</a>
 selects their operations. <code>VMClass.ownedContribution()</code> names <code>mixins[0]</code>; later entries
 are direct applications. Class objects currently have empty value-slot arrays:
 instance declarations belong to their contributions, and instance values belong
@@ -235,7 +235,7 @@ realization caches its failure. Failure diagnostics remain detached data; later
 observation adds context without changing the retained diagnostic. Startup
 relocation prepares a replacement successful payload while preserving binding
 identity and the cache key’s full declaration/application origin. See the
-<a href="../../design-notes/realization-lifecycle.html">lifecycle decision</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/realization-lifecycle.md">lifecycle decision</a>.</p>
 <p><a id="mixin-application"></a>
 <a id="mixin-identity"></a></p>
 <h2 id="contribution-occurrences-and-layouts"><a class="header" href="#contribution-occurrences-and-layouts">Contribution Occurrences and Layouts</a></h2>
@@ -243,7 +243,7 @@ identity and the cache key’s full declaration/application origin. See the
 logical slot by adding its contribution-local position. Inherited occurrences
 retain their own applying-class identities. Direct applications hold the selected
 <code>VMMixinClosure</code>, without importing the source class’s construction record.</p>
-<p><a href="../../../vh-core/src/main/java/vh/vm/internal/InstanceLayout.java">InstanceLayout</a>
+<p><a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/main/java/vh/vm/internal/InstanceLayout.java">InstanceLayout</a>
 collects owned/direct/inherited contributions and interns physical positions by
 slot name. Its immutable mapping is cached on the realized class. Instances
 allocate fresh arrays from its physical declarations. Logical identities survive
@@ -255,7 +255,7 @@ physicalIndex = actualReceiverClass.instanceLayout.physicalIndex(selected slot)
 from the declaration chosen to represent the physical cell. Initialization
 uses the same mapping. Ordinary source sends still pass through lookup; only an
 already selected accessor or private initializer write uses a direct array
-operation. See the <a href="../../design-notes/occurrence-slot-layout.html">accepted layout decision</a>.</p>
+operation. See the <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/occurrence-slot-layout.md">accepted layout decision</a>.</p>
 <p><a id="bootstrap-metaclasses"></a>
 <a id="metaclass-details"></a></p>
 <h2 id="class-assembly"><a class="header" href="#class-assembly">Class Assembly</a></h2>
@@ -264,9 +264,9 @@ an applied owned contribution. Named route constructors validate the target and
 occurrence; consumers use that distinction directly. A mixin route retains its
 positive application index, while superclass entry uses coordinator index zero.
 The representation’s superclass sentinel is confined to the route owner.</p>
-<p><a href="../../../vh-core/src/main/java/vh/vm/ClassConstruction.java">ClassConstruction</a>
+<p><a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/main/java/vh/vm/ClassConstruction.java">ClassConstruction</a>
 resolves contributor targets, reserves identities, creates each distinct metaclass
-and installs owned factories. <a href="../../../vh-core/src/main/java/vh/vm/internal/ClassDefinition.java">ClassDefinition</a>
+and installs owned factories. <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/main/java/vh/vm/internal/ClassDefinition.java">ClassDefinition</a>
 derives a complete structural snapshot from the ordered contributions and routes
 before the class is installed. Its immutable lists, layout and coordinator agree;
 <code>VMClass</code> exposes no independent setters or mutable contribution list. A definition
@@ -329,11 +329,11 @@ levels.</p>
 would extend the value contract and is justified only by an accepted feature
 requiring such a first-class reference. Its exposure, identity, class-of and
 construction rules would then need specification. The
-<a href="../../design-notes/top-class-algebra.html">Top decision</a> records that criterion
+<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/top-class-algebra.md">Top decision</a> records that criterion
 and the rationale for the present representation.</p>
-<p><a href="../../../vh-core/src/test/java/vh/vm/ClassConstructionChecks.java">ClassConstructionChecks</a>
+<p><a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/test/java/vh/vm/ClassConstructionChecks.java">ClassConstructionChecks</a>
 asserts the absent root superclass and flat metaclass graph.
-<a href="../../../vh-core/src/test/java/vh/vm/NativeSeedSourceTest.java">NativeSeedSourceTest</a>
+<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/test/java/vh/vm/NativeSeedSourceTest.java">NativeSeedSourceTest</a>
 checks the corresponding source recipe. These are implementation evidence;
 the <a href="./interpreter-design.html#refinement-of-the-formal-machine">general Java simulation proof</a>
 remains an obligation.</p>
@@ -341,7 +341,7 @@ remains an obligation.</p>
 <a id="what--mixinargs-and--baseargs-mean"></a>
 <a id="the-primary-factory-new"></a></p>
 <h3 id="private-construction-code"><a class="header" href="#private-construction-code">Private Construction Code</a></h3>
-<p><a href="../../../vh-core/src/main/java/vh/vm/internal/ConstructionCode.java">ConstructionCode</a>
+<p><a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/main/java/vh/vm/internal/ConstructionCode.java">ConstructionCode</a>
 generates <code>CoreUserFunction</code> bodies for ordinary primary <code>new</code>, default <code>apply</code>,
 owned initializers and class coordinators. Coordinators sequence dependency calls
 using <code>CoreLet</code>, then evaluate their owned body directly in the existing initializer home.
@@ -362,7 +362,7 @@ The language schedule and argument binding are specified in
 </div>
 <p>These operations have no selectors. <code>new</code> itself uses ordinary method lookup;
 no privileged construction lookup target is required. The
-<a href="../../design-notes/flat-metaclasses-and-construction.html#private-core-operations">construction decision</a>
+<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/flat-metaclasses-and-construction.md#private-core-operations">construction decision</a>
 records why the four operations are necessary.</p>
 <h2 id="method-activations"><a class="header" href="#method-activations">Method Activations</a></h2>
 <p><code>MethodActivation</code> records immutable parameter slots, the selected
@@ -384,7 +384,7 @@ and restores the caller afterward, without a fresh home. Let/method/initializer
 activations can remain captured after their homes retire. Native tracing retains
 their reachable data without reviving return authority. The first collector
 conservatively also traces activation continuation links, which can retain old
-caller graphs; see <a href="../../design-notes/native-heap-gc.html">collection trade-offs</a>.</p>
+caller graphs; see <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/native-heap-gc.md">collection trade-offs</a>.</p>
 <p><a id="super-dispatch"></a></p>
 <h2 id="dispatch-origin-tracking"><a class="header" href="#dispatch-origin-tracking">Dispatch Origin Tracking</a></h2>
 <p>For <a href="./name-resolution.html">lexical lookup and <code>super</code></a>, <code>VMMethodClosure</code> retains

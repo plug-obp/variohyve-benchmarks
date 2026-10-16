@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-dcb0efca.js";
+            window.path_to_searchindex_js = "searchindex-dc3eaf86.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-ce909e20.js"></script>
@@ -183,6 +183,15 @@ starter editor’s supported scope. <a href="./descriptors.html">Descriptors</a>
 annotation syntax; <a href="./interpreter-design.html#runtime-diagnostics">runtime diagnostics</a>
 define detached failures. Tooling does not add an operational meaning to either
 annotations or syntactic observations.</p>
+<p>Contract ownership has four layers: language semantics (scope, sends,
+construction and return homes); runtime/boundary services (source entry,
+receipts, adapters and admission); package/world conventions (explicit inventory,
+startup and native composition); and tool conventions (sidecars, project markers,
+editor commands and publication). The latter two do not add language semantics.
+An embedding can supply the same module inputs without any IDE or launch metadata;
+a particular launcher still requires its own declared configuration. The
+<a href="https://obpcdl.org/variohyve-benchmarks/preview/versions/0.3.1/reference/conformance.html">conformance map</a> links these distinctions to executable
+evidence and selected profiles.</p>
 <h2 id="optional-metadata-and-source-coordinates"><a class="header" href="#optional-metadata-and-source-coordinates">Optional Metadata and Source Coordinates</a></h2>
 <p>Each layer requires only its semantic input. Surface syntax stands alone without
 ANTLR tokens or contexts; core syntax stands alone without surface syntax; the
@@ -225,6 +234,7 @@ immutable snapshots. <code>descriptorsOf(owner)</code> preserves groups;
 those groups. <code>describedElements(descriptor)</code> and <code>attachmentsOf(descriptor)</code>
 provide reverse queries. Text that resembles nested annotations inside a payload
 is opaque; it creates no inner AST or reverse index automatically.</p>
+<!-- example-id: java-core-descriptor-index -->
 <pre><code class="language-java">var root = num("42");
 var map = new CoreDescriptorMap();
 var entry = new CoreDescriptor.Entry("@foreign any syntax");
@@ -253,7 +263,11 @@ alias must not replace an expression’s narrower diagnostic origin.</p>
 <h3 id="explicit-interpretation-by-tools"><a class="header" href="#explicit-interpretation-by-tools">Explicit interpretation by tools</a></h3>
 <p>VarioHyve is one available payload language, not the required one. A tool chooses
 which entries to interpret and may call existing capabilities separately:</p>
-<pre><code class="language-java">// Opt into VarioHyve syntax, without source-admissibility checks or execution.
+<!-- example-id: java-source-entry-pipeline -->
+<pre><code class="language-java">var entry = new CoreDescriptor.Entry("types.answer");
+ForeignObject toolTypes = (selector, arity) -&gt; selector.equals("answer") &amp;&amp; arity == 0
+        ? arguments -&gt; 42L : null;
+// Opt into VarioHyve syntax, without source-admissibility checks or execution.
 var parsed = Reader.parseExpression(entry.text());
 // Alternatively opt into chosen checks, including the standard collection.
 var checked = Reader.readExpression(entry.text(), SyntacticChecks.standard());
@@ -310,7 +324,7 @@ warnings; CLI analysis clients can consume the same Reader result directly.</p>
 <p>Each <code>SyntacticCheck</code> owns its rule and traversal. <code>SyntacticChecks</code> selects an
 immutable ordered collection using <code>standard()</code>, <code>none()</code>, <code>with(check)</code> and
 <code>without(id)</code>. Independent rules share a diagnostic collector, not semantic
-state. The <a href="../../design-notes/syntactic-checks.html">check catalog</a> lists standard
+state. The <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/syntactic-checks.md">check catalog</a> lists standard
 rules and their stable identifiers. Disabling a check is tooling configuration,
 not a different language contract. Runtime guards remain necessary for direct
 core or unchecked inputs; source checks prove neither binding nor executability.</p>
@@ -446,7 +460,8 @@ runner result only when all four match the current snapshot, then combines it
 with source-check diagnostics. Editing clears prior runtime results immediately;
 closing clears all results. Open, edit and save never execute source.</p>
 <h2 id="starter-editor"><a class="header" href="#starter-editor">Starter Editor</a></h2>
-<p>The VS Code extension selects the <a href="./java-host-kernel.html">JavaHostKernel</a> starter
+<p>For files without adjacent <a href="#native-recipe-launches">recipe launch metadata</a>,
+the VS Code extension selects the <a href="./java-host-kernel.html">JavaHostKernel</a> starter
 world explicitly. Run File saves a local module and launches <code>vh.host.Main run</code>
 in a separate JVM; Test File selects the SUnit runner. The module receives its
 kernel (and, for tests, testing library) through ordinary constructor inputs.
@@ -573,6 +588,220 @@ classes that resolve superclass/mixin targets there; export and persistence must
 preserve or explicitly account for those dependencies.</p>
 <p>The <a href="./interpreter-design.html#module-entry">Java entry paths</a> implement module and
 supplied-expression evaluation, not a general selected-activation debugger API.</p>
+<h3 id="admitted-source-services"><a class="header" href="#admitted-source-services">Admitted Source Services</a></h3>
+<p>P2 supplies two separately granted callable services from <code>BootstrapRuntime</code>:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Host provision</th><th>Ordinary call</th><th>Context and result</th></tr>
+</thead>
+<tbody>
+<tr><td><code>moduleImporter()</code></td><td><code>importModule(snapshot, input1, ..., inputN)</code></td><td>Fresh isolated class and instance, empty top activation, exactly N constructor inputs</td></tr>
+<tr><td><code>expressionEvaluator()</code></td><td><code>evaluate(snapshot, context)</code></td><td>Evaluate in the supplied native object’s lexical scope and return the ordinary expression result</td></tr>
+</tbody>
+</table>
+</div>
+<p><code>SourceSnapshot(name, source)</code> is immutable source transport, not executable AST
+or filesystem authority. The name labels captured diagnostic evidence and is
+never reopened. The services accept at most 1,048,576 UTF-16 source code units
+and 4,096 name code units. A resolver can impose tighter file limits. Parsing
+and source checks occur inside the selected Alien operation, before admitted
+native execution; their ordinary preparation exceptions become foreign failures.
+Runtime language/ownership/policy failures retain their existing kinds. A bad
+snapshot type is a conversion failure. These services do not change the ordinary
+host source-entry methods or make arbitrary new-VM reentry legal.</p>
+<p>Expression evaluation adds no kernel, canonical-name bindings, caller locals or
+return home. Its context must be a native object. Lookup follows that object’s
+actual lexical parents; methods and returned closures retain their real captures.
+An arbitrary context object is therefore not a confinement claim. Packaging
+constructs its context through an isolated module with explicitly selected slots
+and inputs. Canonical values remain available to runtime literals/empty results
+according to the selected profile, even when names such as <code>true</code> are unbound.
+Passing an enriched context as an input to an imported module still does not lend
+the module that context’s lexical scope.</p>
+<p>Source entry uses ordinary boundary admission and the currently admitted machine.
+Nested source execution shares the active step budget and callback-depth limit;
+it cannot replenish either. Independent service entry uses the runtime’s
+immutable <code>ExecutionPolicy</code> (100,000 steps by default), selected before application
+execution. Existing explicit host source-entry budgets remain supported.
+Compilation and foreign I/O costs are not native transition counts. Source maps
+are installed under admission; contexts, input aliases and intermediate class
+definitions remain rooted through construction, callbacks and collections.
+Native results are invocation-attached during a foreign call and owned receipts
+at independent host entry, following the ordinary Alien/Expat contract. No
+implicit detachment or raw runtime representation is exposed. Return barriers,
+failure effects and the prohibition on retry remain unchanged.</p>
+<p>The packaging resolver and native realizer are application code over these
+services; they do not add another lookup or wiring language. Interactive IDE
+launch metadata and general activation reflection remain separate work.</p>
+<h2 id="packaged-alien-realizers"><a class="header" href="#packaged-alien-realizers">Packaged Alien Realizers</a></h2>
+<p>The selected first packaging contract is <code>loadAlien(folder)</code> returning a callable
+realizer, followed by an ordinary <code>apply/N</code> send with explicit inputs. The loader
+is an explicitly granted capability; imported foreign behavior receives no
+native lexical scope. Loading may execute foreign initialization, while separate
+metadata inspection must not execute provider code. The returned realizer’s
+selected operation declares retention permissions before argument conversion;
+the loader does not bypass that send or forward a reconstructed argument list.</p>
+<p>The host owns package-file/classloader resources for the execution session.
+Releasing them requires ending their use; it is not universal revocation or
+permission to close arbitrary exported capabilities. Selected failures preserve
+their boundary kinds and do not cause fallback or automatic retry. Package
+metadata describes declared ingredients and compatibility, not verified behavior.</p>
+<p>P0 and P1 implement this contract in
+<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-packaging/README.md">vh-packaging</a>. The first native client uses
+existing isolated module entry with the loader as its explicit input. P2 adds
+the separately granted <a href="#admitted-source-services">source services</a>, as described in the
+<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/packaging-development-worlds.md">packaging plan</a>.</p>
+<h2 id="native-recipe-launches"><a class="header" href="#native-recipe-launches">Native Recipe Launches</a></h2>
+<p>P3 associates a library with one launch through adjacent <code>&lt;file&gt;.vh.launch.json</code>
+metadata. The inert <code>variohyve-launch-1</code> format requires <code>format</code>, <code>root</code>,
+<code>recipe</code>, <code>selector</code> and <code>arguments</code>, with optional <code>startup</code>, <code>execution</code>, <code>test</code> and
+<code>packaging</code> objects, plus an optional <code>alienRoot</code> path. Unknown or duplicate fields are rejected. The root is relative to that metadata file;
+the recipe is a source path within the root; arguments are bounded JSON scalars.
+The <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-packaging/README.md#recipe-launches-p3">packaging guide</a> defines
+the concrete limits, examples and CLI. Reading metadata performs no native
+evaluation or provider loading and gives no completeness claim about the world.</p>
+<p><code>WorldLaunchMain</code> receives a tool distribution and launch file. The distribution
+supplies the native realizer/context and an independently root-bounded Alien
+loader; the metadata root supplies read-only source access. Optional <code>alienRoot</code>
+selects a provider root relative to the sidecar instead of the tools directory.
+The same root supplies startup adapters and recipe providers. It is an explicit
+filesystem grant, with no search, root merging or fallback. Native packaging
+policy captures project-owned providers through <code>sources.alien</code> and declares
+their deployment paths through <code>output.alien</code>; no provider registration is needed. The fresh runtime
+defaults to <code>HOST_SCALARS</code> with the existing integer/double/string protocols selected
+through a narrow scalar adapter. The native recipe context explicitly exposes
+<code>files</code>, <code>importModule</code>, <code>loadAlien</code>, <code>true</code> and <code>false</code>. It does not supply the
+JavaHostKernel bundle. Recipes perform imports, pattern construction, wiring,
+and suite execution through ordinary native sends. The host retains the world
+under an owned Expat receipt and sends the configured public message once.
+Temporary/result holds close before the Alien loader session ends.</p>
+<p>The launcher displays transported scalars or generic object labels without
+invoking result behavior. <code>false</code> remains a valid result. The shipped native
+suite runner returns <code>false</code> for recorded assertion failures; an uncaught runtime
+failure aborts the attempt, produces no result, and triggers no retry. This is a
+native application contract, separate from the starter host SUnit driver’s
+per-case recovery policy. The combined regex recipe eagerly requires RE2 even
+for its native launch; the separate native-only recipe loads no Alien provider.</p>
+<p>Run File and Test File use the adjacent metadata when present; explicit Run Recipe
+requires it. Invalid metadata fails rather than selecting another runner. Before
+launch, the editor saves dirty open VarioHyve documents within the selected source
+root and verifies their snapshots and the metadata. A pinned metadata digest is
+checked against the text actually read by the CLI. Every attempt is a fresh
+process with existing workspace-trust, cancellation and stop behavior.</p>
+<p>Reports carry the actual primary failure’s source name and revision digest,
+including imported modules. The editor verifies the captured open document’s
+identity, version and digest before sending each source’s report through the
+existing runtime-diagnostic channel. It never attributes an imported failure to
+the initiating file by default. Stale, closed, reopened or unmapped snapshots
+remain terminal evidence; cross-source related trace sites remain there too.
+Exact absolute source-name matching may leave filesystem aliases unmapped.</p>
+<p>Adjacent launch metadata or an ancestor <code>.variohyve-project</code> marker removes the
+starter assumption that a module’s first constructor input is JavaHostKernel.
+The inert project marker covers nested imported modules without a launch file;
+it does not supply capabilities or configure execution. Assistance rechecks
+presence for each request, even for malformed metadata; scalar literal help remains
+conditional on the selected scalar documentation and excludes String <code>split</code>
+and its host-collection result chain. No recipe execution is used
+to infer inputs, selectors or dependency graphs.</p>
+<p>Development <code>startup</code> uses the same exact four fields, adapter loading, boundary
+profile and explicit stream grants as <a href="#explicit-deployment-startup">deployment startup</a>.
+It changes runtime construction before publication, never an existing runtime.
+Without it the previous scalar context remains the default. <code>result: "discard"</code>
+releases the result without displaying it.</p>
+<p>An optional <code>execution: {"maxSteps": 1000000}</code> selects the positive, JSON-safe
+integer transition limit for each independent entry into that runtime. Recipe
+realization, imports and callbacks within an entry share its remaining budget.
+The same declaration is accepted in deployment metadata, where native packaging
+policy records it with <code>output.execution(maxSteps)</code>. The default remains 100,000;
+an exhausted entry reports <code>STEP_LIMIT_EXCEEDED</code> with its captured source evidence.
+No callback-depth change, execution mirror, live policy mutation or foreign-code
+timeout is implied. <code>vh-package --launch</code> also uses the selected limit for its
+native policy execution; the policy explicitly chooses the deployed limit.</p>
+<p>An optional <code>test: {"selector": "test", "arguments": []}</code> declares a separate
+ordinary world send. <code>vh-world --test</code> requires this entry and a transported
+Boolean result: true prints <code>PASS</code> with status 0, false prints <code>FAIL</code> with status 1.
+Non-Boolean results and execution failures return status 1; missing test metadata
+returns status 2. Suite iteration and assertion policy remain native. Ordinary
+Run still accepts false as a successful value.</p>
+<p>An optional <code>packaging: {"policy": "Package.vh", "selector": "build"}</code> selects
+an isolated native policy under the same source root. <code>vh-package &lt;tools&gt; --launch &lt;metadata&gt; &lt;new-output-dir&gt;</code> reads that entry; <code>--launch-id</code> can pin its
+text. The existing explicit policy invocation remains supported. The metadata
+contains no dependency inventory: the native policy declares sources, providers,
+startup and deployment launch through the existing output capability.</p>
+<h2 id="declared-deployments"><a class="header" href="#declared-deployments">Declared Deployments</a></h2>
+<p>P4 implements native packaging policy over explicit artifact capture and output
+capabilities. An isolated policy module selects source files, packaged providers,
+runtime artifacts and concrete launch inputs using ordinary sends. The output
+service consumes captured bytes and writes a pinned inventory; it does not
+interpret native wiring, enumerate a realized object graph or infer dependency
+closure from execution. Packaging validates its artifacts without evaluating the
+application recipe or initializing providers. The
+<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-packaging/README.md#deployment-packaging-p4">packaging guide</a> defines
+the concrete protocol, format, limits and commands.</p>
+<p>A deployment session eagerly captures and verifies every declared file before
+realization. Its <code>files.resolve</code> capability admits only declared source names and
+returns captured source snapshots. Its <code>loadAlien</code> capability admits only
+declared provider folders and activates private verified copies. Neither may
+fall back to neighboring files, development roots or application-classpath
+providers. Native context/realizer helpers are captured ingredients too. Missing,
+changed, incompatible or unsupported declared ingredients fail even if the
+selected launch would not use them. Additional runtime inputs can reach deferred
+imports only when those ingredients were declared; one observed trace is not
+evidence of complete future dependency closure.</p>
+<p>The Java Alien manifest can additionally declare deployment provisioning and
+pinned resources. P4 deployment accepts only provisioning <code>none</code>: foreign
+implementation resources and notices are local declared files, and the loader
+supplies no ambient services. Explicit arguments to a realizer are separate from
+loader provisioning. Missing declarations, session-only
+or development-only provisioning, and other unsupported requirements are errors.
+Ordinary development loading retains the earlier contract. A replacement for a
+development service is explicit recipe/policy selection; deleting an inventory
+entry cannot remove authority already captured by a live object.</p>
+<p>Deployment re-evaluates the pinned recipe through the native world realizer and
+ordinary source-entry services. Each attempt creates fresh objects with explicit
+capabilities; it does not persist a heap or promise identical external effects.
+The host owns the session’s private files/classloaders and ends world use before
+releasing them. Closing resources is not universal revocation. Uncaught failures
+do not produce a successful world or trigger retry/rollback. Publication itself
+is an effect: a policy failure after a successful <code>finish</code> cannot undo it.</p>
+<p>The format uses SHA-256 pins as revision evidence, not publisher authentication.
+It also cannot authenticate bootstrap code the JVM has already loaded. Java
+providers retain normal host-process authority. Filesystem roots must remain
+stable during capture; pinning does not imply an adversarial concurrent filesystem
+snapshot protocol. Runtime/launch assembly remains separate from native seeding,
+and deployment gives no permission to reseed a published runtime.</p>
+<h3 id="explicit-deployment-startup"><a class="header" href="#explicit-deployment-startup">Explicit deployment startup</a></h3>
+<p>The optional <code>startup</code> declaration selects a declared, pinned Alien package whose
+entry additionally implements the shared Java <code>HostValueAdapter</code> interface. The
+launcher verifies the complete deployment before loading that entry, then passes
+the adapter to the existing runtime constructor. It does not invoke the entry’s
+ordinary <code>apply</code> outside a boundary or modify a published runtime. Package
+inspection/publication remains inert; an incompatible adapter facet fails at
+activation. The owning deployment session outlives the runtime/world uses.</p>
+<p>Native packaging policy chooses the adapter folder, boundary profile
+(<code>host-values</code> or <code>host-scalars</code>), provisioning (<code>none</code> or <code>stdio</code>) and result
+presentation (<code>display</code> or <code>discard</code>) through <code>output.startup/4</code>. The format and
+validation limits live in the <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-packaging/README.md#packaged-learn-world">packaging guide</a>.
+Without this declaration, the existing scalar adapter, five-input recipe context
+and displayed result remain unchanged. Older readers reject the new optional
+field explicitly rather than silently launching with a different configuration.</p>
+<p>A startup-configured recipe uses an isolated context with <code>files</code>, <code>importModule</code>,
+<code>loadAlien</code>, <code>true</code>, <code>false</code>, <code>null</code> and <code>provisions</code>. Canonical values are imported
+according to the selected profile. <code>none</code> supplies a provisions object with no
+operations. <code>stdio</code> exposes only <code>input/0</code> and <code>output/0</code>, returning streams
+explicitly supplied by the launcher/embedder; neither the provider nor the recipe
+implicitly discovers process streams. The caller owns these streams. The recipe
+chooses whether to pass them to a console realizer. Imported modules still receive
+only their constructor inputs, without recipe-context inheritance.</p>
+<p><code>discard</code> releases the returned boundary hold without printing a result; it does
+not suppress effects such as Console output or turn failures into success.
+This supports the unchanged tutorial <code>run</code> convention. A native Kernel module
+assembles independently packaged parser, collection and Console services. Kernel
+assembly does not select literal protocols; startup adapter selection remains
+separate. The shipped native SUnit runner returns a Boolean for assertion results
+and aborts on execution failure, retaining the distinction from the host test
+driver’s recovery and per-case entry budgets.</p>
 <h2 id="execution-observation-and-intervention"><a class="header" href="#execution-observation-and-intervention">Execution, Observation and Intervention</a></h2>
 <p>The <a href="./foreign-objects.html#control-tokens-and-execution-agreements">execution agreement</a>
 distinguishes ordinary evaluation, representation maintenance and explicitly

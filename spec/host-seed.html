@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-dcb0efca.js";
+            window.path_to_searchindex_js = "searchindex-dc3eaf86.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-ce909e20.js"></script>
@@ -186,7 +186,8 @@ the machine to execute. A client send succeeds only when the foreign adapter
 provides its selector; assigning a canonical role supplies no additional
 behavior or native superclass.</p>
 <p>The supplied Java adapter offers null tests/display and Boolean selection
-methods matching the native library’s selector inventory. These are optional
+methods, plus <code>equals/1</code> for null and Booleans and Boolean <code>whileTrue/1</code>
+(<a href="java-host-kernel.html#boolean-and-null-additions">contracts</a>). These are optional
 adapter capabilities, not minimum seed requirements. In the unconfigured Host
 Seed, numbers and strings remain opaque unless an explicitly supplied foreign
 capability operates on them. The optional
@@ -216,6 +217,7 @@ limitation. The current Java implementation forbids this crossing and reports
 inside the callback remain possible. See
 <a href="foreign-objects.html#non-local-returns-across-the-boundary">non-local returns across the boundary</a>.</p>
 <p>The Java bootstrap selects this world explicitly:</p>
+<!-- example-id: java-explicit-host-seed -->
 <pre><code class="language-java">var runtime = new BootstrapRuntime(Map.of(), BoundaryProfile.HOST_VALUES);
 Object result = runtime.evaluate("true.ifTrue(fun { 7 })", 1_000);
 </code></pre>

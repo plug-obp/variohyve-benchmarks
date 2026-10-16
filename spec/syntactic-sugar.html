@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-dcb0efca.js";
+            window.path_to_searchindex_js = "searchindex-dc3eaf86.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-ce909e20.js"></script>
@@ -186,9 +186,18 @@ forms; <a href="message-sends.html">Message Sends</a> defines invocation and cas
 position, <code>name = expr</code> requests <code>name!/1</code>; it creates no binding and grants
 no direct storage access.</p>
 <h3 id="desugaring"><a class="header" href="#desugaring">Desugaring</a></h3>
-<pre><code class="language-vh">x = v        // x!(v)
-p.x = v      // p.x!(v)
-a = b = 3    // a!(b!(3))
+<!-- example-id: vh-assignment-sugar -->
+<pre><code class="language-vh">(fun {
+    var x = 0;
+    var v = 7;
+    var p = { x = 0; };
+    var a = 0;
+    var b = 0;
+    x = v;        // x!(v)
+    p.x = v;      // p.x!(v)
+    a = b = 3;    // a!(b!(3))
+    x.plus(p.x).plus(a).plus(b)
+}).apply()
 </code></pre>
 <p>Evaluate an explicit receiver first, then the RHS once, then invoke the setter.
 Chaining is right-associative. Custom and foreign setters use normal dispatch.</p>
@@ -242,7 +251,7 @@ Declaration initializers and canonical invocation arguments accept full
 expressions: <code>var x = p..a..b;</code>, slot declaration <code>x = p..a..b;</code> and
 <code>x!(p..a..b)</code> all use the cascade’s final result directly.</p>
 <p>The authoritative syntax is in the <code>message</code>, <code>explicitMessage</code>, <code>expression</code>
-and <code>nonCascadeExpr</code> rules of <a href="../../../vh-core/src/main/antlr/vh.g4">vh.g4</a>.</p>
+and <code>nonCascadeExpr</code> rules of <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/main/antlr/vh.g4">vh.g4</a>.</p>
 
                     </main>
 

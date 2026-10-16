@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-dcb0efca.js";
+            window.path_to_searchindex_js = "searchindex-dc3eaf86.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-ce909e20.js"></script>
@@ -189,14 +189,16 @@ Use <code>self.m(...)</code> when current-receiver dispatch is intended; implici
 <code>m(...)</code> still performs lexical receiver selection.</p>
 <h2 id="slot-bound-lambda-recursion"><a class="header" href="#slot-bound-lambda-recursion">Slot-Bound Lambda Recursion</a></h2>
 <p>A stored lambda can refer to the accessor holding it:</p>
+<!-- example-id: vh-recursive-factorial -->
 <pre><code class="language-vh">{
     fact = fun(n) {
-        n.eq(0).ifTrue(fun { 1 }, fun { n.times(fact(n.minus(1))) })
+        n.equals(0).ifTrue(fun { 1 }, fun { n.times(fact(n.minus(1))) })
     };
 }
 </code></pre>
 <p>Its body resolves <code>fact</code> when invoked, after the slot is initialized.
-Arithmetic and branching here assume suitable capabilities.
+Arithmetic and branching here use the JavaHostKernel world. Sending <code>fact(5)</code>
+to this object returns <code>120</code>.
 Normal expression results return through recursive invocations. A <code>^</code> would
 target the creating initializer, normally already retired; see
 <a href="literals.html#early-return-with-">return homes</a>.</p>
