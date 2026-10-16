@@ -3,9 +3,16 @@
 User-visible changes to the public VarioHyve preview. Preview versions may change
 the Java embedding API. Java 23 is required and is not bundled.
 
-## 0.3.1 — 2026-10-16
+## 0.3.2 — 2026-10-16
 
 Public release of the packaging changes below, with VS Code extension **0.4.0**.
+Preserve source bytes across Windows checkouts so packaged native libraries
+match their frozen provenance digests. The 0.3.0 and 0.3.1 validation candidates
+were tagged but not publicly released.
+
+## 0.3.1 — unpublished candidate, 2026-10-16
+
+Packaging validation candidate with VS Code extension **0.4.0**.
 The tagged 0.3.0 candidate was not published: Windows validation found test
 assertions that assumed Unix line endings and unescaped JSON paths. Correct
 those assertions and bound concurrent CI JVM work without changing runtime
