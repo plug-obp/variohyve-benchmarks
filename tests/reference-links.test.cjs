@@ -14,3 +14,10 @@ test('source references pin the full revision and identify private access', () =
   assert.equal(referenceTarget('design-notes/README.md#accepted', '0.3.0', commit).href, `https://github.com/plug-obp/variohyve/blob/${commit}/docs/design-notes/README.md#accepted`);
   assert.throws(() => referenceTarget('../../outside', '0.3.0', commit), /escapes/);
 });
+
+
+test('packaging guides stay public and link to each other', () => {
+  assert.deepEqual(referenceTarget('../vh-packaging/GETTING-STARTED.md', '0.3.1', commit), { href: 'getting-started.html', privateSource: false });
+  assert.deepEqual(referenceTarget('CUSTOM-ALIENS.md', '0.3.1', commit, 'vh-packaging/GETTING-STARTED.md'), { href: 'custom-aliens.html', privateSource: false });
+  assert.deepEqual(referenceTarget('GETTING-STARTED.md', '0.3.1', commit, 'vh-packaging/CUSTOM-ALIENS.md'), { href: 'getting-started.html', privateSource: false });
+});

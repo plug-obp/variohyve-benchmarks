@@ -59,14 +59,19 @@ the default. It does not commit, push, upload assets or publish a release. Revie
 the generated pages in a browser, commit the coherent update, and publish the
 matching assets and Pages update. Preserve benchmark reports and unrelated files.
 
-## Public conformance reference
+## Public release references
 
-Render the supplemental contract map directly from the tagged source, so local
+Render the supplemental contract map, packaging walkthrough and custom-Alien
+guide directly from the tagged source, so local
 source edits cannot enter the release:
 
 ```sh
 node scripts/render-reference.cjs /path/to/variohyve FULL_SOURCE_COMMIT 0.3.1 /path/to/staged/preview/reference /path/to/node_modules/markdown-it
 ```
+
+The renderer uses a fixed three-document allowlist. Tutorial links that point
+outside `learn/` to the packaging guides are translated into these public
+supplements. Text and code remain identical to the tagged documents.
 
 Promotion includes optional `reference/` content in the permanent versioned
 snapshot and the latest default. The page names its release and full source

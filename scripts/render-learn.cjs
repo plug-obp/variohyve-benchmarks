@@ -37,6 +37,18 @@ md.renderer.rules.link_open = (tokens, index, options, env, self) => {
   const token = tokens[index];
   let href = token.attrGet('href');
   if (href && !/^(?:[a-z]+:|\/\/)/i.test(href)) {
+    // Source-checkout links to the public packaging guides become release-local
+    // supplement links; the tagged Markdown and its code remain unchanged.
+    const sourceTarget = path.posix.normalize(path.posix.join('docs/Learn VarioHyve',
+      path.dirname(env.relative).split(path.sep).join('/'), decodeURIComponent(href)));
+    const publicGuides = {
+      'vh-packaging/GETTING-STARTED.md': 'getting-started.html',
+      'vh-packaging/CUSTOM-ALIENS.md': 'custom-aliens.html'
+    };
+    if (publicGuides[sourceTarget]) {
+      href = path.posix.relative(path.posix.dirname('learn/' + env.relative.split(path.sep).join('/')),
+        'reference/' + publicGuides[sourceTarget]);
+    }
     href = href.replace(/README\.md(?=#|$)/, 'index.html').replace(/\.md(?=#|$)/, '.html');
     token.attrSet('href', href);
     const close = tokens.findIndex((child, position) => position > index && child.type === 'link_close');
@@ -77,7 +89,7 @@ function visit(directory) {
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${escaped(title)} · Learn VarioHyve</title><link rel="stylesheet" href="${back}/preview.css"><link rel="stylesheet" href="${toc}/highlight.css"><link rel="stylesheet" href="${toc}/learn.css"></head>
 <body><a class="skip" href="#lesson">Skip to lesson</a><header class="site-header wrap"><a class="wordmark" href="${back}/">VarioHyve<span aria-hidden="true">.</span></a><nav aria-label="Tutorial navigation"><a href="${toc}/">All lessons</a><a href="${back}/#downloads">Downloads</a></nav></header>
-<main id="lesson" class="lesson"><p class="eyebrow">LEARN VARIOHYVE · V${version}</p>${md.render(markdown)}</main>
+<main id="lesson" class="lesson"><p class="eyebrow">LEARN VARIOHYVE · V${version}</p>${md.render(markdown, { relative })}</main>
 <footer class="wrap"><p>Public preview v${version} · These examples are included in your starter ZIP.</p><a href="${back}/">Back to the preview</a></footer></body></html>\n`);
   }
 }
