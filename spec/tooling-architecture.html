@@ -190,7 +190,7 @@ startup and native composition); and tool conventions (sidecars, project markers
 editor commands and publication). The latter two do not add language semantics.
 An embedding can supply the same module inputs without any IDE or launch metadata;
 a particular launcher still requires its own declared configuration. The
-<a href="https://obpcdl.org/variohyve-benchmarks/preview/versions/0.3.1/reference/conformance.html">conformance map</a> links these distinctions to executable
+<a href="https://obpcdl.org/variohyve-benchmarks/preview/versions/0.3.2/reference/conformance.html">conformance map</a> links these distinctions to executable
 evidence and selected profiles.</p>
 <h2 id="optional-metadata-and-source-coordinates"><a class="header" href="#optional-metadata-and-source-coordinates">Optional Metadata and Source Coordinates</a></h2>
 <p>Each layer requires only its semantic input. Surface syntax stands alone without
@@ -324,7 +324,7 @@ warnings; CLI analysis clients can consume the same Reader result directly.</p>
 <p>Each <code>SyntacticCheck</code> owns its rule and traversal. <code>SyntacticChecks</code> selects an
 immutable ordered collection using <code>standard()</code>, <code>none()</code>, <code>with(check)</code> and
 <code>without(id)</code>. Independent rules share a diagnostic collector, not semantic
-state. The <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/syntactic-checks.md">check catalog</a> lists standard
+state. The <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/syntactic-checks.md">check catalog</a> lists standard
 rules and their stable identifiers. Disabling a check is tooling configuration,
 not a different language contract. Runtime guards remain necessary for direct
 core or unchecked inputs; source checks prove neither binding nor executability.</p>
@@ -648,17 +648,17 @@ permission to close arbitrary exported capabilities. Selected failures preserve
 their boundary kinds and do not cause fallback or automatic retry. Package
 metadata describes declared ingredients and compatibility, not verified behavior.</p>
 <p>P0 and P1 implement this contract in
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-packaging/README.md">vh-packaging</a>. The first native client uses
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-packaging/README.md">vh-packaging</a>. The first native client uses
 existing isolated module entry with the loader as its explicit input. P2 adds
 the separately granted <a href="#admitted-source-services">source services</a>, as described in the
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/packaging-development-worlds.md">packaging plan</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/packaging-development-worlds.md">packaging plan</a>.</p>
 <h2 id="native-recipe-launches"><a class="header" href="#native-recipe-launches">Native Recipe Launches</a></h2>
 <p>P3 associates a library with one launch through adjacent <code>&lt;file&gt;.vh.launch.json</code>
 metadata. The inert <code>variohyve-launch-1</code> format requires <code>format</code>, <code>root</code>,
 <code>recipe</code>, <code>selector</code> and <code>arguments</code>, with optional <code>startup</code>, <code>execution</code>, <code>test</code> and
 <code>packaging</code> objects, plus an optional <code>alienRoot</code> path. Unknown or duplicate fields are rejected. The root is relative to that metadata file;
 the recipe is a source path within the root; arguments are bounded JSON scalars.
-The <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-packaging/README.md#recipe-launches-p3">packaging guide</a> defines
+The <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-packaging/README.md#recipe-launches-p3">packaging guide</a> defines
 the concrete limits, examples and CLI. Reading metadata performs no native
 evaluation or provider loading and gives no completeness claim about the world.</p>
 <p><code>WorldLaunchMain</code> receives a tool distribution and launch file. The distribution
@@ -737,7 +737,7 @@ service consumes captured bytes and writes a pinned inventory; it does not
 interpret native wiring, enumerate a realized object graph or infer dependency
 closure from execution. Packaging validates its artifacts without evaluating the
 application recipe or initializing providers. The
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-packaging/README.md#deployment-packaging-p4">packaging guide</a> defines
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-packaging/README.md#deployment-packaging-p4">packaging guide</a> defines
 the concrete protocol, format, limits and commands.</p>
 <p>A deployment session eagerly captures and verifies every declared file before
 realization. Its <code>files.resolve</code> capability admits only declared source names and
@@ -782,7 +782,7 @@ activation. The owning deployment session outlives the runtime/world uses.</p>
 <p>Native packaging policy chooses the adapter folder, boundary profile
 (<code>host-values</code> or <code>host-scalars</code>), provisioning (<code>none</code> or <code>stdio</code>) and result
 presentation (<code>display</code> or <code>discard</code>) through <code>output.startup/4</code>. The format and
-validation limits live in the <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-packaging/README.md#packaged-learn-world">packaging guide</a>.
+validation limits live in the <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-packaging/README.md#packaged-learn-world">packaging guide</a>.
 Without this declaration, the existing scalar adapter, five-input recipe context
 and displayed result remain unchanged. Older readers reject the new optional
 field explicitly rather than silently launching with a different configuration.</p>

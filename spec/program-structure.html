@@ -252,7 +252,7 @@ tooling bundle is described in <a href="./interpreter-design.html#module-entry">
 <p>This contract governs atomic finalization before publishing a runtime. It grants
 no authority to replace the seed during application execution. The accepted
 profiles are described in <a href="possible-seeds-and-worlds.html">Possible Seeds and Worlds</a>;
-the <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/staged-runtime-seed.md">staged seed design</a> records the
+the <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/staged-runtime-seed.md">staged seed design</a> records the
 rationale and implementation evidence.</p>
 <p>When a builder adopts a replacement seed before publishing its runtime, it
 must substitute every retained reference to a retired seed identity using a
@@ -301,7 +301,7 @@ world; this startup operation grants no live object-replacement authority.</p>
 budget. Host sends supply an empty caller activation; the target’s definition
 supplies its lexical scope. The concrete APIs and validation are documented under
 <a href="./interpreter-design.html#module-entry">module entry</a> and in the
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/isolated-module-entry.md">implemented entry decision</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/isolated-module-entry.md">implemented entry decision</a>.</p>
 <h2 id="development-and-debugging-contexts"><a class="header" href="#development-and-debugging-contexts">Development and Debugging Contexts</a></h2>
 <p>Richer <a href="./tooling-architecture.html#evaluation-contexts">tool evaluation contexts</a>
 are distinct from normal module entry. A class created with tooling authority

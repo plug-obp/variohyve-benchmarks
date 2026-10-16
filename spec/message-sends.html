@@ -331,7 +331,7 @@ realizes through that cache. A selected failure is cached and propagated.</p>
 target; their computations may have effects and must produce native classes,
 excluding metaclasses. Terminal constructor arguments remain deferred until
 construction. See <a href="objects-and-classes.html">class realization</a> and the
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/unified-callable-lookup.md">accepted decision</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/unified-callable-lookup.md">accepted decision</a>.</p>
 <h2 id="cascade-"><a class="header" href="#cascade-">Cascade (<code>..</code>)</a></h2>
 <p>A cascade evaluates its receiver once and sends every arm to that saved receiver.
 Arms execute left-to-right; each arm’s arguments execute immediately before its
@@ -374,7 +374,7 @@ send select different receivers.</p>
 </div>
 <p>There is no <code>super..a..b</code> syntax: <code>super</code> is not a receiver value.
 Assignment has a separate <a href="syntactic-sugar.html#the-cascade-fence">cascade fence</a>.
-The precise grammar is <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/main/antlr/vh.g4">vh.g4</a>.</p>
+The precise grammar is <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/main/antlr/vh.g4">vh.g4</a>.</p>
 
                     </main>
 

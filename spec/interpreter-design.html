@@ -205,9 +205,9 @@ separate environment namespace.</p>
 </table>
 </div>
 <p><code>Control</code> distinguishes expression evaluation, exact host send, committed foreign
-call, returned value and error. <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/main/java/vh/vm/EvaluateStepVisitor.java">EvaluateStepVisitor</a>
-handles expressions; <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/main/java/vh/vm/ContinuationStepVisitor.java">ContinuationStepVisitor</a>
-handles completion; <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/main/java/vh/vm/ObjectProtocol.java">ObjectProtocol</a>
+call, returned value and error. <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/main/java/vh/vm/EvaluateStepVisitor.java">EvaluateStepVisitor</a>
+handles expressions; <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/main/java/vh/vm/ContinuationStepVisitor.java">ContinuationStepVisitor</a>
+handles completion; <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/main/java/vh/vm/ObjectProtocol.java">ObjectProtocol</a>
 selects and invokes operations. Its ordered loops, <code>getterSeen</code>, <code>Selection</code> and
 <code>EligibleAccessor</code> retain lookup evidence without repeating reads or selection.
 The language algorithm is specified in <a href="./message-sends.html">Message Sends</a>.</p>
@@ -246,7 +246,7 @@ not a replacement for the Java collector that manages the underlying objects.
 The native collector currently runs serially at safepoints; the
 <a href="./foreign-objects.html#control-tokens-and-execution-agreements">execution agreement</a>
 permits other correctly coordinated refinements, including concurrent collection.
-See <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/native-heap-gc.md">native heap collection</a> for roots,
+See <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/native-heap-gc.md">native heap collection</a> for roots,
 boundary retention, measurements and limitations.</p>
 <p>Backend-only root provenance, shortest retention paths and Graphviz snapshots
 share the collector’s root enumerator and graph tracer. Graph snapshots can
@@ -254,7 +254,7 @@ start at the complete root set or selected addresses, including an idle seed
 before any execution configuration exists. Reports are non-owning observations rejected
 by the public boundary; no language selector or activation API is added. Audited
 field signatures, randomized graph oracles and GC-on/off execution comparisons
-guard coverage. See <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/native-heap-gc-hardening.md">graph hardening</a>
+guard coverage. See <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/native-heap-gc-hardening.md">graph hardening</a>
 for guarantees and limits.</p>
 <h3 id="values"><a class="header" href="#values">Values</a></h3>
 <p><a href="./object-model.html">Runtime Object Representation</a> describes objects, classes,
@@ -358,7 +358,7 @@ capability can reseed a published runtime.</p>
 ordinary core module definition and explicit constructor arguments. The
 <code>fromNativeModule</code> convenience entry supplies the narrow root identity service
 as its sole argument; parser integration lowers
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-source/bootstrap/current-native-seed.vh"><code>current-native-seed.vh</code></a>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-source/bootstrap/current-native-seed.vh"><code>current-native-seed.vh</code></a>
 and exercises that same installer. The parser-independent definition keeps the
 dependency-free bootstrap checks available; it does not install singleton method
 records by a separate semantic path.</p>
@@ -457,7 +457,7 @@ available through the explicit tooling entry and are rejected by the value
 boundary; callbacks preserve public evidence without exporting physical VM
 frames. Step exhaustion remains <code>LANGUAGE_FAILURE</code>; callback-depth and admission
 limits remain <code>EXECUTION_POLICY</code>. See the
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/vm-diagnostics.md">diagnostics decisions and evidence</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/vm-diagnostics.md">diagnostics decisions and evidence</a>.</p>
 <h3 id="boundary-implementation"><a class="header" href="#boundary-implementation">Boundary implementation</a></h3>
 <p><code>ForeignBoundary.identityMirror()</code> returns a stable, boundary-owned capability.
 It is supplied explicitly to modules and observes identity and membership through
@@ -468,7 +468,7 @@ stable native identity; preserved foreign values use their payload identity so
 collecting and recreating an Alien wrapper does not change the hash of a still
 live foreign referent. The concrete hashing algorithm is a backend policy, not
 a portable identifier.</p>
-<p><a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/main/java/vh/vm/internal/DefaultJavaBoundary.java">DefaultJavaBoundary</a>
+<p><a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/main/java/vh/vm/internal/DefaultJavaBoundary.java">DefaultJavaBoundary</a>
 owns the <a href="./foreign-objects.html">Alien/Expat contract</a>. <code>BootstrapRuntime.boundary()</code>
 returns a narrow <code>PublicFacet</code>; package-private <code>VmServices</code> provisions the seed
 identity service. Both delegate to the same private owner. Canonical Expat and
@@ -601,7 +601,7 @@ any claim of unlimited execution.</p>
 permission to replace accepted semantics. Future TCO must preserve captured
 homes and barriers; abstract execution needs sound domains, joins, transitions
 and foreign-effect models beyond an allocator change. See <a href="./future.html">Future Directions</a>
-and the <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/outer-newspeak-comparison.md">outer comparison</a>.</p>
+and the <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/outer-newspeak-comparison.md">outer comparison</a>.</p>
 <h2 id="refinement-of-the-formal-machine"><a class="header" href="#refinement-of-the-formal-machine">Refinement of the Formal Machine</a></h2>
 <p>A refinement relation must decode addressed frames and suspended Java calls into
 the reference stack; map mutable entries to the current <code>σ</code>; and preserve scope,
@@ -636,13 +636,13 @@ remaining obligations.</p>
 <p><code>bash scripts/check-bootstrap.sh</code> runs focused backend checks with JDK 17+ and
 Python 3. <code>./gradlew test</code> additionally exercises parsing and the complete project
 with its configured JDK 23 toolchain. Relevant witnesses include
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/test/java/boundaryclient/UnifiedInvocationTest.java">UnifiedInvocationTest</a>,
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/test/java/boundaryclient/ClassCompositionTest.java">ClassCompositionTest</a>,
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/test/java/boundaryclient/InitializerReturnHomeTest.java">InitializerReturnHomeTest</a>,
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/test/java/boundaryclient/NativeValuesTest.java">NativeValuesTest</a>
-and <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/test/java/boundaryclient/ModuleEntryTest.java">ModuleEntryTest</a>.
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/test/java/boundaryclient/UnifiedInvocationTest.java">UnifiedInvocationTest</a>,
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/test/java/boundaryclient/ClassCompositionTest.java">ClassCompositionTest</a>,
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/test/java/boundaryclient/InitializerReturnHomeTest.java">InitializerReturnHomeTest</a>,
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/test/java/boundaryclient/NativeValuesTest.java">NativeValuesTest</a>
+and <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/test/java/boundaryclient/ModuleEntryTest.java">ModuleEntryTest</a>.
 The admission regressions in
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/test/java/vh/vm/BoundaryReentryChecks.java">BoundaryReentryChecks</a>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/test/java/vh/vm/BoundaryReentryChecks.java">BoundaryReentryChecks</a>
 cover competing callbacks and pending completion, rejection of unassociated
 preparation before allocation, leased idle preparation followed by stepping,
 and concurrent foreign computation and consumption of previously published

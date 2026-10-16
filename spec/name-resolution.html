@@ -298,7 +298,7 @@ Member classes also retain their bound receiver and declaration origin.
 This holds at every nesting depth: a member selected from the second of two
 applications retains that application’s farther enclosing objects, even when
 both applications share the same declaration and immediate receiver. The
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/outer-newspeak-comparison.md#deeper-repeated-parent-diagnostic">repeated-parent example</a>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/outer-newspeak-comparison.md#deeper-repeated-parent-diagnostic">repeated-parent example</a>
 therefore returns <code>42</code>, preserving the selected <code>b.Family</code> ancestry. This is an
 intentional difference from Newspeak’s deeper nearest-parent reselection rule.</p>
 <p><code>outer C</code> is a standalone receiver value: grouping, passing it as an argument

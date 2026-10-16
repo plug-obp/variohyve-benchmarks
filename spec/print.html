@@ -334,7 +334,7 @@ boundary. Semantic regressions exercise the interactions between these
 mechanisms. The implementation chapters identify concrete policies and remaining
 limitations; executable tests are evidence about those policies, not a substitute
 for their specification.</p>
-<p>The <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/catalog/02-composition-bootstrap.md">composition case study</a> provides
+<p>The <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/catalog/02-composition-bootstrap.md">composition case study</a> provides
 a small but concrete federation slice. Native source coordinates Java fixture
 services for model observations, validation, capacity checking and evidence.
 Reusable stages preserve their defining checker capabilities despite competing
@@ -344,7 +344,7 @@ without being replayed. This tests capability flow and composition using
 controlled participants.</p>
 <p>The slice does not yet integrate an industrial model repository or simulator,
 and it establishes no comparative productivity or performance advantage.
-The <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/catalog/README.md">case-study catalog</a> develops the next experiments
+The <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/catalog/README.md">case-study catalog</a> develops the next experiments
 around explicit baselines, measurable outcomes and failure conditions. Useful
 findings include cases where an existing tool or direct adapter is simpler.
 Current measurement infrastructure also supports language implementation
@@ -446,7 +446,7 @@ tooling bundle is described in <a href="#module-entry">the Java implementation</
 <p>This contract governs atomic finalization before publishing a runtime. It grants
 no authority to replace the seed during application execution. The accepted
 profiles are described in <a href="#possible-seeds-and-worlds">Possible Seeds and Worlds</a>;
-the <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/staged-runtime-seed.md">staged seed design</a> records the
+the <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/staged-runtime-seed.md">staged seed design</a> records the
 rationale and implementation evidence.</p>
 <p>When a builder adopts a replacement seed before publishing its runtime, it
 must substitute every retained reference to a retired seed identity using a
@@ -495,7 +495,7 @@ world; this startup operation grants no live object-replacement authority.</p>
 budget. Host sends supply an empty caller activation; the target’s definition
 supplies its lexical scope. The concrete APIs and validation are documented under
 <a href="#module-entry">module entry</a> and in the
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/isolated-module-entry.md">implemented entry decision</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/isolated-module-entry.md">implemented entry decision</a>.</p>
 <h2 id="development-and-debugging-contexts"><a class="header" href="#development-and-debugging-contexts">Development and Debugging Contexts</a></h2>
 <p>Richer <a href="#evaluation-contexts">tool evaluation contexts</a>
 are distinct from normal module entry. A class created with tooling authority
@@ -562,7 +562,7 @@ or overflow behavior. The prototype’s supported subset is documented under
 <p>Raw newlines are allowed inside either quoted form. They preserve all whitespace
 between the quotes, including indentation; <code>"a\nb"</code> and the corresponding
 two-line literal have the same content. See the lexer in
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/main/antlr/vh.g4">vh.g4</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/main/antlr/vh.g4">vh.g4</a>.</p>
 <h2 id="hole-literals"><a class="header" href="#hole-literals">Hole Literals</a></h2>
 <p><code>?</code> is an explicit incomplete expression, valid wherever an expression is
 expected. It has its own AST node and differs from both an omitted initializer
@@ -684,7 +684,7 @@ the home. Escaped data remain usable without retaining return authority.</li>
 its original home. The default Alien callback barrier remains in force; any
 future crossing support must preserve these initializer phase restrictions.
 Failures neither replay initialization nor roll back effects or retract an
-escaped receiver. See the <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/initializer-return-homes.md">accepted policy</a>.</p>
+escaped receiver. See the <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/initializer-return-homes.md">accepted policy</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="objects-and-classes"><a class="header" href="#objects-and-classes">Objects and Classes</a></h1>
 <p>This chapter defines class and object literals, member declarations, composition,
@@ -867,7 +867,7 @@ module binding or accessor for IdentityMirror. Its
 operations cross the normal Alien/Expat boundary and expose no backend
 representation. Aliens retain their own protocols and do not acquire these
 methods by inheritance. Scalar Object behavior and identity remain subject to
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/native-values-and-abstract-semantics.md">the scalar design decision</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/native-values-and-abstract-semantics.md">the scalar design decision</a>.</p>
 <h2 id="capabilities-and-definition-scope"><a class="header" href="#capabilities-and-definition-scope">Capabilities and Definition Scope</a></h2>
 <p>The <a href="#sources-of-an-objects-capabilities">capability sources</a>
 do not change definition scope: calling a class does not capture its caller’s scope.
@@ -1328,7 +1328,7 @@ realizes through that cache. A selected failure is cached and propagated.</p>
 target; their computations may have effects and must produce native classes,
 excluding metaclasses. Terminal constructor arguments remain deferred until
 construction. See <a href="#objects-and-classes">class realization</a> and the
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/unified-callable-lookup.md">accepted decision</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/unified-callable-lookup.md">accepted decision</a>.</p>
 <h2 id="cascade-"><a class="header" href="#cascade-">Cascade (<code>..</code>)</a></h2>
 <p>A cascade evaluates its receiver once and sends every arm to that saved receiver.
 Arms execute left-to-right; each arm’s arguments execute immediately before its
@@ -1371,7 +1371,7 @@ send select different receivers.</p>
 </div>
 <p>There is no <code>super..a..b</code> syntax: <code>super</code> is not a receiver value.
 Assignment has a separate <a href="#the-cascade-fence">cascade fence</a>.
-The precise grammar is <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/main/antlr/vh.g4">vh.g4</a>.</p>
+The precise grammar is <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/main/antlr/vh.g4">vh.g4</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="apply-and-callable-values"><a class="header" href="#apply-and-callable-values">Apply and Callable Values</a></h1>
 <p><code>apply/N</code> is the callable capability at arity N. A lambda supplies it at its
@@ -1476,7 +1476,7 @@ Declaration initializers and canonical invocation arguments accept full
 expressions: <code>var x = p..a..b;</code>, slot declaration <code>x = p..a..b;</code> and
 <code>x!(p..a..b)</code> all use the cascade’s final result directly.</p>
 <p>The authoritative syntax is in the <code>message</code>, <code>explicitMessage</code>, <code>expression</code>
-and <code>nonCascadeExpr</code> rules of <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/main/antlr/vh.g4">vh.g4</a>.</p>
+and <code>nonCascadeExpr</code> rules of <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/main/antlr/vh.g4">vh.g4</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="name-resolution"><a class="header" href="#name-resolution">Name Resolution</a></h1>
 <p>Implicit sends first select a receiver from lexical declarations, then dispatch
@@ -1599,7 +1599,7 @@ Member classes also retain their bound receiver and declaration origin.
 This holds at every nesting depth: a member selected from the second of two
 applications retains that application’s farther enclosing objects, even when
 both applications share the same declaration and immediate receiver. The
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/outer-newspeak-comparison.md#deeper-repeated-parent-diagnostic">repeated-parent example</a>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/outer-newspeak-comparison.md#deeper-repeated-parent-diagnostic">repeated-parent example</a>
 therefore returns <code>42</code>, preserving the selected <code>b.Family</code> ancestry. This is an
 intentional difference from Newspeak’s deeper nearest-parent reselection rule.</p>
 <p><code>outer C</code> is a standalone receiver value: grouping, passing it as an argument
@@ -2038,7 +2038,7 @@ NLR crossing. The suspended caller’s homes remain live until its own completio
 or failure. Callbacks continue to share the active execution budget; handling an
 exhaustion diagnostic does not replenish it. There are no native resumable
 conditions in the current language. See the
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/synchronous-foreign-interactions.md#accepted-decision-foreign-handling-of-callback-failure">accepted recovery agreement</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/synchronous-foreign-interactions.md#accepted-decision-foreign-handling-of-callback-failure">accepted recovery agreement</a>.</p>
 <h4 id="java-host-exit-limits"><a class="header" href="#java-host-exit-limits">Java host exit limits</a></h4>
 <p>The adapter preserves a supplied <code>BoundaryException</code> and its defined kind. It
 translates other <code>RuntimeException</code>s thrown by <code>ForeignObject.resolve</code> into
@@ -2074,7 +2074,7 @@ transfer. Such support does not change the lexical target of <code>^</code>, rev
 retired home, or bypass initializer phase restrictions. Crossing support and
 its transfer protocol are deferred; the default barrier must not be disabled
 without implementing a supporting agreement. See the
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/synchronous-foreign-interactions.md#accepted-decision-boundary-owned-non-local-return">accepted decision and examples</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/synchronous-foreign-interactions.md#accepted-decision-boundary-owned-non-local-return">accepted decision and examples</a>.</p>
 <p><a id="execution-authority"></a></p>
 <h3 id="control-tokens-and-execution-agreements"><a class="header" href="#control-tokens-and-execution-agreements">Control Tokens and Execution Agreements</a></h3>
 <p>Ordinary native transitions require execution authority under an explicit
@@ -2282,14 +2282,14 @@ observations, validation before reclamation, and agreed weak-reference,
 finalization and participant-loss behavior. Missing or incomplete cooperation
 retains conservatively. No universal foreign collector, introspection mechanism
 or cycle-collection algorithm is prescribed. See the
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/alien-expat-lifetimes.md">accepted lifetime decision</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/alien-expat-lifetimes.md">accepted lifetime decision</a>.</p>
 <h3 id="foreign-kinds-and-capability-contracts"><a class="header" href="#foreign-kinds-and-capability-contracts">Foreign Kinds and Capability Contracts</a></h3>
 <p>An adapter may classify a value as callable, pointer, struct or endpoint; these
 are foreign contracts, not native classes. Analysis needs explicit assumptions
 about effects, callbacks, blocking, determinism and state changes. Unknown
 behavior stays opaque. General contract metadata, provenance registries and
 foreign reflection remain unimplemented; see the
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/alien-semantic-membrane.md">boundary assessment</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/alien-semantic-membrane.md">boundary assessment</a>.</p>
 <h2 id="vm-services-and-the-trusted-seed"><a class="header" href="#vm-services-and-the-trusted-seed">VM Services and the Trusted Seed</a></h2>
 <p>The host boundary has a public foreign facet and a privileged VM-service facet
 over one private owner. The public facet exposes only the ordinary transport,
@@ -2317,7 +2317,7 @@ or receipt evidence, so import recovers the object. Returning its raw backend
 representation as a foreign value is
 invalid. Any future representation-sensitive service requires explicit authority
 and private unwrapping without adding raw-world access to public Expats. See
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/vm-lang-boundary.md">the VM boundary decision</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/vm-lang-boundary.md">the VM boundary decision</a>.</p>
 <p>The <a href="#admitted-source-services">admitted source services</a>
 use this route to evaluate captured source with an explicit object context or
 instantiate an isolated module. They share active admission, budgets, callback
@@ -2420,7 +2420,7 @@ Aliens and codec values return false because they have no native membership.</p>
 <p>These are structural identity tests, not proofs that a selector is supported or
 that a contribution’s behavior remains effective after overriding. They do not
 establish trust in a subclass or authorize its behavior. The
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/mirrors-identity-and-alien-classification.md">design note</a>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/mirrors-identity-and-alien-classification.md">design note</a>
 records the routing and capability tradeoffs.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="possible-seeds-and-worlds"><a class="header" href="#possible-seeds-and-worlds">Possible Seeds and Worlds</a></h1>
@@ -2588,7 +2588,7 @@ adapter retention obligations under the
 native ownership annotations or a universal collection protocol.</p>
 <p>Console uses explicitly injected streams; line input returns host null at EOF.</p>
 <h2 id="api-declarations"><a class="header" href="#api-declarations">API declarations</a></h2>
-<p><a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-source/contracts/JavaHostKernel.vh"><code>JavaHostKernel.vh</code></a> is a
+<p><a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-source/contracts/JavaHostKernel.vh"><code>JavaHostKernel.vh</code></a> is a
 module-like API document. Class-shaped declarations describe receiver protocols;
 method bodies containing <code>?</code> denote absent VarioHyve implementations. Reaching
 such a hole still fails normally. <code>_value</code> documents host state and supplies no
@@ -2615,7 +2615,7 @@ the default foreign callback barrier. A wholly foreign callback that never fails
 may run indefinitely under the existing host-execution limits.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="one-possible-native-seed"><a class="header" href="#one-possible-native-seed">One Possible Native Seed</a></h1>
-<p>The repository’s <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-source/bootstrap/current-native-seed.vh">Current Native Seed module</a>
+<p>The repository’s <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-source/bootstrap/current-native-seed.vh">Current Native Seed module</a>
 is one library choice. It is an ordinary isolated module whose sole constructor
 input is a narrow host identity service. The module stores that service in its
 <code>_vm</code> slot because constructor parameters are not method bindings. Its members
@@ -2727,7 +2727,7 @@ snapshot       = { mixins, superclassRef, initializationEdges, instanceLayout, i
 VMMetaclass    = VMClass
 </code></pre>
 <p><code>VMObject</code> has no per-instance method dictionary. Reified contributions retain
-method syntax and declarations; <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/main/java/vh/vm/ObjectProtocol.java">ObjectProtocol</a>
+method syntax and declarations; <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/main/java/vh/vm/ObjectProtocol.java">ObjectProtocol</a>
 selects their operations. <code>VMClass.ownedContribution()</code> names <code>mixins[0]</code>; later entries
 are direct applications. Class objects currently have empty value-slot arrays:
 instance declarations belong to their contributions, and instance values belong
@@ -2769,7 +2769,7 @@ realization caches its failure. Failure diagnostics remain detached data; later
 observation adds context without changing the retained diagnostic. Startup
 relocation prepares a replacement successful payload while preserving binding
 identity and the cache key’s full declaration/application origin. See the
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/realization-lifecycle.md">lifecycle decision</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/realization-lifecycle.md">lifecycle decision</a>.</p>
 <p><a id="mixin-application"></a>
 <a id="mixin-identity"></a></p>
 <h2 id="contribution-occurrences-and-layouts"><a class="header" href="#contribution-occurrences-and-layouts">Contribution Occurrences and Layouts</a></h2>
@@ -2777,7 +2777,7 @@ identity and the cache key’s full declaration/application origin. See the
 logical slot by adding its contribution-local position. Inherited occurrences
 retain their own applying-class identities. Direct applications hold the selected
 <code>VMMixinClosure</code>, without importing the source class’s construction record.</p>
-<p><a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/main/java/vh/vm/internal/InstanceLayout.java">InstanceLayout</a>
+<p><a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/main/java/vh/vm/internal/InstanceLayout.java">InstanceLayout</a>
 collects owned/direct/inherited contributions and interns physical positions by
 slot name. Its immutable mapping is cached on the realized class. Instances
 allocate fresh arrays from its physical declarations. Logical identities survive
@@ -2789,7 +2789,7 @@ physicalIndex = actualReceiverClass.instanceLayout.physicalIndex(selected slot)
 from the declaration chosen to represent the physical cell. Initialization
 uses the same mapping. Ordinary source sends still pass through lookup; only an
 already selected accessor or private initializer write uses a direct array
-operation. See the <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/occurrence-slot-layout.md">accepted layout decision</a>.</p>
+operation. See the <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/occurrence-slot-layout.md">accepted layout decision</a>.</p>
 <p><a id="bootstrap-metaclasses-1"></a>
 <a id="metaclass-details"></a></p>
 <h2 id="class-assembly"><a class="header" href="#class-assembly">Class Assembly</a></h2>
@@ -2798,9 +2798,9 @@ an applied owned contribution. Named route constructors validate the target and
 occurrence; consumers use that distinction directly. A mixin route retains its
 positive application index, while superclass entry uses coordinator index zero.
 The representation’s superclass sentinel is confined to the route owner.</p>
-<p><a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/main/java/vh/vm/ClassConstruction.java">ClassConstruction</a>
+<p><a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/main/java/vh/vm/ClassConstruction.java">ClassConstruction</a>
 resolves contributor targets, reserves identities, creates each distinct metaclass
-and installs owned factories. <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/main/java/vh/vm/internal/ClassDefinition.java">ClassDefinition</a>
+and installs owned factories. <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/main/java/vh/vm/internal/ClassDefinition.java">ClassDefinition</a>
 derives a complete structural snapshot from the ordered contributions and routes
 before the class is installed. Its immutable lists, layout and coordinator agree;
 <code>VMClass</code> exposes no independent setters or mutable contribution list. A definition
@@ -2863,11 +2863,11 @@ levels.</p>
 would extend the value contract and is justified only by an accepted feature
 requiring such a first-class reference. Its exposure, identity, class-of and
 construction rules would then need specification. The
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/top-class-algebra.md">Top decision</a> records that criterion
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/top-class-algebra.md">Top decision</a> records that criterion
 and the rationale for the present representation.</p>
-<p><a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/test/java/vh/vm/ClassConstructionChecks.java">ClassConstructionChecks</a>
+<p><a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/test/java/vh/vm/ClassConstructionChecks.java">ClassConstructionChecks</a>
 asserts the absent root superclass and flat metaclass graph.
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/test/java/vh/vm/NativeSeedSourceTest.java">NativeSeedSourceTest</a>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/test/java/vh/vm/NativeSeedSourceTest.java">NativeSeedSourceTest</a>
 checks the corresponding source recipe. These are implementation evidence;
 the <a href="#refinement-of-the-formal-machine">general Java simulation proof</a>
 remains an obligation.</p>
@@ -2875,7 +2875,7 @@ remains an obligation.</p>
 <a id="what--mixinargs-and--baseargs-mean"></a>
 <a id="the-primary-factory-new-1"></a></p>
 <h3 id="private-construction-code"><a class="header" href="#private-construction-code">Private Construction Code</a></h3>
-<p><a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/main/java/vh/vm/internal/ConstructionCode.java">ConstructionCode</a>
+<p><a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/main/java/vh/vm/internal/ConstructionCode.java">ConstructionCode</a>
 generates <code>CoreUserFunction</code> bodies for ordinary primary <code>new</code>, default <code>apply</code>,
 owned initializers and class coordinators. Coordinators sequence dependency calls
 using <code>CoreLet</code>, then evaluate their owned body directly in the existing initializer home.
@@ -2896,7 +2896,7 @@ The language schedule and argument binding are specified in
 </div>
 <p>These operations have no selectors. <code>new</code> itself uses ordinary method lookup;
 no privileged construction lookup target is required. The
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/flat-metaclasses-and-construction.md#private-core-operations">construction decision</a>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/flat-metaclasses-and-construction.md#private-core-operations">construction decision</a>
 records why the four operations are necessary.</p>
 <h2 id="method-activations"><a class="header" href="#method-activations">Method Activations</a></h2>
 <p><code>MethodActivation</code> records immutable parameter slots, the selected
@@ -2918,7 +2918,7 @@ and restores the caller afterward, without a fresh home. Let/method/initializer
 activations can remain captured after their homes retire. Native tracing retains
 their reachable data without reviving return authority. The first collector
 conservatively also traces activation continuation links, which can retain old
-caller graphs; see <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/native-heap-gc.md">collection trade-offs</a>.</p>
+caller graphs; see <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/native-heap-gc.md">collection trade-offs</a>.</p>
 <p><a id="super-dispatch"></a></p>
 <h2 id="dispatch-origin-tracking"><a class="header" href="#dispatch-origin-tracking">Dispatch Origin Tracking</a></h2>
 <p>For <a href="#name-resolution">lexical lookup and <code>super</code></a>, <code>VMMethodClosure</code> retains
@@ -2955,9 +2955,9 @@ separate environment namespace.</p>
 </table>
 </div>
 <p><code>Control</code> distinguishes expression evaluation, exact host send, committed foreign
-call, returned value and error. <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/main/java/vh/vm/EvaluateStepVisitor.java">EvaluateStepVisitor</a>
-handles expressions; <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/main/java/vh/vm/ContinuationStepVisitor.java">ContinuationStepVisitor</a>
-handles completion; <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/main/java/vh/vm/ObjectProtocol.java">ObjectProtocol</a>
+call, returned value and error. <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/main/java/vh/vm/EvaluateStepVisitor.java">EvaluateStepVisitor</a>
+handles expressions; <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/main/java/vh/vm/ContinuationStepVisitor.java">ContinuationStepVisitor</a>
+handles completion; <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/main/java/vh/vm/ObjectProtocol.java">ObjectProtocol</a>
 selects and invokes operations. Its ordered loops, <code>getterSeen</code>, <code>Selection</code> and
 <code>EligibleAccessor</code> retain lookup evidence without repeating reads or selection.
 The language algorithm is specified in <a href="#message-sends">Message Sends</a>.</p>
@@ -2996,7 +2996,7 @@ not a replacement for the Java collector that manages the underlying objects.
 The native collector currently runs serially at safepoints; the
 <a href="#control-tokens-and-execution-agreements">execution agreement</a>
 permits other correctly coordinated refinements, including concurrent collection.
-See <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/native-heap-gc.md">native heap collection</a> for roots,
+See <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/native-heap-gc.md">native heap collection</a> for roots,
 boundary retention, measurements and limitations.</p>
 <p>Backend-only root provenance, shortest retention paths and Graphviz snapshots
 share the collector’s root enumerator and graph tracer. Graph snapshots can
@@ -3004,7 +3004,7 @@ start at the complete root set or selected addresses, including an idle seed
 before any execution configuration exists. Reports are non-owning observations rejected
 by the public boundary; no language selector or activation API is added. Audited
 field signatures, randomized graph oracles and GC-on/off execution comparisons
-guard coverage. See <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/native-heap-gc-hardening.md">graph hardening</a>
+guard coverage. See <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/native-heap-gc-hardening.md">graph hardening</a>
 for guarantees and limits.</p>
 <h3 id="values"><a class="header" href="#values">Values</a></h3>
 <p><a href="#runtime-object-representation">Runtime Object Representation</a> describes objects, classes,
@@ -3108,7 +3108,7 @@ capability can reseed a published runtime.</p>
 ordinary core module definition and explicit constructor arguments. The
 <code>fromNativeModule</code> convenience entry supplies the narrow root identity service
 as its sole argument; parser integration lowers
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-source/bootstrap/current-native-seed.vh"><code>current-native-seed.vh</code></a>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-source/bootstrap/current-native-seed.vh"><code>current-native-seed.vh</code></a>
 and exercises that same installer. The parser-independent definition keeps the
 dependency-free bootstrap checks available; it does not install singleton method
 records by a separate semantic path.</p>
@@ -3207,7 +3207,7 @@ available through the explicit tooling entry and are rejected by the value
 boundary; callbacks preserve public evidence without exporting physical VM
 frames. Step exhaustion remains <code>LANGUAGE_FAILURE</code>; callback-depth and admission
 limits remain <code>EXECUTION_POLICY</code>. See the
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/vm-diagnostics.md">diagnostics decisions and evidence</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/vm-diagnostics.md">diagnostics decisions and evidence</a>.</p>
 <h3 id="boundary-implementation"><a class="header" href="#boundary-implementation">Boundary implementation</a></h3>
 <p><code>ForeignBoundary.identityMirror()</code> returns a stable, boundary-owned capability.
 It is supplied explicitly to modules and observes identity and membership through
@@ -3218,7 +3218,7 @@ stable native identity; preserved foreign values use their payload identity so
 collecting and recreating an Alien wrapper does not change the hash of a still
 live foreign referent. The concrete hashing algorithm is a backend policy, not
 a portable identifier.</p>
-<p><a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/main/java/vh/vm/internal/DefaultJavaBoundary.java">DefaultJavaBoundary</a>
+<p><a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/main/java/vh/vm/internal/DefaultJavaBoundary.java">DefaultJavaBoundary</a>
 owns the <a href="#foreign-semantic-values-and-the-alienexpat-boundary">Alien/Expat contract</a>. <code>BootstrapRuntime.boundary()</code>
 returns a narrow <code>PublicFacet</code>; package-private <code>VmServices</code> provisions the seed
 identity service. Both delegate to the same private owner. Canonical Expat and
@@ -3351,7 +3351,7 @@ any claim of unlimited execution.</p>
 permission to replace accepted semantics. Future TCO must preserve captured
 homes and barriers; abstract execution needs sound domains, joins, transitions
 and foreign-effect models beyond an allocator change. See <a href="#future-directions">Future Directions</a>
-and the <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/outer-newspeak-comparison.md">outer comparison</a>.</p>
+and the <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/outer-newspeak-comparison.md">outer comparison</a>.</p>
 <h2 id="refinement-of-the-formal-machine"><a class="header" href="#refinement-of-the-formal-machine">Refinement of the Formal Machine</a></h2>
 <p>A refinement relation must decode addressed frames and suspended Java calls into
 the reference stack; map mutable entries to the current <code>σ</code>; and preserve scope,
@@ -3386,13 +3386,13 @@ remaining obligations.</p>
 <p><code>bash scripts/check-bootstrap.sh</code> runs focused backend checks with JDK 17+ and
 Python 3. <code>./gradlew test</code> additionally exercises parsing and the complete project
 with its configured JDK 23 toolchain. Relevant witnesses include
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/test/java/boundaryclient/UnifiedInvocationTest.java">UnifiedInvocationTest</a>,
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/test/java/boundaryclient/ClassCompositionTest.java">ClassCompositionTest</a>,
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/test/java/boundaryclient/InitializerReturnHomeTest.java">InitializerReturnHomeTest</a>,
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/test/java/boundaryclient/NativeValuesTest.java">NativeValuesTest</a>
-and <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/test/java/boundaryclient/ModuleEntryTest.java">ModuleEntryTest</a>.
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/test/java/boundaryclient/UnifiedInvocationTest.java">UnifiedInvocationTest</a>,
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/test/java/boundaryclient/ClassCompositionTest.java">ClassCompositionTest</a>,
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/test/java/boundaryclient/InitializerReturnHomeTest.java">InitializerReturnHomeTest</a>,
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/test/java/boundaryclient/NativeValuesTest.java">NativeValuesTest</a>
+and <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/test/java/boundaryclient/ModuleEntryTest.java">ModuleEntryTest</a>.
 The admission regressions in
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-core/src/test/java/vh/vm/BoundaryReentryChecks.java">BoundaryReentryChecks</a>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/test/java/vh/vm/BoundaryReentryChecks.java">BoundaryReentryChecks</a>
 cover competing callbacks and pending completion, rejection of unassociated
 preparation before allocation, leased idle preparation followed by stepping,
 and concurrent foreign computation and consumption of previously published
@@ -3411,7 +3411,7 @@ startup and native composition); and tool conventions (sidecars, project markers
 editor commands and publication). The latter two do not add language semantics.
 An embedding can supply the same module inputs without any IDE or launch metadata;
 a particular launcher still requires its own declared configuration. The
-<a href="https://obpcdl.org/variohyve-benchmarks/preview/versions/0.3.1/reference/conformance.html">conformance map</a> links these distinctions to executable
+<a href="https://obpcdl.org/variohyve-benchmarks/preview/versions/0.3.2/reference/conformance.html">conformance map</a> links these distinctions to executable
 evidence and selected profiles.</p>
 <h2 id="optional-metadata-and-source-coordinates"><a class="header" href="#optional-metadata-and-source-coordinates">Optional Metadata and Source Coordinates</a></h2>
 <p>Each layer requires only its semantic input. Surface syntax stands alone without
@@ -3545,7 +3545,7 @@ warnings; CLI analysis clients can consume the same Reader result directly.</p>
 <p>Each <code>SyntacticCheck</code> owns its rule and traversal. <code>SyntacticChecks</code> selects an
 immutable ordered collection using <code>standard()</code>, <code>none()</code>, <code>with(check)</code> and
 <code>without(id)</code>. Independent rules share a diagnostic collector, not semantic
-state. The <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/syntactic-checks.md">check catalog</a> lists standard
+state. The <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/syntactic-checks.md">check catalog</a> lists standard
 rules and their stable identifiers. Disabling a check is tooling configuration,
 not a different language contract. Runtime guards remain necessary for direct
 core or unchecked inputs; source checks prove neither binding nor executability.</p>
@@ -3869,17 +3869,17 @@ permission to close arbitrary exported capabilities. Selected failures preserve
 their boundary kinds and do not cause fallback or automatic retry. Package
 metadata describes declared ingredients and compatibility, not verified behavior.</p>
 <p>P0 and P1 implement this contract in
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-packaging/README.md">vh-packaging</a>. The first native client uses
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-packaging/README.md">vh-packaging</a>. The first native client uses
 existing isolated module entry with the loader as its explicit input. P2 adds
 the separately granted <a href="#admitted-source-services">source services</a>, as described in the
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/packaging-development-worlds.md">packaging plan</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/packaging-development-worlds.md">packaging plan</a>.</p>
 <h2 id="native-recipe-launches"><a class="header" href="#native-recipe-launches">Native Recipe Launches</a></h2>
 <p>P3 associates a library with one launch through adjacent <code>&lt;file&gt;.vh.launch.json</code>
 metadata. The inert <code>variohyve-launch-1</code> format requires <code>format</code>, <code>root</code>,
 <code>recipe</code>, <code>selector</code> and <code>arguments</code>, with optional <code>startup</code>, <code>execution</code>, <code>test</code> and
 <code>packaging</code> objects, plus an optional <code>alienRoot</code> path. Unknown or duplicate fields are rejected. The root is relative to that metadata file;
 the recipe is a source path within the root; arguments are bounded JSON scalars.
-The <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-packaging/README.md#recipe-launches-p3">packaging guide</a> defines
+The <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-packaging/README.md#recipe-launches-p3">packaging guide</a> defines
 the concrete limits, examples and CLI. Reading metadata performs no native
 evaluation or provider loading and gives no completeness claim about the world.</p>
 <p><code>WorldLaunchMain</code> receives a tool distribution and launch file. The distribution
@@ -3958,7 +3958,7 @@ service consumes captured bytes and writes a pinned inventory; it does not
 interpret native wiring, enumerate a realized object graph or infer dependency
 closure from execution. Packaging validates its artifacts without evaluating the
 application recipe or initializing providers. The
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-packaging/README.md#deployment-packaging-p4">packaging guide</a> defines
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-packaging/README.md#deployment-packaging-p4">packaging guide</a> defines
 the concrete protocol, format, limits and commands.</p>
 <p>A deployment session eagerly captures and verifies every declared file before
 realization. Its <code>files.resolve</code> capability admits only declared source names and
@@ -4003,7 +4003,7 @@ activation. The owning deployment session outlives the runtime/world uses.</p>
 <p>Native packaging policy chooses the adapter folder, boundary profile
 (<code>host-values</code> or <code>host-scalars</code>), provisioning (<code>none</code> or <code>stdio</code>) and result
 presentation (<code>display</code> or <code>discard</code>) through <code>output.startup/4</code>. The format and
-validation limits live in the <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/vh-packaging/README.md#packaged-learn-world">packaging guide</a>.
+validation limits live in the <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-packaging/README.md#packaged-learn-world">packaging guide</a>.
 Without this declaration, the existing scalar adapter, five-input recipe context
 and displayed result remain unchanged. Older readers reject the new optional
 field explicitly rather than silently launching with a different configuration.</p>
@@ -4095,7 +4095,7 @@ map to selectors. The current language has positional arguments only.</p>
 concatenation messages. Delimiters, conversion protocol and evaluation order
 remain unspecified. It also depends on native string operations, which the
 prototype does not yet implement; see the
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/native-values-and-abstract-semantics.md">scalar design note</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/native-values-and-abstract-semantics.md">scalar design note</a>.</p>
 <h2 id="collection-literals"><a class="header" href="#collection-literals">Collection Literals</a></h2>
 <p><strong>Proposed syntax and libraries.</strong> Lists/maps could be constructed through
 ordinary supplied classes, with future literal sugar. Syntax must avoid
@@ -4123,8 +4123,8 @@ recursive sends; hiding need not remove internal access; selecting behavior does
 not settle storage collisions. Effectful initializer routes require an execution
 plan—registrations and callbacks cannot be assumed to commute or roll back.
 One-object construction and the foreign boundary must survive any extension.
-See the <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/initializer-scope-and-member-classes.md">accepted scope decisions</a>
-and <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/construction-scope-and-mixin-composition.md">composition design space</a>.</p>
+See the <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/initializer-scope-and-member-classes.md">accepted scope decisions</a>
+and <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/construction-scope-and-mixin-composition.md">composition design space</a>.</p>
 <h2 id="trait-style-conflict-resolution"><a class="header" href="#trait-style-conflict-resolution">Trait-Style Conflict Resolution</a></h2>
 <p><strong>Alternative under consideration.</strong> Detection of overlapping method selectors
 could require an explicit own override or contribution-specific delegation,
@@ -4197,7 +4197,7 @@ initializer phases and remaining contributions, constructor results, pending
 member-cache completion, callback barriers, selected receiver/origin, evaluation
 order and exactly-once effects. Foreign calls need separate eligibility rules.</p>
 <p>The proposed sequence is to measure the
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/catalog/06-recursion-stress.md">recursion catalog</a>, identify core tail
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/catalog/06-recursion-stress.md">recursion catalog</a>, identify core tail
 contexts and completion obligations, prototype a conservative native optimization,
 and compare results, traces, identity, failures, continuation depth and allocation.
 Captured bindings cannot be reused if doing so changes closure observations.
@@ -4222,7 +4222,7 @@ There is currently no public class getter or activation reification.</p>
 <p>The implemented <a href="#identitymirror">IdentityMirror protocol</a>
 is the baseline. Further kinds, standalone mixin references, native scalar
 identity and broader reflection remain open. The
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/mirrors-identity-and-alien-classification.md">design note</a>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/mirrors-identity-and-alien-classification.md">design note</a>
 records the current scope and limitations.</p>
 <h2 id="access-control"><a class="header" href="#access-control">Access Control</a></h2>
 <p><strong>Proposed policy; no language access control is enforced today.</strong> The candidate
@@ -4312,7 +4312,7 @@ API. Those remain separate increments with their own specifications and tests.</
 <a href="#non-local-returns-across-the-boundary">default no-crossing boundary</a>
 requires a transfer mechanism and specified treatment of intervening foreign
 work. This is separate from parallel execution or scheduling. The
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/synchronous-foreign-interactions.md">NF/FN design note</a>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/synchronous-foreign-interactions.md">NF/FN design note</a>
 compares immediate escape and deferred delivery without selecting either as a
 mandatory mechanism.</p>
 <h3 id="the-semantic-language-interface-sli"><a class="header" href="#the-semantic-language-interface-sli">The Semantic Language Interface (SLI)</a></h3>
@@ -4329,7 +4329,7 @@ must account for the native store, live homes, continuations and boundary caches
 and explicitly exclude, model or compensate external effects. Replay and
 speculation require recorded inputs and suitable foreign contracts; they are
 not free consequences of sequential stepping.</p>
-<p>The <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/peterson-semantic-composition.md">incremental composition proposal</a>
+<p>The <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/peterson-semantic-composition.md">incremental composition proposal</a>
 starts with bounded native state copying/comparison, explicit admitted state,
 a small SLI adapter and observations before shared-state composition. Gamine’s
 SLI, communicating vats/actors, DEVS and virtual-actor runtimes are inspirations,
@@ -4339,13 +4339,13 @@ machines remain separate proof obligations.</p>
 <p><strong>Deferred.</strong> Portable platform persistence must preserve identities, captures,
 composition origins and explicitly reconnectable foreign bindings. It is not
 Java object serialization and must not discover new authority while loading.
-See <a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/object-graph-persistence.md">object-graph persistence</a>.</p>
+See <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/object-graph-persistence.md">object-graph persistence</a>.</p>
 <p>An abstract execution requires domains, store/control abstractions, transfer
 rules and foreign-effect assumptions related to the reference semantics. A
 configurable allocator, supplied abstract object or descriptor does not provide
 that derivation. Native scalar protocols and foreign conversion must also have
 explicit contracts; current open choices are recorded in the
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/native-values-and-abstract-semantics.md">value/analysis note</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/native-values-and-abstract-semantics.md">value/analysis note</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="connections-and-comparisons"><a class="header" href="#connections-and-comparisons">Connections and Comparisons</a></h1>
 <p>VarioHyve combines an object language with explicit boundaries for independently
@@ -4389,7 +4389,7 @@ without globals make dependencies construction inputs. VarioHyve likewise uses
 explicit module inputs and preserves declaration origins in lexical selection
 and mixin application. It specifies its own callable eligibility, initialization
 and class-side construction. The
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/outer-newspeak-comparison.md">detailed comparison</a> records
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/outer-newspeak-comparison.md">detailed comparison</a> records
 deliberate differences, including exact captured ancestry for deeper repeated
 parent applications, and remaining implementation limits; complete
 Newspeak conformance is not claimed.
@@ -4458,9 +4458,9 @@ Neither establishes that a foreign provider meets its contract.
 protocol translations. Melocoton verifies OCaml/C interoperability with related
 language-local state. Both suggest obligations for conversions, roots and callback
 control; neither verifies VarioHyve’s Java adapter. The
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/design-notes/newspeak-formal-semantics-and-federation.md">research audit</a>
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/newspeak-formal-semantics-and-federation.md">research audit</a>
 expands these comparisons, including alternative boundary calculi, while the
-<a href="https://github.com/plug-obp/variohyve/blob/c1c7251e34cbec11de3dc6f05b37f94577253d10/docs/catalog/README.md">case-study catalog</a> defines integration experiments
+<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/catalog/README.md">case-study catalog</a> defines integration experiments
 and baselines. <a href="https://plv.mpi-sws.org/dimsum/">DimSum (2023)</a>,
 <a href="https://melocoton-project.github.io/">Melocoton (2023)</a></p>
 <div style="break-before: page; page-break-before: always;"></div>
