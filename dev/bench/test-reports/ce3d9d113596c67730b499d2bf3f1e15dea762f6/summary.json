@@ -1,0 +1,12 @@
+{
+  "sha": "ce3d9d113596c67730b499d2bf3f1e15dea762f6",
+  "branch": "codex/packaging-development-worlds",
+  "run_url": "https://github.com/plug-obp/variohyve/actions/runs/38929077348",
+  "outcome": "success",
+  "reported_at": "2026-10-16T16:25:44.543486+00:00",
+  "tests": 1055,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "duration_seconds": 32.044999999999995
+}
