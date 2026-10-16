@@ -57,6 +57,57 @@ the default. It does not commit, push, upload assets or publish a release. Revie
 the generated pages in a browser, commit the coherent update, and publish the
 matching assets and Pages update. Preserve benchmark reports and unrelated files.
 
+## Release assets and evidence
+
+Starting with v0.3.0, publish both starter and packaging distributions. The
+`Starter slice` workflow produces one `variohyve-starter-<runner.os>` artifact per
+platform containing both ZIPs and the VSIX. Extract these artifacts without
+rebuilding or modifying their contents; renaming the outer download files is
+fine. Use this public naming convention:
+
+| Contents | Public filename | CI artifact |
+|---|---|---|
+| macOS starter | `variohyve-<version>-macos.zip` | `variohyve-starter-macOS` |
+| Linux starter | `variohyve-<version>-linux.zip` | `variohyve-starter-Linux` |
+| Windows starter | `variohyve-<version>-windows.zip` | `variohyve-starter-Windows` |
+| macOS tools | `variohyve-packaging-<version>-macos.zip` | `variohyve-starter-macOS` |
+| Linux tools | `variohyve-packaging-<version>-linux.zip` | `variohyve-starter-Linux` |
+| Windows tools | `variohyve-packaging-<version>-windows.zip` | `variohyve-starter-Windows` |
+| Universal extension | `vh-lsp-vscode-<extension-version>.vsix` | `variohyve-starter-Linux` |
+
+The extension version is independent: preview v0.3.0 uses extension v0.4.0.
+Include `SHA256SUMS.txt` alongside the seven binaries. Use the actual byte counts
+and SHA-256 values of the renamed downloads in `manifest.json`; its `assets`
+entries contain `name`, `kind` (`starter`, `packaging`, or `extension`),
+`platform`, `bytes`, `sha256` and `ci_artifact`. Never copy an old release's hashes
+or validation counts into a new record.
+
+Other manifest fields follow the existing v0.2.0 record:
+
+- `schema_version`, `name`, `version`, release `date`, `java_requirement` and
+  `extension_version` identify the user-facing release.
+- `source` contains the repository, visibility, tag and full source commit.
+- `ci` contains the actual workflow run ID, event, ref, conclusion and one entry
+  per platform. Record Java tests, extension tests, extracted starter checks,
+  native and custom-Alien archive journeys, VSIX packaging and the real VSIX
+  smoke result separately. A platform not smoke-tested must say so.
+- `additional_validation` records any local rechecks and documentation evidence
+  with their exact `source_commit`. Record the spec PDF path, size and SHA-256,
+  rendered tutorial page count, source-excerpt checks and highlighting checks.
+- `packaging` explains any outer-filename changes and which job supplied the
+  universal VSIX.
+
+The source tag, CI run head, packaged runtime and documentation must all resolve
+to the same source revision. Build the specification HTML/PDF from that revision
+and render the tutorial from its extracted starter. The current starter archive
+contains the whole `learn/` tree, including native `packages/`; its checker
+validates all marked excerpts and the original executable lessons. The separate
+packaging journey checks execute the new native package and custom-Alien flows.
+Run `check-preview.py --learn ... --assets ...` after promotion to validate every
+local link, exact code excerpt and downloaded asset hash. The ordinary structure
+check also covers all earlier versions. Finally, check the dropdown and matching
+downloads in a browser before pushing the Pages commit.
+
 ## Historical releases and maintenance
 
 An existing published release can be recovered once from a full public-site
