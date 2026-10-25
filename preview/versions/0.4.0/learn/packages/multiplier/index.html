@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiny native multiplier package · Learn VarioHyve</title><link rel="stylesheet" href="../../../preview.css"><link rel="stylesheet" href="../../highlight.css"><link rel="stylesheet" href="../../learn.css">
+<link data-version-navigation rel="stylesheet" href="../../../../../versions.css">
+<script data-version-navigation src="../../../../../versions.js" defer></script>
+</head>
+<body><a class="skip" href="#lesson">Skip to lesson</a><header class="site-header wrap"><a class="wordmark" href="../../../">VarioHyve<span aria-hidden="true">.</span></a><nav aria-label="Tutorial navigation"><a href="../../">All lessons</a><a href="../../../#downloads">Downloads</a></nav></header>
+<!-- version navigation --><div class="version-navigation wrap" data-version="0.4.0" data-page="learn/packages/multiplier/index.html"><span>Preview v0.4.0</span> · <a href="../../../../../versions.html">All tutorial versions</a></div><!-- /version navigation -->
+
+<main id="lesson" class="lesson"><p class="eyebrow">LEARN VARIOHYVE · V0.3.2</p><h1>Tiny native multiplier package</h1>
+<p>Entry: <code>Multiplier.vh</code>. Construction requires one integer <code>factor</code>; the resulting
+object implements <code>multiply(value)</code>. It needs the selected startup value adapter's
+integer <code>times/1</code> protocol, and no filesystem, console or other capabilities.</p>
+<p>Copy this folder into a consumer's <code>packages/multiplier</code> directory. Its native
+recipe constructs the module with <code>importModule(files.resolve( &quot;packages/multiplier/Multiplier.vh&quot;), 3)</code> and supplies the result to its application.
+Its native packaging policy captures that same entry file explicitly. There is
+no registry, package-name lookup or implicit dependency discovery.</p>
+<p>The extracted-archive journey copies this independent producer folder into a
+fresh consumer. The custom Alien journey substitutes a packaged Java provider
+implementing the same <code>multiply/1</code> protocol without changing application or tests.</p>
+</main>
+<footer class="wrap"><p>Public preview v0.3.2 · Download the files shown in each lesson. Recipe projects use the packaging tools.</p><a href="../../../">Back to the preview</a></footer></body></html>

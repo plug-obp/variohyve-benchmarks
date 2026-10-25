@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Bring your own Alien package · VarioHyve v0.4.0</title><link rel="stylesheet" href="../preview.css"><link rel="stylesheet" href="../learn/learn.css"><link rel="stylesheet" href="../learn/highlight.css">
+<link data-version-navigation rel="stylesheet" href="../../../versions.css">
+<script data-version-navigation src="../../../versions.js" defer></script>
+</head>
+<body><a class="skip" href="#reference">Skip to reference</a><header class="site-header wrap"><a class="wordmark" href="../">VarioHyve<span aria-hidden="true">.</span></a><nav aria-label="Release navigation"><a href="../learn/">Tutorial</a><a href="../#downloads">Downloads</a></nav></header>
+<!-- version navigation --><div class="version-navigation wrap" data-version="0.4.0" data-page="reference/custom-aliens.html"><span>Preview v0.4.0</span> · <a href="../../../versions.html">All tutorial versions</a></div><!-- /version navigation -->
+
+<main id="reference" class="lesson"><p class="eyebrow">RELEASE REFERENCE · V0.4.0</p><p>This public reference is rendered from the v0.4.0 source commit <code>48ba22b5e18e53257564055852eabf7344ee4fbd</code>. Code, test and design-note links point to that exact revision in the private source repository and require repository access. Specification, tutorial and packaging-guide links are public.</p><h1 id="bring-your-own-alien-package">Bring your own Alien package</h1>
+<p>A provider does not need to be shipped by VarioHyve or registered in host code.
+The current folder convention loads Java providers implementing the public
+<code>ForeignObject</code> boundary API. The provider adapts its foreign library; the native
+recipe chooses and constructs it. Other binary formats still need an appropriate
+bridge; the packager does not infer one from arbitrary classes or executables.</p>
+<p>Start with the project from <a href="getting-started.html">the installation walkthrough</a>.
+New projects declare <code>&quot;alienRoot&quot;: &quot;.&quot;</code> in <code>Main.vh.launch.json</code> and contain their
+own <code>aliens/console</code> and <code>aliens/starter-values</code> folders. <code>alienRoot</code> is relative
+to the sidecar, just like <code>root</code>. It selects <strong>one</strong> package root for both startup
+adapter loading and recipe <code>loadAlien</code> calls. There is no fallback to the tools
+installation. Omit it for the older installed-provider behavior. Copy any other
+required built-in packages into your project's <code>aliens</code> directory explicitly.</p>
+<h2 id="build-a-provider">Build a provider</h2>
+<p>The distribution includes two example Java sources in <code>examples/custom-alien/src</code>:
+<code>MultiplierLibrary.java</code> is an independent library; <code>MultiplierRealizer.java</code> is
+a small adapter. Neither is precompiled into the runtime or registered with it.
+Replace the library/adapter with your own when needed.</p>
+<p>The realizer is a public concrete <code>ForeignObject</code> with a public no-argument
+constructor. Loading returns this callable realizer. Its <code>apply/1</code> accepts a
+factor and returns a fresh capability exposing <code>multiply/1</code>. This example keeps
+only host scalars, so it needs no detached native receipts. Providers retaining
+native objects or callbacks must obey the boundary retention contract.</p>
+<p>Set <code>VH</code> to the extracted tools directory and <code>PROJECT</code> to your project. If you
+installed only the VSIX, its <code>packaging</code> directory is the same tools distribution;
+you can use that directory as <code>VH</code> from VS Code's integrated terminal. The Java
+sources and boundary API are included there. These commands need only JDK tools
+and ordinary shell/file utilities, not the repository, Maven or Gradle:</p>
+<pre><code class="hljs language-sh">mkdir -p <span class="hljs-string">&quot;<span class="hljs-variable">$PROJECT</span>/build/library&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$PROJECT</span>/build/provider&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$PROJECT</span>/aliens/multiplier/lib&quot;</span>
+javac --release 23 -d <span class="hljs-string">&quot;<span class="hljs-variable">$PROJECT</span>/build/library&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$VH</span>/examples/custom-alien/src/example/MultiplierLibrary.java&quot;</span>
+jar --create --file <span class="hljs-string">&quot;<span class="hljs-variable">$PROJECT</span>/aliens/multiplier/lib/multiplier.jar&quot;</span> -C <span class="hljs-string">&quot;<span class="hljs-variable">$PROJECT</span>/build/library&quot;</span> .
+javac --release 23 -cp <span class="hljs-string">&quot;<span class="hljs-variable">$VH</span>/lib/*:<span class="hljs-variable">$PROJECT</span>/aliens/multiplier/lib/multiplier.jar&quot;</span> -d <span class="hljs-string">&quot;<span class="hljs-variable">$PROJECT</span>/build/provider&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$VH</span>/examples/custom-alien/src/example/MultiplierRealizer.java&quot;</span>
+jar --create --file <span class="hljs-string">&quot;<span class="hljs-variable">$PROJECT</span>/aliens/multiplier/provider.jar&quot;</span> -C <span class="hljs-string">&quot;<span class="hljs-variable">$PROJECT</span>/build/provider&quot;</span> .
+</code></pre>
+
+<p>On Windows, create the directories with PowerShell and separate the two classpath
+entries with <code>;</code> instead of <code>:</code>. Java 23+ supplies <code>javac</code> and <code>jar</code>. Compile
+against the API in <code>lib/*</code>; <strong>do not copy runtime or boundary API classes into the
+provider JAR</strong>. The package loader shares the boundary API and isolates provider
+implementation classes and dependencies.</p>
+<p>Compute SHA-256 for both JARs (<code>sha256sum</code> on Linux, <code>shasum -a 256</code> on macOS, or
+PowerShell <code>Get-FileHash -Algorithm SHA256</code>, converted to lowercase). Write
+<code>aliens/multiplier/alien.json</code>, replacing the two digest placeholders:</p>
+<pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;format&quot;</span>: <span class="hljs-string">&quot;variohyve-java-alien-1&quot;</span>,
+  <span class="hljs-attr">&quot;boundary&quot;</span>: <span class="hljs-string">&quot;variohyve-java-boundary-1&quot;</span>,
+  <span class="hljs-attr">&quot;java&quot;</span>: <span class="hljs-number">23</span>,
+  <span class="hljs-attr">&quot;entry&quot;</span>: <span class="hljs-string">&quot;example.MultiplierRealizer&quot;</span>,
+  <span class="hljs-attr">&quot;jars&quot;</span>: [
+    {<span class="hljs-attr">&quot;path&quot;</span>: <span class="hljs-string">&quot;provider.jar&quot;</span>, <span class="hljs-attr">&quot;sha256&quot;</span>: <span class="hljs-string">&quot;&lt;provider JAR SHA-256&gt;&quot;</span>},
+    {<span class="hljs-attr">&quot;path&quot;</span>: <span class="hljs-string">&quot;lib/multiplier.jar&quot;</span>, <span class="hljs-attr">&quot;sha256&quot;</span>: <span class="hljs-string">&quot;&lt;library JAR SHA-256&gt;&quot;</span>}
+  ],
+  <span class="hljs-attr">&quot;deployment&quot;</span>: {<span class="hljs-attr">&quot;provisioning&quot;</span>: <span class="hljs-string">&quot;none&quot;</span>, <span class="hljs-attr">&quot;resources&quot;</span>: []}
+}
+</code></pre>
+
+<p>Declare every runtime dependency JAR. Declare required notices and other loose
+artifacts in <code>deployment.resources</code> using the same path/digest shape. Resources
+needed through Java's classloader belong inside declared JARs. Update digests
+when rebuilding; missing or changed bytes are errors. <code>provisioning: &quot;none&quot;</code>
+means the loader injects no ambient services; capabilities can still be supplied
+explicitly as realizer arguments. A provider requiring unsupported deployment
+provisioning is rejected, never silently converted into a deployable package.
+Classloader isolation does not sandbox Java code's host-process authority.</p>
+<h2 id="compose-test-and-deploy">Compose, test and deploy</h2>
+<p>In <code>World.vh</code>, replace the native <code>multiplier</code> import with:</p>
+<pre><code class="hljs language-vh">makeMultiplier = loadAlien(<span class="hljs-string">&quot;aliens/multiplier&quot;</span>);
+multiplier = makeMultiplier(<span class="hljs-number">3</span>);
+</code></pre>
+
+<p>The application and tests stay unchanged: both the native package and this
+Alien expose <code>multiply(value)</code> and receive their factor at construction.</p>
+<p>The existing test still expects 42. Run <strong>Test File</strong> and <strong>Run File</strong> in VS Code,
+or use <code>vh-world</code> as in the walkthrough. Each launch opens a fresh provider
+session; editing Java source alone does not rebuild a JAR or update its pin.</p>
+<p>Remove <code>source(&quot;packages/multiplier/Multiplier.vh&quot;)</code> from <code>Package.vh</code> and add
+this declaration before <code>output.finish()</code>:</p>
+<pre><code class="hljs language-vh">output<span class="hljs-title">.alien</span>(<span class="hljs-string">&quot;aliens/multiplier&quot;</span>, sources<span class="hljs-title">.alien</span>(<span class="hljs-string">&quot;aliens/multiplier&quot;</span>));
+</code></pre>
+
+<p><code>sources.alien</code> captures the project's provider folder without initializing it;
+<code>output.alien</code> publishes its manifest, JARs and declared resources at the path
+used by the recipe. The existing native policy also captures the project's
+startup adapter and console. Neither development nor packaging searches for
+undeclared dependencies or changes the tools installation.</p>
+<p>Use <strong>Package Application</strong> and <strong>Run Deployment</strong>, or the CLI commands in the
+walkthrough. The result contains the custom provider and its separate dependency
+JAR. Move it to another Java 23+ machine; the original project, compiled classes,
+tools installation and foreign source files are not needed at runtime. Both the
+CLI archive journey (<code>--custom-alien</code>) and real VSIX journey exercise this case,
+including a changed dependency pin and removal of the producing tools/project.</p>
+</main>
+<footer class="wrap"><p>Supplemental reference · VarioHyve v0.4.0</p><a href="https://github.com/plug-obp/variohyve/blob/48ba22b5e18e53257564055852eabf7344ee4fbd/vh-packaging/CUSTOM-ALIENS.md" title="Private source repository; access required">Pinned Markdown source (access required)</a></footer></body></html>

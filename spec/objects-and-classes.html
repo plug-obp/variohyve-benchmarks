@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-dc3eaf86.js";
+            window.path_to_searchindex_js = "searchindex-0e8722df.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-ce909e20.js"></script>
@@ -219,6 +219,24 @@ Aliens acquire no native hierarchy through this definition.</p>
 <p>The VM may represent the terminal case without allocating an object:
 <a href="./object-model.html#representing-top-without-reification">the implementation refinement</a>
 states the mapping and the conditions for reconsidering runtime reification.</p>
+<h3 id="realized-hierarchy-invariant"><a class="header" href="#realized-hierarchy-invariant">Realized Hierarchy Invariant</a></h3>
+<p>Every published native class or metaclass has one unique identity and one fixed
+superclass edge. Its superclass is either an already realized class identity or,
+for Object alone, <code>Top</code>. Superclass references are closed within the realized
+class store. The superclass graph is well-founded: a finite rank can be assigned
+to every realized class, strictly decreasing at each superclass edge. Thus no
+superclass chain repeats a class identity, and every chain terminates at Object
+and then <code>Top</code>. The graph of <strong>class-of</strong> links is separate; its specified
+metaclass cycle does not violate this invariant.</p>
+<p>Seed publication establishes these conditions. Ordinary class realization adds
+fresh class/metaclass identities with edges to validated existing targets and
+does not rewrite existing superclass edges. It therefore preserves the invariant
+and existing superclass chains. Root substitution during startup must reestablish
+the invariant before publication; it is not an ordinary class-extension step.
+Direct mixin applications reuse owned contributions and do not add superclass
+edges to their source classes. The
+<a href="./formal-core.html#realized-hierarchy-invariant">formal invariant</a> makes these
+premises explicit; it does not constrain target computations to terminate.</p>
 <h2 id="the-class-keyword"><a class="header" href="#the-class-keyword">The <code>class</code> Keyword</a></h2>
 <p><code>class</code> distinguishes an instantiable class from an immediately evaluated object:</p>
 <div class="table-wrapper">
@@ -358,7 +376,7 @@ module binding or accessor for IdentityMirror. Its
 operations cross the normal Alien/Expat boundary and expose no backend
 representation. Aliens retain their own protocols and do not acquire these
 methods by inheritance. Scalar Object behavior and identity remain subject to
-<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/native-values-and-abstract-semantics.md">the scalar design decision</a>.</p>
+<a href="../../design-notes/native-values-and-abstract-semantics.html">the scalar design decision</a>.</p>
 <h2 id="capabilities-and-definition-scope"><a class="header" href="#capabilities-and-definition-scope">Capabilities and Definition Scope</a></h2>
 <p>The <a href="./program-structure.html#sources-of-an-objects-capabilities">capability sources</a>
 do not change definition scope: calling a class does not capture its caller’s scope.
@@ -496,13 +514,86 @@ declaration and its origin; it does not merge nested families automatically.
 Duplicate slots, members or exact method selectors within one body remain errors;
 an explicit method may override a generated slot accessor.</p>
 <p>Every slot retains its logical identity <code>(applying class, occurrence, local slot)</code>.
-<strong>Same-named contributions share storage.</strong> Initialization runs in the reverse
+<strong>Slots with the same name across contributions share storage.</strong> The names of
+the contributions or classes do not determine sharing. Initialization runs in the reverse
 contribution order above, so later writes replace earlier values. Every occurrence
 still initializes, including repeated applications. Surviving methods may therefore
 observe shared state; this policy does not promise independent stateful mixins.
 Getter/setter eligibility and mutability belong to the selected declaration,
-even when storage is shared. Renaming, explicit state mapping and deep family
-composition require future rules.</p>
+even when storage is shared.</p>
+<h3 id="storage-sharing-and-its-safety-conditions"><a class="header" href="#storage-sharing-and-its-safety-conditions">Storage Sharing and Its Safety Conditions</a></h3>
+<p>The semantic components distinguish logical slots from their storage cells.
+For each receiver class, a layout maps every logical slot to a cell. Equality of
+mapped cells defines the sharing relation. This interface can describe disjoint
+slots, sharing by name, or an explicitly specified sharing relation without
+changing occurrence identities or the lookup algorithm; stored contents can
+still change eligibility and selection outcomes. <strong>Current VarioHyve fixes
+the relation to equality of slot names throughout the hierarchy.</strong> Disjoint
+storage, explicit sharing/disjointness specifications, renaming and deep family
+state composition are future language-evolution choices deferred indefinitely.
+There is no runtime policy switch or new source syntax.</p>
+<p>A valid layout is total on the class’s logical slots and maps two slots to the
+same cell if and only if the selected sharing relation relates them. Different
+receivers have distinct storage. Numbering cells is a representation choice;
+it must preserve this equivalence. Initializer writes, selected accessors and
+retained getter evidence all use the same receiver/layout mapping. Sharing never
+merges occurrences, initializer invocations, declaration mutability, or member
+cache keys. These conditions make the specified shared behavior coherent; they
+do not guarantee that independently designed contributors compose safely.</p>
+<p><strong>Contributor invariant preservation is a requirement of correct composition
+under the current sharing policy.</strong> A composition must preserve every
+participating contributor’s stated invariants under their stated preconditions,
+at the phases and observation points for which they are claimed. Shared-cell
+writes must respect all applicable contributor invariants, not just the writer’s.
+This includes initializer and callback exposure when those observations are
+within the stated contract. Initialization contracts must say when an invariant
+is established and which temporary states may be observed.</p>
+<p>This is a specification/verification obligation on a composition. <strong>The runtime
+does not check, enforce or repair contributor invariants</strong>, and violation does
+not introduce a new language diagnostic or change the prescribed effects.
+Future verification tools may discharge or refute the obligation from supplied
+invariant statements, assumptions and program evidence. No new invariant
+annotation syntax or required runtime metadata is introduced here. Absence of
+verification evidence is not a proof of safety. Invariants may relate several
+cells or other semantic state; the cell-local theorem below covers one useful
+case, not the entire requirement.</p>
+<p>The primary safety objective is preservation of these contributor invariants.
+Comparison with disjoint storage is an additional, separately stated property.
+Safety analysis must identify the observation or contract being preserved. The
+following conditions are exact within their stated scopes, not new checks that
+reject otherwise valid source programs:</p>
+<ul>
+<li><strong>All logical-slot reads.</strong> A valuation of independent logical slots can be
+represented by shared storage exactly when every shared group has one value,
+including the distinction between uninitialized and initialized. Starting
+from such a valuation, an independent write of <code>v</code> to slot <code>s</code> agrees with
+the shared write on every logical-slot read exactly when every <em>other</em> slot
+sharing <code>s</code> already has value <code>v</code>. No-collision layouts satisfy this
+automatically, but are not necessary.</li>
+<li><strong>Contributor cell contracts.</strong> Suppose each logical slot has a predicate on
+its permitted cell contents and all predicates currently hold. A shared write
+of <code>v</code> preserves all these predicates exactly when <code>v</code> satisfies every
+predicate attached to a slot sharing that cell. This permits intentional
+mutable sharing through a common invariant. The condition includes private
+initializer writes and every reachable setter/method write; mutability of
+one accessor does not protect the cell from another accessor.</li>
+<li><strong>Whole-program observations.</strong> Preserving only selected public observations
+may permit more sharing than preserving every logical read. The obligation
+is then relative to those observations and reachable executions: preserve
+results, failures, identity/alias observations, selected behavior and ordered
+effects, including callbacks and partial initialization. Local cell predicates
+alone do not establish that claim or preserve invariants relating several
+cells. There is no universal maximal syntactic test based on names or initial
+values alone. A proof must state the relevant observation relation and show
+it survives the admitted transitions.</li>
+</ul>
+<p>Equal final initializer values are therefore insufficient: an intermediate read
+can distinguish initializedness, an earlier initializer may observe a later
+declaration’s accessor, and a subsequent write may change callable eligibility.
+The language retains the specified writes and effects even when a contributor’s
+intended invariant is violated. <a href="./formal-core.html#parametric-storage-and-sharing-safety">Appendix A</a>
+states the exact store-level conditions; full observational equivalence remains
+a separate proof obligation.</p>
 <h2 id="factories"><a class="header" href="#factories">Factories</a></h2>
 <p>A <code>factory</code> method is sent to the class object; an ordinary method is sent to
 its instances. Both use ordinary method invocation and lexical scope.</p>

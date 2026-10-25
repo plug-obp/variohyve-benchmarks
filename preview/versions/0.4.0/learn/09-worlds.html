@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>From starter to your own world · Learn VarioHyve</title><link rel="stylesheet" href="../preview.css"><link rel="stylesheet" href="./highlight.css"><link rel="stylesheet" href="./learn.css">
+<link data-version-navigation rel="stylesheet" href="../../../versions.css">
+<script data-version-navigation src="../../../versions.js" defer></script>
+</head>
+<body><a class="skip" href="#lesson">Skip to lesson</a><header class="site-header wrap"><a class="wordmark" href="../">VarioHyve<span aria-hidden="true">.</span></a><nav aria-label="Tutorial navigation"><a href="./">All lessons</a><a href="../#downloads">Downloads</a></nav></header>
+<!-- version navigation --><div class="version-navigation wrap" data-version="0.4.0" data-page="learn/09-worlds.html"><span>Preview v0.4.0</span> · <a href="../../../versions.html">All tutorial versions</a></div><!-- /version navigation -->
+
+<main id="lesson" class="lesson"><p class="eyebrow">LEARN VARIOHYVE · V0.3.2</p><h1>From starter to your own world</h1>
+<p>The first eight lessons use a ready-made JavaHostKernel. A recipe lets you choose
+the capabilities your application receives. You still write ordinary modules,
+construct objects and send messages; the recipe owns the wiring.</p>
+<p>Download the packaging archive for this tutorial version from the preview's
+download page, or install its matching VSIX. Java 23+ is required. Extracting an
+archive does not require a checkout, Gradle or GitHub credentials.</p>
+<h2>Start a project</h2>
+<p>In VS Code run <strong>VarioHyve: New Recipe Project</strong> in a trusted workspace. Choose a
+new folder. From the command line, copy the installation's <code>examples/project</code>
+folder to a writable location instead. Set <code>VH</code> to the extracted tools and
+<code>PROJECT</code> to that copy:</p>
+<pre><code class="hljs language-sh"><span class="hljs-built_in">export</span> JAVA_HOME=/path/to/jdk-23
+<span class="hljs-built_in">export</span> PATH=<span class="hljs-string">&quot;<span class="hljs-variable">$JAVA_HOME</span>/bin:<span class="hljs-variable">$PATH</span>&quot;</span>
+VH=/path/to/extracted/vh-packaging
+PROJECT=/path/to/my-project
+cp -R <span class="hljs-string">&quot;<span class="hljs-variable">$VH</span>/examples/project&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$PROJECT</span>&quot;</span>
+<span class="hljs-string">&quot;<span class="hljs-variable">$VH</span>/bin/vh-world&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$VH</span>&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$PROJECT</span>/Main.vh.launch.json&quot;</span> --<span class="hljs-built_in">test</span>
+<span class="hljs-string">&quot;<span class="hljs-variable">$VH</span>/bin/vh-world&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$VH</span>&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$PROJECT</span>/Main.vh.launch.json&quot;</span>
+</code></pre>
+
+<p>Use absolute paths; on Windows use the <code>.bat</code> launchers and your shell's copy
+command. The test prints <code>PASS</code>. Enter <code>Answer</code> during the run and it prints
+<code>Answer: 42</code>. End of input prints <code>42</code>.</p>
+<p>The project includes the native multiplier package, the SUnit library and the
+packaged console and value adapter. Keep those folders when editing the six files
+below. Each download replaces the corresponding file in your project; the
+individual source downloads do not include the supporting libraries or JARs.</p>
+<h2>Write the application</h2>
+<p><code>Main.vh</code> receives a multiplier and sends it <code>multiply(14)</code>. It has no ambient
+kernel, console or filesystem, and does not choose how its multiplier is built.</p>
+<pre><code class="hljs language-vh"><span class="hljs-comment">// The application receives its dependency; it does not select a host kernel.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title">Main</span>(multiplier) {
+    multiplier = multiplier;
+    <span class="hljs-title">answer</span> { multiplier<span class="hljs-title">.multiply</span>(<span class="hljs-number">14</span>) }
+}
+</code></pre>
+
+<p><a href="projects/recipe-project/Main.vh" class="button example-download" download="Main.vh">Download Main.vh</a></p>
+<h2>Wire its world</h2>
+<p><code>World.vh</code> constructs the <a href="10-native-packages.html">native multiplier</a> with factor
+3 and passes it into the application. It loads a console realizer, then supplies
+the explicitly granted input and output streams. Sending <code>run</code> reads a line and
+prints the application's answer. Sending <code>test</code> constructs the development suite;
+ordinary runs do not import those test dependencies.</p>
+<pre><code class="hljs language-vh">{
+    multiplier = importModule(files<span class="hljs-title">.resolve</span>(<span class="hljs-string">&quot;packages/multiplier/Multiplier.vh&quot;</span>), <span class="hljs-number">3</span>);
+    application = importModule(files<span class="hljs-title">.resolve</span>(<span class="hljs-string">&quot;Main.vh&quot;</span>), multiplier);
+    makeConsole = loadAlien(<span class="hljs-string">&quot;aliens/console&quot;</span>);
+    console = makeConsole(provisions<span class="hljs-title">.input</span>, provisions<span class="hljs-title">.output</span>);
+    <span class="hljs-title">run</span> {
+        <span class="hljs-keyword">var</span> line = console<span class="hljs-title">.readLine</span>;
+        null<span class="hljs-title">.equals</span>(line)<span class="hljs-title">.ifTrue</span>(<span class="hljs-keyword">fun</span> { console<span class="hljs-title">.printLine</span>(application<span class="hljs-title">.answer</span><span class="hljs-title">.toString</span>) },
+            <span class="hljs-keyword">fun</span> { console<span class="hljs-title">.printLine</span>(line<span class="hljs-title">.concat</span>(<span class="hljs-string">&quot;: &quot;</span>)<span class="hljs-title">.concat</span>(application<span class="hljs-title">.answer</span><span class="hljs-title">.toString</span>)) })
+    }
+    <span class="hljs-comment">// Development dependencies are constructed only for this explicit entry.</span>
+    <span class="hljs-title">test</span> {
+        <span class="hljs-keyword">var</span> suiteKernel = importModule(files<span class="hljs-title">.resolve</span>(<span class="hljs-string">&quot;lib/SuiteKernel.vh&quot;</span>));
+        <span class="hljs-keyword">var</span> testing = importModule(files<span class="hljs-title">.resolve</span>(<span class="hljs-string">&quot;lib/SUnit.vh&quot;</span>), suiteKernel);
+        <span class="hljs-keyword">var</span> tests = importModule(files<span class="hljs-title">.resolve</span>(<span class="hljs-string">&quot;Tests.vh&quot;</span>), application, testing);
+        <span class="hljs-keyword">var</span> runner = importModule(files<span class="hljs-title">.resolve</span>(<span class="hljs-string">&quot;SuiteReporter.vh&quot;</span>), console, true);
+        runner<span class="hljs-title">.run</span>(tests<span class="hljs-title">.tests</span>)
+    }
+}
+</code></pre>
+
+<p><a href="projects/recipe-project/World.vh" class="button example-download" download="World.vh">Download World.vh</a></p>
+<p>The recipe receives bounded file access, module importing and Alien loading
+capabilities. The application receives only the multiplier selected by that
+recipe.</p>
+<h2>Check the result</h2>
+<p><code>Tests.vh</code> builds one SUnit case. The test receives the same application instance
+that the world's <code>run</code> method uses, along with the testing capability.</p>
+<pre><code class="hljs language-vh"><span class="hljs-keyword">class</span> <span class="hljs-title">Tests</span>(application, testing) {
+    application = application;
+    testing = testing;
+    <span class="hljs-title">tests</span> {
+        <span class="hljs-keyword">var</span> suite = testing<span class="hljs-title">.suite</span>(<span class="hljs-string">&quot;My application&quot;</span>);
+        suite<span class="hljs-title">.add</span>(<span class="hljs-string">&quot;supplied multiplier&quot;</span>, <span class="hljs-keyword">fun</span>(assert) { assert<span class="hljs-title">.assertEquals</span>(<span class="hljs-number">42</span>, application<span class="hljs-title">.answer</span>) });
+        suite
+    }
+}
+</code></pre>
+
+<p><a href="projects/recipe-project/Tests.vh" class="button example-download" download="Tests.vh">Download Tests.vh</a></p>
+<p><code>SuiteReporter.vh</code> runs the cases, prints assertion failures through its console
+input and returns whether the suite passed. Its recursion visits each case and
+each recorded failure; reporting is ordinary VarioHyve code too.</p>
+<pre><code class="hljs language-vh"><span class="hljs-comment">// Reporting is native policy. A raised failure aborts; assertions return a Boolean.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title">SuiteReporter</span>(console, trueValue) {
+    console = console;
+    success = trueValue;
+    <span class="hljs-title">run</span>(suite) { runAt(suite, <span class="hljs-number">0</span>) }
+    <span class="hljs-title">runAt</span>(suite, index) {
+        index<span class="hljs-title">.lessThan</span>(suite<span class="hljs-title">.count</span>)<span class="hljs-title">.ifTrue</span>(<span class="hljs-keyword">fun</span> {
+            <span class="hljs-keyword">var</span> test = suite<span class="hljs-title">.caseAt</span>(index);
+            <span class="hljs-keyword">var</span> assertions = test<span class="hljs-title">.run</span>;
+            report(test<span class="hljs-title">.name</span>, assertions, <span class="hljs-number">0</span>);
+            <span class="hljs-keyword">var</span> passed = assertions<span class="hljs-title">.failureCount</span><span class="hljs-title">.equals</span>(<span class="hljs-number">0</span>);
+            passed<span class="hljs-title">.and</span>(runAt(suite, index<span class="hljs-title">.plus</span>(<span class="hljs-number">1</span>)))
+        }, <span class="hljs-keyword">fun</span> { success })
+    }
+    <span class="hljs-title">report</span>(name, assertions, index) {
+        index<span class="hljs-title">.lessThan</span>(assertions<span class="hljs-title">.failureCount</span>)<span class="hljs-title">.ifTrue</span>(<span class="hljs-keyword">fun</span> {
+            console<span class="hljs-title">.printLine</span>(name<span class="hljs-title">.concat</span>(<span class="hljs-string">&quot;: &quot;</span>)<span class="hljs-title">.concat</span>(assertions<span class="hljs-title">.failureAt</span>(index)));
+            report(name, assertions, index<span class="hljs-title">.plus</span>(<span class="hljs-number">1</span>))
+        })
+    }
+}
+</code></pre>
+
+<p><a href="projects/recipe-project/SuiteReporter.vh" class="button example-download" download="SuiteReporter.vh">Download SuiteReporter.vh</a></p>
+<p>Change the expected answer in <code>Tests.vh</code> from 42 to 41 and run <strong>Test File</strong> on
+<code>Main.vh</code>, or repeat the command ending in <code>--test</code>. You will see the case name
+and <code>Expected 41 but got 42</code>, followed by <code>FAIL</code> and exit status 1. Restore 42.
+Assertions return a Boolean; a raised execution failure aborts this native suite.
+The earlier starter <code>vh test</code> runner has its own richer per-case recovery contract.</p>
+<h2>Connect the editor and command line</h2>
+<p><code>Main.vh.launch.json</code> tells both tools to realize <code>World.vh</code> and send <code>run</code>, or
+<code>test</code> for a test launch. Its <code>packaging</code> section selects the native policy and
+its <code>build</code> message. Paths are relative to this sidecar; <code>alienRoot</code> selects the
+project's own packaged providers.</p>
+<pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;format&quot;</span>: <span class="hljs-string">&quot;variohyve-launch-1&quot;</span>,
+  <span class="hljs-attr">&quot;root&quot;</span>: <span class="hljs-string">&quot;.&quot;</span>,
+  <span class="hljs-attr">&quot;recipe&quot;</span>: <span class="hljs-string">&quot;World.vh&quot;</span>,
+  <span class="hljs-attr">&quot;selector&quot;</span>: <span class="hljs-string">&quot;run&quot;</span>,
+  <span class="hljs-attr">&quot;arguments&quot;</span>: [],
+  <span class="hljs-attr">&quot;startup&quot;</span>: {
+    <span class="hljs-attr">&quot;valueAdapter&quot;</span>: <span class="hljs-string">&quot;aliens/starter-values&quot;</span>,
+    <span class="hljs-attr">&quot;profile&quot;</span>: <span class="hljs-string">&quot;host-values&quot;</span>,
+    <span class="hljs-attr">&quot;provisioning&quot;</span>: <span class="hljs-string">&quot;stdio&quot;</span>,
+    <span class="hljs-attr">&quot;result&quot;</span>: <span class="hljs-string">&quot;discard&quot;</span>
+  },
+  <span class="hljs-attr">&quot;test&quot;</span>: {
+    <span class="hljs-attr">&quot;selector&quot;</span>: <span class="hljs-string">&quot;test&quot;</span>,
+    <span class="hljs-attr">&quot;arguments&quot;</span>: []
+  },
+  <span class="hljs-attr">&quot;packaging&quot;</span>: {
+    <span class="hljs-attr">&quot;policy&quot;</span>: <span class="hljs-string">&quot;Package.vh&quot;</span>,
+    <span class="hljs-attr">&quot;selector&quot;</span>: <span class="hljs-string">&quot;build&quot;</span>
+  },
+  <span class="hljs-attr">&quot;alienRoot&quot;</span>: <span class="hljs-string">&quot;.&quot;</span>
+}
+</code></pre>
+
+<p><a href="projects/recipe-project/Main.vh.launch.json" class="button example-download" download="Main.vh.launch.json">Download Main.vh.launch.json</a></p>
+<p>The startup value adapter supplies the selected scalar protocols; changing that
+adapter can change which messages integers and strings understand. The
+<a href="projects/recipe-project/.variohyve-project"><code>.variohyve-project</code> marker</a> keeps
+editor assistance conservative throughout the project, including imported
+modules. It does not run or alter the recipe.</p>
+<h2>Declare the deployment</h2>
+<p><code>Package.vh</code> lists the production sources and Alien packages, captures their
+bytes and selects the deployed <code>run</code> entry. The runtime ingredient comes from
+the installed tools. The tests and their runner are deliberately absent from
+this inventory because only the development <code>test</code> entry imports them.</p>
+<pre><code class="hljs language-vh"><span class="hljs-comment">// This ordinary native module owns the deployment inventory and launch policy.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title">Package</span>(sources, tools, importModule, output) {
+    sources = sources;
+    tools = tools;
+    output = output;
+    runtimeSource = tools<span class="hljs-title">.capture</span>(<span class="hljs-string">&quot;native/RuntimeIngredients.vh&quot;</span>);
+    runtime = importModule(tools<span class="hljs-title">.source</span>(runtimeSource), tools, output);
+    <span class="hljs-title">source</span>(path) { output<span class="hljs-title">.source</span>(path, sources<span class="hljs-title">.capture</span>(path)) }
+    <span class="hljs-title">build</span> {
+        output<span class="hljs-title">.runtime</span>(<span class="hljs-string">&quot;native/RuntimeIngredients.vh&quot;</span>, runtimeSource);
+        runtime<span class="hljs-title">.write</span>;
+        source(<span class="hljs-string">&quot;Main.vh&quot;</span>);
+        source(<span class="hljs-string">&quot;World.vh&quot;</span>);
+        source(<span class="hljs-string">&quot;packages/multiplier/Multiplier.vh&quot;</span>);
+        output<span class="hljs-title">.alien</span>(<span class="hljs-string">&quot;aliens/starter-values&quot;</span>, sources<span class="hljs-title">.alien</span>(<span class="hljs-string">&quot;aliens/starter-values&quot;</span>));
+        output<span class="hljs-title">.alien</span>(<span class="hljs-string">&quot;aliens/console&quot;</span>, sources<span class="hljs-title">.alien</span>(<span class="hljs-string">&quot;aliens/console&quot;</span>));
+        output<span class="hljs-title">.startup</span>(<span class="hljs-string">&quot;aliens/starter-values&quot;</span>, <span class="hljs-string">&quot;host-values&quot;</span>, <span class="hljs-string">&quot;stdio&quot;</span>, <span class="hljs-string">&quot;discard&quot;</span>);
+        output<span class="hljs-title">.launch</span>(<span class="hljs-string">&quot;World.vh&quot;</span>, <span class="hljs-string">&quot;run&quot;</span>);
+        output<span class="hljs-title">.finish</span>()
+    }
+}
+</code></pre>
+
+<p><a href="projects/recipe-project/Package.vh" class="button example-download" download="Package.vh">Download Package.vh</a></p>
+<p>Use <strong>Run File</strong>, <strong>Package Application</strong>, then <strong>Run Deployment</strong> in VS Code.
+The equivalent packaging and deployment commands are:</p>
+<pre><code class="hljs language-sh"><span class="hljs-string">&quot;<span class="hljs-variable">$VH</span>/bin/vh-package&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$VH</span>&quot;</span> --launch <span class="hljs-string">&quot;<span class="hljs-variable">$PROJECT</span>/Main.vh.launch.json&quot;</span> /path/to/new-application
+/path/to/new-application/bin/vh-deployed /path/to/new-application
+</code></pre>
+
+<p>The destination must be new. Move the resulting folder to another Java 23+
+machine and run it there. It contains the runtime and pinned production
+dependencies. Original sources and tools are no longer required.</p>
+<p>Each declared file is checked against its SHA-256 digest. Merely placing a file
+next to the package does not make it a dependency. Update the native policy when
+adding an import. Development launch configuration and deployment policy may
+deliberately choose different entries, but must agree on the capabilities each
+entry requires.</p>
+<p>Long computations can declare <code>execution: {&quot;maxSteps&quot;: 1000000}</code> in the launch
+JSON and <code>output.execution(1000000)</code> in the native policy. The default is 100000
+steps per independent VM entry. Imports and callbacks share the remaining budget
+of their active entry; neither resets it.</p>
+<p>Next: <a href="10-native-packages.html">Publish and consume a tiny native package</a> ·
+<a href="index.html">Back to the lessons</a>.</p>
+</main>
+<footer class="wrap"><p>Public preview v0.3.2 · Download the files shown in each lesson. Recipe projects use the packaging tools.</p><a href="../">Back to the preview</a></footer></body></html>

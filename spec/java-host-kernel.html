@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-dc3eaf86.js";
+            window.path_to_searchindex_js = "searchindex-0e8722df.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-ce909e20.js"></script>
@@ -178,11 +178,19 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="javahostkernel-world"><a class="header" href="#javahostkernel-world">JavaHostKernel world</a></h1>
-<p>JavaHostKernel is an optional Java-backed library over the Host Seed. The starter
-selects <code>HOST_VALUES</code> and an explicit <code>HostValueAdapter</code> before publishing its
-runtime. Its kernel bundle, factories, collections and data values are Aliens.
+<p>The current starter supplies JavaHostKernel as an optional Java-backed library
+over the Host Seed. It selects <code>HOST_VALUES</code> and an explicit <code>HostValueAdapter</code> before publishing its
+runtime. In that implementation, its kernel bundle, factories, collections and data values
+are Aliens.
 Receiver sends such as <code>2.plus(3)</code> use foreign selector/arity dispatch; they do
 not introduce native Integer classes or alter native lookup.</p>
+<p>This is an ordinary optional package, not a privileged built-in kernel.
+Packaging and the starter’s chosen constructor convention grant no additional
+lookup or module-entry rule. The bundle may itself be foreign, as in the current
+implementation, or an ordinary native object aggregating explicitly supplied
+Alien capabilities. A native wrapper preserves the foreign contracts of those
+capabilities; it does not convert their execution into native behavior. Startup
+adapter selection remains separate from either form of bundle assembly.</p>
 <p>Normal modules retain their empty top activation. The host explicitly passes the
 kernel to <code>class Program(kernel)</code> and then sends <code>run/0</code>. This is the starter’s
 convention, not a required language entry selector. Literal receiver behavior
@@ -264,7 +272,7 @@ adapter retention obligations under the
 native ownership annotations or a universal collection protocol.</p>
 <p>Console uses explicitly injected streams; line input returns host null at EOF.</p>
 <h2 id="api-declarations"><a class="header" href="#api-declarations">API declarations</a></h2>
-<p><a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-source/contracts/JavaHostKernel.vh"><code>JavaHostKernel.vh</code></a> is a
+<p><a href="../../../vh-source/contracts/JavaHostKernel.vh"><code>JavaHostKernel.vh</code></a> is a
 module-like API document. Class-shaped declarations describe receiver protocols;
 method bodies containing <code>?</code> denote absent VarioHyve implementations. Reaching
 such a hole still fails normally. <code>_value</code> documents host state and supplies no

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>From a module to a deployed application · VarioHyve v0.4.0</title><link rel="stylesheet" href="../preview.css"><link rel="stylesheet" href="../learn/learn.css"><link rel="stylesheet" href="../learn/highlight.css">
+<link data-version-navigation rel="stylesheet" href="../../../versions.css">
+<script data-version-navigation src="../../../versions.js" defer></script>
+</head>
+<body><a class="skip" href="#reference">Skip to reference</a><header class="site-header wrap"><a class="wordmark" href="../">VarioHyve<span aria-hidden="true">.</span></a><nav aria-label="Release navigation"><a href="../learn/">Tutorial</a><a href="../#downloads">Downloads</a></nav></header>
+<!-- version navigation --><div class="version-navigation wrap" data-version="0.4.0" data-page="reference/getting-started.html"><span>Preview v0.4.0</span> · <a href="../../../versions.html">All tutorial versions</a></div><!-- /version navigation -->
+
+<main id="reference" class="lesson"><p class="eyebrow">RELEASE REFERENCE · V0.4.0</p><p>This public reference is rendered from the v0.4.0 source commit <code>48ba22b5e18e53257564055852eabf7344ee4fbd</code>. Code, test and design-note links point to that exact revision in the private source repository and require repository access. Specification, tutorial and packaging-guide links are public.</p><h1 id="from-a-module-to-a-deployed-application">From a module to a deployed application</h1>
+<p>Install Java 23 or newer. Download the <code>variohyve-packaging-*.zip</code> for your platform
+from the <a href="https://obpcdl.org/variohyve-benchmarks/preview/versions/0.3.2/">public release downloads</a>
+and extract it anywhere. The archive contains the
+launchers, native recipes, packaged capabilities and this example. No checkout,
+Gradle, Node or package-registry credentials are needed to use it.</p>
+<h2 id="command-line">Command line</h2>
+<p>Use absolute paths in these commands. On Windows use the <code>.bat</code> launchers and
+your shell's equivalent of copying a directory. <code>VH</code> below is the extracted
+installation and <code>PROJECT</code> is a writable copy of its <code>examples/project</code> folder.</p>
+<pre><code class="hljs language-sh"><span class="hljs-built_in">export</span> JAVA_HOME=/path/to/jdk-23
+VH=/path/to/extracted/vh-packaging
+PROJECT=/path/to/my-project
+cp -R <span class="hljs-string">&quot;<span class="hljs-variable">$VH</span>/examples/project&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$PROJECT</span>&quot;</span>
+</code></pre>
+
+<p>Write your module in <code>Main.vh</code>. It receives a <code>multiplier</code> through an explicit input.
+<code>World.vh</code> constructs the independent native package at
+<code>packages/multiplier/Multiplier.vh</code> with factor 3, then imports the application. Change the
+module, its native dependencies and <code>Tests.vh</code> together as your application grows.
+The <code>lib</code> folder contains native SUnit dependencies. <code>SuiteReporter.vh</code> reports
+assertion details through its explicitly supplied console. The test entry loads
+these development sources lazily; the run entry does not require them, and
+<code>Package.vh</code> omits them from the deployment. The
+<code>aliens</code> folder contains the selected startup adapter and console; the sidecar
+sets <code>alienRoot</code> to this project. The native policy captures these project-owned
+packages. To add a provider that VarioHyve does not ship, follow
+<a href="custom-aliens.html">Bring your own Alien package</a>.</p>
+<pre><code class="hljs language-sh"><span class="hljs-string">&quot;<span class="hljs-variable">$VH</span>/bin/vh-world&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$VH</span>&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$PROJECT</span>/Main.vh.launch.json&quot;</span> --<span class="hljs-built_in">test</span>
+<span class="hljs-string">&quot;<span class="hljs-variable">$VH</span>/bin/vh-world&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$VH</span>&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$PROJECT</span>/Main.vh.launch.json&quot;</span>
+</code></pre>
+
+<p>The test prints <code>PASS</code> and exits 0. Changing the expected answer from 42 to 41
+prints <code>supplied multiplier: Expected 41 but got 42</code>, then <code>FAIL</code>, and exits 1. Restore 42 before continuing. The run waits for a line
+of input; enter <code>Answer</code> and it prints <code>Answer: 42</code>. End of input prints <code>42</code>.
+A failed assertion returns false; a raised execution failure aborts the native
+suite. The starter <code>vh test</code> runner has a separate per-case recovery/reporting
+contract; this recipe does not inherit it.</p>
+<p><code>Main.vh.launch.json</code> selects the native world, run and test messages, startup
+adapter and stream grants. It also selects <code>Package.vh</code>, the <strong>native packaging
+policy</strong>. That policy explicitly declares every source and provider, pins the
+installed runtime ingredients and selects the deployed startup and message.
+When changing startup or entry points, update both the development selection and
+the native deployment policy. They use the same startup contract; deployment
+policy can deliberately select a different entry. Imports do not automatically
+add files to a deployment. Optional <code>execution: {&quot;maxSteps&quot;: 1000000}</code> in the
+sidecar sets the budget for each independent VM entry; nested imports and
+callbacks share that budget. Omission uses 100000. Set <code>output.execution(1000000)</code>
+in the native packaging policy when the deployed world needs that limit too.</p>
+<pre><code class="hljs language-sh"><span class="hljs-string">&quot;<span class="hljs-variable">$VH</span>/bin/vh-package&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$VH</span>&quot;</span> --launch <span class="hljs-string">&quot;<span class="hljs-variable">$PROJECT</span>/Main.vh.launch.json&quot;</span> /path/to/new-application
+</code></pre>
+
+<p>The destination must not exist. Copy the resulting directory to another location
+or machine with Java 23+. It includes both Unix and Windows launchers. Run:</p>
+<pre><code class="hljs language-sh">/path/to/new-application/bin/vh-deployed /path/to/new-application
+</code></pre>
+
+<p>Enter <code>Elsewhere</code>; it prints <code>Elsewhere: 42</code>. This launch needs neither the tools
+installation nor the source project. Keep the package intact: declared files
+are checked against their captured SHA-256 digests before execution. Files merely
+placed next to a package are not additional dependencies.</p>
+<h2 id="vs-code">VS Code</h2>
+<p>Install Java 23+ and the matching VarioHyve VSIX from the same release downloads. The VSIX
+already includes the packaging distribution. In a trusted workspace:</p>
+<ol>
+<li>Run <strong>VarioHyve: New Recipe Project</strong> and choose a new folder. It opens <code>Main.vh</code>.</li>
+<li>Edit the module, <code>World.vh</code> and <code>Tests.vh</code>. Open <code>Main.vh</code> and use <strong>Test File</strong>;
+its adjacent sidecar selects the native test entry. Read PASS/FAIL and the exit
+status in the terminal. <strong>Run File</strong> uses the run entry and accepts terminal input.</li>
+<li>Use <strong>Package Application</strong> and choose a new output folder. The native policy
+runs in a terminal and reports the published path or failure.</li>
+<li>Move or copy that folder, then use <strong>Run Deployment</strong> to select it. This uses
+the deployment's own runtime and does not need the original project.</li>
+</ol>
+<p>Recipe commands save open dirty VarioHyve files under the declared source root,
+check launch revisions, and support <strong>Stop Program</strong>. Runtime errors from imports
+are reported against the matching open source revision. Ordinary Run treats
+<code>false</code> as a valid result; Test requires a declared test entry returning a Boolean.
+A recipe sidecar grants no implicit JavaHostKernel input. Editor API assistance
+remains conservative for custom recipe inputs and startup adapters.</p>
+</main>
+<footer class="wrap"><p>Supplemental reference · VarioHyve v0.4.0</p><a href="https://github.com/plug-obp/variohyve/blob/48ba22b5e18e53257564055852eabf7344ee4fbd/vh-packaging/GETTING-STARTED.md" title="Private source repository; access required">Pinned Markdown source (access required)</a></footer></body></html>

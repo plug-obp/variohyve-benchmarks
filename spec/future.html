@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-dc3eaf86.js";
+            window.path_to_searchindex_js = "searchindex-0e8722df.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-ce909e20.js"></script>
@@ -206,7 +206,7 @@ map to selectors. The current language has positional arguments only.</p>
 concatenation messages. Delimiters, conversion protocol and evaluation order
 remain unspecified. It also depends on native string operations, which the
 prototype does not yet implement; see the
-<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/native-values-and-abstract-semantics.md">scalar design note</a>.</p>
+<a href="../../design-notes/native-values-and-abstract-semantics.html">scalar design note</a>.</p>
 <h2 id="collection-literals"><a class="header" href="#collection-literals">Collection Literals</a></h2>
 <p><strong>Proposed syntax and libraries.</strong> Lists/maps could be constructed through
 ordinary supplied classes, with future literal sugar. Syntax must avoid
@@ -234,8 +234,8 @@ recursive sends; hiding need not remove internal access; selecting behavior does
 not settle storage collisions. Effectful initializer routes require an execution
 plan—registrations and callbacks cannot be assumed to commute or roll back.
 One-object construction and the foreign boundary must survive any extension.
-See the <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/initializer-scope-and-member-classes.md">accepted scope decisions</a>
-and <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/construction-scope-and-mixin-composition.md">composition design space</a>.</p>
+See the <a href="../../design-notes/initializer-scope-and-member-classes.html">accepted scope decisions</a>
+and <a href="../../design-notes/lexical-origins-and-family-composition.html">family assembly proposal</a>.</p>
 <h2 id="trait-style-conflict-resolution"><a class="header" href="#trait-style-conflict-resolution">Trait-Style Conflict Resolution</a></h2>
 <p><strong>Alternative under consideration.</strong> Detection of overlapping method selectors
 could require an explicit own override or contribution-specific delegation,
@@ -308,7 +308,7 @@ initializer phases and remaining contributions, constructor results, pending
 member-cache completion, callback barriers, selected receiver/origin, evaluation
 order and exactly-once effects. Foreign calls need separate eligibility rules.</p>
 <p>The proposed sequence is to measure the
-<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/catalog/06-recursion-stress.md">recursion catalog</a>, identify core tail
+<a href="../../catalog/06-recursion-stress.html">recursion catalog</a>, identify core tail
 contexts and completion obligations, prototype a conservative native optimization,
 and compare results, traces, identity, failures, continuation depth and allocation.
 Captured bindings cannot be reused if doing so changes closure observations.
@@ -333,7 +333,7 @@ There is currently no public class getter or activation reification.</p>
 <p>The implemented <a href="./foreign-objects.html#identitymirror">IdentityMirror protocol</a>
 is the baseline. Further kinds, standalone mixin references, native scalar
 identity and broader reflection remain open. The
-<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/mirrors-identity-and-alien-classification.md">design note</a>
+<a href="../../design-notes/mirrors-identity-and-alien-classification.html">design note</a>
 records the current scope and limitations.</p>
 <h2 id="access-control"><a class="header" href="#access-control">Access Control</a></h2>
 <p><strong>Proposed policy; no language access control is enforced today.</strong> The candidate
@@ -423,7 +423,7 @@ API. Those remain separate increments with their own specifications and tests.</
 <a href="foreign-objects.html#non-local-returns-across-the-boundary">default no-crossing boundary</a>
 requires a transfer mechanism and specified treatment of intervening foreign
 work. This is separate from parallel execution or scheduling. The
-<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/synchronous-foreign-interactions.md">NF/FN design note</a>
+<a href="../../design-notes/synchronous-foreign-interactions.html">NF/FN design note</a>
 compares immediate escape and deferred delivery without selecting either as a
 mandatory mechanism.</p>
 <h3 id="the-semantic-language-interface-sli"><a class="header" href="#the-semantic-language-interface-sli">The Semantic Language Interface (SLI)</a></h3>
@@ -440,7 +440,7 @@ must account for the native store, live homes, continuations and boundary caches
 and explicitly exclude, model or compensate external effects. Replay and
 speculation require recorded inputs and suitable foreign contracts; they are
 not free consequences of sequential stepping.</p>
-<p>The <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/peterson-semantic-composition.md">incremental composition proposal</a>
+<p>The <a href="../../design-notes/peterson-semantic-composition.html">incremental composition proposal</a>
 starts with bounded native state copying/comparison, explicit admitted state,
 a small SLI adapter and observations before shared-state composition. Gamine’s
 SLI, communicating vats/actors, DEVS and virtual-actor runtimes are inspirations,
@@ -450,13 +450,13 @@ machines remain separate proof obligations.</p>
 <p><strong>Deferred.</strong> Portable platform persistence must preserve identities, captures,
 composition origins and explicitly reconnectable foreign bindings. It is not
 Java object serialization and must not discover new authority while loading.
-See <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/object-graph-persistence.md">object-graph persistence</a>.</p>
+See <a href="../../design-notes/object-graph-persistence.html">object-graph persistence</a>.</p>
 <p>An abstract execution requires domains, store/control abstractions, transfer
 rules and foreign-effect assumptions related to the reference semantics. A
 configurable allocator, supplied abstract object or descriptor does not provide
 that derivation. Native scalar protocols and foreign conversion must also have
 explicit contracts; current open choices are recorded in the
-<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/native-values-and-abstract-semantics.md">value/analysis note</a>.</p>
+<a href="../../design-notes/native-values-and-abstract-semantics.html">value/analysis note</a>.</p>
 
                     </main>
 

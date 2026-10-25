@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-dc3eaf86.js";
+            window.path_to_searchindex_js = "searchindex-0e8722df.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-ce909e20.js"></script>
@@ -236,6 +236,22 @@ realizing <strong>nested</strong> classes:</p>
 entry message. Instantiation does not guess or send <code>main</code> or <code>run</code>.
 Construction failure does not return a successful instance; effects already
 performed are not rolled back, and an initializer may deliberately share <code>self</code>.</p>
+<h3 id="independently-compiled-modules"><a class="header" href="#independently-compiled-modules">Independently Compiled Modules</a></h3>
+<p>Importing another compiled module must preserve the meaning of previously
+retained code. Existing closures keep their function bodies, captured lexical
+ancestry and lexical return homes. Realized classes and contributions keep their
+source methods, private initialization code, nested member definitions and
+application occurrences. A local code reference from one compilation unit must
+not be reinterpreted using another unit’s local reference table. Code linking
+introduces no lexical binding or capability: the imported top-level class still
+uses the fresh empty top activation and explicit inputs described above.</p>
+<p>A runtime may satisfy this requirement with stable code-unit identities or with
+capture-avoiding relocation into an extensible code store. This is a semantic
+stability requirement, not a prescribed source format, package resolver, file
+layout or version-selection policy. Captured mutable objects retain their
+ordinary mutation semantics; preserving code meaning does not freeze their
+state. The native reference model uses checked finite code graphs and relocation;
+its concrete representation is not a Java representation requirement.</p>
 <h2 id="the-kernel-parameter"><a class="header" href="#the-kernel-parameter">The Kernel Parameter</a></h2>
 <p>A <code>kernel</code> is an optional ordinary bundle, not a reserved name, mandatory
 parameter or global lookup mechanism. Services may be separate inputs or grouped
@@ -248,11 +264,34 @@ such as <code>null</code>, <code>true</code> and <code>false</code> select behav
 their spelling establishes no canonical identity. See
 <a href="./name-resolution.html#names-and-contracts">names and contracts</a>. The current
 tooling bundle is described in <a href="./interpreter-design.html#module-entry">the Java implementation</a>.</p>
+<h3 id="ordinary-kernel-packages"><a class="header" href="#ordinary-kernel-packages">Ordinary Kernel Packages</a></h3>
+<p>A kernel package has no privileged language status. It may distribute ordinary
+native modules, foreign providers, or an assembly of both. Its package name,
+path and exported selector names do not install ambient bindings, change lookup,
+select a literal policy or replace a seed. Package resolution and dependency
+wiring belong to the explicitly supplied packaging services and application
+recipe; each native module still uses the isolated entry rules above.</p>
+<p>The native <code>NativeKernel</code> bundle receives Natural and List library instances as
+ordinary constructor inputs. Importing the bundle twice may produce distinct
+bundle identities while retaining the same supplied dependencies. JavaHostKernel
+is likewise an optional packaged library: it can be a foreign bundle or an
+ordinary native bundle aggregating explicitly supplied Alien capabilities.
+Its current implementation chooses the foreign bundle. Its startup receiver
+adapter is selected separately before runtime publication; constructing or importing the
+bundle does not install that adapter. See <a href="./java-host-kernel.html">JavaHostKernel</a>
+and <a href="./tooling-architecture.html#native-recipe-launches">packaged source composition</a>.</p>
+<p>Algebraic claims about a library must state their observations and representation
+invariants. A represented natural number or sequence is distinct from the native
+object representing it: separately allocated sums or appended lists can represent
+the same mathematical result while remaining different native identities.
+For sequences, element order and any promised alias relationships remain part of
+the observation. Such abstractions do not change language identity, conceal
+effects, or remove the caller’s obligation to preserve stated library invariants.</p>
 <h2 id="startup-seed-installation"><a class="header" href="#startup-seed-installation">Startup Seed Installation</a></h2>
 <p>This contract governs atomic finalization before publishing a runtime. It grants
 no authority to replace the seed during application execution. The accepted
 profiles are described in <a href="possible-seeds-and-worlds.html">Possible Seeds and Worlds</a>;
-the <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/staged-runtime-seed.md">staged seed design</a> records the
+the <a href="../../design-notes/staged-runtime-seed.html">staged seed design</a> records the
 rationale and implementation evidence.</p>
 <p>When a builder adopts a replacement seed before publishing its runtime, it
 must substitute every retained reference to a retired seed identity using a
@@ -301,7 +340,7 @@ world; this startup operation grants no live object-replacement authority.</p>
 budget. Host sends supply an empty caller activation; the target’s definition
 supplies its lexical scope. The concrete APIs and validation are documented under
 <a href="./interpreter-design.html#module-entry">module entry</a> and in the
-<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/isolated-module-entry.md">implemented entry decision</a>.</p>
+<a href="../../design-notes/isolated-module-entry.html">implemented entry decision</a>.</p>
 <h2 id="development-and-debugging-contexts"><a class="header" href="#development-and-debugging-contexts">Development and Debugging Contexts</a></h2>
 <p>Richer <a href="./tooling-architecture.html#evaluation-contexts">tool evaluation contexts</a>
 are distinct from normal module entry. A class created with tooling authority

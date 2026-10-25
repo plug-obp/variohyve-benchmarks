@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-dc3eaf86.js";
+            window.path_to_searchindex_js = "searchindex-0e8722df.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-ce909e20.js"></script>
@@ -196,6 +196,11 @@ arithmetic and comparisons are messages such as <code>x.plus(1)</code> and
 <code>x.greaterThan(0)</code>. The syntax does not settle the numeric domain, precision
 or overflow behavior. The prototype’s supported subset is documented under
 <a href="interpreter-design.html">implementation limits</a>.</p>
+<p>The experimental <a href="tooling-architecture.html#optional-native-integer-elaboration">explicit native integer elaboration</a>
+translates integer spelling into ordinary sends to a supplied numeric kernel.
+It is an opt-in frontend policy; loading a kernel does not select it or change
+the default literal profile. The native Peano, Scott and Church libraries provide
+natural and signed-integer operations, not fractional or floating-point numbers.</p>
 <h2 id="string-literals"><a class="header" href="#string-literals">String Literals</a></h2>
 <p>Single and double quotes produce the same runtime kind of value. Both support:</p>
 <div class="table-wrapper">
@@ -225,10 +230,10 @@ or overflow behavior. The prototype’s supported subset is documented under
 <p>Raw newlines are allowed inside either quoted form. They preserve all whitespace
 between the quotes, including indentation; <code>"a\nb"</code> and the corresponding
 two-line literal have the same content. See the lexer in
-<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/main/antlr/vh.g4">vh.g4</a>.</p>
+<a href="../../../vh-core/src/main/antlr/vh.g4">vh.g4</a>.</p>
 <h2 id="hole-literals"><a class="header" href="#hole-literals">Hole Literals</a></h2>
 <p><code>?</code> is an explicit incomplete expression, valid wherever an expression is
-expected. It has its own AST node and differs from both an omitted initializer
+expected. It is a distinct syntactic form and differs from both an omitted initializer
 and canonical null. A missing initializer supplies null; a hole remains
 unresolved.</p>
 <h3 id="descriptors-on-holes"><a class="header" href="#descriptors-on-holes">Descriptors on Holes</a></h3>
@@ -245,7 +250,7 @@ not implemented guarantees. Their interpretation must be specified by that
 context; accepting partial syntax does not imply an abstract interpreter.</p>
 <h3 id="hole-identity"><a class="header" href="#hole-identity">Hole Identity</a></h3>
 <p>Each syntactic occurrence denotes a distinct hole. Tools should retain a stable
-internal identity, normally based on AST/source identity, for diagnostics,
+internal identity associated with its source occurrence for diagnostics,
 annotations, filling, traces or replay. A descriptor-supplied name or qualified
 source path may identify a hole to a tool. Two occurrences of <code>?</code> do not become
 one hole merely because their spelling is equal.</p>
@@ -347,7 +352,7 @@ the home. Escaped data remain usable without retaining return authority.</li>
 its original home. The default Alien callback barrier remains in force; any
 future crossing support must preserve these initializer phase restrictions.
 Failures neither replay initialization nor roll back effects or retract an
-escaped receiver. See the <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/initializer-return-homes.md">accepted policy</a>.</p>
+escaped receiver. See the <a href="../../design-notes/initializer-return-homes.html">accepted policy</a>.</p>
 
                     </main>
 

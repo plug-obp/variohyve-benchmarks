@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-dc3eaf86.js";
+            window.path_to_searchindex_js = "searchindex-0e8722df.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-ce909e20.js"></script>
@@ -273,8 +273,8 @@ proxies. Each adapter must state its supported domains and reject unsupported
 conversions. A numeric encoding must not silently turn a pointer into an integer
 while claiming to preserve its provenance.</p>
 <p>Canonical null and Boolean roles may hold native objects or Aliens. Assigning
-one of these roles adds neither methods nor a native class. The internal core
-null constant and empty expressions select canonical null directly; source
+one of these roles adds neither methods nor a native class. Empty bodies and
+omitted initializers select canonical null directly; source
 names such as <code>null</code>, <code>true</code>, and <code>false</code> use ordinary message lookup.</p>
 <p>Each world selects an explicit conversion profile. The
 <a href="current-native-seed.html">Current Native Seed profile</a>
@@ -354,9 +354,13 @@ exception text is never interpreted as rejection or as permission to retry.</p>
 not resume the aborted callback, revive its homes, replay the operation or grant
 NLR crossing. The suspended caller’s homes remain live until its own completion
 or failure. Callbacks continue to share the active execution budget; handling an
-exhaustion diagnostic does not replenish it. There are no native resumable
-conditions in the current language. See the
-<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/synchronous-foreign-interactions.md#accepted-decision-foreign-handling-of-callback-failure">accepted recovery agreement</a>.</p>
+exhaustion diagnostic does not replenish it. Current synchronous callback
+adapters explicitly cancel unfinished callback work before returning that
+resource diagnostic; they offer no foreign continuation transfer. This differs
+from <a href="formal-core.html#execution-budgets-and-resumption">native session budget suspension</a>,
+which retains its continuation for explicit resume. Neither mechanism introduces
+source-level resumable conditions or revives an aborted callback. See the
+<a href="../../design-notes/synchronous-foreign-interactions.html#accepted-decision-foreign-handling-of-callback-failure">accepted recovery agreement</a>.</p>
 <h4 id="java-host-exit-limits"><a class="header" href="#java-host-exit-limits">Java host exit limits</a></h4>
 <p>The adapter preserves a supplied <code>BoundaryException</code> and its defined kind. It
 translates other <code>RuntimeException</code>s thrown by <code>ForeignObject.resolve</code> into
@@ -392,7 +396,7 @@ transfer. Such support does not change the lexical target of <code>^</code>, rev
 retired home, or bypass initializer phase restrictions. Crossing support and
 its transfer protocol are deferred; the default barrier must not be disabled
 without implementing a supporting agreement. See the
-<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/synchronous-foreign-interactions.md#accepted-decision-boundary-owned-non-local-return">accepted decision and examples</a>.</p>
+<a href="../../design-notes/synchronous-foreign-interactions.html#accepted-decision-boundary-owned-non-local-return">accepted decision and examples</a>.</p>
 <p><a id="execution-authority"></a></p>
 <h3 id="control-tokens-and-execution-agreements"><a class="header" href="#control-tokens-and-execution-agreements">Control Tokens and Execution Agreements</a></h3>
 <p>Ordinary native transitions require execution authority under an explicit
@@ -414,7 +418,10 @@ continuations and interaction state, not additional control tokens.
 Backend tooling may also yield after a requested step and later reacquire
 authority to advance its retained successor. Yielding is not native completion
 and does not retire homes; storing a configuration grants neither execution
-authority nor a snapshot of the mutable runtime.</p>
+authority nor a snapshot of the mutable runtime. A resumable budgeted session
+retains an exclusive reservation for its pending entry across observations;
+unrelated entries cannot run until completion or explicit cancellation. The
+reservation permits coordinated representation maintenance such as GC.</p>
 <p>This is an execution discipline, not exclusive physical access to all runtime
 memory. It permits three distinct forms of activity:</p>
 <div class="table-wrapper">
@@ -600,14 +607,14 @@ observations, validation before reclamation, and agreed weak-reference,
 finalization and participant-loss behavior. Missing or incomplete cooperation
 retains conservatively. No universal foreign collector, introspection mechanism
 or cycle-collection algorithm is prescribed. See the
-<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/alien-expat-lifetimes.md">accepted lifetime decision</a>.</p>
+<a href="../../design-notes/alien-expat-lifetimes.html">accepted lifetime decision</a>.</p>
 <h3 id="foreign-kinds-and-capability-contracts"><a class="header" href="#foreign-kinds-and-capability-contracts">Foreign Kinds and Capability Contracts</a></h3>
 <p>An adapter may classify a value as callable, pointer, struct or endpoint; these
 are foreign contracts, not native classes. Analysis needs explicit assumptions
 about effects, callbacks, blocking, determinism and state changes. Unknown
 behavior stays opaque. General contract metadata, provenance registries and
 foreign reflection remain unimplemented; see the
-<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/alien-semantic-membrane.md">boundary assessment</a>.</p>
+<a href="../../design-notes/alien-semantic-membrane.html">boundary assessment</a>.</p>
 <h2 id="vm-services-and-the-trusted-seed"><a class="header" href="#vm-services-and-the-trusted-seed">VM Services and the Trusted Seed</a></h2>
 <p>The host boundary has a public foreign facet and a privileged VM-service facet
 over one private owner. The public facet exposes only the ordinary transport,
@@ -635,7 +642,7 @@ or receipt evidence, so import recovers the object. Returning its raw backend
 representation as a foreign value is
 invalid. Any future representation-sensitive service requires explicit authority
 and private unwrapping without adding raw-world access to public Expats. See
-<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/vm-lang-boundary.md">the VM boundary decision</a>.</p>
+<a href="../../design-notes/vm-lang-boundary.html">the VM boundary decision</a>.</p>
 <p>The <a href="./tooling-architecture.html#admitted-source-services">admitted source services</a>
 use this route to evaluate captured source with an explicit object context or
 instantiate an isolated module. They share active admission, budgets, callback
@@ -738,7 +745,7 @@ Aliens and codec values return false because they have no native membership.</p>
 <p>These are structural identity tests, not proofs that a selector is supported or
 that a contribution’s behavior remains effective after overriding. They do not
 establish trust in a subclass or authorize its behavior. The
-<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/mirrors-identity-and-alien-classification.md">design note</a>
+<a href="../../design-notes/mirrors-identity-and-alien-classification.html">design note</a>
 records the routing and capability tradeoffs.</p>
 
                     </main>

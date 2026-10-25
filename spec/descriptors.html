@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-dc3eaf86.js";
+            window.path_to_searchindex_js = "searchindex-0e8722df.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-ce909e20.js"></script>
@@ -284,7 +284,7 @@ its surrounding declaration:</p>
 </code></pre>
 <p>Groups may chain at every attachment point. Text that resembles nested
 annotations inside a payload is still one opaque entry: <code>(42 : (Shape : Tag))</code>
-does not create an annotation on <code>Shape</code> in the surrounding program AST. A tool
+does not create an annotation on <code>Shape</code> in the surrounding program. A tool
 may choose to parse that entry later and own the resulting structure separately.</p>
 <h2 id="semantics"><a class="header" href="#semantics">Semantics</a></h2>
 <p>Compilation hints, documentation, types, contracts and analyses belong to
@@ -293,16 +293,13 @@ capability rules. <code>(1 : class &lt; super.Base {})</code>, <code>(1 : @unkno
 <code>(1 : [=[unfinished (]=])</code> all execute as <code>1</code>. A tool’s later decision to parse
 or execute an entry cannot retroactively change the original read result.</p>
 <h2 id="metadata-retention"><a class="header" href="#metadata-retention">Metadata Retention</a></h2>
-<p>Surface and core artifacts retain raw entries and their groups. Core tools need
-no surface AST, parser object or source snapshot. Exact payload text is intrinsic
-metadata content; source locations and the enclosing document are optional
-provenance. Neither retaining nor erasing provenance changes payloads or execution.</p>
-<p>An attachment describes a particular occurrence and role. Lowering preserves
-its identity, grouping, ordering and role when it removes a statement wrapper or
-rewrites a constructor target. Tools can find descriptors from surviving core
-elements and find described elements from descriptors. The runtime never reads
-this index. See <a href="tooling-architecture.html#inert-core-metadata">inert core metadata</a>
-for the implementation and explicit interpretation examples.</p>
+<p>An attachment describes a particular source occurrence and role. Its content
+includes the exact payload text, grouping, order and multiplicity; equal payload
+text does not merge distinct occurrences. Source locations and the enclosing
+document are optional provenance. Retaining or erasing provenance does not
+change descriptor content, and descriptors do not affect ordinary execution.</p>
+<p>The representation and retention of these associations in compiled artifacts
+are described under <a href="tooling-architecture.html#inert-core-metadata">implementation metadata</a>.</p>
 
                     </main>
 

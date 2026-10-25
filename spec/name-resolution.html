@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-dc3eaf86.js";
+            window.path_to_searchindex_js = "searchindex-0e8722df.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-ce909e20.js"></script>
@@ -298,7 +298,7 @@ Member classes also retain their bound receiver and declaration origin.
 This holds at every nesting depth: a member selected from the second of two
 applications retains that application’s farther enclosing objects, even when
 both applications share the same declaration and immediate receiver. The
-<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/outer-newspeak-comparison.md#deeper-repeated-parent-diagnostic">repeated-parent example</a>
+<a href="../../design-notes/outer-newspeak-comparison.html#deeper-repeated-parent-diagnostic">repeated-parent example</a>
 therefore returns <code>42</code>, preserving the selected <code>b.Family</code> ancestry. This is an
 intentional difference from Newspeak’s deeper nearest-parent reselection rule.</p>
 <p><code>outer C</code> is a standalone receiver value: grouping, passing it as an argument
@@ -309,18 +309,15 @@ ordinary foreign selector; repeated sends follow that adapter’s protocol.</p>
 <p>An unknown or non-enclosing qualifier is a compile-time semantic error, including
 in an unused method or lambda. The <a href="tooling-architecture.html#source-checks">source checks</a>
 validate the qualifier against the named declarations enclosing that occurrence
-before lowering or execution. This is lexical declaration lookup, independent
+before execution. This is lexical declaration lookup, independent
 of same-named parameters, locals or accessors.</p>
 <p>A class’s own qualifier is available in its body, factories and routed terminal
 constructor arguments. Contributor target expressions run in the surrounding
 definition scope, so they cannot use the new class’s qualifier; surrounding
 named declarations remain available there. See
 <a href="objects-and-classes.html#constructor-clauses">constructor clauses</a>.</p>
-<p>The runtime retains a defensive check for directly supplied core trees and
-explicitly unchecked tooling input. It follows captured lexical scopes and
-rejects an invalid qualifier before evaluating arguments of a send using that
-receiver. Source validation does not replace the exact application ancestry
-with a new runtime binding mechanism. Qualifying a normal module’s own declaration
+<p>Source validation preserves the exact application ancestry and captured lexical
+scopes described above. Qualifying a normal module’s own declaration
 can select its instance; it cannot expose the instantiation service, tooling
 capabilities or empty top activation.</p>
 <h2 id="super--lookup-redirector"><a class="header" href="#super--lookup-redirector"><code>super</code> — Lookup Redirector</a></h2>

@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-dc3eaf86.js";
+            window.path_to_searchindex_js = "searchindex-0e8722df.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-ce909e20.js"></script>
@@ -196,7 +196,7 @@ namespace. Receiver origins are defined in <a href="name-resolution.html">Name R
 </tbody>
 </table>
 </div>
-<p>Parentheses remain semantically significant through lowering and dispatch.
+<p>Parentheses remain semantically significant during message selection and dispatch.
 In particular, invocation cannot always be lowered to getter-then-apply.</p>
 <h3 id="list-separators"><a class="header" href="#list-separators">List Separators</a></h3>
 <p>A single trailing comma is permitted in a nonempty argument or formal list,
@@ -331,7 +331,7 @@ realizes through that cache. A selected failure is cached and propagated.</p>
 target; their computations may have effects and must produce native classes,
 excluding metaclasses. Terminal constructor arguments remain deferred until
 construction. See <a href="objects-and-classes.html">class realization</a> and the
-<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/unified-callable-lookup.md">accepted decision</a>.</p>
+<a href="../../design-notes/unified-callable-lookup.html">accepted decision</a>.</p>
 <h2 id="cascade-"><a class="header" href="#cascade-">Cascade (<code>..</code>)</a></h2>
 <p>A cascade evaluates its receiver once and sends every arm to that saved receiver.
 Arms execute left-to-right; each arm’s arguments execute immediately before its
@@ -374,7 +374,7 @@ send select different receivers.</p>
 </div>
 <p>There is no <code>super..a..b</code> syntax: <code>super</code> is not a receiver value.
 Assignment has a separate <a href="syntactic-sugar.html#the-cascade-fence">cascade fence</a>.
-The precise grammar is <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/main/antlr/vh.g4">vh.g4</a>.</p>
+The precise grammar is <a href="../../../vh-core/src/main/antlr/vh.g4">vh.g4</a>.</p>
 
                     </main>
 

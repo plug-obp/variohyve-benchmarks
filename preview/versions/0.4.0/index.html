@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Learn VarioHyve, build an application with a native recipe, and package it for another machine. Download the starter, packaging tools and VS Code extension.">
+  <title>Public preview · VarioHyve</title>
+  <link rel="stylesheet" href="preview.css">
+<link data-version-navigation rel="stylesheet" href="../../versions.css">
+<script data-version-navigation src="../../versions.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header wrap">
+    <a class="wordmark" href="../../../">VarioHyve<span aria-hidden="true">.</span></a>
+    <nav aria-label="Main navigation"><a href="../../../spec/">Specification</a><a href="../../../spec/variohyve-spec-2026-10-16.pdf">PDF</a><a href="../../../dev/bench/">Benchmarks</a></nav>
+  </header>
+<!-- version navigation --><div class="version-navigation wrap" data-version="0.4.0" data-page="index.html"><span>Preview v0.4.0</span> · <a href="../../versions.html">All tutorial versions</a></div><!-- /version navigation -->
+
+  <main id="main" class="wrap">
+    <section class="hero" aria-labelledby="title">
+      <div>
+        <p class="eyebrow"><span class="dot" aria-hidden="true"></span> Public preview · v0.4.0 <span class="date">16 October 2026</span></p>
+        <h1 id="title">Your module.<br>Your world.</h1>
+        <p class="lead">Write objects that communicate through messages. Supply the tools they need through a native recipe.</p>
+        <p>Start with small programs, then build your own application: choose its dependencies, run a test, package it, and run it elsewhere. The CLI tools and VS Code extension support the same journey without a repository checkout.</p>
+        <div class="actions"><a class="button primary" href="#downloads">Get the preview <span aria-hidden="true">↓</span></a><a class="text-link" href="learn/">Explore the lessons <span aria-hidden="true">↗</span></a></div>
+      </div>
+      <div class="code-window">
+        <div class="code-title"><span class="lights" aria-hidden="true">● ● ●</span><span>Main.vh</span><span class="code-label">EXPLICIT INPUTS</span></div>
+        <pre aria-label="Module receiving a multiplier"><code><span class="keyword">class</span> Main(multiplier) {
+    scale = multiplier;
+
+    answer {
+        scale.multiply(14)
+    }
+}</code></pre>
+        <div class="code-result"><span aria-hidden="true">›</span> A recipe supplies the multiplier. The answer is 42.</div>
+      </div>
+    </section>
+
+    <section id="downloads" class="section" aria-labelledby="download-title">
+      <div class="section-heading"><div><p class="eyebrow">FIRST STEPS</p><h2 id="download-title">Learn with the starter.</h2></div><p>Install a <strong>Java 23 JDK</strong> first.<br>Java is not bundled. No Gradle, Node or GitHub token needed to run.</p></div>
+      <div class="downloads">
+        <article class="download-card"><span class="platform-mark" aria-hidden="true">mac</span><h3>macOS</h3><p>The starter, tutorial and examples, with the <code>vh</code> launcher.</p><a class="button download" href="https://github.com/plug-obp/variohyve-benchmarks/releases/download/v0.4.0/variohyve-0.4.0-macos.zip">Download starter <span aria-hidden="true">↓</span></a><span class="file-type">ZIP archive · Java required</span></article>
+        <article class="download-card"><span class="platform-mark" aria-hidden="true">$ _</span><h3>Linux</h3><p>The starter, tutorial and examples, with the <code>vh</code> launcher.</p><a class="button download" href="https://github.com/plug-obp/variohyve-benchmarks/releases/download/v0.4.0/variohyve-0.4.0-linux.zip">Download starter <span aria-hidden="true">↓</span></a><span class="file-type">ZIP archive · Java required</span></article>
+        <article class="download-card"><span class="platform-mark" aria-hidden="true">win</span><h3>Windows</h3><p>The starter, tutorial and examples, with the <code>vh.bat</code> launcher.</p><a class="button download" href="https://github.com/plug-obp/variohyve-benchmarks/releases/download/v0.4.0/variohyve-0.4.0-windows.zip">Download starter <span aria-hidden="true">↓</span></a><span class="file-type">ZIP archive · Java required</span></article>
+        <article class="download-card editor-card"><span class="platform-mark" aria-hidden="true">&lt; / &gt;</span><h3>VS Code</h3><p>Run, Test, Scratch, New Recipe Project, Package Application and Run Deployment. Includes the matching starter, language server and packaging tools.</p><a class="button primary download" href="https://github.com/plug-obp/variohyve-benchmarks/releases/download/v0.4.0/vh-lsp-vscode-0.4.0.vsix">Download extension <span aria-hidden="true">↓</span></a><span class="file-type">VSIX 0.4.0 · All three platforms</span></article>
+      </div>
+      <p class="download-note">Each download is tied to this release's source revision. <a href="https://github.com/plug-obp/variohyve-benchmarks/releases/tag/v0.4.0">Release notes</a> · <a href="https://github.com/plug-obp/variohyve-benchmarks/releases/download/v0.4.0/SHA256SUMS.txt">SHA-256 checksums</a></p>
+    </section>
+
+    <section id="packaging" class="section" aria-labelledby="packaging-title">
+      <div class="section-heading"><div><p class="eyebrow">YOUR OWN APPLICATION</p><h2 id="packaging-title">Choose your world. Ship its ingredients.</h2></div><p>Use these tools for native recipes and deployment.<br>The VS Code extension already includes them.</p></div>
+      <div class="downloads tool-downloads">
+        <article class="download-card"><h3>macOS packaging tools</h3><p><code>vh-world</code>, <code>vh-package</code>, native recipes, project templates and packaged providers.</p><a class="button download" href="https://github.com/plug-obp/variohyve-benchmarks/releases/download/v0.4.0/variohyve-packaging-0.4.0-macos.zip">Download tools <span aria-hidden="true">↓</span></a></article>
+        <article class="download-card"><h3>Linux packaging tools</h3><p>Develop and test against a recipe, then create a deployment with pinned files and dependencies.</p><a class="button download" href="https://github.com/plug-obp/variohyve-benchmarks/releases/download/v0.4.0/variohyve-packaging-0.4.0-linux.zip">Download tools <span aria-hidden="true">↓</span></a></article>
+        <article class="download-card"><h3>Windows packaging tools</h3><p>The same native tools, with Windows <code>.bat</code> launchers and a Java runtime requirement.</p><a class="button download" href="https://github.com/plug-obp/variohyve-benchmarks/releases/download/v0.4.0/variohyve-packaging-0.4.0-windows.zip">Download tools <span aria-hidden="true">↓</span></a></article>
+      </div>
+      <p class="download-note">Start with <a href="learn/09-worlds.html">From starter to your own world</a>, then <a href="learn/10-native-packages.html">publish and consume a tiny native package</a>. <a href="reference/custom-aliens.html">Bring your own Alien package</a> explains how to declare a Java provider, develop with it and include it in your deployment.</p>
+    </section>
+
+    <section class="section" aria-labelledby="changes-title">
+      <p class="eyebrow">NEW IN 0.4.0</p><h2 id="changes-title">A complete path from source to deployment.</h2>
+      <ul class="features"><li><strong>Native worlds.</strong> Recipes import ordinary modules, construct capabilities and expose ordinary messages. The application receives only its declared inputs.</li><li><strong>Portable packaging.</strong> Native policy selects production ingredients; the resulting package pins them by digest and runs without the original source tree or tools.</li><li><strong>Your own providers.</strong> Declare a Java Alien package, use it from your recipe, test it and include it in the deployment.</li><li><strong>The same workflow in VS Code.</strong> Create a recipe project, run tests with meaningful exit status, package the application and run its relocated deployment.</li></ul>
+      <p>Read the <a href="https://github.com/plug-obp/variohyve-benchmarks/blob/gh-pages/CHANGELOG.md">changelog and migration notes</a> for details.</p>
+    </section>
+
+    <section class="section getting-started" aria-labelledby="start-title">
+      <div><p class="eyebrow">FROM DOWNLOAD TO HELLO</p><h2 id="start-title">Make something run.</h2><p>The starter includes <code>learn/</code>: lessons and complete programs to open, change and test. Later chapters introduce native recipes and packages.</p><a class="text-link" href="learn/">Read Learn VarioHyve <span aria-hidden="true">↗</span></a></div>
+      <ol class="steps">
+        <li><div><h3>Extract your starter.</h3><p>Check that <code>java -version</code> and <code>javac -version</code> select Java 23. Set <code>JAVA_HOME</code> to that JDK and put its <code>bin</code> directory on your PATH.</p></div></li>
+        <li><div><h3>Open the <code>learn</code> folder.</h3><p>In VS Code, choose <strong>Extensions: Install from VSIX…</strong> and select the downloaded extension. Open <code>learn</code> and trust the folder to enable running programs.</p></div></li>
+        <li><div><h3>Run your first program.</h3><p>Open <code>examples/hello.vh</code>, then choose <strong>VarioHyve: Run File</strong>. Later, use <strong>VarioHyve: New Recipe Project</strong> to choose your own dependencies.</p></div></li>
+      </ol>
+    </section>
+
+    <section class="terminal-section" aria-labelledby="terminal-title">
+      <h2 id="terminal-title">Prefer a terminal?</h2><p>From the extracted starter's <code>learn</code> directory:</p>
+      <div class="terminal-grid"><div><h3>macOS / Linux</h3><pre><code>../bin/vh run examples/hello.vh
+../bin/vh test examples/tests/lessons.vh</code></pre></div><div><h3>Windows PowerShell</h3><pre><code>..\bin\vh.bat run examples\hello.vh
+..\bin\vh.bat test examples\tests\lessons.vh</code></pre></div></div>
+    </section>
+
+    <section class="section details-grid" aria-labelledby="inside-title">
+      <div><p class="eyebrow">SMALL, USEFUL BUILDING BLOCKS</p><h2 id="inside-title">Start simple. Keep going.</h2><ul class="features"><li><strong>Numbers, text and collections.</strong> Learn messages, objects, input and state with complete examples.</li><li><strong>Tests from the start.</strong> Write SUnit assertions, run them from the terminal or VS Code, and distinguish a failed assertion from a failed execution.</li><li><strong>Explicit capabilities.</strong> Move from the ready-made starter kernel to native recipes, native package dependencies and packaged Java providers.</li></ul></div>
+      <aside class="validation" aria-labelledby="validation-title"><p class="eyebrow">BUILD AND VALIDATION RECORD</p><h2 id="validation-title">Matched to this release.</h2><p>The manifest identifies these downloads by source revision and checksum, and separates local installation checks from platform CI results. Extracted-archive checks exercise the tutorial and application journey outside the repository, including user-defined providers.</p><p>GitHub allocated none of the Linux, macOS or Windows jobs because the account billing or spending limit blocked runner startup. Local checks are recorded separately in the manifest.</p><p>Java 23 is required. This remains an early language preview; debugging and general type inference are outside this release.</p><a href="manifest.json">View the build and validation record <span aria-hidden="true">↗</span></a></aside>
+    </section>
+  </main>
+  <footer class="wrap"><p>VarioHyve v0.4.0 · Public preview · <a href="manifest.json">Build manifest</a></p><a href="https://github.com/plug-obp/variohyve-benchmarks/issues">Share feedback <span aria-hidden="true">↗</span></a></footer>
+</body>
+</html>

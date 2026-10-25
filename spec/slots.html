@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-dc3eaf86.js";
+            window.path_to_searchindex_js = "searchindex-0e8722df.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-ce909e20.js"></script>
@@ -201,7 +201,10 @@ logical identity in that layout.</p>
 <p>Declaration initialization writes through this mapping without calling an
 overridable setter. Later initializer writes to shared storage replace earlier
 ones. Sharing and construction order are specified in <a href="objects-and-classes.html#ordered-overrides-and-shared-state">Objects and Classes</a>;
-explicit sharing policies and contribution-private access remain deferred.</p>
+explicit sharing policies and contribution-private access remain deferred.
+The <a href="objects-and-classes.html#storage-sharing-and-its-safety-conditions">storage seam and safety conditions</a>
+separate the current same-slot-name default from possible future layout policies,
+and distinguish coherent shared execution from preserving contributor contracts.</p>
 <h2 id="synthesized-accessors"><a class="header" href="#synthesized-accessors">Synthesized Accessors</a></h2>
 <p>Source instance slots and <code>var</code> locals supply:</p>
 <div class="table-wrapper">

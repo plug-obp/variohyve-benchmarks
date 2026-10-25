@@ -38,7 +38,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-dc3eaf86.js";
+            window.path_to_searchindex_js = "searchindex-0e8722df.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-ce909e20.js"></script>
@@ -205,15 +205,16 @@ separate environment namespace.</p>
 </table>
 </div>
 <p><code>Control</code> distinguishes expression evaluation, exact host send, committed foreign
-call, returned value and error. <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/main/java/vh/vm/EvaluateStepVisitor.java">EvaluateStepVisitor</a>
-handles expressions; <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/main/java/vh/vm/ContinuationStepVisitor.java">ContinuationStepVisitor</a>
-handles completion; <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/main/java/vh/vm/ObjectProtocol.java">ObjectProtocol</a>
+call, returned value, terminal error and resumable budget suspension. <a href="../../../vh-core/src/main/java/vh/vm/EvaluateStepVisitor.java">EvaluateStepVisitor</a>
+handles expressions; <a href="../../../vh-core/src/main/java/vh/vm/ContinuationStepVisitor.java">ContinuationStepVisitor</a>
+handles completion; <a href="../../../vh-core/src/main/java/vh/vm/ObjectProtocol.java">ObjectProtocol</a>
 selects and invokes operations. Its ordered loops, <code>getterSeen</code>, <code>Selection</code> and
 <code>EligibleAccessor</code> retain lookup evidence without repeating reads or selection.
 The language algorithm is specified in <a href="./message-sends.html">Message Sends</a>.</p>
 <p>The step API returns a set, but the concrete driver requires exactly one
-successor for each nonterminal native configuration. It stops at an error or a
-value under <code>HaltFrame</code>. Observable determinism additionally depends on supplied
+successor for each nonterminal native configuration. A bounded run stops at an
+error, a value under <code>HaltFrame</code>, or <code>Control.Suspended</code>; explicit advancement
+unwraps a suspension and continues with additional fuel. Observable determinism additionally depends on supplied
 foreign behavior. A set-valued interface does not implement abstract execution.
 Retained or prepared configurations do not each hold execution authority. All
 ordinary entry and stepping paths for one runtime obey the same sequential
@@ -246,7 +247,7 @@ not a replacement for the Java collector that manages the underlying objects.
 The native collector currently runs serially at safepoints; the
 <a href="./foreign-objects.html#control-tokens-and-execution-agreements">execution agreement</a>
 permits other correctly coordinated refinements, including concurrent collection.
-See <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/native-heap-gc.md">native heap collection</a> for roots,
+See <a href="../../design-notes/native-heap-gc.html">native heap collection</a> for roots,
 boundary retention, measurements and limitations.</p>
 <p>Backend-only root provenance, shortest retention paths and Graphviz snapshots
 share the collector’s root enumerator and graph tracer. Graph snapshots can
@@ -254,7 +255,7 @@ start at the complete root set or selected addresses, including an idle seed
 before any execution configuration exists. Reports are non-owning observations rejected
 by the public boundary; no language selector or activation API is added. Audited
 field signatures, randomized graph oracles and GC-on/off execution comparisons
-guard coverage. See <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/native-heap-gc-hardening.md">graph hardening</a>
+guard coverage. See <a href="../../design-notes/native-heap-gc-hardening.html">graph hardening</a>
 for guarantees and limits.</p>
 <h3 id="values"><a class="header" href="#values">Values</a></h3>
 <p><a href="./object-model.html">Runtime Object Representation</a> describes objects, classes,
@@ -358,7 +359,7 @@ capability can reseed a published runtime.</p>
 ordinary core module definition and explicit constructor arguments. The
 <code>fromNativeModule</code> convenience entry supplies the narrow root identity service
 as its sole argument; parser integration lowers
-<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-source/bootstrap/current-native-seed.vh"><code>current-native-seed.vh</code></a>
+<a href="../../../vh-source/bootstrap/current-native-seed.vh"><code>current-native-seed.vh</code></a>
 and exercises that same installer. The parser-independent definition keeps the
 dependency-free bootstrap checks available; it does not install singleton method
 records by a separate semantic path.</p>
@@ -455,9 +456,12 @@ as related evidence, without retrying realization.</p>
 <p>Developer reports contain detached scalars and remain backend-private. They are
 available through the explicit tooling entry and are rejected by the value
 boundary; callbacks preserve public evidence without exporting physical VM
-frames. Step exhaustion remains <code>LANGUAGE_FAILURE</code>; callback-depth and admission
-limits remain <code>EXECUTION_POLICY</code>. See the
-<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/vm-diagnostics.md">diagnostics decisions and evidence</a>.</p>
+frames. Step exhaustion uses <code>EXECUTION_POLICY</code> with reason
+<code>STEP_LIMIT_EXCEEDED</code>; callback-depth and admission limits also use
+<code>EXECUTION_POLICY</code>. The resource diagnostic accompanies a resumable native
+suspension, or explicit cancellation by a completion-only adapter. It is not
+a terminal guest failure merely because it has a diagnostic payload. See the
+<a href="../../design-notes/vm-diagnostics.html">diagnostics decisions and evidence</a>.</p>
 <h3 id="boundary-implementation"><a class="header" href="#boundary-implementation">Boundary implementation</a></h3>
 <p><code>ForeignBoundary.identityMirror()</code> returns a stable, boundary-owned capability.
 It is supplied explicitly to modules and observes identity and membership through
@@ -468,7 +472,7 @@ stable native identity; preserved foreign values use their payload identity so
 collecting and recreating an Alien wrapper does not change the hash of a still
 live foreign referent. The concrete hashing algorithm is a backend policy, not
 a portable identifier.</p>
-<p><a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/main/java/vh/vm/internal/DefaultJavaBoundary.java">DefaultJavaBoundary</a>
+<p><a href="../../../vh-core/src/main/java/vh/vm/internal/DefaultJavaBoundary.java">DefaultJavaBoundary</a>
 owns the <a href="./foreign-objects.html">Alien/Expat contract</a>. <code>BootstrapRuntime.boundary()</code>
 returns a narrow <code>PublicFacet</code>; package-private <code>VmServices</code> provisions the seed
 identity service. Both delegate to the same private owner. Canonical Expat and
@@ -569,6 +573,28 @@ The shared <code>Execution</code> retains only the step budget, not a sticky fai
 foreign recovery does not replenish it. Exhaustion prevents further native
 transitions without vetoing a terminal foreign result that needs no further step.
 Host exception classes and message text are not language interfaces.</p>
+<h3 id="resumable-native-execution"><a class="header" href="#resumable-native-execution">Resumable native execution</a></h3>
+<p>Native budget exhaustion follows the <a href="formal-core.html#execution-budgets-and-resumption">resumption contract</a>.
+<code>Control.Suspended</code> carries <code>STEP_LIMIT_EXCEEDED</code> and the interrupted control;
+the surrounding configuration retains heap, scope and continuations. Advancing
+it resumes that control with additional fuel. A retained native execution session
+owns GC roots and prevents competing entry while it is pending. Completion
+releases the entry reservation; the result lease remains until session close. A genuine
+<code>Control.Error</code> still performs terminal cleanup; budget suspension does not.</p>
+<p>Java slice equivalence covers native execution and non-reentrant atomic bridge
+operations. It does not cover a slice that enters a completion-only foreign
+callback and cancels it on exhaustion. Compare retained live state, effects and
+identity relationships modulo garbage collection; Java’s physical store can
+contain different unreachable garbage across slices. Lean’s reference store has
+no GC and its checked resumption theorem establishes stronger exact configuration
+equality.</p>
+<p>Synchronous completion-only <code>evaluate</code>, send, module and callback adapters cannot
+return an unfinished result through their existing value-only contracts. They
+explicitly cancel a suspension before reporting its diagnostic. In particular,
+retaining a native callback does not reconstruct an already-returned foreign
+stack. Resumable native sessions and synchronous foreign-call cancellation are
+distinct APIs; a cooperative Alien/Expat continuation-transfer contract remains
+an open boundary decision.</p>
 <h3 id="stack-safety"><a class="header" href="#stack-safety">Stack Safety</a></h3>
 <p>The native driver loops over explicit frames, so language method/lambda calls
 and nested initializers do not recursively call the Java evaluator. Synchronous
@@ -583,7 +609,7 @@ any claim of unlimited execution.</p>
 <tr><th>Area</th><th>Current implementation status</th></tr>
 </thead>
 <tbody>
-<tr><td>Numbers and strings</td><td>Signed 64-bit integers and decoded strings. An explicit host-preserving adapter may enable finite binary64 decimal literals and receiver protocols; unconfigured worlds still reject decimals. JavaHostKernel is an optional foreign library, not native arithmetic/string classes. See <a href="java-host-kernel.html">its contract</a>.</td></tr>
+<tr><td>Numbers and strings</td><td>Default literal transport supports signed 64-bit integers and decoded strings. An explicit host-preserving adapter may enable finite binary64 decimal literals and receiver protocols; unconfigured worlds still reject decimals. Optional <a href="tooling-architecture.html#optional-native-integer-elaboration">native integer elaboration</a> preserves arbitrary-length integer spelling as ordinary sends to the loadable Peano/Scott/Church kernels, subject to execution budgets. Native Natural/List libraries are also available. These packages add no scalar primitive or seed role; native fractions, floating-point arithmetic and a general native text library remain open. <a href="java-host-kernel.html">JavaHostKernel</a> supplies separate foreign protocols.</td></tr>
 <tr><td>Source checks</td><td>Independent configurable surface-AST traversals reject statically inadmissible forms before lowering; the bootstrap runner and LSP use the standard set. Parser-only and direct core entry remain available. See <a href="tooling-architecture.html#source-checks">source checks</a>.</td></tr>
 <tr><td>Qualified <code>outer</code></td><td>Frontend validation rejects unknown/non-enclosing qualifiers before execution, including unused bodies. Runtime selection still scans captured lexical scopes by name and preserves exact application ancestry at every depth; core nodes do not yet carry bound declaration identities.</td></tr>
 <tr><td>Holes</td><td>A reached hole is fatal (<code>UnresolvedHole</code>); no configurable concrete policy.</td></tr>
@@ -601,7 +627,7 @@ any claim of unlimited execution.</p>
 permission to replace accepted semantics. Future TCO must preserve captured
 homes and barriers; abstract execution needs sound domains, joins, transitions
 and foreign-effect models beyond an allocator change. See <a href="./future.html">Future Directions</a>
-and the <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/docs/design-notes/outer-newspeak-comparison.md">outer comparison</a>.</p>
+and the <a href="../../design-notes/outer-newspeak-comparison.html">outer comparison</a>.</p>
 <h2 id="refinement-of-the-formal-machine"><a class="header" href="#refinement-of-the-formal-machine">Refinement of the Formal Machine</a></h2>
 <p>A refinement relation must decode addressed frames and suspended Java calls into
 the reference stack; map mutable entries to the current <code>σ</code>; and preserve scope,
@@ -626,23 +652,53 @@ their specified effects in the target relation. The present refinement target
 includes neither a parallel execution agreement nor an independent intervention
 relation.</p>
 <p>Object’s absent superclass uses the field-specific
-<a href="./object-model.html#representing-top-without-reification"><code>Top</code> decoding</a>.</p>
+<a href="./object-model.html#representing-top-without-reification"><code>Top</code> decoding</a>, with no
+corresponding store identity; other absent links retain their own field meanings.</p>
+<p>Java failure creation currently retires crossed homes and fails pending member
+realizations in one cleanup loop. Lean enters <code>error</code>, switches to <code>abort</code>, and
+retires one frame per transition. This is an intended finite-step refinement
+shape, not evidence that either cleanup is wrong. The checked Lean
+<code>failure_unwind_trace</code> theorem supplies the finite reference trace and preservation
+of committed heap/writes; it does not verify Java’s loop. Remaining stack length
+provides the cleanup termination measure. The representation relation must decode
+Java’s already-retired terminal continuation pointers as a fully unwound failure,
+not as live reference frames.</p>
+<p>Successful non-local return retires its crossed prefix atomically in both
+machines; Lean additionally exposes a <code>returning</code> control before delivery. Neither
+implementation needs artificial steps solely to equalize budgets. Paused native
+sessions must remain exclusive even if Lean stops partway through error cleanup,
+so a competing entry cannot observe intermediate home/cache authority.</p>
 <p>Administrative steps may stutter, and one foreign Java call can contain many
 native callback steps. Neither fact permits hiding effects, changing failure
 kinds, replaying selection or ignoring divergence. A comparison must include the
-prototype’s scalar subset and execution limits, or explicitly exclude runs that
-hit them. No simulation proof is claimed; the formal appendix records the
-remaining obligations.</p>
+prototype’s scalar subset and distinguish terminal failures from resumable
+<code>STEP_LIMIT_EXCEEDED</code>. Equal numeric budgets are not required to yield equal
+outcomes; each machine must instead preserve its own continuation across slices.
+No Java simulation proof is claimed. The
+<a href="../../../vh-lean/semantics/proof-obligations.html">Lean proof ledger</a> distinguishes
+proved native coherence and partial source bridges from the still missing
+independent high-level specification and full source/core refinement. These
+results do not verify Java or its foreign boundary. The obligations below remain open.</p>
+<p>The relation \(R(J,K)\) between Java and reference configurations must satisfy,
+within the declared scalar and sequential execution profile:</p>
+<p>\[
+R(J,K)\land J\longrightarrow_J J’
+\ \Longrightarrow\ \exists K’.\ K\longrightarrow^*K’\land R(J’,K’).
+\]</p>
+<p>This finite-step obligation compares corresponding observation points. Additional
+progress/observation obligations must ensure administrative stuttering preserves
+boundary traces and cannot hide divergence. A permit or copied callback context
+alone is insufficient evidence of the control ownership decoded by \(R\).</p>
 <p><code>bash scripts/check-bootstrap.sh</code> runs focused backend checks with JDK 17+ and
 Python 3. <code>./gradlew test</code> additionally exercises parsing and the complete project
 with its configured JDK 23 toolchain. Relevant witnesses include
-<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/test/java/boundaryclient/UnifiedInvocationTest.java">UnifiedInvocationTest</a>,
-<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/test/java/boundaryclient/ClassCompositionTest.java">ClassCompositionTest</a>,
-<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/test/java/boundaryclient/InitializerReturnHomeTest.java">InitializerReturnHomeTest</a>,
-<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/test/java/boundaryclient/NativeValuesTest.java">NativeValuesTest</a>
-and <a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/test/java/boundaryclient/ModuleEntryTest.java">ModuleEntryTest</a>.
+<a href="../../../vh-core/src/test/java/boundaryclient/UnifiedInvocationTest.java">UnifiedInvocationTest</a>,
+<a href="../../../vh-core/src/test/java/boundaryclient/ClassCompositionTest.java">ClassCompositionTest</a>,
+<a href="../../../vh-core/src/test/java/boundaryclient/InitializerReturnHomeTest.java">InitializerReturnHomeTest</a>,
+<a href="../../../vh-core/src/test/java/boundaryclient/NativeValuesTest.java">NativeValuesTest</a>
+and <a href="../../../vh-core/src/test/java/boundaryclient/ModuleEntryTest.java">ModuleEntryTest</a>.
 The admission regressions in
-<a href="https://github.com/plug-obp/variohyve/blob/f1c5c8cc77dc1dca4a1058d7a0e1369798535df8/vh-core/src/test/java/vh/vm/BoundaryReentryChecks.java">BoundaryReentryChecks</a>
+<a href="../../../vh-core/src/test/java/vh/vm/BoundaryReentryChecks.java">BoundaryReentryChecks</a>
 cover competing callbacks and pending completion, rejection of unassociated
 preparation before allocation, leased idle preparation followed by stepping,
 and concurrent foreign computation and consumption of previously published
