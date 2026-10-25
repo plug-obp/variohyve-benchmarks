@@ -3,7 +3,7 @@
   const base = new URL('.', document.currentScript.src);
   const panel = document.querySelector('.version-navigation');
   if (!panel) return;
-  fetch(new URL('versions.json', base)).then(response => {
+  fetch(new URL('versions.json', base), { cache: 'no-store' }).then(response => {
     if (!response.ok) throw new Error('Version index unavailable');
     return response.json();
   }).then(index => {
