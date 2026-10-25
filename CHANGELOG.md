@@ -3,6 +3,24 @@
 User-visible changes to the public VarioHyve preview. Preview versions may change
 the Java embedding API. Java 23 is required and is not bundled.
 
+## 0.4.0 — 2026-10-25
+
+Add the native execution milestone and native recipe driven packaging worlds.
+
+- Execute source driven packaging recipes through explicitly granted native
+  source services. Native policy selects and composes dependencies while the
+  host retains file access, classloading and publication authority.
+- Expand native execution with symbolic integer support, loadable Natural/List
+  kernel modules, and resumable sessions with explicit imports, sends and handles.
+- Strengthen the independent Lean native semantics and Java comparison corpus,
+  including retained histories, cyclic code graphs and frontend boundaries.
+- Keep source validation, native execution budgets, failures and re-entry
+  explicit across tooling and packaging flows.
+
+**Migration:** the preview advances to 0.4.0. VS Code extension remains 0.4.0;
+the extension API and package version are tracked independently from the language
+distribution.
+
 ## 0.3.2 — 2026-10-16
 
 Public release of the packaging changes below, with VS Code extension **0.4.0**.
