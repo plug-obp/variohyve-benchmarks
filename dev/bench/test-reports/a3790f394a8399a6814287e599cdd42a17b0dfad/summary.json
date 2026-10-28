@@ -1,0 +1,12 @@
+{
+  "sha": "a3790f394a8399a6814287e599cdd42a17b0dfad",
+  "branch": "codex/lean-semantic-foundations",
+  "run_url": "https://github.com/plug-obp/variohyve/actions/runs/40753274850",
+  "outcome": "success",
+  "reported_at": "2026-10-28T19:43:30.041043+00:00",
+  "tests": 1123,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "duration_seconds": 178.84300000000005
+}
