@@ -1,0 +1,12 @@
+{
+  "sha": "4cda120ba656ffabcf3239dc3fce223bb94faa5d",
+  "branch": "codex/souverain-composition",
+  "run_url": "https://github.com/plug-obp/variohyve/actions/runs/41938088382",
+  "outcome": "success",
+  "reported_at": "2026-11-05T00:20:45.096743+00:00",
+  "tests": 1192,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "duration_seconds": 80.00800000000001
+}
