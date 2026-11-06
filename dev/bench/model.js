@@ -3,6 +3,7 @@
   'use strict';
   const GC = {nativeGc: 'tracing', nativeHeapCapacity: '16384', nativeGcThreshold: '0.75'};
   const TIMING_SCOPES = {
+    'native-session-v1': 'Native sessions · four runtimes',
     'prepared-runtime-v1': 'Payload · prepared runtime',
     'runtime-setup-v1': 'Runtime initialization',
     'fresh-world-v1': 'Fresh world + payload'
@@ -12,7 +13,7 @@
   const keyOf = (name, params, profile, timingScope = 'fresh-world-v1', batchSize = null) => `${timingScope}|batch=${batchSize ?? 'none'}|${profile}|${name}|${paramsKey(params)}`;
   const timingScopeOf = scope => scope === undefined ? 'fresh-world-v1' : Object.hasOwn(TIMING_SCOPES, scope) ? scope : null;
   const batchSizeOf = value => Number.isInteger(Number(value)) && Number(value) > 0 ? Number(value) : null;
-  const defaultTimingScope = cases => ['prepared-runtime-v1','fresh-world-v1','runtime-setup-v1'].find(scope => cases.some(c => c.timingScope === scope && c.runs.length)) || 'prepared-runtime-v1';
+  const defaultTimingScope = cases => ['native-session-v1','prepared-runtime-v1','fresh-world-v1','runtime-setup-v1'].find(scope => cases.some(c => c.timingScope === scope && c.runs.length)) || 'prepared-runtime-v1';
   function profileOf(params) {
     const fields = Object.keys(GC).filter(k => k in params);
     if (!fields.length) return 'legacy';
@@ -83,6 +84,24 @@
       if (![1,2].includes(rich.schema) || !Number.isFinite(Date.parse(rich.date))
         || (rich.schema === 2 && rich.timing_scope === undefined) || !timingScopeOf(rich.timing_scope)) continue;
       const profile = profileOf(rich.native_gc || {});
+      const native = rich.native_comparison;
+      if (native?.schema === 1 && native.timing_scope === 'native-session-v1') {
+        for (const row of native.cases || []) {
+          if (!positive(row.runtimes?.VarioHyve?.mean) || !positive(row.runtimes?.Lean?.mean)) continue;
+          const scenario = getCase(row.name, row.params || {}, 'allocation-debt', native.timing_scope);
+          scenario.family = 'native';
+          const run = {id: rich.id, branch: rich.branch, commit: rich.commit, date: Date.parse(native.date || rich.date),
+            run_url: rich.run_url, timingScope: native.timing_scope, profile: 'allocation-debt',
+            runtimes: row.runtimes, ratios: {}, leanRatios: {}, legacy: false};
+          for (const label of ['VarioHyve','CPython','GraalPy']) {
+            if (positive(row.runtimes[label]?.mean)) {
+              run.leanRatios[label] = row.runtimes.Lean.mean / row.runtimes[label].mean;
+              if (label !== 'VarioHyve') run.ratios[label] = row.runtimes.VarioHyve.mean / row.runtimes[label].mean;
+            }
+          }
+          scenario.runs.push(run);
+        }
+      }
       const rows = [
         ...(rich.cases || []).map(row => ({row, diagnostic: false, timingScope: timingScopeOf(rich.timing_scope)})),
         ...(rich.diagnostics || []).map(row => ({row, diagnostic: true, timingScope: ['runtime-setup-v1','fresh-world-v1'].includes(row.timing_scope) ? row.timing_scope : null}))

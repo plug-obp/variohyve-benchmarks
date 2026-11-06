@@ -5,8 +5,11 @@
   if (!raw) { $('status').textContent = 'Benchmark history could not be loaded. Please reload this page.'; return; }
   const rich = window.BENCHMARK_RUNS || [];
   const cases = BenchmarkModel.normalize(raw, rich);
-  const colors = {VarioHyve:'#007f73', CPython:'#5264d9', GraalPy:'#bd6720'};
-  const labels = {VarioHyve:'VarioHyve', CPython:'CPython', GraalPy:'GraalPy · no guest JIT'};
+  const colors = {VarioHyve:'#007f73', Lean:'#a24191', CPython:'#5264d9', GraalPy:'#bd6720'};
+  const labels = {VarioHyve:'VarioHyve · Java', Lean:'VarioHyve · Lean', CPython:'CPython', GraalPy:'GraalPy · no guest JIT'};
+  const nativeSession = run => run.timingScope === 'native-session-v1';
+  const ratioValues = run => nativeSession(run) ? run.leanRatios : run.ratios;
+  const numerator = run => nativeSession(run) ? 'Lean' : 'Java';
   const initialScope = BenchmarkModel.defaultTimingScope(cases);
   const state = {view:'comparison', key:cases.find(c => c.timingScope === initialScope && c.profile === 'tracing' && c.name === 'methodSend')?.key};
   const number = value => Number.isFinite(value) ? value.toLocaleString(undefined, {maximumSignificantDigits:4}) : '—';
@@ -34,7 +37,7 @@
   }
   selectAvailableProfile();
   const totalRuns = new Set(cases.flatMap(c => c.runs.map(r => r.id))).size;
-  $('status').textContent = `${totalRuns} runs · ${branches.length} branches · CPython and GraalPy comparisons · lower is faster`;
+  $('status').textContent = `${totalRuns} runs · ${branches.length} branches · Java, Lean, CPython and GraalPy · lower is faster`;
   $('updated').textContent = `Last published ${new Date(Math.max(Number(raw.lastUpdate) || 0, ...rich.map(r => Date.parse(r.date)).filter(Number.isFinite))).toLocaleString()}`;
   $('download').onclick = () => {
     const url = URL.createObjectURL(new Blob([JSON.stringify({archive:raw, measurements:rich},null,2)],{type:'application/json'}));
@@ -51,6 +54,7 @@
   function refresh() {
     const scope = $('timing-scope').value;
     const notes = {
+      'native-session-v1': 'Warmed, checked JSONL batches on fresh per-batch guest state. Import and setup are excluded; dispatch, allocation, GC, handle registration and transport are timed. One operation is a complete run with the displayed repetition count. Lean and Java use allocation-debt native GC. Python counterparts use their ordinary language mechanisms; member and mixin cases compare only Lean and Java.',
       'prepared-runtime-v1': 'Payload execution on fresh, single-use prepared worlds. Workload construction, boundary calls, checks and execution-time GC are timed; runtime initialization is outside the timer. This is a separate baseline from fresh-world history.',
       'runtime-setup-v1': 'Warmed runtime initialization, measured independently. Seed construction/installation, initialization GC and platform assembly remain visible here. JVM launch is excluded. These scores are not subtracted from workload scores.',
       'fresh-world-v1': 'Fresh-world workloads include runtime initialization plus the checked payload. Original history remains in this scope; it is not joined to prepared-runtime payload measurements.'
@@ -59,6 +63,7 @@
     const setupOnly = scope === 'runtime-setup-v1';
     document.querySelector('[data-view=ratio]').disabled = setupOnly;
     document.querySelector('[data-view=comparison]').textContent = setupOnly ? 'VarioHyve history' : 'Compare runtimes';
+    document.querySelector('[data-view=ratio]').textContent = scope === 'native-session-v1' ? 'Lean / other runtimes' : 'Java / Python';
     if (setupOnly && state.view === 'ratio') state.view = 'comparison';
     for (const button of document.querySelectorAll('[data-view]')) button.setAttribute('aria-pressed',String(button.dataset.view === state.view));
     const filtered = filteredCases();
@@ -75,14 +80,15 @@
       button.onclick = () => { state.key = c.key; refresh(); $('chart-title').scrollIntoView({behavior:'smooth',block:'center'}); };
       title.append(button,element('small',[BenchmarkModel.paramsKey(c.params), c.batchSize ? `batch=${c.batchSize} · per payload` : ''].filter(Boolean).join(' · ') || (c.family === 'setup' ? 'Initialization diagnostic' : 'Core workload')));
       row.append(title);
-      for (const runtime of ['VarioHyve','CPython','GraalPy']) row.append(element('td',mean(run.runtimes[runtime])));
+      for (const runtime of ['VarioHyve','Lean','CPython','GraalPy']) row.append(element('td',mean(run.runtimes[runtime])));
+      row.append(element('td',run.leanRatios?.VarioHyve ? `${number(run.leanRatios.VarioHyve)}×` : '—'));
       for (const runtime of ['CPython','GraalPy']) {
         const cell = element('td'); cell.append(element('span',run.ratios[runtime] ? `${number(run.ratios[runtime])}×` : '—','ratio')); row.append(cell);
       }
       const revision = element('td'); revision.append(element('span',run.branch),element('small',`${short(run.commit)} · ${new Date(run.date).toLocaleDateString()}`));
       revision.title = `${run.branch}\n${run.commit.message || ''}`; row.append(revision); body.append(row);
     }
-    if (!filtered.length) { const row = element('tr'), cell = element('td','No workloads match these filters.'); cell.colSpan = 7; row.append(cell); body.append(row); }
+    if (!filtered.length) { const row = element('tr'), cell = element('td','No workloads match these filters.'); cell.colSpan = 9; row.append(cell); body.append(row); }
     draw(filtered.find(c => c.key === state.key));
   }
   const svgNS = 'http://www.w3.org/2000/svg';
@@ -95,7 +101,7 @@
   function detailLines(run, runtime) {
     const metric = run.runtimes[runtime];
     const lines = [`${labels[runtime]} · ${run.branch}`, `${short(run.commit)} · ${new Date(run.date).toLocaleString()}`, (run.commit.message || '').split('\n')[0]];
-    if (state.view === 'ratio') lines.push(`VarioHyve / ${runtime}: ${number(run.ratios[runtime])}×`);
+    if (state.view === 'ratio') lines.push(`${numerator(run)} / ${labels[runtime]}: ${number(ratioValues(run)[runtime])}×`);
     lines.push(`${runtime === 'VarioHyve' ? 'Timing scope' : 'VarioHyve comparison scope'}: ${BenchmarkModel.TIMING_SCOPES[run.timingScope]} (${run.timingScope})`);
     if (run.profile === 'not-applicable') lines.push('GC profile: not applicable · no native heap');
     if (run.batchSize && runtime === 'VarioHyve') lines.push(`Batch: ${run.batchSize} fresh worlds · normalized per payload operation`);
@@ -126,12 +132,17 @@
     if (!scenario) { $('plot').append(element('p','Choose another timing scope, branch, GC profile, or search.','empty')); return; }
     const limit = $('limit').value === 'all' ? Infinity : Number($('limit').value);
     const runs = scenario.runs.slice(-limit);
-    const series = scenario.timingScope === 'runtime-setup-v1' || state.view === 'distribution' ? ['VarioHyve'] : state.view === 'ratio' ? ['CPython','GraalPy'] : ['VarioHyve','CPython','GraalPy'];
+    const native = nativeSession(scenario);
+    const available = native ? ['VarioHyve','Lean','CPython','GraalPy'] : ['VarioHyve','CPython','GraalPy'];
+    const candidates = scenario.timingScope === 'runtime-setup-v1' ? ['VarioHyve']
+      : state.view === 'distribution' ? native ? ['VarioHyve','Lean'] : ['VarioHyve']
+      : state.view === 'ratio' ? native ? ['VarioHyve','CPython','GraalPy'] : ['CPython','GraalPy'] : available;
+    const series = candidates.filter(runtime => runs.some(run => positiveMetric(run.runtimes[runtime])));
     for (const runtime of series) {
-      const label = element('span',state.view === 'ratio' ? `VH / ${runtime}` : runtime === 'VarioHyve' && scenario.profile === 'tracing' ? 'VarioHyve + GC' : labels[runtime]);
+      const label = element('span',state.view === 'ratio' ? `${native ? 'Lean' : 'Java'} / ${runtime === 'VarioHyve' ? 'Java' : runtime}` : labels[runtime]);
       label.style.setProperty('--color',colors[runtime]); $('legend').append(label);
     }
-    const getValue = (run,runtime) => state.view === 'ratio' ? run.ratios[runtime] : run.runtimes[runtime]?.mean;
+    const getValue = (run,runtime) => state.view === 'ratio' ? ratioValues(run)[runtime] : run.runtimes[runtime]?.mean;
     const values = runs.flatMap(run => series.flatMap(runtime => {
       const value = getValue(run,runtime), metric = run.runtimes[runtime];
       return value > 0 ? state.view === 'distribution' && metric.samples?.length ? [value,metric.min,metric.max] : [value] : [];
@@ -148,7 +159,7 @@
     const y = value => margin.top+h-( (log ? Math.log10(value) : value)-min)/(max-min)*h;
     const x = index => margin.left + (runs.length === 1 ? w/2 : index*w/(runs.length-1));
     const svg = svgElement('svg',{viewBox:`0 0 ${width} ${height}`,role:'group','aria-label':`${scenario.label}: ${state.view} chart. Use Tab to inspect measurement points.`});
-    svg.append(svgElement('text',{x:0,y:13},state.view === 'ratio' ? 'VH / Python (×)' : 'µs / operation'));
+    svg.append(svgElement('text',{x:0,y:13},state.view === 'ratio' ? `${native ? 'Lean / baseline' : 'Java / Python'} (×)` : 'µs / operation'));
     for (let tick=0; tick<=5; tick++) {
       const value = log ? Math.pow(10,min+(max-min)*tick/5) : min+(max-min)*tick/5;
       const yy = y(value);
@@ -170,13 +181,13 @@
       for (let i=0;i<runs.length;i++) {
         const run = runs[i], metric = run.runtimes[runtime], value = getValue(run,runtime);
         if (!(value>0) || !metric) continue;
-        const xx = x(i), yy = y(value), color = colors[runtime];
+        const xx = x(i) + (state.view === 'distribution' && series.length === 2 ? (runtime === 'Lean' ? 8 : -8) : 0), yy = y(value), color = colors[runtime];
         const group = svgElement('g',{class:'point',tabindex:0,role:'button','aria-label':detailLines(run,runtime).join('. ')});
         if (state.view === 'distribution' && metric.samples?.length) {
-          const half = Math.max(2,Math.min(12,w/(Math.max(runs.length,2)*3)));
+          const half = Math.max(2,Math.min(series.length === 2 ? 6 : 12,w/(Math.max(runs.length,2)*3)));
           group.append(svgElement('line',{x1:xx,x2:xx,y1:y(metric.min),y2:y(metric.max),stroke:color,'stroke-width':1.5}));
           for (const v of [metric.min,metric.max]) group.append(svgElement('line',{x1:xx-half,x2:xx+half,y1:y(v),y2:y(v),stroke:color}));
-          group.append(svgElement('rect',{x:xx-half,y:y(metric.q3),width:half*2,height:Math.max(1,y(metric.q1)-y(metric.q3)),fill:'#c6e9e3',stroke:color}),svgElement('line',{x1:xx-half,x2:xx+half,y1:y(metric.median),y2:y(metric.median),stroke:color,'stroke-width':2}));
+          group.append(svgElement('rect',{x:xx-half,y:y(metric.q3),width:half*2,height:Math.max(1,y(metric.q1)-y(metric.q3)),fill:color,'fill-opacity':.18,stroke:color}),svgElement('line',{x1:xx-half,x2:xx+half,y1:y(metric.median),y2:y(metric.median),stroke:color,'stroke-width':2}));
         }
         group.append(svgElement('circle',{cx:xx,cy:yy,r:4,fill:color,stroke:'white','stroke-width':1.2}),svgElement('circle',{cx:xx,cy:yy,r:10,fill:'transparent','aria-hidden':'true'}));
         const tip = $('tooltip');
@@ -199,9 +210,10 @@
     $('chart-note').textContent = baseNote + (state.view === 'distribution'
       ? `Dots: means. Boxes: middle 50% and median. Whiskers: min–max. Samples available for ${samples}/${runs.length} runs; other points show means only.`
       : scenario.timingScope === 'runtime-setup-v1' ? 'Dots: mean initialization time. These independent diagnostics are not additive startup components.'
-      : state.view === 'ratio' ? 'Below 1×: VarioHyve faster; above 1×: Python faster. Dashed line: parity.'
+      : state.view === 'ratio' ? `Below 1×: ${native ? 'Lean' : 'Java'} faster; above 1×: baseline faster. Dashed line: parity.`
       : 'Dots: mean time. Older Python values are approximate. Missing counterparts are omitted.');
   }
+  function positiveMetric(metric) { return Number.isFinite(metric?.mean) && metric.mean > 0; }
   $('timing-scope').addEventListener('change',() => { $('family').value = 'all'; selectAvailableProfile(); refresh(); });
   for (const id of ['profile','branch','family','limit','log']) $(id).addEventListener('change',refresh);
   $('search').addEventListener('input',refresh);
