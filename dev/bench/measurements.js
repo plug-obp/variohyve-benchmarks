@@ -325677,5 +325677,13014 @@ window.BENCHMARK_RUNS = [
       "message": "Prove direct public interface assembly and share occurrence metadata"
     },
     "run_url": "https://github.com/plug-obp/variohyve/actions/runs/42253922341/attempts/1"
+  },
+  {
+    "schema": 2,
+    "date": "2026-11-06T17:51:48.984476+00:00",
+    "jmh_sha256": "cf98995afe91a77123ab9668dd7fa6c6d6af21e2a650ff6840d67dd12a10c278",
+    "native_gc": {
+      "nativeGc": "tracing",
+      "nativeHeapCapacity": "16384",
+      "nativeGcThreshold": "0.75"
+    },
+    "timing_scope": "prepared-runtime-v1",
+    "payload_batch_sizes": {
+      "vh.benchmarks.PreparedVisitorSemanticsBenchmark": 256,
+      "vh.benchmarks.PreparedRecursionBenchmark": 16,
+      "vh.benchmarks.PreparedDispatchBenchmark": 16
+    },
+    "score_normalization": "per-payload-operation",
+    "cases": [
+      {
+        "name": "classContributions",
+        "params": {
+          "callCount": "256",
+          "contributionCount": "1"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 544.1934034062215,
+            "min": 478.18492716535434,
+            "q1": 503.2685489583333,
+            "median": 503.62465392561984,
+            "q3": 528.4361907608695,
+            "max": 707.4526962209302,
+            "samples": [
+              707.4526962209302,
+              503.2685489583333,
+              528.4361907608695,
+              503.62465392561984,
+              478.18492716535434
+            ],
+            "confidence99_9": [
+              186.16803246312895,
+              902.218774349314
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 28.391602260460655,
+            "min": 28.28603403214928,
+            "q1": 28.374660326086957,
+            "median": 28.401730100769928,
+            "q3": 28.44333947576993,
+            "max": 28.45224736752717,
+            "samples": [
+              28.374660326086957,
+              28.28603403214928,
+              28.45224736752717,
+              28.44333947576993,
+              28.401730100769928
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 217.5267748833222,
+            "min": 216.52630280172414,
+            "q1": 216.53675452586208,
+            "median": 216.64817047413794,
+            "q3": 218.38828407118055,
+            "max": 219.5343625437063,
+            "samples": [
+              216.64817047413794,
+              218.38828407118055,
+              216.52630280172414,
+              219.5343625437063,
+              216.53675452586208
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "classContributions",
+        "params": {
+          "callCount": "256",
+          "contributionCount": "32"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 1402.9130933425433,
+            "min": 1316.1868763297873,
+            "q1": 1320.1688390957447,
+            "median": 1341.418089673913,
+            "q3": 1362.3537010869566,
+            "max": 1674.4379605263157,
+            "samples": [
+              1674.4379605263157,
+              1362.3537010869566,
+              1316.1868763297873,
+              1320.1688390957447,
+              1341.418089673913
+            ],
+            "confidence99_9": [
+              814.1280366773956,
+              1991.698150007691
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 769.727923006135,
+            "min": 768.5195682515338,
+            "q1": 769.1621242331289,
+            "median": 769.8717024539877,
+            "q3": 770.4710904907976,
+            "max": 770.615129601227,
+            "samples": [
+              770.615129601227,
+              770.4710904907976,
+              769.8717024539877,
+              769.1621242331289,
+              768.5195682515338
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 1834.0864370424438,
+            "min": 1825.0728302919708,
+            "q1": 1826.6636149635035,
+            "median": 1826.6688521897809,
+            "q3": 1832.929450729927,
+            "max": 1859.097437037037,
+            "samples": [
+              1826.6688521897809,
+              1826.6636149635035,
+              1832.929450729927,
+              1825.0728302919708,
+              1859.097437037037
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "classContributions",
+        "params": {
+          "callCount": "256",
+          "contributionCount": "8"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 711.8829697935546,
+            "min": 638.3031061197917,
+            "q1": 663.4677880434782,
+            "median": 672.9274519230769,
+            "q3": 679.6602388888889,
+            "max": 905.0562639925373,
+            "samples": [
+              905.0562639925373,
+              638.3031061197917,
+              672.9274519230769,
+              679.6602388888889,
+              663.4677880434782
+            ],
+            "confidence99_9": [
+              291.69590994141697,
+              1132.070029645692
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 131.69535078781513,
+            "min": 131.31011226365547,
+            "q1": 131.58309033613446,
+            "median": 131.5842900472689,
+            "q3": 131.8244998686975,
+            "max": 132.17476142331932,
+            "samples": [
+              131.8244998686975,
+              131.5842900472689,
+              131.31011226365547,
+              132.17476142331932,
+              131.58309033613446
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 416.36864661525505,
+            "min": 413.2941200657895,
+            "q1": 414.3676088576159,
+            "median": 416.0113770695364,
+            "q3": 419.0842354166667,
+            "max": 419.08589166666667,
+            "samples": [
+              416.0113770695364,
+              413.2941200657895,
+              419.0842354166667,
+              419.08589166666667,
+              414.3676088576159
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "closureSend",
+        "params": {},
+        "payload_batch_size": 256,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 2.194068566119145,
+            "min": 2.16558203125,
+            "q1": 2.178907578125,
+            "median": 2.1954670029836683,
+            "q3": 2.20248119140625,
+            "max": 2.227905026830808,
+            "samples": [
+              2.227905026830808,
+              2.20248119140625,
+              2.1954670029836683,
+              2.178907578125,
+              2.16558203125
+            ],
+            "confidence99_9": [
+              2.1025606200716376,
+              2.2855765121666525
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 256
+            }
+          },
+          "CPython": {
+            "mean": 0.1575839867532648,
+            "min": 0.15467968010179925,
+            "q1": 0.15494733425082288,
+            "median": 0.15586293247767857,
+            "q3": 0.1568851312099359,
+            "max": 0.1655448557260874,
+            "samples": [
+              0.1568851312099359,
+              0.1655448557260874,
+              0.15467968010179925,
+              0.15586293247767857,
+              0.15494733425082288
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 1.0014058146383535,
+            "min": 0.9852460524036039,
+            "q1": 0.9967609188420986,
+            "median": 0.9977402839970783,
+            "q3": 1.001293185875064,
+            "max": 1.0259886320739233,
+            "samples": [
+              0.9967609188420986,
+              0.9977402839970783,
+              1.001293185875064,
+              1.0259886320739233,
+              0.9852460524036039
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "families",
+        "params": {
+          "depth": "16",
+          "nestingDepth": "1"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 585.0545897745803,
+            "min": 403.7845184075342,
+            "q1": 545.3451527777778,
+            "median": 589.7035593434343,
+            "q3": 638.0853660714286,
+            "max": 748.3543522727273,
+            "samples": [
+              748.3543522727273,
+              638.0853660714286,
+              589.7035593434343,
+              545.3451527777778,
+              403.7845184075342
+            ],
+            "confidence99_9": [
+              98.22457964210327,
+              1071.8845999070575
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          }
+        }
+      },
+      {
+        "name": "families",
+        "params": {
+          "depth": "16",
+          "nestingDepth": "8"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 999.9388923308783,
+            "min": 617.3635204081633,
+            "q1": 679.5626917134831,
+            "median": 1067.757691885965,
+            "q3": 1270.1353502604168,
+            "max": 1364.8752073863636,
+            "samples": [
+              1364.8752073863636,
+              1270.1353502604168,
+              1067.757691885965,
+              679.5626917134831,
+              617.3635204081633
+            ],
+            "confidence99_9": [
+              -305.5782692061563,
+              2305.456053867913
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          }
+        }
+      },
+      {
+        "name": "families",
+        "params": {
+          "depth": "256",
+          "nestingDepth": "1"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 3905.3752075430007,
+            "min": 2745.896027173913,
+            "q1": 2773.4274782608695,
+            "median": 4469.266125,
+            "q3": 4601.606642857143,
+            "max": 4936.679764423077,
+            "samples": [
+              4936.679764423077,
+              4469.266125,
+              4601.606642857143,
+              2745.896027173913,
+              2773.4274782608695
+            ],
+            "confidence99_9": [
+              -175.21645196567806,
+              7985.966867051679
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          }
+        }
+      },
+      {
+        "name": "families",
+        "params": {
+          "depth": "256",
+          "nestingDepth": "8"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 6292.030160645604,
+            "min": 4892.135807692308,
+            "q1": 4905.827875,
+            "median": 5538.290260416667,
+            "q3": 7319.114520833334,
+            "max": 8804.782339285714,
+            "samples": [
+              8804.782339285714,
+              7319.114520833334,
+              5538.290260416667,
+              4892.135807692308,
+              4905.827875
+            ],
+            "confidence99_9": [
+              -326.769376874061,
+              12910.82969816527
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          }
+        }
+      },
+      {
+        "name": "inherited",
+        "params": {
+          "depth": "16",
+          "hierarchyDepth": "32"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 591.7018429999949,
+            "min": 404.4013600171233,
+            "q1": 419.3875310283688,
+            "median": 460.34052180232555,
+            "q3": 715.3263162650602,
+            "max": 959.0534858870968,
+            "samples": [
+              959.0534858870968,
+              715.3263162650602,
+              460.34052180232555,
+              419.3875310283688,
+              404.4013600171233
+            ],
+            "confidence99_9": [
+              -336.17497277628297,
+              1519.5786587762727
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 669.2764834196155,
+            "min": 668.2736276595745,
+            "q1": 668.9921905080214,
+            "median": 669.1240922459893,
+            "q3": 669.3820454545454,
+            "max": 670.6104612299466,
+            "samples": [
+              669.1240922459893,
+              668.9921905080214,
+              668.2736276595745,
+              669.3820454545454,
+              670.6104612299466
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 1358.3954671184977,
+            "min": 1352.2060175675674,
+            "q1": 1354.1187243243244,
+            "median": 1358.3857932432434,
+            "q3": 1360.845766304348,
+            "max": 1366.4210341530056,
+            "samples": [
+              1360.845766304348,
+              1366.4210341530056,
+              1352.2060175675674,
+              1358.3857932432434,
+              1354.1187243243244
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "inherited",
+        "params": {
+          "depth": "16",
+          "hierarchyDepth": "4"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 219.44582067224582,
+            "min": 139.57077300126903,
+            "q1": 158.01065776353278,
+            "median": 219.7884686264822,
+            "q3": 273.22175523399017,
+            "max": 306.63744873595505,
+            "samples": [
+              306.63744873595505,
+              273.22175523399017,
+              219.7884686264822,
+              158.01065776353278,
+              139.57077300126903
+            ],
+            "confidence99_9": [
+              -57.2159853540395,
+              496.10762669853113
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 43.82399544897723,
+            "min": 43.74798411312849,
+            "q1": 43.75101174057263,
+            "median": 43.792265494064246,
+            "q3": 43.89626408883427,
+            "max": 43.932451808286515,
+            "samples": [
+              43.89626408883427,
+              43.74798411312849,
+              43.932451808286515,
+              43.792265494064246,
+              43.75101174057263
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 225.98005766334572,
+            "min": 224.17075758928573,
+            "q1": 224.392865625,
+            "median": 224.4925919642857,
+            "q3": 227.86938632246378,
+            "max": 228.97468681569342,
+            "samples": [
+              228.97468681569342,
+              224.17075758928573,
+              224.4925919642857,
+              224.392865625,
+              227.86938632246378
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "inherited",
+        "params": {
+          "depth": "256",
+          "hierarchyDepth": "32"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 2862.3965265397687,
+            "min": 2008.6419818548386,
+            "q1": 2048.7767338709677,
+            "median": 2649.8753645833335,
+            "q3": 3646.626599264706,
+            "max": 3958.061953125,
+            "samples": [
+              3958.061953125,
+              3646.626599264706,
+              2649.8753645833335,
+              2008.6419818548386,
+              2048.7767338709677
+            ],
+            "confidence99_9": [
+              -609.3485921369042,
+              6334.141645216441
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 790.4996485281824,
+            "min": 788.5148128930819,
+            "q1": 789.1883498427674,
+            "median": 791.1776178797468,
+            "q3": 791.359838607595,
+            "max": 792.2576234177214,
+            "samples": [
+              791.1776178797468,
+              792.2576234177214,
+              789.1883498427674,
+              788.5148128930819,
+              791.359838607595
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 3160.5151182389936,
+            "min": 3156.210632075472,
+            "q1": 3159.2672138364783,
+            "median": 3160.080386792453,
+            "q3": 3163.3252358490563,
+            "max": 3163.6921226415093,
+            "samples": [
+              3163.3252358490563,
+              3163.6921226415093,
+              3159.2672138364783,
+              3160.080386792453,
+              3156.210632075472
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "inherited",
+        "params": {
+          "depth": "256",
+          "hierarchyDepth": "4"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 2019.6832679795614,
+            "min": 1538.494015625,
+            "q1": 1589.5025753205127,
+            "median": 1713.0803524305556,
+            "q3": 2490.944065,
+            "max": 2766.395331521739,
+            "samples": [
+              2766.395331521739,
+              2490.944065,
+              1713.0803524305556,
+              1589.5025753205127,
+              1538.494015625
+            ],
+            "confidence99_9": [
+              -167.2905507423368,
+              4206.65708670146
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 156.6975809277303,
+            "min": 155.51626902846536,
+            "q1": 156.22653604579207,
+            "median": 156.90122546875,
+            "q3": 156.92066765625,
+            "max": 157.92320643939394,
+            "samples": [
+              156.90122546875,
+              156.92066765625,
+              156.22653604579207,
+              157.92320643939394,
+              155.51626902846536
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 2000.5270595555555,
+            "min": 1987.7886646825395,
+            "q1": 1994.756863095238,
+            "median": 2003.2701459999998,
+            "q3": 2007.189026,
+            "max": 2009.630598,
+            "samples": [
+              2007.189026,
+              1987.7886646825395,
+              1994.756863095238,
+              2003.2701459999998,
+              2009.630598
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "literal",
+        "params": {},
+        "payload_batch_size": 256,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 1.0886409377343012,
+            "min": 1.0515718032910628,
+            "q1": 1.0546722881610577,
+            "median": 1.0632270986519607,
+            "q3": 1.0724679802955666,
+            "max": 1.201265518271858,
+            "samples": [
+              1.201265518271858,
+              1.0724679802955666,
+              1.0546722881610577,
+              1.0515718032910628,
+              1.0632270986519607
+            ],
+            "confidence99_9": [
+              0.8441954479293684,
+              1.3330864275392338
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 256
+            }
+          },
+          "CPython": {
+            "mean": 0.06406672953757919,
+            "min": 0.06397469546000163,
+            "q1": 0.0640302480697632,
+            "median": 0.06403265794118244,
+            "q3": 0.06413797317633108,
+            "max": 0.0641580730406176,
+            "samples": [
+              0.06397469546000163,
+              0.0640302480697632,
+              0.0641580730406176,
+              0.06403265794118244,
+              0.06413797317633108
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 2.5641391373760056,
+            "min": 0.8791810079595094,
+            "q1": 0.9980963468590561,
+            "median": 1.5094233081958912,
+            "q3": 4.164268151595745,
+            "max": 5.269726872269826,
+            "samples": [
+              5.269726872269826,
+              4.164268151595745,
+              1.5094233081958912,
+              0.8791810079595094,
+              0.9980963468590561
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "manyArguments",
+        "params": {
+          "argumentCount": "0",
+          "callCount": "256"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 475.96582968579094,
+            "min": 436.69370199275363,
+            "q1": 469.41675048828125,
+            "median": 470.1097333984375,
+            "q3": 498.4862283057851,
+            "max": 505.1227342436975,
+            "samples": [
+              505.1227342436975,
+              470.1097333984375,
+              498.4862283057851,
+              469.41675048828125,
+              436.69370199275363
+            ],
+            "confidence99_9": [
+              370.9205429210678,
+              581.0111164505141
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 18.74419795974075,
+            "min": 18.667891183035714,
+            "q1": 18.73155943080357,
+            "median": 18.739118136160716,
+            "q3": 18.751087332589286,
+            "max": 18.831333716114457,
+            "samples": [
+              18.667891183035714,
+              18.73155943080357,
+              18.751087332589286,
+              18.831333716114457,
+              18.739118136160716
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 198.03668199353558,
+            "min": 196.92265762578617,
+            "q1": 196.99871835691826,
+            "median": 197.9784414556962,
+            "q3": 198.756285403481,
+            "max": 199.5273071257962,
+            "samples": [
+              198.756285403481,
+              199.5273071257962,
+              196.99871835691826,
+              197.9784414556962,
+              196.92265762578617
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "manyArguments",
+        "params": {
+          "argumentCount": "16",
+          "callCount": "256"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 1924.7249908347258,
+            "min": 1652.3470049342104,
+            "q1": 1741.3944583333334,
+            "median": 1793.6194142857144,
+            "q3": 2092.749747916667,
+            "max": 2343.5143287037035,
+            "samples": [
+              2092.749747916667,
+              2343.5143287037035,
+              1741.3944583333334,
+              1793.6194142857144,
+              1652.3470049342104
+            ],
+            "confidence99_9": [
+              821.0513213835786,
+              3028.398660285873
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 26.048978662079193,
+            "min": 25.935855003104304,
+            "q1": 26.044876614583334,
+            "median": 26.0456746875,
+            "q3": 26.107450416666666,
+            "max": 26.111036588541666,
+            "samples": [
+              26.0456746875,
+              26.044876614583334,
+              25.935855003104304,
+              26.107450416666666,
+              26.111036588541666
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 316.63547218861356,
+            "min": 314.41502952261305,
+            "q1": 315.107783125,
+            "median": 317.62669823232324,
+            "q3": 317.8862815656566,
+            "max": 318.1415684974748,
+            "samples": [
+              317.62669823232324,
+              315.107783125,
+              318.1415684974748,
+              314.41502952261305,
+              317.8862815656566
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "manyArguments",
+        "params": {
+          "argumentCount": "4",
+          "callCount": "256"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 882.9201666180837,
+            "min": 784.6962275641025,
+            "q1": 804.2097779605264,
+            "median": 805.136458881579,
+            "q3": 805.8826924342105,
+            "max": 1214.67567625,
+            "samples": [
+              1214.67567625,
+              805.136458881579,
+              805.8826924342105,
+              784.6962275641025,
+              804.2097779605264
+            ],
+            "confidence99_9": [
+              167.9797471689277,
+              1597.8605860672396
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 20.42571362219024,
+            "min": 20.349492940266927,
+            "q1": 20.373953043619792,
+            "median": 20.39737870279948,
+            "q3": 20.40690203857422,
+            "max": 20.60084138569079,
+            "samples": [
+              20.373953043619792,
+              20.40690203857422,
+              20.39737870279948,
+              20.60084138569079,
+              20.349492940266927
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 236.32585111713945,
+            "min": 235.49752960526314,
+            "q1": 235.75459069548873,
+            "median": 236.60338980263157,
+            "q3": 236.63722133458648,
+            "max": 237.13652414772727,
+            "samples": [
+              235.75459069548873,
+              237.13652414772727,
+              236.63722133458648,
+              236.60338980263157,
+              235.49752960526314
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "manyArguments",
+        "params": {
+          "argumentCount": "64",
+          "callCount": "256"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 8414.5170953125,
+            "min": 8047.06075,
+            "q1": 8374.0246796875,
+            "median": 8395.6643046875,
+            "q3": 8461.1545703125,
+            "max": 8794.681171875,
+            "samples": [
+              8374.0246796875,
+              8395.6643046875,
+              8461.1545703125,
+              8047.06075,
+              8794.681171875
+            ],
+            "confidence99_9": [
+              7388.988954749259,
+              9440.04523587574
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 87.54978612081005,
+            "min": 87.34989883030727,
+            "q1": 87.35383205307262,
+            "median": 87.55733606843576,
+            "q3": 87.74347390013966,
+            "max": 87.74438975209497,
+            "samples": [
+              87.74347390013966,
+              87.55733606843576,
+              87.35383205307262,
+              87.34989883030727,
+              87.74438975209497
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 660.6282663099182,
+            "min": 653.4177161458334,
+            "q1": 659.899319736842,
+            "median": 660.4216934210526,
+            "q3": 661.6986527777777,
+            "max": 667.703949468085,
+            "samples": [
+              659.899319736842,
+              667.703949468085,
+              661.6986527777777,
+              660.4216934210526,
+              653.4177161458334
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "methodSend",
+        "params": {},
+        "payload_batch_size": 256,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 11.285244971940738,
+            "min": 8.932348171657987,
+            "q1": 8.935646023220485,
+            "median": 8.938770317925346,
+            "q3": 12.163743399784483,
+            "max": 17.455716947115384,
+            "samples": [
+              17.455716947115384,
+              12.163743399784483,
+              8.935646023220485,
+              8.938770317925346,
+              8.932348171657987
+            ],
+            "confidence99_9": [
+              -3.046338287761847,
+              25.616828231643325
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 256
+            }
+          },
+          "CPython": {
+            "mean": 6.027722806677741,
+            "min": 5.917162132906626,
+            "q1": 5.927521419270834,
+            "median": 5.929027325994318,
+            "q3": 5.980605456840702,
+            "max": 6.384297698376225,
+            "samples": [
+              6.384297698376225,
+              5.929027325994318,
+              5.917162132906626,
+              5.980605456840702,
+              5.927521419270834
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 597.8789422082637,
+            "min": 500.06941071428577,
+            "q1": 591.23484375,
+            "median": 615.5699926470588,
+            "q3": 627.504779375,
+            "max": 655.0156845549739,
+            "samples": [
+              500.06941071428577,
+              591.23484375,
+              627.504779375,
+              615.5699926470588,
+              655.0156845549739
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "mixinContributions",
+        "params": {
+          "callCount": "256",
+          "contributionCount": "1"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 530.1908195978276,
+            "min": 474.89942919921873,
+            "q1": 491.1486382113821,
+            "median": 512.6673506355933,
+            "q3": 536.4687759955752,
+            "max": 635.7699039473684,
+            "samples": [
+              635.7699039473684,
+              491.1486382113821,
+              512.6673506355933,
+              536.4687759955752,
+              474.89942919921873
+            ],
+            "confidence99_9": [
+              286.0856754470931,
+              774.2959637485621
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          }
+        }
+      },
+      {
+        "name": "mixinContributions",
+        "params": {
+          "callCount": "256",
+          "contributionCount": "32"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 1391.435341577381,
+            "min": 1291.53675390625,
+            "q1": 1296.7437252604166,
+            "median": 1302.4756263020834,
+            "q3": 1308.3036184895834,
+            "max": 1758.1169839285715,
+            "samples": [
+              1758.1169839285715,
+              1308.3036184895834,
+              1302.4756263020834,
+              1296.7437252604166,
+              1291.53675390625
+            ],
+            "confidence99_9": [
+              601.7566782946476,
+              2181.1140048601146
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          }
+        }
+      },
+      {
+        "name": "mixinContributions",
+        "params": {
+          "callCount": "256",
+          "contributionCount": "8"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 751.0118420484915,
+            "min": 655.8342788978495,
+            "q1": 656.6382251344086,
+            "median": 665.1701324728261,
+            "q3": 676.3732680555555,
+            "max": 1101.043305681818,
+            "samples": [
+              1101.043305681818,
+              665.1701324728261,
+              656.6382251344086,
+              655.8342788978495,
+              676.3732680555555
+            ],
+            "confidence99_9": [
+              -3.131854718553427,
+              1505.1555388155366
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          }
+        }
+      },
+      {
+        "name": "mutual",
+        "params": {
+          "depth": "16"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 148.1385506685685,
+            "min": 97.29124791280148,
+            "q1": 100.03928707224334,
+            "median": 167.26763315217391,
+            "q3": 174.25771792763157,
+            "max": 201.83686727799227,
+            "samples": [
+              201.83686727799227,
+              174.25771792763157,
+              167.26763315217391,
+              100.03928707224334,
+              97.29124791280148
+            ],
+            "confidence99_9": [
+              -32.7867034419111,
+              329.06380477904816
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 15.95917753757872,
+            "min": 15.909303417174797,
+            "q1": 15.919919270833335,
+            "median": 15.936956697789634,
+            "q3": 15.982690659933944,
+            "max": 16.047017642161887,
+            "samples": [
+              15.982690659933944,
+              16.047017642161887,
+              15.909303417174797,
+              15.919919270833335,
+              15.936956697789634
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 179.71578427307975,
+            "min": 174.40263645833332,
+            "q1": 178.59676946428573,
+            "median": 181.0061732297688,
+            "q3": 181.33155328757226,
+            "max": 183.24178892543858,
+            "samples": [
+              181.33155328757226,
+              178.59676946428573,
+              181.0061732297688,
+              174.40263645833332,
+              183.24178892543858
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "mutual",
+        "params": {
+          "depth": "256"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 1698.488096037769,
+            "min": 1441.226136627907,
+            "q1": 1485.7157723214286,
+            "median": 1581.995280448718,
+            "q3": 1710.423489864865,
+            "max": 2273.079800925926,
+            "samples": [
+              1581.995280448718,
+              2273.079800925926,
+              1710.423489864865,
+              1441.226136627907,
+              1485.7157723214286
+            ],
+            "confidence99_9": [
+              399.32449664133856,
+              2997.6516954341996
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 131.11219821910012,
+            "min": 130.58937825520832,
+            "q1": 130.92884466145833,
+            "median": 131.14030638020833,
+            "q3": 131.28603033854165,
+            "max": 131.61643146008404,
+            "samples": [
+              130.92884466145833,
+              131.14030638020833,
+              131.61643146008404,
+              130.58937825520832,
+              131.28603033854165
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 1941.178771812761,
+            "min": 1933.1259307692308,
+            "q1": 1938.7756763565892,
+            "median": 1941.545792635659,
+            "q3": 1945.7415872093022,
+            "max": 1946.7048720930234,
+            "samples": [
+              1933.1259307692308,
+              1945.7415872093022,
+              1938.7756763565892,
+              1946.7048720930234,
+              1941.545792635659
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "partners",
+        "params": {
+          "depth": "16",
+          "partnerCount": "3"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 269.6816145162644,
+            "min": 175.8675404874214,
+            "q1": 230.46241089876034,
+            "median": 287.32519716494846,
+            "q3": 310.8338651129944,
+            "max": 343.91905891719745,
+            "samples": [
+              343.91905891719745,
+              310.8338651129944,
+              287.32519716494846,
+              230.46241089876034,
+              175.8675404874214
+            ],
+            "confidence99_9": [
+              12.413437475610806,
+              526.949791556918
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 24.683392573398066,
+            "min": 24.575354854559748,
+            "q1": 24.639056505503145,
+            "median": 24.65565254029088,
+            "q3": 24.715307021422955,
+            "max": 24.831591945213606,
+            "samples": [
+              24.715307021422955,
+              24.575354854559748,
+              24.831591945213606,
+              24.639056505503145,
+              24.65565254029088
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 254.73953752905982,
+            "min": 248.11284151785713,
+            "q1": 250.61557224999999,
+            "median": 255.7901219512195,
+            "q3": 258.6355501033058,
+            "max": 260.5436018229167,
+            "samples": [
+              250.61557224999999,
+              248.11284151785713,
+              255.7901219512195,
+              258.6355501033058,
+              260.5436018229167
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "partners",
+        "params": {
+          "depth": "16",
+          "partnerCount": "8"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 354.3373564689812,
+            "min": 218.32586264258555,
+            "q1": 305.6194090608466,
+            "median": 386.92610726351353,
+            "q3": 406.21299230072464,
+            "max": 454.6024110772358,
+            "samples": [
+              454.6024110772358,
+              406.21299230072464,
+              386.92610726351353,
+              305.6194090608466,
+              218.32586264258555
+            ],
+            "confidence99_9": [
+              -4.200575941928662,
+              712.8752888798911
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 30.617568591587634,
+            "min": 30.419013293362404,
+            "q1": 30.597445892333983,
+            "median": 30.61772088623047,
+            "q3": 30.6940634765625,
+            "max": 30.75959940944882,
+            "samples": [
+              30.75959940944882,
+              30.61772088623047,
+              30.6940634765625,
+              30.419013293362404,
+              30.597445892333983
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 295.5575995284041,
+            "min": 284.74363522727276,
+            "q1": 287.66361639908257,
+            "median": 298.53795625,
+            "q3": 303.1493082729469,
+            "max": 303.69348149271843,
+            "samples": [
+              303.69348149271843,
+              284.74363522727276,
+              298.53795625,
+              303.1493082729469,
+              287.66361639908257
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "partners",
+        "params": {
+          "depth": "256",
+          "partnerCount": "3"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 2183.3796271353276,
+            "min": 1862.86184375,
+            "q1": 1928.41075,
+            "median": 2291.4706574074075,
+            "q3": 2346.0395120192306,
+            "max": 2488.1153725,
+            "samples": [
+              2346.0395120192306,
+              2291.4706574074075,
+              2488.1153725,
+              1862.86184375,
+              1928.41075
+            ],
+            "confidence99_9": [
+              1131.0426696779696,
+              3235.7165845926856
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 135.79449743534482,
+            "min": 135.1106998922414,
+            "q1": 135.3144028825431,
+            "median": 135.75626252693965,
+            "q3": 136.38963532608696,
+            "max": 136.40148654891303,
+            "samples": [
+              135.1106998922414,
+              135.3144028825431,
+              136.40148654891303,
+              135.75626252693965,
+              136.38963532608696
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 1915.4139629799906,
+            "min": 1903.0884981060606,
+            "q1": 1912.2989923664122,
+            "median": 1919.9319408396946,
+            "q3": 1920.8424694656487,
+            "max": 1920.9079141221375,
+            "samples": [
+              1920.9079141221375,
+              1920.8424694656487,
+              1912.2989923664122,
+              1919.9319408396946,
+              1903.0884981060606
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "partners",
+        "params": {
+          "depth": "256",
+          "partnerCount": "8"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 2246.3008225038475,
+            "min": 1775.3459160714285,
+            "q1": 1874.9299772727272,
+            "median": 2297.8348171296298,
+            "q3": 2478.5193225,
+            "max": 2804.8740795454546,
+            "samples": [
+              2478.5193225,
+              2297.8348171296298,
+              2804.8740795454546,
+              1874.9299772727272,
+              1775.3459160714285
+            ],
+            "confidence99_9": [
+              603.2214288979765,
+              3889.3802161097183
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 141.1484041461185,
+            "min": 139.85153250558037,
+            "q1": 140.3298011997768,
+            "median": 141.22698423423424,
+            "q3": 141.88020861486484,
+            "max": 142.45349417613636,
+            "samples": [
+              141.88020861486484,
+              142.45349417613636,
+              141.22698423423424,
+              139.85153250558037,
+              140.3298011997768
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 1973.3916570170427,
+            "min": 1965.084224609375,
+            "q1": 1965.1012421875,
+            "median": 1970.5781161417324,
+            "q3": 1971.753029527559,
+            "max": 1994.4416726190475,
+            "samples": [
+              1994.4416726190475,
+              1970.5781161417324,
+              1971.753029527559,
+              1965.084224609375,
+              1965.1012421875
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "receiverShapes",
+        "params": {
+          "callCount": "256",
+          "receiverClasses": "1"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 810.9189087639058,
+            "min": 670.3870631868132,
+            "q1": 680.5525826388889,
+            "median": 727.8524895833333,
+            "q3": 752.2138271604938,
+            "max": 1223.58858125,
+            "samples": [
+              1223.58858125,
+              752.2138271604938,
+              670.3870631868132,
+              680.5525826388889,
+              727.8524895833333
+            ],
+            "confidence99_9": [
+              -86.75851619922503,
+              1708.5963337270368
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 27.013522834051724,
+            "min": 26.94206713362069,
+            "q1": 26.998086072198276,
+            "median": 27.01812521551724,
+            "q3": 27.02493682650862,
+            "max": 27.08439892241379,
+            "samples": [
+              27.08439892241379,
+              26.998086072198276,
+              27.02493682650862,
+              27.01812521551724,
+              26.94206713362069
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 264.27728259669027,
+            "min": 260.60831380208333,
+            "q1": 262.57897578125,
+            "median": 264.3609716386555,
+            "q3": 266.2053376588983,
+            "max": 267.6328141025641,
+            "samples": [
+              262.57897578125,
+              266.2053376588983,
+              264.3609716386555,
+              267.6328141025641,
+              260.60831380208333
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "receiverShapes",
+        "params": {
+          "callCount": "256",
+          "receiverClasses": "16"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 1082.8173454833448,
+            "min": 947.5196413461539,
+            "q1": 950.8181528846154,
+            "median": 963.495166015625,
+            "q3": 971.6515476190476,
+            "max": 1580.6022195512821,
+            "samples": [
+              1580.6022195512821,
+              971.6515476190476,
+              950.8181528846154,
+              963.495166015625,
+              947.5196413461539
+            ],
+            "confidence99_9": [
+              10.6452269485128,
+              2154.9894640181765
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 134.0000763651407,
+            "min": 132.16146783088234,
+            "q1": 133.39219385593222,
+            "median": 134.00170980235043,
+            "q3": 134.20227283653847,
+            "max": 136.24273749999998,
+            "samples": [
+              136.24273749999998,
+              134.20227283653847,
+              132.16146783088234,
+              134.00170980235043,
+              133.39219385593222
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 1733.5934018123687,
+            "min": 1534.9485644171777,
+            "q1": 1583.9590268987342,
+            "median": 1659.5438841059604,
+            "q3": 1904.176168560606,
+            "max": 1985.339365079365,
+            "samples": [
+              1985.339365079365,
+              1904.176168560606,
+              1534.9485644171777,
+              1583.9590268987342,
+              1659.5438841059604
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "receiverShapes",
+        "params": {
+          "callCount": "256",
+          "receiverClasses": "4"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 832.9181206373644,
+            "min": 697.33884375,
+            "q1": 701.0432399425288,
+            "median": 733.6944262048193,
+            "q3": 804.6722532894737,
+            "max": 1227.84184,
+            "samples": [
+              1227.84184,
+              804.6722532894737,
+              701.0432399425288,
+              697.33884375,
+              733.6944262048193
+            ],
+            "confidence99_9": [
+              -33.221383360289906,
+              1699.0576246350188
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 54.23368084081657,
+            "min": 54.034941810344826,
+            "q1": 54.25086842672414,
+            "median": 54.26434125434028,
+            "q3": 54.29498388671875,
+            "max": 54.32326882595486,
+            "samples": [
+              54.29498388671875,
+              54.034941810344826,
+              54.25086842672414,
+              54.32326882595486,
+              54.26434125434028
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 462.97315142559876,
+            "min": 438.31676879370633,
+            "q1": 457.6041715328467,
+            "median": 460.1476034007353,
+            "q3": 477.00135700757573,
+            "max": 481.7958563931298,
+            "samples": [
+              457.6041715328467,
+              481.7958563931298,
+              438.31676879370633,
+              460.1476034007353,
+              477.00135700757573
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "simple",
+        "params": {
+          "depth": "16"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 143.5135636270922,
+            "min": 94.36852151268116,
+            "q1": 102.86792571218075,
+            "median": 152.41821257163323,
+            "q3": 177.04095008250826,
+            "max": 190.87220825645755,
+            "samples": [
+              190.87220825645755,
+              177.04095008250826,
+              152.41821257163323,
+              102.86792571218075,
+              94.36852151268116
+            ],
+            "confidence99_9": [
+              -23.374457960837333,
+              310.4015852150217
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 15.48200868460435,
+            "min": 15.382877792358398,
+            "q1": 15.433259950172243,
+            "median": 15.448548320620079,
+            "q3": 15.570340851314484,
+            "max": 15.575016508556548,
+            "samples": [
+              15.433259950172243,
+              15.382877792358398,
+              15.570340851314484,
+              15.575016508556548,
+              15.448548320620079
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 178.478329331656,
+            "min": 175.16896752793295,
+            "q1": 177.26743326271185,
+            "median": 177.29058033192092,
+            "q3": 178.6892342857143,
+            "max": 183.97543124999999,
+            "samples": [
+              178.6892342857143,
+              183.97543124999999,
+              177.26743326271185,
+              177.29058033192092,
+              175.16896752793295
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "simple",
+        "params": {
+          "depth": "256"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 1733.3654679067463,
+            "min": 1491.5657098214285,
+            "q1": 1492.4781696428572,
+            "median": 1711.1167430555556,
+            "q3": 1730.5823576388889,
+            "max": 2241.084359375,
+            "samples": [
+              1711.1167430555556,
+              2241.084359375,
+              1730.5823576388889,
+              1491.5657098214285,
+              1492.4781696428572
+            ],
+            "confidence99_9": [
+              554.7050651819429,
+              2912.02587063155
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 128.95606251926398,
+            "min": 128.18581442110656,
+            "q1": 128.24693954918033,
+            "median": 129.37467858987603,
+            "q3": 129.42551252582643,
+            "max": 129.54736751033056,
+            "samples": [
+              128.24693954918033,
+              128.18581442110656,
+              129.42551252582643,
+              129.37467858987603,
+              129.54736751033056
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 1937.064233822868,
+            "min": 1918.868070610687,
+            "q1": 1926.4597115384615,
+            "median": 1931.8772846153847,
+            "q3": 1941.9233992248062,
+            "max": 1966.192703125,
+            "samples": [
+              1926.4597115384615,
+              1941.9233992248062,
+              1966.192703125,
+              1931.8772846153847,
+              1918.868070610687
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "superChain",
+        "params": {
+          "depth": "16",
+          "hierarchyDepth": "32"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 3827.7659465554375,
+            "min": 2732.9873532608694,
+            "q1": 2844.0965397727273,
+            "median": 2991.5414166666665,
+            "q3": 4977.851485576923,
+            "max": 5592.3529375,
+            "samples": [
+              5592.3529375,
+              4977.851485576923,
+              2991.5414166666665,
+              2732.9873532608694,
+              2844.0965397727273
+            ],
+            "confidence99_9": [
+              -1374.837743700437,
+              9030.369636811312
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 860.9240264005668,
+            "min": 858.4481121575342,
+            "q1": 859.3056506849315,
+            "median": 860.7168904109589,
+            "q3": 860.9023313356164,
+            "max": 865.2471474137932,
+            "samples": [
+              859.3056506849315,
+              865.2471474137932,
+              860.7168904109589,
+              860.9023313356164,
+              858.4481121575342
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 3541.0069508141046,
+            "min": 3524.4504788732393,
+            "q1": 3526.110021126761,
+            "median": 3546.228176056338,
+            "q3": 3553.3277375886523,
+            "max": 3554.918340425532,
+            "samples": [
+              3524.4504788732393,
+              3526.110021126761,
+              3546.228176056338,
+              3554.918340425532,
+              3553.3277375886523
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "superChain",
+        "params": {
+          "depth": "16",
+          "hierarchyDepth": "4"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 611.4562668728951,
+            "min": 432.36425314748203,
+            "q1": 447.698414943609,
+            "median": 609.192662627551,
+            "q3": 747.9186,
+            "max": 820.1074036458333,
+            "samples": [
+              820.1074036458333,
+              747.9186,
+              609.192662627551,
+              447.698414943609,
+              432.36425314748203
+            ],
+            "confidence99_9": [
+              -58.41460637776731,
+              1281.3271401235575
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 61.39068084120863,
+            "min": 61.17425006103515,
+            "q1": 61.19113488769531,
+            "median": 61.48026196289062,
+            "q3": 61.50426110839844,
+            "max": 61.60349618602362,
+            "samples": [
+              61.19113488769531,
+              61.17425006103515,
+              61.48026196289062,
+              61.60349618602362,
+              61.50426110839844
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 490.7660467773438,
+            "min": 489.1161157226563,
+            "q1": 490.3613857421875,
+            "median": 491.2971401367187,
+            "q3": 491.4813828125,
+            "max": 491.57420947265626,
+            "samples": [
+              491.4813828125,
+              491.2971401367187,
+              489.1161157226563,
+              491.57420947265626,
+              490.3613857421875
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "superChain",
+        "params": {
+          "depth": "256",
+          "hierarchyDepth": "32"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 213685.00755000004,
+            "min": 202738.162125,
+            "q1": 208133.1760625,
+            "median": 208728.9219375,
+            "q3": 215657.1495,
+            "max": 233167.628125,
+            "samples": [
+              233167.628125,
+              202738.162125,
+              208133.1760625,
+              215657.1495,
+              208728.9219375
+            ],
+            "confidence99_9": [
+              168177.26696817577,
+              259192.7481318243
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 3747.594317164179,
+            "min": 3741.5668880597013,
+            "q1": 3742.9240447761194,
+            "median": 3745.4271902985074,
+            "q3": 3750.8979291044775,
+            "max": 3757.1555335820894,
+            "samples": [
+              3741.5668880597013,
+              3757.1555335820894,
+              3745.4271902985074,
+              3750.8979291044775,
+              3742.9240447761194
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 37003.55361640212,
+            "min": 36796.297321428574,
+            "q1": 36879.24146428572,
+            "median": 37072.10725925926,
+            "q3": 37130.851444444444,
+            "max": 37139.27059259259,
+            "samples": [
+              36879.24146428572,
+              37072.10725925926,
+              37130.851444444444,
+              36796.297321428574,
+              37139.27059259259
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      },
+      {
+        "name": "superChain",
+        "params": {
+          "depth": "256",
+          "hierarchyDepth": "4"
+        },
+        "payload_batch_size": 16,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 10738.946808035715,
+            "min": 9942.124125,
+            "q1": 10091.674696428572,
+            "median": 11106.667197916666,
+            "q3": 11211.852166666667,
+            "max": 11342.415854166667,
+            "samples": [
+              11211.852166666667,
+              10091.674696428572,
+              11106.667197916666,
+              9942.124125,
+              11342.415854166667
+            ],
+            "confidence99_9": [
+              8172.470077883257,
+              13305.423538188174
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "prepared-runtime-v1",
+              "scoreNormalization": "per-payload-operation",
+              "payloadBatchSize": 16
+            }
+          },
+          "CPython": {
+            "mean": 479.28160248091604,
+            "min": 477.8987900763359,
+            "q1": 478.59091841603055,
+            "median": 478.89018940839696,
+            "q3": 480.32479437022903,
+            "max": 480.7033201335878,
+            "samples": [
+              480.7033201335878,
+              477.8987900763359,
+              478.59091841603055,
+              478.89018940839696,
+              480.32479437022903
+            ],
+            "runtime": {
+              "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+              "label": "CPython",
+              "guest_jit": false,
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          },
+          "GraalPy": {
+            "mean": 6110.752461389505,
+            "min": 6074.871121212121,
+            "q1": 6086.781539393939,
+            "median": 6128.2907378048785,
+            "q3": 6131.69262195122,
+            "max": 6132.126286585365,
+            "samples": [
+              6132.126286585365,
+              6074.871121212121,
+              6131.69262195122,
+              6086.781539393939,
+              6128.2907378048785
+            ],
+            "runtime": {
+              "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+              "label": "graalpy-jvm-interpreter",
+              "guest_jit": false,
+              "engine_implementation": "Interpreted",
+              "engine_options": {
+                "engine.WarnInterpreterOnly": "false"
+              },
+              "java_version": "23.0.2+7",
+              "java_vm": "OpenJDK 64-Bit Server VM",
+              "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+              "jvm_args": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Xss128m"
+              ],
+              "platform": "Linux-7.0.0-1017-azure-x86_64-with",
+              "gc_enabled": true,
+              "warmups": 3,
+              "iterations": 5,
+              "seconds": 1.0
+            }
+          }
+        }
+      }
+    ],
+    "diagnostics": [
+      {
+        "name": "machineSetup",
+        "params": {},
+        "timing_scope": "runtime-setup-v1",
+        "native_gc": null,
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 0.013174887840590352,
+            "min": 0.013133227444998102,
+            "q1": 0.013158061933798537,
+            "median": 0.013158291595622635,
+            "q3": 0.01316351296826282,
+            "max": 0.013261345260269657,
+            "samples": [
+              0.01316351296826282,
+              0.013261345260269657,
+              0.013158061933798537,
+              0.013158291595622635,
+              0.013133227444998102
+            ],
+            "confidence99_9": [
+              0.012983336125502414,
+              0.01336643955567829
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "runtime-setup-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "seedSetup",
+        "params": {},
+        "timing_scope": "runtime-setup-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 13.47681754556593,
+            "min": 13.42798037294097,
+            "q1": 13.431490552627697,
+            "median": 13.458923791846562,
+            "q3": 13.46757265590283,
+            "max": 13.598120354511595,
+            "samples": [
+              13.46757265590283,
+              13.458923791846562,
+              13.42798037294097,
+              13.598120354511595,
+              13.431490552627697
+            ],
+            "confidence99_9": [
+              13.20755019292009,
+              13.746084898211771
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "runtime-setup-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "worldSetup",
+        "params": {},
+        "timing_scope": "runtime-setup-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 15.617889527188069,
+            "min": 15.572840799888041,
+            "q1": 15.578314426249921,
+            "median": 15.628865038439903,
+            "q3": 15.646389952452452,
+            "max": 15.663037418910026,
+            "samples": [
+              15.663037418910026,
+              15.572840799888041,
+              15.578314426249921,
+              15.628865038439903,
+              15.646389952452452
+            ],
+            "confidence99_9": [
+              15.46187137739372,
+              15.773907676982418
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "runtime-setup-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "closureSend",
+        "params": {},
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 17.453001973093173,
+            "min": 16.781627562833464,
+            "q1": 16.815128545249742,
+            "median": 16.971752710429428,
+            "q3": 17.141467290360165,
+            "max": 19.555033756593083,
+            "samples": [
+              19.555033756593083,
+              16.971752710429428,
+              17.141467290360165,
+              16.815128545249742,
+              16.781627562833464
+            ],
+            "confidence99_9": [
+              12.89489892125632,
+              22.011105024930025
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "families",
+        "params": {
+          "depth": "16",
+          "nestingDepth": "1"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 662.1132432610623,
+            "min": 462.3329594095941,
+            "q1": 599.3501407185629,
+            "median": 691.7190546334716,
+            "q3": 708.9714691708009,
+            "max": 848.1925923728813,
+            "samples": [
+              848.1925923728813,
+              708.9714691708009,
+              691.7190546334716,
+              599.3501407185629,
+              462.3329594095941
+            ],
+            "confidence99_9": [
+              112.30287427038297,
+              1211.9236122517416
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "families",
+        "params": {
+          "depth": "16",
+          "nestingDepth": "8"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 1092.054837071243,
+            "min": 636.4225903307888,
+            "q1": 838.1909647946354,
+            "median": 1176.503687426557,
+            "q3": 1327.2245753968255,
+            "max": 1481.9323674074074,
+            "samples": [
+              1481.9323674074074,
+              1327.2245753968255,
+              1176.503687426557,
+              838.1909647946354,
+              636.4225903307888
+            ],
+            "confidence99_9": [
+              -250.8327525297086,
+              2434.9424266721944
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "families",
+        "params": {
+          "depth": "256",
+          "nestingDepth": "1"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 3870.8571903481425,
+            "min": 2835.818016997167,
+            "q1": 2935.791211143695,
+            "median": 4194.3974644351465,
+            "q3": 4393.902478070176,
+            "max": 4994.376781094527,
+            "samples": [
+              4994.376781094527,
+              4194.3974644351465,
+              4393.902478070176,
+              2935.791211143695,
+              2835.818016997167
+            ],
+            "confidence99_9": [
+              224.82123486463888,
+              7516.893145831646
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "families",
+        "params": {
+          "depth": "256",
+          "nestingDepth": "8"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 7246.727467957588,
+            "min": 5009.77369,
+            "q1": 5149.937676923077,
+            "median": 8141.611774193549,
+            "q3": 8696.076620689655,
+            "max": 9236.237577981652,
+            "samples": [
+              9236.237577981652,
+              8696.076620689655,
+              8141.611774193549,
+              5149.937676923077,
+              5009.77369
+            ],
+            "confidence99_9": [
+              -516.8981446500547,
+              15010.35308056523
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "inherited",
+        "params": {
+          "depth": "16",
+          "hierarchyDepth": "32"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 645.8423212019362,
+            "min": 409.6961398773006,
+            "q1": 417.31074718397997,
+            "median": 551.1823133259912,
+            "q3": 796.0565298329356,
+            "max": 1054.9658757894738,
+            "samples": [
+              1054.9658757894738,
+              796.0565298329356,
+              551.1823133259912,
+              417.31074718397997,
+              409.6961398773006
+            ],
+            "confidence99_9": [
+              -420.7558248636882,
+              1712.4404672675605
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "inherited",
+        "params": {
+          "depth": "16",
+          "hierarchyDepth": "4"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 251.44448654959382,
+            "min": 154.29083490057036,
+            "q1": 192.3744935638809,
+            "median": 214.84545940721648,
+            "q3": 317.41283143219266,
+            "max": 378.29881344410876,
+            "samples": [
+              378.29881344410876,
+              317.41283143219266,
+              214.84545940721648,
+              192.3744935638809,
+              154.29083490057036
+            ],
+            "confidence99_9": [
+              -107.26230837689917,
+              610.1512814760868
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "inherited",
+        "params": {
+          "depth": "256",
+          "hierarchyDepth": "32"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 2704.196836147011,
+            "min": 1987.0631825396824,
+            "q1": 1992.784498007968,
+            "median": 1993.4002047713718,
+            "q3": 3574.786950177936,
+            "max": 3972.9493452380952,
+            "samples": [
+              3972.9493452380952,
+              3574.786950177936,
+              1993.4002047713718,
+              1987.0631825396824,
+              1992.784498007968
+            ],
+            "confidence99_9": [
+              -1094.7322904533016,
+              6503.125962747323
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "inherited",
+        "params": {
+          "depth": "256",
+          "hierarchyDepth": "4"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 2000.3463517054402,
+            "min": 1539.5489307692308,
+            "q1": 1609.1168971061093,
+            "median": 1744.8556480836237,
+            "q3": 2414.150701923077,
+            "max": 2694.059580645161,
+            "samples": [
+              2694.059580645161,
+              2414.150701923077,
+              1744.8556480836237,
+              1609.1168971061093,
+              1539.5489307692308
+            ],
+            "confidence99_9": [
+              -3.4156210035471304,
+              4004.1083244144274
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "literal",
+        "params": {},
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 16.654184395056117,
+            "min": 16.01048424169668,
+            "q1": 16.022521075558117,
+            "median": 16.11206569072696,
+            "q3": 16.931098237713936,
+            "max": 18.194752729584884,
+            "samples": [
+              18.194752729584884,
+              16.931098237713936,
+              16.022521075558117,
+              16.01048424169668,
+              16.11206569072696
+            ],
+            "confidence99_9": [
+              13.022885685596098,
+              20.285483104516135
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "methodSend",
+        "params": {},
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 28.037087074868737,
+            "min": 23.872766180187913,
+            "q1": 23.945001053311948,
+            "median": 24.016754873247553,
+            "q3": 29.22176886227545,
+            "max": 39.129144405320815,
+            "samples": [
+              39.129144405320815,
+              29.22176886227545,
+              24.016754873247553,
+              23.945001053311948,
+              23.872766180187913
+            ],
+            "confidence99_9": [
+              2.59025778495198,
+              53.48391636478549
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "mutual",
+        "params": {
+          "depth": "16"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 167.72497172223075,
+            "min": 112.47257617977527,
+            "q1": 112.71560923943662,
+            "median": 171.8011888412017,
+            "q3": 199.5557550328882,
+            "max": 242.07972931785196,
+            "samples": [
+              242.07972931785196,
+              199.5557550328882,
+              171.8011888412017,
+              112.47257617977527,
+              112.71560923943662
+            ],
+            "confidence99_9": [
+              -48.71154615090609,
+              384.1614895953676
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "mutual",
+        "params": {
+          "depth": "256"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 1799.5470916532315,
+            "min": 1555.9505326086955,
+            "q1": 1576.0898066037737,
+            "median": 1845.1600570902394,
+            "q3": 1902.996760910816,
+            "max": 2117.5383010526316,
+            "samples": [
+              1845.1600570902394,
+              2117.5383010526316,
+              1902.996760910816,
+              1576.0898066037737,
+              1555.9505326086955
+            ],
+            "confidence99_9": [
+              890.0016269241356,
+              2709.0925563823275
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "partners",
+        "params": {
+          "depth": "16",
+          "partnerCount": "3"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 322.6981931090204,
+            "min": 212.37190233545647,
+            "q1": 249.62991747693843,
+            "median": 339.87004483695654,
+            "q3": 375.0660097487814,
+            "max": 436.55309114696905,
+            "samples": [
+              436.55309114696905,
+              375.0660097487814,
+              339.87004483695654,
+              249.62991747693843,
+              212.37190233545647
+            ],
+            "confidence99_9": [
+              -29.75176238335723,
+              675.148148601398
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "partners",
+        "params": {
+          "depth": "16",
+          "partnerCount": "8"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 401.2323764071929,
+            "min": 279.4987971500419,
+            "q1": 287.1465741324921,
+            "median": 419.4725651991614,
+            "q3": 466.05856072591905,
+            "max": 553.98538482835,
+            "samples": [
+              553.98538482835,
+              466.05856072591905,
+              419.4725651991614,
+              287.1465741324921,
+              279.4987971500419
+            ],
+            "confidence99_9": [
+              -53.17319921884564,
+              855.6379520332314
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "partners",
+        "params": {
+          "depth": "256",
+          "partnerCount": "3"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 2244.45481044949,
+            "min": 2086.7039,
+            "q1": 2092.601460251046,
+            "median": 2108.387661764706,
+            "q3": 2449.421469437653,
+            "max": 2485.159560794045,
+            "samples": [
+              2485.159560794045,
+              2092.601460251046,
+              2449.421469437653,
+              2108.387661764706,
+              2086.7039
+            ],
+            "confidence99_9": [
+              1459.0528365974933,
+              3029.856784301487
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "partners",
+        "params": {
+          "depth": "256",
+          "partnerCount": "8"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 2290.6427700578615,
+            "min": 1830.256080438757,
+            "q1": 1879.7859849906192,
+            "median": 2370.362708530806,
+            "q3": 2471.1308913580247,
+            "max": 2901.6781849710983,
+            "samples": [
+              2901.6781849710983,
+              2471.1308913580247,
+              2370.362708530806,
+              1830.256080438757,
+              1879.7859849906192
+            ],
+            "confidence99_9": [
+              576.0738781589139,
+              4005.211661956809
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "simple",
+        "params": {
+          "depth": "16"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 168.40970457064773,
+            "min": 111.45716915533764,
+            "q1": 114.99010922051046,
+            "median": 167.00822593025197,
+            "q3": 207.78593236514521,
+            "max": 240.80708618199327,
+            "samples": [
+              240.80708618199327,
+              207.78593236514521,
+              167.00822593025197,
+              114.99010922051046,
+              111.45716915533764
+            ],
+            "confidence99_9": [
+              -50.18919071946672,
+              387.00859986076216
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "simple",
+        "params": {
+          "depth": "256"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 1922.6055756686037,
+            "min": 1449.961090909091,
+            "q1": 1727.444256454389,
+            "median": 1902.4704800759014,
+            "q3": 1907.3458514285715,
+            "max": 2625.8061994750656,
+            "samples": [
+              1907.3458514285715,
+              1902.4704800759014,
+              2625.8061994750656,
+              1727.444256454389,
+              1449.961090909091
+            ],
+            "confidence99_9": [
+              247.89622061340242,
+              3597.314930723805
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "superChain",
+        "params": {
+          "depth": "16",
+          "hierarchyDepth": "32"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 3954.6659174982647,
+            "min": 2765.0468342541435,
+            "q1": 2919.3661516034986,
+            "median": 3244.187003236246,
+            "q3": 5148.578035897436,
+            "max": 5696.1515625,
+            "samples": [
+              5696.1515625,
+              5148.578035897436,
+              3244.187003236246,
+              2765.0468342541435,
+              2919.3661516034986
+            ],
+            "confidence99_9": [
+              -1300.4466356282169,
+              9209.778470624746
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "superChain",
+        "params": {
+          "depth": "16",
+          "hierarchyDepth": "4"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 669.1498257496727,
+            "min": 455.4591761492945,
+            "q1": 516.4196890149561,
+            "median": 670.2653987975951,
+            "q3": 810.1453126009693,
+            "max": 893.4595521855487,
+            "samples": [
+              893.4595521855487,
+              810.1453126009693,
+              670.2653987975951,
+              516.4196890149561,
+              455.4591761492945
+            ],
+            "confidence99_9": [
+              -49.14239595983304,
+              1387.4420474591784
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "superChain",
+        "params": {
+          "depth": "256",
+          "hierarchyDepth": "32"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 202107.9056333333,
+            "min": 189056.67183333333,
+            "q1": 191918.43483333333,
+            "median": 200083.98616666667,
+            "q3": 210086.43466666667,
+            "max": 219394.00066666666,
+            "samples": [
+              210086.43466666667,
+              191918.43483333333,
+              219394.00066666666,
+              200083.98616666667,
+              189056.67183333333
+            ],
+            "confidence99_9": [
+              153373.20787658417,
+              250842.60339008246
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      },
+      {
+        "name": "superChain",
+        "params": {
+          "depth": "256",
+          "hierarchyDepth": "4"
+        },
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "runtimes": {
+          "VarioHyve": {
+            "mean": 10822.944005094527,
+            "min": 10165.95634,
+            "q1": 10303.923724489796,
+            "median": 11012.919736263737,
+            "q3": 11272.20824719101,
+            "max": 11359.71197752809,
+            "samples": [
+              11272.20824719101,
+              11359.71197752809,
+              10165.95634,
+              11012.919736263737,
+              10303.923724489796
+            ],
+            "confidence99_9": [
+              8690.208770032916,
+              12955.679240156138
+            ],
+            "runtime": {
+              "jdkVersion": "23.0.2",
+              "vmName": "OpenJDK 64-Bit Server VM",
+              "vmVersion": "23.0.2+7",
+              "jvmArgs": [
+                "-Xms512m",
+                "-Xmx512m",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country",
+                "-Duser.language=en",
+                "-Duser.variant"
+              ],
+              "forks": 1,
+              "threads": 1,
+              "warmupIterations": 3,
+              "warmupTime": "1 s",
+              "measurementIterations": 5,
+              "measurementTime": "1 s",
+              "timingScope": "fresh-world-v1",
+              "scoreNormalization": "per-invocation"
+            }
+          }
+        }
+      }
+    ],
+    "diagnostic_provenance": {
+      "runtime-setup-v1": {
+        "schema": 2,
+        "suite": "runtime-setup",
+        "timing_scope": "runtime-setup-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "payload_batch_sizes": {},
+        "score_normalization": "per-invocation",
+        "source_sha256": "e7304565236068e6910b454603cb0076b0cc1065d8b91d8a49ead34bd64d4193",
+        "host": "runnervm7aw5e",
+        "revision": "ddc2fcdeb106b1374b7aa99473f0a09b193f218a",
+        "worktree_dirty": false,
+        "started": "2026-11-06T17:18:03.470048+00:00",
+        "jmh_sha256": "96be69b6d655312972a75c738a43f35b6088cd1d69d969e9d712d36edd7daeb0",
+        "completed": "2026-11-06T17:18:29.411396+00:00"
+      },
+      "fresh-world-v1": {
+        "schema": 2,
+        "suite": "fresh-world",
+        "timing_scope": "fresh-world-v1",
+        "native_gc": {
+          "nativeGc": "tracing",
+          "nativeHeapCapacity": "16384",
+          "nativeGcThreshold": "0.75"
+        },
+        "payload_batch_sizes": {},
+        "score_normalization": "per-invocation",
+        "source_sha256": "e7304565236068e6910b454603cb0076b0cc1065d8b91d8a49ead34bd64d4193",
+        "host": "runnervm7aw5e",
+        "revision": "ddc2fcdeb106b1374b7aa99473f0a09b193f218a",
+        "worktree_dirty": false,
+        "started": "2026-11-06T17:18:40.003014+00:00",
+        "jmh_sha256": "999fbb5247b18f068cb83bedb3f8d259af3b4094ac8746806d3ae97a9e17daa1",
+        "completed": "2026-11-06T17:22:05.656436+00:00"
+      }
+    },
+    "native_comparison": {
+      "schema": 1,
+      "timing_scope": "native-session-v1",
+      "date": "2026-11-06T17:51:48.692009+00:00",
+      "revision": "ddc2fcdeb106b1374b7aa99473f0a09b193f218a",
+      "worktree_dirty": false,
+      "source_sha256": "c71e7f1bb4827680b614c04fbd2e773a6582bc58be91ac9c9ec19ff94b1b7bff",
+      "host": "runnervm7aw5e",
+      "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+      "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+      "launch_sha256": {
+        "VarioHyve": {
+          "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java": "39651cd982b259de1dbe6860fd1f8d5388ce2bab9fb0ca0b34a16aa81b3f485c",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/BoundaryClientChecks.class": "302f63926fc8132725b5d3b74c8ab86bec9200544098b7e07f7a0aec3a1fafe7",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/BoundaryReentryTest.class": "d75e3436ef1c1d5a40f0a4c8ce1ffb1bf6dacc889f2391e93865e2df1065d2bd",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/BoundaryReturnTest.class": "5280ce290f6e4b114dd7fa1895ac59b83481e3e119557e54c7c3a1e9e20e56d2",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/CascadesAndAssignmentTest.class": "a8ec58438c550d608717b9856fe4f816a0d924df71558305e77a33da3c4201cf",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/ClassCompositionTest.class": "a23aa250f0c52300b5f8934842c4249ac706bcfa23913ec0954acd6de5d525b8",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/CompositionApplication$Event.class": "d7dc0118aa86500c5c63ab7b09087b1ee6709185867dbc45a8f9f3f5607a3194",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/CompositionApplication$Result.class": "dbdeeb12098b86d3f04b9702c0f383af7d6a56512a0544060f4679e9197033b8",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/CompositionApplication$Snapshot.class": "aaddfb4ffbf6b6012241f5fb398b1d5c4aa2a3fe72bec27d3e99a016e67dfa2c",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/CompositionApplication.class": "8effca345f8d9e5d42fb30fef29a1e82a047dcde65fd49c1ac8935c4386bc3ff",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/CompositionApplicationTest.class": "4ae28b692338f62a5e073ef1f1e6967289af87819662ec37c037edaa45f354d4",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/CustomFactoryTest.class": "3353847d61f709535e904665b7d2ee08533a910cdb24844276fbe4aee3480465",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/DiagnosticContractTest.class": "3f829bedcab8979228bde2d37d6bb0ea239d9f98503fe364d9814869e76bb8c4",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/ExecutionPolicyTest.class": "6a87e913ca0d5e7b776386ac3f54cc59d29452beda7f78f3117b3491c879e64c",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/HostValueAdapterTest$1.class": "c65785902418ce707bc82b8e845134af6280648a87d1e75759d40cf3ff5f0ab4",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/HostValueAdapterTest.class": "3dfa84384f4dbb82f21fea2e3fd192e260781c1618f18f1fa83a088d0a88b1da",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/InitializerReturnHomeTest.class": "80eb1906a632e88dead81708e2f6f051d3a623da74971cae551c55bc573db0d4",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/ModuleEntryTest.class": "4114102df61588ba116ab2254e964d75a57457b7faded1b81ff90a081874f16e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/NativeSymbolicKernelTest$Fixture.class": "dec1bf46cb2408bcd25065ecbc0ca4f8d1cebee364bd4a11ce1f9f30d5d9b1e9",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/NativeSymbolicKernelTest.class": "7f467391a06fe716604864af661091f97035026b74cffd961ec6df738bbe59bc",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/NativeSymbolicNumbersTest$1.class": "4e71c9a18e8251580ad22ece7acdfb19db8ae32722f6edf77a090a5f5312f24d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/NativeSymbolicNumbersTest.class": "b7de265e5286b88ea220ef61ec2deddae843ff649184005cc700a64bb1835e38",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/NativeValueDefinitionsTest$Values.class": "98ed7c75b98487f1b510a63e60a8e8594a59630869e5d20630f3a8c5e1931a37",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/NativeValueDefinitionsTest.class": "36c95e90940b8410e543168422b6a4d099e093cfdebd1cb34c073cf837e11843",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/NativeValuesTest.class": "cb49825e3cbf57ac7b71c7ae0385ae8a9fda0448c40743170cb382012ae51ab0",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/ObjectLiteralCompositionTest.class": "659b89620d8cacf4a835ad9b3019600dbab7a7303363d130ef799b6822e3e50a",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/OuterSemanticsTest.class": "abea5aa293de62bc950550d351b7dee53f82e838d6a39959c6b1035b7a6b4cd6",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/OwnedMixinApplicationTest.class": "cf367a339d28aa83d7ce15f895389d908eaba652ef7d1742c2763f1bfa2aa6cc",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/ReceiverApplicationContractTest.class": "bec855f4ac0f74fd51408eadf76b41ea785250425834721ededd90f7e536c819",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/SemanticMembraneTest.class": "bcf2c360a5ce804f4084cbe83ebc7c2108ed9a7e3bbb3d884ba273897d8ebc90",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/SourceServicesTest.class": "7fc442fc1d5b0ae55de54f069ac41b80f57fabe3d190799f116ce3325f508c25",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/boundaryclient/UnifiedInvocationTest.class": "95443a930c537d01df6347c37715c8f6963e492cea2bc4d2957873c5f33a504f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/analysis/AnalysisResultTest.class": "a0c121a4b209f7815b94aac2c66b2f07c489c4e67dcdf79b726bc86d4467aa47",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/analysis/SnapshotAnalysisTest.class": "7bf03dc91d94e20e1c8977327c8255a6c19d21641735a4b306866d59386c9a7e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/analysis/StarterApiAnalysisTest.class": "1319144af80212760f20895f92b6850b566039c69c60b9f6f94f7401eae5e1e9",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/analysis/SyntaxFactsTest.class": "a5092cc60a6b4d8b5ceab936fab0fd2ed4eea05a75d6bb6089a454b2462de063",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/checks/ConstructorTargetCheckTest.class": "ff8a3d3fd1ad799c285089d237b4cf69d393f842f65f97ca7d63c91e74ed24b9",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/checks/DeclarationChecksTest.class": "30b7506aab01ee022c9212bf6967626a50a235a989486bf2f2aa2cb8785b61b2",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/checks/ExplicitValueCheckTest.class": "15dfda837e5ff1df71350f528ca4e36ed339ee34dca3f827f96ebd745f66fe94",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/checks/NativeReceiverSelectorCheckTest.class": "36183a99f36b2fc6e2457cc96f921e584d40965c0d26cbe101b6a101a915ee33",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/checks/OuterQualifierCheckTest.class": "6cc4568282a6edbe54a821b5d803c747133277a945aff0768e363e31d0ea687b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/checks/SyntacticChecksTest$1$1.class": "efa7d744c52a3a50c02ddecee256d1a20cf544aede838771fc43f90bbd3d4c56",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/checks/SyntacticChecksTest$1.class": "1c6782cf0d523b8eb90bd69e92ca82b6af985275be29fcea04025ef9e1c3b9ca",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/checks/SyntacticChecksTest$2.class": "6604c11076d0079eacfb75c7cee146edba317b55c8d0f57d551d44a6b943b62e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/checks/SyntacticChecksTest.class": "03d4734510b000675e48401604a04aebfbe5062ff48161f4787219888db8117d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/ConstructorApplicationLoweringTest$1.class": "71329c0dfc3e46bf554ac954efaddd949aac2606b5d1c444378c5d289d779ad9",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/ConstructorApplicationLoweringTest.class": "f5b6d758017d59d8cec8c806b1ca159700f6f83c8abff23547d825f795bc0e71",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/ConstructorClauseRefinementPilotTest.class": "6ffcc8b216e47356b19290616166082b24c47060b8bde9d5b0f3d513114a566a",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/CoreDSLTest.class": "78454d5c762428b87fee0e440384df101e10921a0c6a3f1081c8f6a784684926",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/CoreMetadataTest.class": "e29067e03102f9013c3a50ff67b942ae33aee190ff02fad583448c863bf53c87",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/CoreTreeWalkerTest$1.class": "c45f55e4dcf0a2deb6104ab190e2b5e86f22d0932badcd3915f65094384024a7",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/CoreTreeWalkerTest$2.class": "634d58f84a632baecdb135b79b0f3b5ff2166c39170a88bbc33b940c936a8905",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/CoreTreeWalkerTest.class": "881c828cd1b66b0cc1baf252abffa1d3dcc14f907ef679a7acf4b0018d873751",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/DescriptorAttachmentLoweringTest$1.class": "a693a076136d6f39641bc8a6a7e129026a237d6f2a6086bd5c70e137f24d4711",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/DescriptorAttachmentLoweringTest$2.class": "838b825980006d5db27a20b2f93e5aeba8969dff4baacf1d43f368d1d99db096",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/DescriptorAttachmentLoweringTest$3.class": "9a9fd82b7fd2330a72545f946c95b3ff328148ec021a18a23617eadd3b6a244f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/DescriptorAttachmentLoweringTest.class": "3f63e3b17e6cfbb48a6aaeb4ede1c01a60235d8745479227d43d04b9f3e104a6",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/DescriptorMetadataTest$1.class": "ae937704fe2f4925ed05c95224ef8576a9a9ed9cf1143ff2e26ee1d4b209dd37",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/DescriptorMetadataTest$2.class": "7359b93323036f030ff8c13335b47e8b90b77643e0c2c07db722b615498b8f42",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/DescriptorMetadataTest.class": "f4d2e06f28f4663650d9ba287ebba7249b4fadb1a40cfec1a8733d52604df99b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/InitializerBodyLoweringTest$1.class": "705897e3e03a329ac7c21736a023dacd5cb8e383ee2a649a60b54d7b4407c1ed",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/InitializerBodyLoweringTest$2.class": "41f834db183106bcce249a1796d8242acdf1b08c186cffc0c93e188767aa7472",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/InitializerBodyLoweringTest$3.class": "a27b0f449573891f592b65e15087f3baf37c6c4d7fdeab0889846407e2600718",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/InitializerBodyLoweringTest.class": "891ad35b414468b2b126e29f51a49f6a075f4263e8f50e1cd7fed3912d3c7879",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/LayerIsolationTest.class": "9bad0477473c968c33abc22c2f684bb22ca705afef05fb8975a688adee3acc7f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/MemberClassLoweringTest$1.class": "712e4c37be920dd882ed1e83fce8429bd5d9534339f0bd9db347eace36467e3d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/MemberClassLoweringTest.class": "5dc70cc8aaa5193f8c65879073f77f5347e341f95dad673c96236a270bf82d62",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/ObjectLiteralCompositionLoweringTest$1.class": "2d92240d76df3c8470da097a22cad90d8cba6903f046b6b9c0ab3d33cb2931a5",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/ObjectLiteralCompositionLoweringTest.class": "f3de3a8b7a38ac7b5e7370edb43794ed5a79c5e27182d10645068ca86b3d7de8",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/OuterLoweringTest$1.class": "6a1bc62f209bd2d38afd71f6a3b40ed08cb83bcd59c97ff290a97c2b770dd715",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/OuterLoweringTest$2.class": "786eb174a43a89e08c107ecf10da615137caa1fee1fe8c753709664a7c7542b3",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/OuterLoweringTest.class": "cbee462b6faff375b7268ca9dfb2d9d44893b604939ac458888bad1866e31737",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/core/ReceiverOriginLoweringTest.class": "b27c48c79e8f65af5b55105e94158cea41ac6a3e72543ae27747aadf3f9ea282",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/lowering/CoreOriginMapTest.class": "0a58eae4d59874f9ead0b500deaf56a915ba2e690c9f1d778829adce05579579",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/lowering/DescriptorProjectionTest$1.class": "fcc44a40fdef76a28115f4149115f968f41d647b5afba177c9cf7c537dc0ec4a",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/lowering/DescriptorProjectionTest.class": "56c9c57bf30cc1a85c251e2879401cf8f4657c418a457dbc1006f8d8142f3561",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/lowering/ExplicitValueLoweringTest.class": "c1fd408a1d495a4a71ca887fa9ff43429b06eae14f0b7c2d2d0f77bfebdb05af",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/lowering/NumberLiteralLoweringTest.class": "1e7785a71091bf107af81ccb15132c0af01497a74d831465b16323800a36605d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/lowering/StringLiteralLoweringTest.class": "6f6f34d1fb67b9c9108e27a9c09690f94a3218b4777953384e035c8bb5183659",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/surface/DescriptorFramingAdversarialTest.class": "e7a14e1c6b9d3f13548519e6e7d82b23ff25562a8142aafae7db4a9648790bd7",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/surface/DescriptorIslandReaderTest.class": "a235cb43aacb0a3e4f801bc4d1ae4afd2e187df8ebe850f327ec04e415339b87",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/surface/ObjectLiteralCompositionReaderTest$1.class": "697a4251828cf474ecf3cca556891469ac891d22c59998176d0de170409123f5",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/surface/ObjectLiteralCompositionReaderTest.class": "2e2addd4489b67a57dc11ccaa5164bbf415afb42e05d9e00837c71affd59a8cb",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/surface/ReaderBudgetTest.class": "aa8205ab74d91aea541413938b63380dbd3784da3a9f710d28d61ced007279e0",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/surface/ReaderCostProbe.class": "38efaba8214a04d9ab482c7eedfe2a2ebb59761ed96010cb7910abae3002534c",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/surface/ReaderFixtureGoldenTest.class": "cbdf05319cb60ca72782727f895abca67a05388e529cbeaaf3614f8d022e72dc",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/surface/ReaderHardeningTest.class": "d59d452d3d06cb12f0abb3dd3eef4f9c6640cc989650cf7f3444c29af2d02579",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/surface/ReaderMethodBodyTest.class": "da5d029b966663ca4b5b50f9238ac91c9e325997127ca279c9e42a41a7e1665e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/surface/ReaderSeparatorsTest$1.class": "bcf8fefa0ade51a0975b9210f61d5d595e5698e2d08a0b469aabdaec88675c05",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/surface/ReaderSeparatorsTest.class": "7668f58d4740015c41975b722731d33bb2d8f73549d4595c0cb6f03290247a19",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/surface/ReaderTest$1.class": "47d19df3180a3788d66672b7da9d16627897f392b51b763496af0aa9716435e1",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/surface/ReaderTest.class": "319f8c68594ee78bb257e3899477afa83f08cd9e05551adc4ee489ca2c2b73f3",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/surface/SourceCoordinatesTest.class": "ee74ad56a08783ca820aec191c8182669fe4ba59c208e9b94a9ec38421e80d21",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/surface/SovereignCompositionFrontendTest.class": "0eaa5362b5e25ed544da528c19e033c3fe562323d0610d5221e6934b456c0099",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/syntax/tools/DescriptorInterpretationTest.class": "5e23bf9ac92db73d09db20fcbd4b056a23fae5112c322be97c6693f455c190a9",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/BootstrapChecks$Check.class": "7a483de2d6ff5ac6da8a273fa4068ecf3a32c082373fdddbea336b8bc43d2dd8",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/BootstrapChecks.class": "4bed0ba281b0fd34432d3fa919309a315c4da0982a867ad2ed5495c850e09caa",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/BootstrapSourceTest.class": "85fca95b23fa486a2601c73b406bfdb1281c49e83d8214cfb60d5c6f9dfc5a37",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/BoundaryChecks$1.class": "4f31f8ca2fcbd245f7484b08fb269df3b9e10641056a8bcce0f2915a4cbaade3",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/BoundaryChecks.class": "c27b82d23850c711ad3900637b8b9c646c36a5c0a839cb8ea413325062fca2ce",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/BoundaryDiagnosticChecks$1.class": "daf8dbeb4d255e201f5168607c82fe3594fd9fca75b0bda5b46fabca3799e820",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/BoundaryDiagnosticChecks$Observation.class": "a49372ac7945681647eae1be59ce7cb3a9c4eef46b6624c8a6234fce1810df90",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/BoundaryDiagnosticChecks.class": "51b0442ca2c95b4246447452957357e30a12f84365ca12a1d57681ba14a05ae0",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/BoundaryDiagnosticTest.class": "d9a3e48b7b7262860e35077523989df423a89dbb35f97ee819f22e56fa643d9e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/BoundaryLifetimeChecks$1.class": "84ebfd003f0d81a44dd9ab233a1f8925e4561983bb78097cca76ae7c21065261",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/BoundaryLifetimeChecks.class": "9720981d59bb0ceb10574a0f67e79c9090c2357e59410c980f8771eeb4dd9f00",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/BoundaryLifetimeTest.class": "ca5865e36da78bae198b5cd4641a6b0b89e56248f5f6355a2d1a45f7a9bfa7a4",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/BoundaryReentryChecks.class": "3dad8c1639c00061e1f5fd76341107502bcc872175feaccdcd7396f671f46d82",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/ClassConstructionChecks.class": "80d299cdc25a9cd1830cc69f53575a694d4f7b6bcd21e37588bf98d8308ebdb3",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/CompositionChecks.class": "857bd41453c04a7d0eb2289644eea8189f901e159b1b1e278d637e5a72d967f5",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/ConstructionScopeChecks.class": "d44a0d46ddeb4e21592e2a7cd6c8b1543222ac054301d18c5abe2eb1361ae105",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/ConstructorChildExportTest.class": "5a13fb78f1099697aa3c340cb92eb6785eb453472841b2c38e3b9fefc1c2d85b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/ContributionIndexChecks.class": "19d5fff1ff0bc38ff64375c231bdb4e591fc0f6a0cf041372d7b899d07de24b2",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/ContributionIndexTest.class": "b6f0a8f99ec29eb0c6a05e80c46562448927216691db254ad0e00f38c44eeb22",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/DescriptorNoninterferenceTest$Outcome.class": "d6f9302df46ff70caaab4cb28e5a51f9ce9843bd8c2f27e0c5978109a88195ed",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/DescriptorNoninterferenceTest.class": "6721107aeb19eda6e796395e02209521a004e1294e77289bbc9b76b19edeff62",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/DeveloperDiagnosticsTest.class": "ec7b6efa6f58d89dab836c2534e0f3ee72415f05a925d1edf9d1b9f29402a02c",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/DiagnosticBenchmark$Fixture.class": "8ce36fd0db9e26d9aa186137728e83b6d2212bfc4d4932acf1d25e11c2ba393e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/DiagnosticBenchmark$Mode.class": "140251197d274cff8d183cedc7f64f9f2d7567314b2cb5a6f76ae3e4772d2a3e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/DiagnosticBenchmark.class": "f06f73cececd2da93a78ec214ec00d990ef3d415404378be08a837a8663c82ad",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/DiagnosticChecks$Observation.class": "3fb8cb69309f481ab38b3adbf780bd5e856e5c7020447d0d419528882c1f48d9",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/DiagnosticChecks.class": "626aa5856c070314f3b83851d99c5378704464704e739421fdfacd7b91bb9689",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/DiagnosticTest.class": "8f821dde8d0b26f2bc15e774dd71540d8bda5e9305bfa0205957df94230a3768",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/DiagnosticTraceChecks$1.class": "074f77a7425206063a1cd4c5b59cd6d0cc168b0b0ea355d9c848bd8eedfd9c78",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/DiagnosticTraceChecks$Observation.class": "476d64bf94c4a8cffbf6873c9e756d9659c8539c628da434f2ddc5a30019439c",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/DiagnosticTraceChecks.class": "3688f7c08745ccc30edc3207b736a175440ac5f68c95d6270601b821eabc20ea",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/DiagnosticTraceTest.class": "0452132f716e5b666a15c8f4dca7c53361edd288d083fb40042dfc8c46bdeadf",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/FactoryChecks.class": "8e3779f112f4e7f4e7399d5de2075afeb2aeae5d3fa9220c122b89d3a9a0a540",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/GarbageCollectorChecks$1.class": "519acd270ae6995c7f4186a2ccb434f65dfb2626652b3d4d5b2dc408ffee7ff0",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/GarbageCollectorChecks$2.class": "ea237716d889a6ce2c6559c2a40684dc2f1ecaa91d6b1c2312982769d64db0ef",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/GarbageCollectorChecks.class": "8c52718ba1b7344722cb96aab7da234c1d88af84e2e3959f1d344af3c94b043d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/GarbageCollectorTest.class": "e0b7ef6c310131ce7ffcf37464f708413ff1b128ecf53bfb1492e936c8048a66",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/GcDifferentialChecks$Fixture.class": "dd6bd30e8bbf38bc4bbebd337b62cca199e9d4aa057522396c3d8082df277e81",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/GcDifferentialChecks$Observation.class": "20f8e03a4a49f0f5e6789e3b5070c5fe99e9d1fdd6ce7d998477598ca880bfbe",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/GcDifferentialChecks$Scenario.class": "31d7f9a67004e35bbeba79d1e161dc844516e78a7dfa1d80fd0082ba639a3c62",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/GcDifferentialChecks.class": "192d80df2d3ad55eebb45dc61f67f31d7dce9212f5711d85e3cd315e785b503a",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/GcRandomizedChecks$Graph.class": "a0bfa5cb780d7c9173f030c762bb3997114faf371916ba3757f114981dce6fbd",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/GcRandomizedChecks.class": "8c19195ef6a1c8daa5d96f94c21471e985e90598d7670fb415537614e15c3a21",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/IdentityMirrorChecks$1Carrier.class": "bd5ccf83e23309b4db2a8c13951120b255c8aa03441dcf594bc229a48c64972c",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/IdentityMirrorChecks.class": "b9098f307569bc0b0adc28e67b34d09b687126027376c54e732cb8c41662f679",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/IdentityMirrorSourceTest.class": "c956def6e6064121072aa3de0b2bc54123b18b7fb7b57406c0a3e5f930329f48",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/ImmutableLocalsTest.class": "8aaace418c767bb3b536e8f014b76dbab6ac7e73448db20b4fc0cb951c2e2c65",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/InitializerReturnChecks.class": "85aef4d53b5e561926c9adbee70403e4108c3adc8b2aed78555d3563f6046aae",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/MemberClassBindingChecks.class": "1b5437d3d9306be75837e5e55eef43e626a7616189dc67651e46b2158bd2f0f8",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/MemberClassBindingTest.class": "1fadc6420d7032ea0518618281cd0de2760d207de953511b72b5f438761a32b3",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/ModuleInstantiationChecks.class": "1df05adde19a305f22bd20bf37d13a98b6dc9d1a86c1f8461b7f7cbf8f5be371",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeCoreInput$Row.class": "d35a5483a4750587876b5ea0b08c61ea86256d97ce7aa5d50712ae5c59dea00e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeCoreInput.class": "c09160ac69f9f6d053165015bbccdb863ab9ddcc7266af90852267cbafe9c59d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeCyclicCodeTest.class": "4a8a2d7f427d5d10cc1bca48f8d830acf96cf0a1d3142d3bd10a29630a16cacb",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeDriverJSON$Parser.class": "4d74160d42ba90611e04af3aac851055df7b8b421892c900e64fb5f8600a08e0",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeDriverJSON.class": "44b8df672613af0f1c72877301b3c236bf7edebdfb11157bcb6af914dd5be041",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeDriverJSONTest.class": "6d151ec75e3710da9808c45f84ae00c765430c401857b4e1aa89f41dc4d6939b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeExecutionConformance$1.class": "769962e37dc94a4b08c87baa5dafed42ca042884e654cb3bb59ae18d419a3743",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeExecutionConformance$Assembly.class": "46b08bfc0ff31bc3fc23ea07df1ff7744399e98a93103e4207c2bdf9b49afd58",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeExecutionConformance$Components.class": "898cfdd1837b97274fd5e41891bfa628da37a1f0c2fd8b89d360e765b40dd85a",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeExecutionConformance$Exporter.class": "ab32114be49cd12abbe6e8e378bc7e264de41c848b00622cdb62cd06a0b22a81",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeExecutionConformance$Libraries.class": "e1abcf88c609c6822476427705d254c2f8025d46d3d1a20a0b29dd00733414e2",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeExecutionConformance$Outcome.class": "a6170b655858d225de83e8c1cdf29e0c42834d32fcccf12f0a36b4c8521f0def",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeExecutionConformance$Query.class": "0d2b2a6430ec825019bb4983487b631d8f4dd4dbaee4380a4b2a0bcde0e4a03f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeExecutionConformance$Suite.class": "ff50d239f9358ddc33209a87e75eef6f0b4fefcf8bee6364bbad09016a20f4be",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeExecutionConformance.class": "f8f4a7f8761935da8897c00d8c971a244b4bcedf86852b655f2b13099cddc74e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeExecutionConformanceGenerated$Expr.class": "68cf5bbcab663ec7538cfb621e9b47208895d1a790879486e4b1e800bf10a6ec",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeExecutionConformanceGenerated$Kind.class": "11ff68cb6f51bcd56b3317b39cfcc65ea47caea72ed2b0c22b4a6f2d3147e262",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeExecutionConformanceGenerated$Prediction.class": "ce442ba2e8a3e7be1edbc979aa89649b0a77388103f41bbc2f76f0f97ce5a652",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeExecutionConformanceGenerated.class": "1e0874cedab5274d05440165c997fb28465d743bbbaa43fa419cf8298a9218cd",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeExecutionConformanceHistories$Fixture.class": "c9369404779787f466740195482e726554d107ba180305f3c903db9e9f78f80a",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeExecutionConformanceHistories$History.class": "c8708ae343b617a057fdffcadae8dd62f8826f5e4a8fea2854a7863253648d91",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeExecutionConformanceHistories.class": "75a74ac9ac763e398146434988fa8ef5ca37f469583d8e954015bc0362a5c917",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeExecutionConformanceTest.class": "e9251bcf0a3ff8b0527d0823076abca3b66af993bc5b156af04ca0f954048234",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeExecutionRetainedConformance$Check.class": "f8aae1f073452190ae33f50b6665384ad4e5db43d6f0584a453e6f8863d83dca",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeExecutionRetainedConformance$Scenario.class": "531467ba4a245b56f002f9babe3104c6ff186caf5c4200b504cffb0b6bb4c7a5",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeExecutionRetainedConformance.class": "ac5944a9e3b674c9fff58c1f1c9420d003693eb5904760a0b8f560ab472632ef",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeHeapDiagnosticsChecks$1.class": "30e8a8c1f0794e7f3ef1cde1bc52044ccef6684e4dfbcb7115e28b11213e06ac",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeHeapDiagnosticsChecks.class": "3f76e5df446eaa104ba4c38eb9a6b7e658b85ad72636d75804d6a078d4eb87c7",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeHeapGraphChecks$1.class": "910559a6976a8b8e76deb67905f7fae5f89e119ad7ca5e854f4fae1f793a8b6e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeHeapGraphChecks.class": "4b030c38d3993b70f680b2226a174697b1dfb293eea987685c7254e8c72483f0",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeInputCodec.class": "b6843cb51492c708e3294121abd1112b46368c752f7959f53b92fdc1d6637e90",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeInputCodecTest.class": "f88b86346ffac4fb4d0e011b045ac5b0aa293cfe967e17df989e2bcb30444c73",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeIntegerLiteralTest$Fixture.class": "c7c63a4bff2beee9b2eed5934723bbf30b621c23c32c7c4f911e7174c06b6140",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeIntegerLiteralTest.class": "870f9256595dc0421bb30d53828c29237c2ffb966294ed0d6064348f23a32845",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeJavaDriver$Handle.class": "d91ca2fe1a0840a9cde5cec5ce6e2e478ed9f87d2d4be21aeeea04dbc63e43eb",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeJavaDriver$Rejected.class": "426163dfe29ed24f794a6c907977687f7cd8560d26188e9992e1dc05b684451c",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeJavaDriver.class": "e12719abfb8193f4c29c6bcd793a9d1ff0cc739b94a0330c8b6edaae26f0d867",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeJavaDriverTest.class": "cccaf5e0b5b6129fd722f007e71b93a2d5d36de2ffc23dbe11bf7bc90359e76a",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeKernelSourceTest$1.class": "cebf58d519c48f3236fdae36717b441c4748ccf299949bee22d17a5a86f81bbc",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeKernelSourceTest.class": "8e9945ac19508ab444cbe783a150c886481429e5c800dc5f79c4113d6e56b383",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeLibraryFixture.class": "8dcfbe90d96ea5931d257856718bdf5e16cae71187ece8fd1f2348f14e1b128b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeNumbersSourceTest$Fixture.class": "178aa71c582a6605ce0c53a8e6157070ecc81b80f46265b15c80272a3e713cc0",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeNumbersSourceTest.class": "5be160b8c97635baa53fc278b9ac9968fe31ee0f1d513f2e09c89e8c276cb437",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeReferenceSchemaChecks$AddedAddress.class": "5f78c5356e4bd876207c994edd7d24d1360060ac02cc0d3dc7d46133f3fa38cc",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeReferenceSchemaChecks$AddedList.class": "f245f5da094dcacd7474dc8df160e47577f716289d8b8882109ceb1d936fbe49",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeReferenceSchemaChecks$AddedObject.class": "814f7ac7b84b245e85f805e7f563591441e8cb1bf307e659ddebdfda8d907fc1",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeReferenceSchemaChecks$FieldContract.class": "f0b84cc64c79bb927f3fb9e1b4c13361774149aaee1c8c8adcdd2324fbf54f82",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeReferenceSchemaChecks.class": "976abf93df7cb8b186fe17b230bed51c6344b3c961883437baba6558c4b38885",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeReferencesChecks$1.class": "92b0009614b21a6a9c07c2baa4ddff98e0d7e2c9ec3be398e0f0156a0a9cf8fb",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeReferencesChecks$2.class": "8cd71dbd1ab616d9f846a2b03297a413a05a03fb2855c6cba39dbfac3c384d1b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeReferencesChecks$3.class": "26c58a0d4fddf343477fd0f01868fb7a37c4f0fb5d8fd36bf9a844c01583e35c",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeReferencesChecks$4.class": "d6f082677ce887f94e09cc4d45cfbda233cbafac9a97bff079783a90d009ed6d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeReferencesChecks$5.class": "5ce4b1ecc116208306f5028cbf6e009c8e6e6ba861e93546e581aa44ff452f5f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeReferencesChecks$Row.class": "d82be77f1ae6e3b08998742420b1651d778071c8aea03de8cdcc1cd0a36a0a3b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeReferencesChecks.class": "787dd1c4e889d2082ff65807033c444f9a841f8d50da732022896a43feb30adf",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeSequenceSourceTest.class": "d7145bcae85fa257c9a716bd3dc7f913719ba05b328b7b46ad8695d0371a3697",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeTextSourceTest$Fixture.class": "2a858ee969de0367ff97c55449d04cb22ee84c207de21f4a843944ed1ebca7a4",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeTextSourceTest.class": "16f8359d256c4d5ea864f2d6b87393af82fdd275fdaa68030a94553f99385379",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeValueChecks.class": "0e1ae794d78959dc8485cead441e5d7c8590ba00732585e53a85d949735508ec",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/NativeValuesLiteralTest.class": "2dc21156799067c98945de76f7670f4119f4396293c2cf23138a9a36df288b1f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/ObjectIdentityChecks.class": "d80ca454c3a82e128407a1c3cc0df951bf7d92d92d8ff4f8a641047b7083f476",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/PreparedBindingChecks.class": "6f54f9c3be33a82baddd5459802a7e9049842a283b50197bb49407931489dae4",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/PreparedBindingTest.class": "8569f75e347506728daa8ad8a20cfaae67439e470aeb8e34990db225ec103a44",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/RecursionStress$Execution.class": "33d62e6b42d7f4e8866b1a01a3e50cf387e202d98b1a1ccf8f935f31f3bd533a",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/RecursionStress$Probe.class": "a201220383652e987f58141888d020334e11c0d95e6731ae43ee53b4b9c99e80",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/RecursionStress$Sample.class": "4581fac579f62b343e9b085849931a5de84c03ec155dfc18d1bc57ac08da7c54",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/RecursionStress$Shape.class": "f4f359576be4c12b78721f2dba86cf3a89491175596204d0621f6813033eebeb",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/RecursionStress.class": "e9cec4f29b3402648459866e4f3f9c333c134684690e229eafb4a1daa46a9d42",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/RecursionStressTest.class": "df437c2c05e5b79275451bc2df6d550476fadf387715b258de0e369587ba72f5",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/ResumableExecutionChecks.class": "fb4d25d3820d42ac0aaf4a21966031f5abeb87e77b1f672ff9a4f19c5b2099fc",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/SemanticMembraneChecks.class": "6663eacdf5f72094b4c0944009b3d18280dd3a4e95733b69c873795450ba8b60",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/SlotLayoutTest.class": "5c9c2540ede76350d319af24775ad8175ecc29b817d61e2d94e025721a1915b0",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/SovereignCompositionMapsTest.class": "4611888e04652b2b7d885ea3c6eb578b31f93132d82974e8688a88fc1cddcfc6",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/SovereignCompositionOriginsTest.class": "04edad554512b501ee76ae8ee123b16fe4438a798c48de5374d27068f0d27cee",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/SovereignCompositionSelectionTest$Fixture.class": "a12c87129917340ede75b3fc366121cbf49764a170d237e2cf522e87b3aea834",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/SovereignCompositionSelectionTest$ObservedObject.class": "d730b65a38cc553bfbf7dd5229360213f6a1241ebfcd34fa894a39542d77178f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/SovereignCompositionSelectionTest.class": "d2fb9d2848b9575bc70f024ec0cff0baf638d66137366f58f10580b00ce82147",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/SovereignCompositionTest.class": "654c28ebb2262080b7b5d7f384aad3b4c2a69776eeb4bde5437c34586c1434c2",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/SovereignCompositionTransportTest.class": "222d5b5e887bb21447a06705521541805e38d4dfd555dd613d6ab3236a1386ea",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/StructuralConformance$1.class": "1704996a593c0a899741392b0f5fcdcff1e1d0d5ec4d67b04e9b31011538d922",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/StructuralConformance$Definition.class": "b88daa8a2cb97aa8a33d9fba1400b49e7c829cd25bea0e7d8bb268200a71a553",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/StructuralConformance$Fixture.class": "61fbab0caf24aa05c6e53f8304aea5b35cc33e377db1eeeacea1ff047673f310",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/StructuralConformance$Row.class": "6b6f7343505e3a6aaaaf77a7c3d14b7d36824590e51abda0ee528f95914234d1",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/StructuralConformance$Scenario.class": "5c311a180635e315f621458bcec844c2f83e130b834f8d489ed4ea57b4dcc10d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/StructuralConformance.class": "5c938adb0a7e8f87851e3a3ecd7f8b118e5c48c106ce37d41be97ae0f9071965",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/StructuralConformanceTest.class": "08ac55d001c57ec5a667f3d0ac54a1bf9fa88b15fbd231bb26a9a60fcd5c8f46",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/StructuralRuntimeChecks.class": "aec2a450429e23916a7ad229bb481223e930444f666ae4c883ea4f6f7796bf05",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/StructuralRuntimeTest.class": "336e00a752678d9bf7dec0142b91e160e00c6d99d2ca90118a91d5dd4bc82278",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/SurfaceCoreConformance$1.class": "458568b1f0d9c46ded4de98b766dce9f82469aaae06370b00bc08bb781982c8d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/SurfaceCoreConformance$Export.class": "b470cff1ab230c9451103f3494167851928a3142bca894fa9b49549de2fa2af0",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/SurfaceCoreConformance.class": "be53e449fcaf03040b3aaefc969e1be3f28d3fe807cdd70f4853c5f4dfd02637",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/SurfaceCoreConformanceTest.class": "2e7d87d4cc2684ebd6e7e460effe56a56da0b4970943d2c05ac14840dad6d53c",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/VisitorSemanticsVMStepTest.class": "262290c479c4f78673083c4dd0d2551ff09be3a8dee073711e60d7c3e0f85259",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/bootstrap/BootstrapDiagnosticsCliTest$Result.class": "84abb4ed78f80a373eb69c3ba88f7a68dd9fa96e6e1b544c48a7882da9214227",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/bootstrap/BootstrapDiagnosticsCliTest.class": "220e5f7d3dab45fc4b133a3ff31e514f396204213354b0dfc1dffd851b28d2be",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/bootstrap/BoundaryDiagnosticSourceTest.class": "576eaa30d406eb5de2a110878eb0921bfcd65476c7249cc0105c22a297658449",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/bootstrap/DiagnosticSourceTest.class": "b7c8771235d88c6a9ea9d3f03174b054cad268c57f0e2375a4e7602af850e3ec",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/bootstrap/DiagnosticTraceSourceTest.class": "22a75b4e74191056204ebbc23b553b21da82874461fa624a8b0129cc2a101848",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/bootstrap/GeneratedSourceDiagnosticsTest$Case.class": "77177a2e00bdbd5f2f7141842b388f83a7e6a941017c8c334195b69a85185670",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/bootstrap/GeneratedSourceDiagnosticsTest$Outcome.class": "782ba569ac780969a9769c2ab2ea095a28dd9f072d649340d203e53cce22bc51",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/bootstrap/GeneratedSourceDiagnosticsTest.class": "fc7876f5ef9e1334061f18de743fd98ff5a09560d80eaa3d0899f89faca25090",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/bootstrap/MissingReceiverDiagnosticTest$1.class": "b49698a635134ac49585fb311c52c833852aadfac607d40f424a1fa3d3929b07",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/bootstrap/MissingReceiverDiagnosticTest$Receiver.class": "c26acf9426af3d6d54f3e5877256809a526cd7a778154797ea2706216c5b111a",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/bootstrap/MissingReceiverDiagnosticTest.class": "67ded6086d73489ca6064f46a34d868b2a3f850e37fbb63a4e68f031f5ab69f2",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/bootstrap/OptionalSourceMetadataTest.class": "6f32ae55942fd95dfae0f4e5af8220c878d7beac0cee85381a617a4b357d5fae",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/internal/AdapterDiagnosticTest.class": "ae644fbe4f183d11d338bb29ecc1e5b3e7a5fc23627f31608a67494a4610d086",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/internal/BoundaryProfilesTest.class": "2711c3f4aa98efdaeac5129fa34d571ddd9befcdf3be3ed160de95e401f90f81",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/internal/ClassDefinitionChecks.class": "bd14984530559a776ddb3efa18d4df7f380f288610e8bb4597c999cf4210f1a0",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/internal/ClassDefinitionTest.class": "c31ce3f604978cdad55833e9f56051216e09bcf5f2530c83405f364c6b64b168",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test/vh/vm/internal/ClassFixtures.class": "6dbaf5a3a0b1e3653125ae5dd67eebdcecb5c32f791c6b20016f0c737f9dd63e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/resources/test/native-numbers/FoldObservations.vh": "88a4bb2e25385cdae02811a7b426941edc0ec9b6de33835bc31cee537608e89c",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/resources/test/native-numbers/Observations.vh": "b69fec229da8363cc389f63a5128e39662b0c7d5707f529a2ef582056008d31f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/resources/test/native-numbers/TokenWriter.vh": "002f19f4a3180e30ed3260ef6a3f2d1b90a01aaf0c8af7c68b48f728876f94a7",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/resources/test/native-numbers/checks.tsv": "22167e2c9981cf166cfed715f3dcd8f661b47f6fe6663914071b7ccf8e32c9e6",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/resources/test/native-numbers/fold-checks.tsv": "f0d8368d96412744392737c122e270064040c43ef9d3e82a2ea37be7c85e3087",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/resources/test/native-sequences/Observations.vh": "e0d6cf91326fe7b2f272f512151d2c1b1d48c6a838f530720b12f4eea392d9ef",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/resources/test/native-sequences/checks.tsv": "a6eda141949a5da2ec636b81932f8b45a09be91692f04476aae09b3253e3e4d0",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/resources/test/native-sequences/retained.tsv": "432038c68e2bb3c77ed62d975076e2979e73f5278e43717dabab918ac35e8824",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/resources/test/native-text/Observations.vh": "cf4050b9de1d48b30c427939a2fbbcf43c56c4185bf465f5f28d2fcf63e76649",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/resources/test/native-text/TokenWriter.vh": "d1385e763f12a9f4edd8520ac020ea1e8337bf38a95707acffbc8b4512d5e303",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/resources/test/native-text/checks.tsv": "84065d927c3c8e53a3cd55fc667c212f218e330907dcf73e4cdb46e4c801579b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/resources/test/native-text/retained.tsv": "1eeca5187879b78577e70d93fb24bdfb09f38316924efdaa5dfb375a4d10ce31",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/resources/test/source-core/NativeKernelClient.vh": "6de48c1ee4fc1a565ae8b4755c51bdfab01fb9d4ab2ae838d32b7e898fedf043",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/resources/test/source-core/SurfaceForms.vh": "6952c97835ab2be14863548b2ca9c82e42e669654e0ce7a880458098fa4749f3",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/resources/test/vh/syntax/surface/fixtures/invalid/sometest.vh": "599a04951214923a07da90b8c40c5b334e1c81fbe170965474476d5d3778fd51",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/resources/test/vh/syntax/surface/fixtures/invalid/trailing-token.golden": "4ce565e6b81748cffb7a90c0eab51a93288f403e944bb53f242811c22009d68f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/resources/test/vh/syntax/surface/fixtures/invalid/trailing-token.vh": "f251ddc12234e0da8d3b778bd0f7463fb477f16f47757f5617dc8b4ff4d4f14a",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/resources/test/vh/syntax/surface/fixtures/valid/grouped-descriptors.golden": "8ac32f02fb5c29b54af4dcac03e542d971d5421eeae332d1d6cec03ea699c020",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/resources/test/vh/syntax/surface/fixtures/valid/grouped-descriptors.vh": "633c6e3099e267db7d3417d868043c725d04692ab4c2bf662da847caf39f7e68",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/resources/test/vh/syntax/surface/fixtures/valid/hole-simple.golden": "1ce9920b97559fc1bcff06f830229dab084d30b8a91a61996bcaba175bcff069",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/resources/test/vh/syntax/surface/fixtures/valid/hole-simple.vh": "ce773b87709a04bbcb0ead74fea94b1f20fa4a4d185fc06a24a9bc703dd99613",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/resources/test/vh/syntax/surface/fixtures/valid/implicit-empty-parens.golden": "1d131ef8001e7f1cd7acc6ae9e842e15ba2a609a24939dfc68ddd35085270a7f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/resources/test/vh/syntax/surface/fixtures/valid/implicit-empty-parens.vh": "fba09b7032083104fd2bdf5d85e8f15a857bac385ea4b9c4f2eea60a5fb67f9d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/resources/test/vh/syntax/surface/fixtures/valid/kernel_v0.vh": "8e54e5ddfb1ce4a5e0082777c0d861410f9a098b47073e6125714c7ce17fa1af",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/resources/test/vh/syntax/surface/fixtures/valid/simple-number.golden": "e66ab6659cb1f5f9965edf04021980d26e43ac2219b070ac618f4ac0d461edc2",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/resources/test/vh/syntax/surface/fixtures/valid/simple-number.vh": "084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839cc0",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/helpers/WalkContext.class": "89490d2a3e6ccc5ee9e3a3c730fdc4002a495e9ad98adae7e22d07e1a437cdcb",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhBaseListener.class": "bbf3cb7fa6b1c4bffd0cc2d4a1fc76f858a280b24c2a055f7c37cdc956140266",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhLexer.class": "63d7fd695ba63f6796cac0f93bd264fd75404b3231bd1c24169335f1f34a1b35",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhListener.class": "be08dbbd0d16f52d692f74e99b9580047dc793d9c0cd97a334bb126f356e908f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ActualHeaderContext.class": "f19cb3e1904a64b07b486f758c405bdd2d6e450c8c67242d4eb076f4f418be80",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$AnonymousClassLiteralContext.class": "d2b78a87bb97a67edc1b941686ed8c7cf49d1cf84901a21fedf111b3030d4c50",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ApplicationHeaderContext.class": "56868e71ae1a2afef3b0788c08c4580819c9a754e6911f3906ce0a3e8e7407fe",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ApplicationHeaderItemContext.class": "5520821caa2a0875fd0aef708fe57d0b5d124810830cb32b16d94f0e3e6652e1",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ArgumentsContext.class": "a0eae3f29936ffa363c96a3492d75f1e539c243a3b3cf6984a4ced653265af93",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$AssignmentSugarMessageContext.class": "c8d2b87076264d3e1ef50919cab4aa5c51ccbf780a9db4fc95b272963249e17a",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$CanonicalMessageContext.class": "d6662a6e160e847d6020bb29436a42af7aa21cf05a4ecb47117cf9a8a73d2ffd",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$CascadeExpContext.class": "aa8f01bbc5cdd3b968fef8817d3c820db418044629bcf9334476e5b5d08f1a1c",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ClassBodyElementContext.class": "92579a5f5d01400e1329db315be9d2b2f071889e3c812fdc0ff60ed8a9fc2b82",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ClassBodyFactoryContext.class": "310bcd9cf626bebe0aefb6ca5caa8a3d35f8e8b3c97bd031a0d31475c193b128",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ClassBodyMethodContext.class": "efe60f43a54760d577e2118bbbc02f8f14300307dba35dd94879bd4ee2abfb97",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ClassBodyNamedClassContext.class": "9d3cf3f87b157912826feddfdf93fa7544e90343023dff27da04782fcdd3e382",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ClassBodySlotContext.class": "e4682d2c865f377d71af2a9824a25727d22a3d6a763183583b8112d0c0b13429",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ClassExpContext.class": "0f48226cb7177b0b2358942747c78d6946bbc1bcce7dd1457ef6623e6b99f4ae",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ClassHeaderContext.class": "b218277222aa41f95d44132eb56aa2934aa37c5917b865d6bad1a824e6946dda",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ClassHeaderItemContext.class": "9be027628fe03d6a44303cdd24b7e72f85ae822b441747402cbdd69f2cfe4c65",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ClassHeaderItemOrMissingContext.class": "b2ccbeeabef18b691694d2e11eb943932fb6fcab1a5ec7690d0c63cd98c0873a",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ClassHeaderListContext.class": "39784fda0513d0b364db1fe998a45e50b41495e0794e3128da41961c1c013292",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ClassLiteralContext.class": "b3d2cf7e161473da8173a8cc31b388db41dc89c95886441e717e7fe2d258d526",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$CompositionDirectiveContext.class": "59e3f68855f639418af91ace0e494d7d664e91bc43d6f43f13207a9fb4f1033e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$DelegateDirectiveContext.class": "e8cc63ce3172ee3ef5be1b40e6197d6cdeeeb71b0c43d11073cfb35536d726d0",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$DescribedFormalContext.class": "76df92fe854d034630f24469a97a0b3c752e6a4b664cb1e970207cbd1caa525b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$DescriptorListContext.class": "225d6b53dc9fd8e870f76df9f6f6faf316d8d0f30fc0af698620911aaf4bc66c",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ExplicitAssignmentSugarMessageContext.class": "033afe07d46c91b8388b349196a8a0a4371f885b85ecf0f5305cae91f3a9e3f2",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ExplicitCanonicalMessageContext.class": "344787ab88da4164186a9808a4bc38731332d37270a4b52222f90e6861b84404",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ExplicitMessageContext.class": "61089b2b7882070e49efa7bc7f1364e9da41d06784ec44711a12e8a2481aca16",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ExplicitSelectorContext.class": "cd55dca72a2e281c9edec3e1ae0e37cc7ea7acdd540fb769516893141a9db24e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ExpressionContext.class": "10120a859b89e6616e5317402338f5d2851e892af88f83f2e1c7de3800521bda",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ExpressionListContext.class": "87d450634a8319bb4ebb0d2ba412cff9acc029104c47288cd9c33fe76408fbe9",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ExpressionListElementOrMissingContext.class": "5409fada909c4564d33bf9a2b850efa792773202f5d77260029e7ea4d494aab3",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ExpressionStatementContext.class": "b7f1c80979f680c60ec48d62d782bbcaca740e7f891c1e31001fb5f91aa1788b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$FactoryDeclContext.class": "654297f84705625c23d35b1d2088f1be36449f828c72588be7b093670013a3d3",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$FormalListContext.class": "7213115b878bb4ac213865023fbb90e994ef819b251abf7351b7926c2be0d1c5",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$FormalListElementContext.class": "c59f1374a29fcd2b0baf935422cb712392bc134f6361f0340ba5331490ad5f2e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$FormalListElementOrMissingContext.class": "666b9fd7aff209409c870b5515d26d28053649b6147195100124b6d858a376ac",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$HideDirectiveContext.class": "e93fd66b5804da7318dd45eefa10e389f5e109f643da03d6eda02295638b6047",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$HoleExpContext.class": "c9f547b385782b4f1b60207ef30b69cd75ee0fd7aa9f20891f8af7c8b1f5e321",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$HoleLiteralContext.class": "ce0cc02bd6f4dd7016b80f9f8794f07234640ebb7d4fa0febbd6ce0d97bbb048",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ImplicitMessageSendExpContext.class": "59bb29e594fd437b75be3bea5f430a262d4459a4799e2c37a2a22a923b3a235f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$InitializerBodyContext.class": "5301728fb87fa871432e98cba0e73b42f2057b22604716723b41f6d55f13c9ed",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$InvalidClassBodyElementContext.class": "05d2f43e22549b51ac102e7720bf84598000705ce7ebd52a76d37cabfa3514fa",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$InvalidClassBodyElementRuleContext.class": "62e400f0e1e67cdd7ee90808746247cf2b932e422319bc1bb289965dd2b3bd1b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$InvalidFormalContext.class": "9534b2c9a42266801765547d1e5091c1c470a3a2b3e39e61857cdc7174e420bf",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$InvalidObjectBodyElementContext.class": "f50f8cc95602ec33111f007309c42888d23838605a9aaad2741e2f1564a31275",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$InvalidObjectBodyElementRuleContext.class": "7e477d679bf0e67816f5754f91f166b7e423419f8674e5df646814087bf6d9b6",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$InvalidStatementContext.class": "a27827ff44a0648f1d361f513cf6e5a6bc97cfe877be7016ee05012ea54e56a7",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$InvalidStatementRuleContext.class": "ba87acfd023f393cd0326ceb0955439bd63f20e7ff6015bf781955f061cde42c",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$LambdaExpContext.class": "a8b9e4b5a215adaa97ef22e261ae768035410f131ded9370487e4936d629ead4",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$LambdaLiteralContext.class": "4140ed4a836f036286c256ebc89133fefbe544d8f0d2866195da726cb576a226",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$LocalDeclarationStatementContext.class": "603af23eb18ffe997498c8b0f43a2ac277bbb17abf3f38a270875892250c4d66",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$LocalModifierContext.class": "89d6972e9378e50ca903d01a808515651d0c392bf3eb2fc6cfca48711db4dcf3",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$MessageContext.class": "525e76d579b0cfcccd90b926dbf646b1cd741de996160505fe299f9f2c4e5282",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$MessageSendExpContext.class": "2841b2ea4abba6db67f644af6f58053862dc6931a9739a8e1b3a2ca7b779c269",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$MethodBodyContext.class": "8061db08981dacdf6a30ef3f7d9f6584562a8761b1ec316098031f3e0afeb256",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$MethodBodyTopContext.class": "5eff42f5497f0125a52549664380b6803dbe3e490a4c9892681f31b33de25403",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$MethodDeclContext.class": "5b434d54a0f0f162e3fa9feeef3a5eadbb9bc03c535810a4645cd0a3cbbd2f92",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$MissingExpressionContext.class": "1df086dabe4c955205933a54424c0e9d772d69b7961295015c47c9365200ffa4",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$MissingFormalContext.class": "d377364e91b2f4664f7149bac30f907a111b16e154aa7f17d67f95f880110d13",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$MixinApplicationContext.class": "46344b6f1b5b315d409d99202729edd02848033492e10d7cc035935c8b8253c3",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$MixinApplicationListContext.class": "c9d865aa225f634c4b09073e9b721b5c269f5298612679201d67cd84c14b4627",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$MixinApplicationOrMissingContext.class": "bcfe32f7973debeafac12c6aab83e1e07ee752952a7580d36c1b23dd60116e57",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$MixinApplicationsContext.class": "c6586905b1e77b7f48c6f4380fb0d17cb2d6277e896815a3111d6935b90a7aa6",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$NamedClassLiteralContext.class": "0f3b1834f4ec99dc9e09702db3c9475e7c3b51edd04d18fa0fa5088538e8381e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$NonCascadeExpContext.class": "25eb6870ff174a2dea2537fa4c214b16994010a44647ce6ed1a82a8cd350ad19",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$NonCascadeExprContext.class": "8f41ced2e4e17028f700383483460b49a298edb4701d3729fda660a8399d7da0",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$NumberExpContext.class": "4040e112aba10c21a9c641e6032065fafca96c0eba4a88f9681562189b46ca28",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$NumberLiteralContext.class": "9e52acac38831ef6a1e686ca83cf39789075be91eab3e458e6802188aae38b70",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ObjectBodyElementContext.class": "433cb64fa4a947b206ea18a94457bd4f5a879d6735d8392c4cb118b4b0a20b25",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ObjectBodyMethodContext.class": "82262c5ee0d8e5cd143064f985c1fe44913904f617d40d13090d9b95d908be5c",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ObjectBodyNamedClassContext.class": "cb6e8c03fecda3d3b7a0bb8a90a0a7f816aaca203cfda4ee6f86c0cc0616734f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ObjectBodySlotContext.class": "b2070cb4789caa68a10a0d47d822445fc453655455bb385447d0e8d21e2fb2d7",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ObjectExpContext.class": "7e2f84fd42383a76d1d478c66b81a042f47b3904dffbda9db96e3b349bfdabdd",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ObjectHeaderContext.class": "192911a3220fc13166e65e7d4b07f2e15199fb1b9c9bc1901ef3a737594ac183",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ObjectLiteralContext.class": "5d9815b891884a7cb08a99bd1e0da25bf5831188a3996a2df0604189df752fb4",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$OuterExpContext.class": "45f27897a24bbac17c9f06e919db5cc540c4e3148e4d10f37383942709ce52f7",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ParenExpContext.class": "bbd31005511bc7760df6d658475bdccf1ffd63548d6fa12527cea06efe70d297",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$RenameDirectiveContext.class": "0f3d9d6e7f96aa6456f9009c859c6a3218b45f631cad7f24b3add5ab71bfb2cc",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$ReturnStatementContext.class": "a81073ccbd8709a13f1c84cc7483024ff0a6d1f9bf452307dd749f163fcabea1",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$SelectorNameContext.class": "62b183405a5227e9200edf2b209fdcefa09ac528c37fe1406afae626a2611e14",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$SelfCascadeExpContext.class": "9ed8e1906a64825071fe2bb29b1a46d33b7860115aa0937b71d137af03e2eb21",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$SelfMessageSendExpContext.class": "bb1e81be599c883934a6446ebf27b31cc3f62129855989bfb6c83836989fcc25",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$SignatureContext.class": "8fdbba1e70ec315c2fa63ec2e71b4b388126fed3378bfbb071ce7eb4d6fc30e1",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$SlotDeclContext.class": "8ee5ce3d1f3c7fa0d662556d03389a5f67bd77e828c57727c63802b0fdb8a2b7",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$StatementContext.class": "54fb1be4b88d90e9ae41797529df01fb292fbc38a5754968cd7812d1549cc05b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$StatementListContext.class": "2657f8177350742bb1c79627650b5e4e80b3cfa4612bafe58ae9457dcb450830",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$StringExpContext.class": "29a1752451e1dd065da90f3015cbdbe5274d68fc7f832d7708b3b35dec3c0fed",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$StringLiteralContext.class": "3eb836d20ead77085da11b5ebe8d85bb441b92c6e5f7f64b4891037b0b2ab850",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$SuperMessageSendExpContext.class": "959b7cb6dd781e6592993b49b15a10750de7df8b5f74d19b1b817e4b93baea79",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$SuperclassApplicationContext.class": "6eed142beb0f93bc212d57147cb0faeff54670584113b28b8d87562db1143517",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser$TopContext.class": "2af153f1e199326be44358dd6b2a1fc7bc9e07d2af6cfac878d29f44c135e390",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/parser/vhParser.class": "2e3d70ade6d3cf046e4c087b5713b98c4eb488fd41b7e371f418a87ba69cb2cc",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/AnalysisResult$Approximation.class": "086e550c1dbb953f1011dd31ce7a7efc6b20ae4e26c19dc1e86cc3546c9d3189",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/AnalysisResult$Certainty.class": "b8ee86aefb0eb29ed1496a0f7cca83ef57e716058d6ed045203ae41e21dfbe8f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/AnalysisResult$Closed.class": "b852728c8398a85722b62320ed7795df46cbd5ecf1dea69c2a34ac38084693d6",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/AnalysisResult$ContractArtifact.class": "36413ee20a03e5a9cd28ccd3bc622e57c5cabf939e04718e5ff3e74dbbca47a2",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/AnalysisResult$Domain.class": "1658df4b335ea7dc65b6c906d62f0ca3fd24c64cc283573585ba124ff10277c3",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/AnalysisResult$Evidence.class": "720955c91a7404514c750e595f6928831ea3abfc1cc872f74dd122e6ac924052",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/AnalysisResult$EvidenceKind.class": "2577846b60a333ddfe2bf0fe93db3473e37558da1121021329260d8d7757425e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/AnalysisResult$Open.class": "2e1a8ab1814685da0d5e432417c0516f224d4daf28fb051a3e2810699f80f76e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/AnalysisResult$Provenance.class": "8ad5ff4c8479e71dabe81d660275ecbebbbb9b5f433036c3b91eb807227dd9c9",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/AnalysisResult$ProviderAttribution.class": "07b880d07fb47edf7951d9dc38c9eddfa4c1c35544a1910c2f155af9625dd38f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/AnalysisResult$Scope.class": "669fa0d0f69b2d1263e135c183fe095fab490a76ce3909dd045315f9be68d987",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/AnalysisResult$SourceLocation.class": "e2bfec4e10ea36d9255f1891465eb915df8a588f266467f2b568f434d8e06ebe",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/AnalysisResult$TrustAssessment.class": "bd281c81d6b5fed215e6c2ce94d7e61420437806fd0c16704ebd782f2d1134f5",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/AnalysisResult$TrustStatus.class": "8b63e7f535351ee9e6b69bbb150da06db9a97f8ce6c1428a2edfebdc1d5b42ec",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/AnalysisResult$UpperBound.class": "33b2d0bb2fed093981035851f32090c0ade316341a60acedcc74de8f2b803e4d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/AnalysisResult.class": "7268b8254632b6835915fdec97eab643e8aaf93a543b9b742a5aee12cc2ad910",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/ParsedSyntax$1.class": "f5244d91f00d7b29bb44fe8f733e4b23c777bc47f9ed3e60c7b8c5168556b2c4",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/ParsedSyntax.class": "95ebe52ecdb39bbde3b2cbcda074a80f2d69c14dac402a4d5f774ce453b8a282",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/SnapshotAnalysis$Analyzer.class": "799e0fd2d54be93f6fe12a921d7763d2f6d357aeddaf2dd3827eef5f7f3b7515",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/SnapshotAnalysis$Input.class": "28b19c3aa5926c8750fc186137a8dda34e65f1cb3c8d28cb801385d3eda40ce5",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/SnapshotAnalysis$SnapshotResult.class": "bb3c4b116d6b75104bfc1d5963268ea26bb8b76296199ec544a1a5576000f3eb",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/SnapshotAnalysis$Task.class": "5243905ee90ab158acb96908b0b3793b3e0cacdd6b95c56da8ef721a3a331366",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/SnapshotAnalysis.class": "b38165e7b9f758268c6309e59028fafcd5e6935607cf0441eaab4d2d66418f37",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/StarterApiAnalysis$Ancestry.class": "983e829742d320ee53a2e26365a37bfb6addf03e192741412837fbf570dcf912",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/StarterApiAnalysis$Context.class": "90940a4349620068d3c7d499c3d9bd0c6b5c612c1539c3cad0658a362e83564d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/StarterApiAnalysis$Operation.class": "caed3645a6a947ff8f8e701422c8beb69a30197d3334bbe825e4c931cbbd93c8",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/StarterApiAnalysis$QueryBudget.class": "d1fad4385e77eebd1e6949b675eb146821aba99bb53df75a0773572a9658b959",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/StarterApiAnalysis$ReceiverEvidence.class": "faf7cc80065b25facb423f4d14c554d823f27e529158f3ab18bc6a5cfd465dfa",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/StarterApiAnalysis$SignatureQuery.class": "40cd9d5ccc10f04ffeeb787e9618c25273d84ebb986420e62b9f61357d8c71e4",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/StarterApiAnalysis.class": "89f3870ea65b1d82f70bd6bdde4ef2dd88a7300ef2a798708968d4dd395eeafa",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/SyntaxFacts$DeclarationFact.class": "2e827b199230cfe972dc3fbbab2e60045eb52725d968f597262260c88a1c31e5",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/SyntaxFacts$Kind.class": "1fe3257381502a7a43afb1f092c36f7c0d89144a9bc2230f5045acfaf66b441e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/analysis/SyntaxFacts.class": "1038beaa4ab007aa3663f612ac95eea56095bf799ef707ecee4a5dee558e17fc",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/checks/ConstructorTargetCheck$1.class": "4a7f39fd7efb60b18eef018aabc2f6d0e9f8b5c9255f812666e1b46f816dc8f1",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/checks/ConstructorTargetCheck.class": "8f54990d0e44bb33cf92bb93701ce49ee09fe51927a6b88aed0e2780f9b96c7b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/checks/DuplicateBindingCheck$1.class": "1c4d22793cc9fddc8c20d058e71deb281be3026c18ff25a63c7bbbf2e54765d9",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/checks/DuplicateBindingCheck.class": "b63b77f6f9d67237fef6808af4441567a136e487c76e4c2f8680716df7af3555",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/checks/DuplicateMemberCheck$1.class": "155ab48ae4a215ba34b0789558bdb7d38284e1f1ff0a3ba6d66b469a4f6474dd",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/checks/DuplicateMemberCheck.class": "e63b02809b8deca95cdcb3c2ac1503dc2032aec0ee3b0a2fae58c460927f985a",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/checks/DuplicateSelectorCheck$1.class": "5b31bd510987fe74eb1784abf3a7bff8767598c00e8049f758d69159daba8ba7",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/checks/DuplicateSelectorCheck.class": "83f8e2f703a69febe506017ea749dd7e27e0e8fce5a0c4f207f79bf1252dda36",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/checks/ExplicitValueCheck$1.class": "fa45499f69097544e5911b1f0d28d4a58b5617579fc8771b314028b026da807b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/checks/ExplicitValueCheck.class": "3debf70a2ae7c5c8492161d4d7e68177b36da544cafa2e64226bc20fe87391d6",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/checks/NativeReceiverSelectorCheck$1.class": "1e430126c94d2881c0f21acbcbe0c26eca1660e1e2f077aa34b805ce3c477704",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/checks/NativeReceiverSelectorCheck.class": "1bf5944f467864ec5ee63b987893509ad23332caaf89a10854b12813227a085e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/checks/OuterQualifierCheck$ScopeVisitor.class": "a27eb9ceb5cc7daf6087cbe5039b67385af6a32cb57b0b0fc8fba14e958f85d1",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/checks/OuterQualifierCheck.class": "d013887b7ae5a92393bff10077c7c97f879eeb6396215c31d629c4a4cd95a1aa",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/checks/ReservedFactoryCheck$1.class": "261551de1cd4b3f7774135e7474cebb3f62c08be809199d35f13327bd114e561",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/checks/ReservedFactoryCheck.class": "037704f29a3eb58b770c8af425d1efc9e200eecb0bf05a2c206eed791d36f50d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/checks/ReservedNameCheck$1.class": "9c4d32e728a02c88352a2def56e171e7b9c610d4d3dde7654a7d127285978fea",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/checks/ReservedNameCheck.class": "f356ea0b5ec7492c415baa16d3bc832e608f6a80f4fcfd361800bc71c1c9cd19",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/checks/SyntacticCheck.class": "498798c8e8796a4ef09e04b64a39549ec2bca69c3213e38288a93a5fbf06260f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/checks/SyntacticChecks.class": "aa7b32c5bcb853baafe523e233905f95ebb1f7cbb6b0bf7a2653369fab408f3d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/checks/SyntaxCheckVisitor.class": "e5df2d2f708d06d99344fa998b43130a69f923a75bc6ab19345ca395a4777ce6",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/factory/CoreDSL$ClassSideBuilder.class": "c735bc5fb7d3fe2d6aa8a68555cbec12211f983a33a31069113363b17719fa89",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/factory/CoreDSL$InstanceMixinBuilder.class": "a8b43122d36d4d7a839d0296d2e003464273a4c1ef403241b583ffc94f1207d1",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/factory/CoreDSL.class": "56bf5e32f2138243ac865ae908c9a32e2093cbb57cb6cc739f8b0376f207f6bd",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/metadata/CoreDescriptor$Entry.class": "3882e80ac66380db191cb7710136827b16d6911c9cfe37a987b9574ae3b98595",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/metadata/CoreDescriptor$Group.class": "d5434d20e22cfc20b4aed763cbbbfaea8810a39364575090cb342f4934cb2ccb",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/metadata/CoreDescriptor.class": "0fdbc9f76a459c5c372bebb5cbdd4a1f089b9c1507864c28c8cb11bec0fe8f1e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/metadata/CoreDescriptorAttachment$Role.class": "3041ef57fa8f0b1a701c850df0b0ee93b3173e19a2a8a0f68d208a9972b51fca",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/metadata/CoreDescriptorAttachment.class": "8616ce9c6a79d638ea6b754eac1a68adf1713c37abcf13c5af0537e8c8a109d7",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/metadata/CoreDescriptorMap.class": "e73333c4ff730d25e8b0241d186c7275c74e858bca0c493ce9dcfd63726606c2",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/metadata/CoreSyntax.class": "6b341345ec5af5462f49d3875dcc9f43f80cc1213de7c503d427e1c0688a0a98",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/CoreCompositionDirective$Delegate.class": "c1b35a6fcc0a51d4b677ac7e3d9e3a62878100d06beac5ecad515d5e5559ba0b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/CoreCompositionDirective$Hide.class": "90a05a4e4e816cc3fb95767e8b9437091b98694ffd27db061fc2e07a96bc3132",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/CoreCompositionDirective$Rename.class": "94bec53d01b35f2d83b29043c530a1721b1cd847a6043cca06145de121a388d4",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/CoreCompositionDirective.class": "6471f2a7d328dc8c702e3c5bcd0b83d68481de5f6fbb589b70e08aecd2b28bfe",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/CoreConstructorApplication.class": "bb4a13638fd54251a151ffe7939f07b2a3626f8cc9aafc7b8ce218db323a51a4",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/CoreElement.class": "652285acd32f63b1c9068bf7d8bcbe8c3f9035fe1e76de258d85df4bf0e865a8",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/CoreInstanceMixin.class": "4b764618e2517b7e07b556e8a8153adfa14176d15e1133d8a913a44663b3ee6b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/CoreMixin.class": "a26b00c0364213c1989b6c825bd2ae43d55683a7378e6cfb8f92f43987b7be2b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/CoreVisibility.class": "9bbf8ff4b8ddde0721054523587703c900cd5d62252b478a980d4ec634e3717e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/Symbol.class": "bb01586cf81042999a6da8ca447e071d292fea12dfe569f99c7e2052978176e4",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/declarations/CoreBodyElement.class": "c4a381ecde2dda9459a65132aded1a226f4dcf2ac4b1edf92555c533449d2060",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/declarations/CoreClassDeclaration.class": "4d3c387cce58e3b90e557a51200a834524b503666eca7dafa13fdd92fb4165e4",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/declarations/CoreDeclaration.class": "b77dd0e688c7631f60092347c21fdc7fd02b8f3b973e3b0ad0962d0ce25031c2",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/declarations/CoreFormalDeclaration.class": "0110de070b6d5af63eb275562024d098189fc6639a46a54a241ec49be28de354",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/declarations/CoreMethodDeclaration.class": "73e026560c1e1d12ada828a0b3ef6a104f1013ad1154e784715651fdb3724dc3",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/declarations/CoreSlotDeclaration$AccessPolicy.class": "011489638f2751a8325ae68ad87852ddd2787c04fb74a5e58d1be61caaf7269d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/declarations/CoreSlotDeclaration.class": "553228f59090a6184553736ef0ec178d37a7aaa258f3de595ef0c127aaa69897",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/declarations/functions/CoreFunction.class": "521c363165dbd62fdd27c94fe3cb1c511503496dd352f7164df6b9f6d0b8994d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/declarations/functions/CoreUserFunction$PreparedParameters.class": "82d15a03f4b495c7ca667cb014da9486910e3ee8aef07dbfe8700ed82e66bf92",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/declarations/functions/CoreUserFunction.class": "cd08d5cc7b9e7af74c016ff005e8d7a7113521aef21eee4a45a3f67b1b7795b8",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/expressions/CoreExpression.class": "3d37561fe8ada055afbf842d135f87a1f7b58878dd726afae1d2f95fd1f4cd88",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/expressions/CoreExpressionLink$Binding.class": "abf6370f0f02ed75cbd4a38357d867e2425d3b5d2b2e7bfc5e983460417b53ab",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/expressions/CoreExpressionLink.class": "8d92a8762568f591445436c334507bc7452ec005d11ae6f862940f64315de47f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/expressions/CoreHoleExpression.class": "88c4ea1803ddb77c3f54e584cc6d5158e75ada978e80d31f5ac2e024df2fc866",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/expressions/CoreNonLocalReturnExpression.class": "0a6ccc606b66dac2d2619f69f0b3f427073dff79ceb569b4a2d8275913b2318c",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/expressions/CoreOuterExpression.class": "58fe4f4af246b5a7fd4bf97beaca909e3943d662d36106f4a59bd2f053226f95",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/expressions/CoreSelfExpression.class": "358d219c5edc5f4dbf782ad82c6cdb4ddbbc80bdebbdcfac646d89cdd8f7df0d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/expressions/let/CoreBindStep.class": "33f3d73b35a5e830a0dfbf0b7c34096bec230e1757b94e1eaae3788fdc179413",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/expressions/let/CoreEvalStep.class": "31e05f52ee373834547176cd2ae80c265e6cb5bdced866aaf040bd01c784dbaf",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/expressions/let/CoreLetExpression.class": "e02c86d93912f7a1b4e982546d314404891f557c4966f814250ca5176fce7a8d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/expressions/let/CoreLetStep.class": "60c59006b30de5c763e1551abbe4264fe5907b33d3d588cb34b53ce89d41c973",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/expressions/literals/CoreClassLiteral$Binding.class": "9c52907ac48084ef1a248c23b2ea6d0e5c983651a3526a304d8115185e4c5543",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/expressions/literals/CoreClassLiteral$Definition.class": "48137e8e2715e3fc4fd4dd0b15f0b3a8945b5122df17442e1842900ca3b0d5c7",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/expressions/literals/CoreClassLiteral.class": "fe2d9ab4f46d5ba2a092796eebc9954ae36db6d7a44a34a0946adc153c729b0e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/expressions/literals/CoreLambdaLiteral.class": "7633d8473d20519342b06adbd848581629547b79ddd9a46fcac35d1e0fbd5b29",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/expressions/literals/CoreLiteral.class": "5bf6c79158ca79120dbb702acf01491809c1b1a2522b15c836a948e7903d3711",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/expressions/literals/CoreNumberLiteral.class": "7711a6ade07b53f8201eb0d9b2e6b480f475cc7a25dc86ca353775d83276ee77",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/expressions/literals/CoreObjectLiteral.class": "07edb21fc5c987a97d5808249367734fef1bd1cd55ba7a47a081b085fb162a72",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/expressions/literals/CoreStringLiteral.class": "ee14fb6fba7478b5159a7a51517c83b185c42310cf2ec785c459659ea435748d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/expressions/messages/CoreMessageSend$LookupRedirector.class": "4d997b3fc018c22529e35ec2c7e8985e1fdee1be30a0b4a33445e6724c0a297a",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/expressions/messages/CoreMessageSend$SendMode.class": "05f9133b42725ecd643b9f1cb53e944dc1a2d249a2432188097f59f1df00d8b1",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/expressions/messages/CoreMessageSend.class": "c3e57aa468d2a9592d5530a80f3475ea34ef5c1b7eac13c18ea76d5221c2eff8",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/expressions/messages/CoreSelector.class": "a49485ee3f7a96eb654f63a4ec5c67706a17a7fbea744d6f4c6b2f49d9e9bee4",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/visitor/CoreBaseVisitor.class": "31440fd0f0be9be469a32dc2340ce15bf4427fcec7a3bac65e7db65d81dd5fed",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/visitor/CoreTreeWalkAdapter$TreeEnterVisitor.class": "41fa63f00307276e1ee0f10dbe53da67cf4695fea4f2347e9d75225e927ef934",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/visitor/CoreTreeWalkAdapter$TreeExitVisitor.class": "37dd0b3ba5aeec9a2b80cae7d53ac203f6daddb0cd581c068837b79c1acb6e2f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/visitor/CoreTreeWalkAdapter.class": "38e8c142624a0f2e43625911f7fb497532fd790c1927a57fb6f7d83aabb8ea53",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/visitor/CoreTreeWalker$1.class": "bf17e2b739e77f26f24acdf9286bf7e412639fefcf47a9c3dae3032261809993",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/visitor/CoreTreeWalker.class": "bfa1f43a43173958e3a344a2bfe90c10674aa5f72b3f30df1b2ce487860b09dd",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/core/model/visitor/CoreVisitor.class": "afad1cfc6fd72346af9c660b1d1f5e50a445621093aa7a20d731827d73d9cb8e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/lowering/DescriptorProjection.class": "b0bbea1566694055634bba4f2bb37017795e55ef5038318e6d1d7e4295e51f54",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/lowering/NumberLiteralLowering.class": "d29f653be84cabb869a98cad6fff88fc353c4826d52f1fffece1642b93100d8e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/lowering/StringLiteralDecoding.class": "4867999039a39198c034e138b7f5e8f352907160fddf35f1c820d1d67150352e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/lowering/StringLiteralLowering.class": "2352b9e4376444e1eb256205e2ca77c367bdaf48e0679d8c3cf758cf37b33bb0",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/lowering/SurfaceToCore$1.class": "24f51f45cc6eec11ec07e178d38f6d31f0d1ee8953b7f17dda14f418e77031e5",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/lowering/SurfaceToCore$Context.class": "9eef66f552e66b29dd4846f60925551cf73d8563f5cff32e9683d956d2d0ce87",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/lowering/SurfaceToCore$SyntaxLowerer.class": "7a081b17284a7ab9dbcba26c8a7f7b8b73481056735c097557d54864a00ade37",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/lowering/SurfaceToCore.class": "b2a43858a2d259981a8a18c6475bce7ed339aafd7b538ff03981635de2d19973",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/lowering/tracing/CoreLoweringResult.class": "6d7f8678359fd328143afe1b57f6a784207de7ed1050a05c685911ad9fd8b25b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/lowering/tracing/CoreOriginMap$1.class": "ef8cc1a42081396309a810e063644d5a3409a2fc0d7fc757ff79bcccf8d0d43d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/lowering/tracing/CoreOriginMap.class": "d768920168c76d38cc1782c7e42724a40c6efa9a5e58b011a76d297f3368e929",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/lowering/tracing/MetadataOriginMap.class": "2bd999cd8193ca946f8b7c3d6406aa628c6c48d2d6fe07fb92fc1dbfa79e0c18",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/source/SourceMap$Key.class": "10db6d2a05a64e4f5dab98f0034979df91827cdd00548ae4abefa0f810159293",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/source/SourceMap.class": "ec1ec7a2f240c12b457fe12c43bd07562be86b681e8401c9cc57dadc9c27af11",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/source/SourceOrigin.class": "c4ff1cecd2aa47c518739b2bf797112bb061e86644f731081d67f917fef976ba",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/Antlr4ToVHMapper.class": "f832864a7c57c0a839ae52b83e63ef8b7f1bfd4f2c9289fb74fc885a57848f78",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/DescriptorIslands$Span.class": "f9669821cdbe2235ac3688874036dc3cfee13054423b3701b2e3ca7959703981",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/DescriptorIslands.class": "d268eb9cc958b3ae15bd999e1317415d5abee442f391aafcfa2f4cdeeadf8184",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/DescriptorPayloadToken.class": "af37dd03d255a01c869806d9eb3eca62612db09dd3760c5fd6cc4ba520fd2335",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/DescriptorTokenSource$Frame.class": "fe04e13e6526837bb9f1b092305323ada54d126702fa3ce628bc01017decb151",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/DescriptorTokenSource$Header.class": "3ae89874831f56b310fbbb3b072f02d6501056f152a3a1be73f35841a1e30798",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/DescriptorTokenSource.class": "96a69099e42cacddd81193d4a206c75e41c6c786a386e72894c06320b0e6eb25",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/Named.class": "ddebab501f40e1eabe37686a082fbc6b65745a86e2f6559bab02bf75de8f808e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/ParseContext.class": "6e98bc2840f6183fdcfebb9445ba3be1b06a2dc6fb26169970032ca376b05f6e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/PositionMap.class": "a1172e2df84b67a08c81b74ef9bdc3a34d90a5cafb3ed367031d495743474735",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/ReadBudget$1.class": "a82e9b139a28ba1f95318830f4d2aaa0c054ba43bd33cbbe60f23eeca7c2d71c",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/ReadBudget$1Entry.class": "d50253b11c279248f2f39685f1e699753969cfeadc572330aea67ecfdabf654b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/ReadBudget$2.class": "82b99d1a8ea94a69bf0a18293fd2a7d59c68a11380b32fa59dd4a60182bbeb20",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/ReadBudget$3.class": "3fd1e9a19abeff382eea51b994ae05bfcb0a36736d662a1d03d87f60f1804f1a",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/ReadBudget$4.class": "bae9342fa9ce084b2fbaafdb8aee458416217aa3096c1886a7dd0f18d75f04b7",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/ReadBudget$Exhausted.class": "1fb408b634f7c1c82088d81e1084f9a8699e8516efacc7b4eba2ff05b969c594",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/ReadBudget.class": "e4e96fee5848d9ca7765b29f45aeed9c94a25123bb591b546bcbff9259682bd7",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/ReadLimits.class": "d5f8b272aed2fdc3d5f8ee69d781b9806c7ca0190b798ce009c9a9695a1081f7",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/Reader$Completion.class": "e46ace138c7ee15f1cb0eb729e8e87f1213b33a650b3f4f7d2e941f3e18b870a",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/Reader$FragmentResult.class": "81e6cca58ad534ed6809ab8559a4e9ebed56649609cf1b512c8a1eda62bd0e20",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/Reader$ParserFunction.class": "100d49ddbb2646a96dbb3a9ed9e8135229eeebea8f8b685326df82b9512505e7",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/Reader$ReadResult.class": "7e6deef1ed446bf6b30af069a9e0bbf74739c4742ed4791b86b55dcdd98f28f0",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/Reader.class": "2e2c866b82ff04663a4265646b8c941b7abc3c215abda6f6296bbac2279419e3",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/VHErrorListener$Kind.class": "71d21effb5e1437b21485a1df937e01f06b574e8e706e1c2ba933ba2e3c28ace",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/VHErrorListener.class": "b3bd97de39f7e1e293ff2e9ce728f8a61578b15a3d33e550361dba5d5607c472",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/VHErrorStrategy.class": "06049b4394a465fead04c3c833450298d2d64abb8671ea9a0ada3bf4bd210164",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/CompositionDirective$Kind.class": "a2bddc2a33945bb42cd0f5ece0a22b6c7a2ced56831a8f4c7d78acd3d983cfdb",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/CompositionDirective$Signature.class": "ca8835e51850084fc9e8f908c409ba470c9da85ff09810abc5a89a5c1d47fd97",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/CompositionDirective.class": "dade6e32628500b78d3fa9baab889c1d52f929b63f845874b0485524c1c98f8d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/DescribedElement$DescriptorFlattening.class": "7e80e465cc23d3a501562fd793a3a3afcc941517612e267f404008ab98e7d677",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/DescribedElement.class": "aeaca03fe6b2d585c38d12b6b7bb86890f4304a3a9a91199a1623c8a49d77b3d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/ErrorNode.class": "39451969378a78292106e74f6519d405567dd010f6a1e344b7ab5724b7721740",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/InitializerBody.class": "8f9280d76435ab770d42216f3125666065da5cf4ca108945bb3426282ed17162",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/MixinClause.class": "27842d200843f71efe8be3bf0abb49ed06b3019224d52acbcc1ee4bbd7c00b27",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/Routine.class": "156cd5efb7620ae8eed06dd37f11948c2d97405b38a5a4558d4adb7a8b2b4c70",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/SuperclassClause.class": "851a4fc7cce1b6aeb5d85dfa4973ef5d3b8d69a93886c69dd3d829c425fedb72",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/SyntaxTreeElement.class": "fa9a92223bd6749a4f8c52f68e964d2f03be3390997503808f9d26815b8536f7",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/declarations/BodyContainer.class": "80f1823c59f1303e0ee7e71ee715017e2bedb3fa527236c8747bd42c9385e120",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/declarations/BodyElement.class": "f492048ec198da8724cc332584f21bbabdc3725cf52b8108606237cd44e2942e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/declarations/ClassDecl.class": "8f936159f2a4b9c1df791ed51b9fef0bea14b1434a7fdc74a2c3960f9a256112",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/declarations/Declaration.class": "83ed63690642f267355104f395e2f7eba008b61ae96bd59019f2a60756969fe2",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/declarations/DeclarationErrorNode.class": "272e05e8d36e4b2285d9583b755225c6a57df7cb035553afc6efebb4584c2569",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/declarations/FactoryDecl.class": "beabefebeda4acb224a8c0a31800d38bf19a74c6dddaa1da81c4772e000ccc39",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/declarations/FormalArg.class": "0d4b97d4a0ec9d4dd9059839c4db0d55b5cd86d476eead3f0e4859ca1b0a5a2f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/declarations/FormalArgErrorNode.class": "2692a445bfbcab199bf8d4d7dcd05aeeb76f5998b3510c66196519b929c7f8ba",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/declarations/MethodDecl.class": "4c62a218cfe596edcce0dba897e5200eb9d0b21b5c7d3102359f974e3e868bf1",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/declarations/SlotDecl.class": "50783690e0b33683f730b4c198559d68407790002599da10a142eabc5efa1090",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/declarations/Visibility.class": "6a659a8cb954a853885a9d00c660e0b9afe4ece8f2f665711b786789a412a1e2",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/descriptors/Descriptor.class": "ca067c9ead789674bc965c2ae273d36691b4293b054bc627f0f9fa605e377d9a",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/descriptors/DescriptorGroup.class": "36343b50c228f2d76d376581824c259ee061b26c275f1fd786b6df560e5c4506",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/descriptors/SimpleDescriptor.class": "c398f8b9a0213ee53d75f5c0738c935c42840e08129e5b64bdd88714b5cdde27",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/expressions/EmptyExpression.class": "b3c2c4492034f6dbcf63db5efb95db46ef969f736f543809295dee045c27fb2e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/expressions/Expression.class": "ce077aab9c6d1493651af550c1d5569687a84181bb84e51f6ad7912eef040fe1",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/expressions/ExpressionErrorNode.class": "07be6f849daa99a276733fc859cc1658b2349a312a0a3332b64aec8e59d3fb3f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/expressions/HoleExpression.class": "083b121657e66b6ebe350041708bcd626984fa66d3a4f8897ec3581a7e4febd9",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/expressions/OuterExpression.class": "ad95728b954c47a7c38a3c3d5e75e20dcd1e6aecdc392913cbcebb9842c1d546",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/expressions/ParenExpression.class": "c3de858af655ed11aa556b06b6eedad082677d710f5d858a2eeb8868b2265088",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/expressions/literals/AnonymousClassLiteral.class": "04014aba7c4c28e9fe5534a16ebbdb3d4c31eec159989d1ed7ba3673911b671e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/expressions/literals/LambdaLiteral.class": "91729f674b2212b2f3dd5dc599f3d23af1b34c99025b4bfa8cb60c05f9d71d12",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/expressions/literals/Literal.class": "5155314a1cfc4639b23f45bca1f72fd5ac6b4e95966778fb2c39bc388f84e35b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/expressions/literals/NamedClassLiteral.class": "5477e3221e82bfe948bab38da1288ee652c4a41c9bd4c4082c67add38a20e5a0",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/expressions/literals/NumberLiteral.class": "953b8d761b4ff12b020870dffad0f259e05a41bedbd7e62c93d4abce39df9eb1",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/expressions/literals/ObjectLiteral.class": "84d782b513df786aff1a06171c2285c4693f3929a0d0a5bfddd0c929f449d8bc",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/expressions/literals/StringLiteral.class": "b86e6efef772299a8fdaa1ac21960895c9fff2f548ace7e359cf6a1ca57e4060",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/expressions/messages/AssignmentSugarMessage.class": "29d35eff12ffd849f41a8d020e2783fdefaf2d52ac4da8f200555c22e97bdc5e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/expressions/messages/CanonicalMessage.class": "735e1cfc7f468272c1e6af83d6363c5203573e13194b777e0bfe1e8e6aa92e5b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/expressions/messages/ExplicitMessageSend.class": "870c7bbdd75f3f71ccac8c8e815f8ef8043ca4e21b4f4fc33c34279ca2a11fea",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/expressions/messages/ImplicitMessageSend.class": "efc442cb3f6264ffe6b604affff8260cf8f57a996340789bc2b92e0643906eac",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/expressions/messages/Message.class": "9ffb9747e21dd177069fbf3d10d4b84f015859257ce7d94618cc65ff3299184b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/expressions/messages/MessageErrorNode.class": "4333a3e315e0ce96b13dd6b4f7def4ddfe60a65bd6377e503b21ed252d6e9cf1",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/expressions/messages/MessageForm.class": "14a9bb7c9e458ea61b3dfa1295fc6f695176a1e97bc5099e81a4bb6f3b7dc96c",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/expressions/messages/MessageSend.class": "564ae7e4d8a21884e9c077a7345cb965eee36d3aa3dc57ec36c72b71d06ca672",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/expressions/messages/SelfMessageSend.class": "f720e72b1e17122c9c958485ad8bcf441d17025d62c58fa493f1fb6e36abc72e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/expressions/messages/SuperMessageSend.class": "6e867c102141fbb206e58a10accb1ca937abe62119fb252f0322a90e2e8366af",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/expressions/messages/cascades/CascadeExpression.class": "fbf19e6c3cef7911b14d00dbef26fdb756e90a030d748a3717f79ef4a20bd930",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/expressions/messages/cascades/ExplicitCascadeExpression.class": "5a248c48805d5af3bfa1d7b9d35293d38ba320ba8e39344b355002ca96887056",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/expressions/messages/cascades/SelfCascadeExpression.class": "8d7d1eac85933115c662537f6f20e926319d7f5414f84bd5a87d38485c5dd449",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/statements/ExpressionStatement.class": "0ab8ef080694b3bfc297e8e6b42484bcba8da0d9bf5e1ed646dc75669f041dd1",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/statements/LocalDeclStatement.class": "b00370be2b424b8a3c7d7b38c84805b8e496025b8cf13b31ded8f83dbbb392d4",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/statements/ReturnStatement.class": "861b3b00874f36bef4f17a75cb582e861f046c5a01906d9e63f386410265a350",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/statements/Statement.class": "a544fddf0094a606a35c42dce1d07cc253e43c0c70f2b7c0cc55b82a054c7b76",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/model/statements/StatementErrorNode.class": "c9fbd7e24a08cc31d25af459500ff6e6766af9b72fa6b1a7d13c6fc11c4d9b2f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/visitor/BaseVisitor.class": "2cc074f1b62c2cf3f82ffc032660ebc07a9c9cc49e254fe29e7be2b572b53b3e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/visitor/TreeWalkAdapter$TreeEnterVisitor.class": "8ff53d92c095ec71d9142788bbde9c18a34f07a1e4f9b68d9096487c34d7a75b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/visitor/TreeWalkAdapter$TreeExitVisitor.class": "3123778f5d8923fa56537aa6bfdd53f6872e2d62462d1b6ebe6e82b3b2b79e89",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/visitor/TreeWalkAdapter.class": "1de6bfbf965e9c02148e30ef58885e244a65477052017423cf645667cbe7e5a0",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/visitor/TreeWalker$1.class": "7fb7fbdb2f8e072c354966909a7cf123200ed80a86179259d808e139e7c36aa2",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/visitor/TreeWalker.class": "5201775d9f375d38cde225834c1b5c16abf1af8d2c8d1b62c747d52830b02c9e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/syntax/surface/visitor/Visitor.class": "4122eb8f2c17f6f941ecc3458bbfddec9da9ca62694471512cb6d25f5d957931",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/ClassConstruction.class": "64ae83a832a117de51bef78fe6b6b2153510d6e4791fad75e59b046a5390bfc5",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/ContinuationStepVisitor.class": "4bad0412c85429bf8eeab97c87e67a0dc6dff5dc3fb9840f0a0718a0efa22722",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/EvaluateStepVisitor.class": "2fbdb8791a2b25dfa83123c6e876d1bbfcc0650baa26f79d62634813ee25c095",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/ObjectProtocol$Callable.class": "d533543e6db57bfcb3cb7f798630b04fb8e9673f0f4ce8d5e143d629a058e835",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/ObjectProtocol$EligibleAccessor.class": "136efb3a4b794e6fb061204f6c2901b51b654edf90045a051474f0088d513856",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/ObjectProtocol$Foreign.class": "20a246597ac398a71e64c02e5d881ccb72da4e4d6b1faf3fc778972f28956b8f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/ObjectProtocol$MemberClass.class": "7e8e2b8204421318347178f6b2277dec510df8f720a323c342c20c27af31016d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/ObjectProtocol$Method.class": "e1d6fd8fa8151431bac683dd24becc79caaefe3daa6a9868e196a0ddd12dd073",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/ObjectProtocol$Selection.class": "95708c20c2d46f521180f832fcdb2ba9796e6d5015faea0dc93432c48ff40cbf",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/ObjectProtocol$Slot.class": "8354110a9dbb4f0593d9b7adb3049d79e63b7991573df57a470dbb262624b620",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/ObjectProtocol$Target.class": "f874f4087a4aed4b2acae40bd2b2dcf196bf26f22be367d63874f51cdbe0d382",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/ObjectProtocol.class": "bbeda82cc9f88e7893e6cbad9b8e4fa14428bfb4745792fc731ae308b5e30cb3",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/VMError.class": "bf3cf3106061e2af8c342db58889b80562e8e9bfb5ac6fa97e6a243ca7b33544",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/VisitorSemanticsVM$Execution.class": "188dd5db6a99510c3f9f6ec8470422554d5e977eb4412ea47ac3893c587fd485",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/VisitorSemanticsVM$ExecutionSession.class": "ee21908215ac2f8368604ebb76fdf688c4355d9ec69290989efbca406a88a6c3",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/VisitorSemanticsVM$Fault.class": "54cdc3de4f2c22fcfc252a995d8b14b8b5ef22c79c2ba5ac53b73e1a6402f4bd",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/VisitorSemanticsVM.class": "bcb15d4aae51fadeb9a32f81ebc2072038da8893d347dc89f200e14efca27809",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/bootstrap/BootstrapRunner$1.class": "fc0d87c76172813ac6f748d8f9de943a79fda7dfa3a09f50764bd1c5b44343a0",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/bootstrap/BootstrapRunner$2.class": "878877390976d68df6794c23e2513ae02a125f353e7e42dddd7afc0a9404574c",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/bootstrap/BootstrapRunner$CliOptions.class": "09c1fee0d4ef800aa1bc180ed6881b5c87c7c6bb44311a61f99cecbe92f57797",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/bootstrap/BootstrapRunner$Compilation.class": "fcae443a60c767297d5aa5a06eca6f70bb0bea45984973303865453e53a96f8d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/bootstrap/BootstrapRunner.class": "1cd83ad632e74aa52faf6e0d3e5bfab53769460aa825ac31032ec85cff803726",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/bootstrap/BootstrapRuntime.class": "91772618b08d4ecb536df3fb023575a951954c3e331c13c7bdacd259f50d489b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/bootstrap/SourceSnapshot.class": "53fb0176890d85cf05ead39ea3a715b724b1c8d0aa992697189ae5d20ff783b9",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/BoundaryException$Kind.class": "4446eed3ff4ef64cfb799f3bede5b112641cb6c7e2dd3dd4c5adca700bf531e6",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/BoundaryException.class": "735abc171584246e8d6ef4750290614a1c6200d40dba6b592a4e6ed160f71a7f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/CallbackContext.class": "16e563f0e224055b555ae810bb9ada55fa6160dde1553c9aa8b85883a3b55082",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/Diagnostic$BoundaryContext.class": "e5f220a39e3d7ca2c3816826b09bce08b022714b35cea2431e8b7decfeebbaed",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/Diagnostic$Direction.class": "4ac27554c1a703c27d72f22b0313101587a8d1dd4dd4b37e0d92c0a6bb85339c",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/Diagnostic$Frame.class": "6778d7d0b758d545cea5734a5a6ae51202d13f7f89192dfedbc7d206d79919eb",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/Diagnostic$Phase.class": "991cc87d7f05d129e0f65ad6a6c518453de55786511640322d8875c9fb1521c1",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/Diagnostic$Progress.class": "32bf3007cba105266591796583740250e07aa2a77b6088ae2cc4329e8533b3c0",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/Diagnostic$Reason.class": "eda75514b05e912f927c9ca737aedbc7cf5e790ad4c53d44bc9e0d0ecc6c4680",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/Diagnostic$RelatedSite.class": "b84a248a8e1a1c7bbc8b44106592f2ca3864f06aa89ec3d64bc90fd11aeac257",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/Diagnostic$SourceSite.class": "472423927602f2be021d582911cb126be0a9e40646827c654c916ef1de51711e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/Diagnostic$Trace.class": "9da6228c448d0ef1b1ef5e5ddf1252d41fe6fcf97287019fc7ae0015d67856b0",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/Diagnostic.class": "06914122aa8417555645cc2b22a006f818334ebc10d54210b72fa8be9918bb82",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/DiagnosticFormatter$1.class": "20b454e991616ac6556c952e6fe1a935ee56a38f76b11b1ca7ec5bdd917c1a68",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/DiagnosticFormatter.class": "01bba82945727948f9835d4abb778e09dd4b049d633acaf4d1d482f76098d3d3",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/DiagnosticOptions.class": "b3cd918061ca261f5c334e876e8d097f30b9bae57877c0c9373a4ca3913e7db1",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/ExecutionPolicy.class": "e9bb449bfb026b26f2d911c87cbc945cd230c30f1ef9b934fc000679ccd4478f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/ExpatReceipt.class": "cfe94ecc05158e09b33623184eff4f06d51df4f1f93fe371a8cf9c2970c5d994",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/ForeignArguments.class": "3a8ffd4de9d0b274e9b85419505e08a75630e717ab6eb58b798fade78b9f651a",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/ForeignBoundary$Reference.class": "8350268ca17c8b246fc0dc54fdf3ab9b22babef7ab333ee1a2a09381c4a9fb27",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/ForeignBoundary.class": "d7aa237dfbb8c86aebde265f2a3839b7f41fdbe4b4ead7d4dd2ed476684b02a7",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/ForeignCallable$Body.class": "20688b95922e45dd9aec002c2a260dc8f176b8c9d1dd71f7e6d50c5f1fea6238",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/ForeignCallable.class": "71ab6906ed75d6b6d9c379345f7d52ef58634630b2ce64fbe0fb62b21d94a42e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/ForeignObject.class": "574bbe332d8c0e504ea74e611d05db7bf0a07e9044c09235545fd6d619bff010",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/ForeignOperation$1.class": "53d76814b2c30e8ee5aef4df391220b336353da36e8c74bba24bdb39c2dbef6a",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/ForeignOperation.class": "3b9d6c83ca4e4ab0cae3c8314b9ae892f0c89e8d22f5cf4217cf621196c44695",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/ForeignProtocol.class": "659ad53dbd5375aad9163f59417bba2e38c33710b83b1ce2b3336c411351061f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/HostValueAdapter.class": "6d7496e11ad018ac74ad375a5fe932a9a2b82eef340cd5eaff90789c4edea6e6",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/IdentityMirror.class": "cb4d8dcf3de02ba9559ac122a42485c50f9bb54f5f5a41030206feaa8711b2bb",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/ScalarProfile.class": "935471d670e680b390997a05c569a964fa5e8b74ad762cc4e3605adab455237f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/boundary/VHExpat.class": "f9f6d38282390399db6ce1f21564ac4d59d0987318133beb6890d0fe39290908",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/ConcreteStore$Cell.class": "671de382cf0875d54a3964cd3803ba3e607937d545e192fedd2025ed349828c5",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/ConcreteStore$Statistics.class": "23f83438c13d50aad21a67c6c787949112023a57b4e0a3d2f2c15d2bfbd35438",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/ConcreteStore.class": "d7ed0896abfdd7deb8af48e7c0a5202306636b1e87e627bcf9582a98d1e0f1ee",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/Configuration.class": "3989c217aa8ec1462de23e2a962f599c0a198b661b9481066c9b65954e5e933b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/Control$Error.class": "33ae44fbeecb41b67f4377e52b9a9f83508988e9e64cb14c02be08ff3332ee8b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/Control$Eval.class": "cb9d3fbbc12eedf8826d0dd3d23722ebe45f4661413cd9682275dabf3584b24e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/Control$ForeignCall.class": "53b6aebaedfba06a4bdcf33bf2a1cea9046f79dfd731caec8660907cf3150e50",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/Control$Send.class": "d5b03ec5afeb59b3b30855f0fcdfc4113aa2826ebfa68268462ba0604bb74a72",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/Control$Suspended.class": "f14960abbef558f7003720d465b35102e359e6bfa7fcb803e2c4c7f2e73a339f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/Control$Value.class": "f4e96043f68d5a915052f88951f48ced5e51c01d8148f95c41701ba2f5f00fe3",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/Control.class": "3241167c0b3f716b42c75375ea99a2572210f71f5262c0c29faa2a29ae278d1d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/RuntimeWorld.class": "8599d4ceb2b2d06c2293485fdbe850c11918efe2362f8090b4a98a3040629f92",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/Store$Address$ContinuationRef.class": "d010e3fd5d2acc2e7ab8e039b3808a3d26734a809b5526b45441dbfa33db1dac",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/Store$Address$ValueRef.class": "b430a8cb63c895891efe314087ff4be8ad9cb8ba43d48be5e5c42eb98fc9cabe",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/Store$Address.class": "3fbd7ce1b33ed5140079879291e7ca5bb90ae5f773ebeb2c950adcfb46623e7f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/Store$Allocator.class": "bdaf566915d8baead4a15c0c358083494cb99affa22bd516e4c9616816d263a4",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/Store$Entry$Continuation.class": "57a5b644255a94c0d38d8f0dc687b23fd6b16c6b69f195091c265b620093f74d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/Store$Entry$Value.class": "082d4b9fc5f16fceff9bf544851b1488ac8ac656453ebba41e2c68665f6e228b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/Store$Entry.class": "d4204a0cda5234bc5e3ba839885148fe756f70d56c72574d24d152b07ab6a570",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/Store.class": "16c448c62cedda00c776cb46c0038a4c5ca70f9672759ab5a653ad6ed315f8b8",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/continuations/ApplyFrame.class": "cea7e88cbab009bfef72cbc882f450b0b52e73de11cb7fa30efec45aaaae8891",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/continuations/ArgFrame.class": "3072bdf828e62893aa1aa48a5b33df535cba84e3f85d96a5be1869acd61d2156",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/continuations/CallReturnFrame.class": "54cd1131caf53b8803599c55bf1c7fe7b19469b26cd4eeddc9346ac75e25ca62",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/continuations/ClassTargetFrame.class": "cca2c218e616111a56a763a8462df6642eda69d83b386358e84b8bad62f2f36c",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/continuations/ContinuationFrame$Linked.class": "1bcab67a97e38ae5d3a07e006d702662a82eece59efefa61833d8aa25c153715",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/continuations/ContinuationFrame.class": "b287fc52241667daf7974e581fce8febaa1af6bbc85b3cfedfe9bdf6da2a6c2e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/continuations/ContinuationFrameBaseVisitor.class": "a30e2fa30b3b951a6c7dfb8a3e0f29758d331eb2c844ce4f9dae78073deffd8e",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/continuations/ContinuationFrameVisitor.class": "2d6268eadd4bf660d91366cd6edc712c1dd5bf783ee9fbb4e332bf96e582bb32",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/continuations/DoReturnFrame.class": "49f013728bba6efbad44bec48d0addbb9e3cb78d1b1a96c6df7e84b40364fd6c",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/continuations/HaltFrame.class": "36edec1d93e8e2b3222f03031756d904c72670b96d0fa22f4368eab76fb22700",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/continuations/InitializationWriteFrame.class": "3b67a1db9002f3a995a0588d8127a7998f43fbc21004f5a5fbb695cbb081809f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/continuations/InitializerCallFrame.class": "e0187b36587a78abee71b15b1af6dc0c2040b66329fd4ef5ffcd2270fc1e1553",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/continuations/InitializerReturnFrame.class": "bd94ae5fe29fe1c5df8fd02900b8b5806d5cdfe3d38f02308f4e6621fb9740a2",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/continuations/LetFrame.class": "6065ac536c61955cd96c6b2afb3c0123824ceaef5c7183dfdebefece381e496c",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/continuations/MemberClassReturnFrame.class": "ad1bd6ba8be0a97ae0b1237e35602afe0a3088f28ec4c87ae889f850625c7ae0",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/continuations/ReceiverFrame.class": "d776b467c70bb197aa49196b01da80de4884569b8c0b0eb999dac094120240ac",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/gc/AllocationDebtCollector.class": "bcf61db09620c5f5b9b072341b456a7773b4027f1509e71081bf3e866da7d2a1",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/gc/GarbageCollector$CollectionResult.class": "8f918476cd59e3298cd7ae2e0cf8a5a36fbc571df9d2da0d3ecb9e5636432048",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/gc/GarbageCollector$Heap.class": "061fedf4184143b2312411a357195842035b97368daec8e8cd6412436bc1fea8",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/gc/GarbageCollector$References.class": "a026ba68212889b19020481967e140cb0d5ffd732e981d003a1ebd667387181d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/gc/GarbageCollector$Roots.class": "a11a153807574f14414005884f2d0d50b449b89fc0d16e29c4ce1e60e3961f23",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/gc/GarbageCollector.class": "e8e14ddab193c2dac1ae125827e7a5f2a6b343e846624f205817bf6ba80d4677",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/gc/NoOpGarbageCollector.class": "d6edd24ada5111bec32f966e8c5a26822dd1375f13d571dde803029b663f6262",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/cesk/gc/TracingCompactingCollector.class": "9574ddc3a15261bcc73aaba62eb3e4b6ae9fbfa7a72d845aeb75dbcdc80f94b7",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/ClassDefinition$Snapshot.class": "066cfa0b56ea1fdba3c4609509a7317c4a470d2a37a0aa5a01180313fc1eeb20",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/ClassDefinition.class": "a93e1472b648234a91a6bd85f801501ccfd21c64c78320c3243535f397c797e2",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/CompositionLayout$Boundary.class": "56d1582769b0f3b60b2881b87f0f12d179a5b9da0a817034c25abca3170c8e42",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/CompositionLayout$Entry.class": "508e3a1a935f1587f0c9ee1ca4412d3d680a7a9ccae292bbc50a816ecb7b7491",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/CompositionLayout$Invalid.class": "b18bf57f4177797bacf59b420c1790ba6814174375a532960868a3355b546d43",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/CompositionLayout$Layer.class": "b4916bd0da9202ebbb9890f736266dd3a6c171a1642e509d0dc5daaddde6f447",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/CompositionLayout$Operation.class": "a5d01cca529f4621b283f6f7788521fb89a566c4befcbca7c13cdab932fbeb55",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/CompositionLayout$Publication.class": "f8856883c03ce3ee777c300919d8068b11bd5e5b2f1282c693894ed4b2b4968f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/CompositionLayout.class": "4da9ea4d64bb6f7b0acc210b6633ac2ddbdb016239a36263abce810ab572952b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/ConstructionCode$Allocate.class": "95aaa11c605482ce60cbc54433f7d3b4c583def9df9ce9f0f6d8a8b4c2b5a317",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/ConstructionCode$InvokeInitializer.class": "118a2ff71507659e83dd92cf63d65bdf5f63e962ad0b735106045086c41ecd44",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/ConstructionCode$SlotsComplete.class": "8571da64192a3173666d3b46be29f2772ab41cb4717bafd3d3de73ea884c1027",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/ConstructionCode$WriteSlot.class": "87d1e13a14b993c64c5db96cbce5fc8a468970f01d2230a8c6211af21629e08b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/ConstructionCode.class": "3aba960f7c7eedb0746b40198faae9f15b107b2e24c27909f5ab66e35e58c133",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/DefaultJavaBoundary$AdmittedValue.class": "90c15e26f5af3b53c6dc429d4dd3348242552ef2853babb07f57611d1ef6972f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/DefaultJavaBoundary$Arguments.class": "6e36e8ad7353f430899cc637d6caec05c873fa6b2b9a65c97fa55fbbcc335947",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/DefaultJavaBoundary$Call.class": "4d47d194cf45a7789c6690d4ea4f615d7adb8c529d341018544da2bf3073c792",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/DefaultJavaBoundary$Expat.class": "192b777ea9794248492662488ed3a7ca5dfe9d1a677a682512dcecd914f146df",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/DefaultJavaBoundary$Handle.class": "1bc675ab70156c14869284313798e59ef9ab44d7e9041d00dfa26b7290c47c69",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/DefaultJavaBoundary$Hold.class": "cc9c1e2b3e2680d2555c1d6f080b87f6cf89c6c9da67c9c79848d3244c33eaa2",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/DefaultJavaBoundary$Permit.class": "ae5a83c0270b075ac53ff7d4f0b18e52243486840b164eea58eef99ba48d4e5f",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/DefaultJavaBoundary$PublicFacet.class": "374762aab6519b479d656dcb2790aaebbd90e5516796f68f05ae44d49acd2359",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/DefaultJavaBoundary$Receipt.class": "c5050c798e2ccaa2e2717b62d840b0b39b1f1e31c90f39f4df54058d04654de9",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/DefaultJavaBoundary.class": "134d29a66c80156356b0819615dea681a4b0b54a1a212b2cf39a6dab5581d1c0",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/ExecutionDiagnostics$DeveloperReport.class": "463c73103e9ad9b28536f7c1327b4810da065f86f8f2db6fa985a301c6d366ed",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/ExecutionDiagnostics$ToolingFailure.class": "4021dc1c2d9a9a8670d1b8644167dabd23a804c1966fec534810c2ee078f536b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/ExecutionDiagnostics.class": "3275a74b1ff37cf336594f7b91418fed081ae8b68d9ee61c03ffed15d436ede5",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/IdentityMirrorService.class": "78697b426cd6dfbde4e2d52803d965d5cfc4b879297660c54565ec70e48a340d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/IdentitySupport.class": "dc28ec9b6e5d39b58375837ec129e227ca6157e0925bfa6ac85fb5ee98232264",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/InstanceLayout$Contribution.class": "4be4b4c069d4d1e74eeae821c391c72fcbb9f3037858c95f0764404efd0e3beb",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/InstanceLayout$Occurrence.class": "f36e69580deb889f57bc87fb06cb1bf9b60273d42a77df7104790d7e2d52f8ae",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/InstanceLayout.class": "06d86293a3a7f76213033d85572dbf39f9194eaf89de246c85ccc8c44cf9844b",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/MinimalRuntimeWorld.class": "56b40164b3c32f68097174d4f499d164ca92c7d30b37868cba9a378eee9879fb",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/NativeHeap$Lease.class": "1bf501250ee0b7e6501718fb6c328b4917f5b8ae29674d4fc435cfbeaa6f1b91",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/NativeHeap.class": "955799fa16b846ea09c5579a4ca4d6455567f2389a34d50effbaf0d5703fd0b3",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/NativeHeapDiagnostics$Link.class": "ebc0f702a687a985cb4fd545943ea91d086a472add0a1f0fc3bd0781a1f4a13a",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/NativeHeapDiagnostics$Node.class": "6248f26586b15b5360fa65c0828ad3867a9f275ccb81ebf3db8998bd012f7b43",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/NativeHeapDiagnostics$Report.class": "e0dc31196cf5fe6b971acd86c270bf149f564c1d3585f527ff0786e9a8e828d0",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/NativeHeapDiagnostics$RetentionPath.class": "764f54bb7912352eef0601f696b00c91555d8be4254e3282105bc422312ca8a9",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/NativeHeapDiagnostics$Root.class": "5f9111997e6ba40c92bd41232a5796ebf0fb87e8f17b16383aed1d74123bdad5",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/NativeHeapDiagnostics$RootKind.class": "1810a6cd16d5c8947006b7d74a128e1b52a6154f845fb750b7a6e8dc190029da",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/NativeHeapDiagnostics$RootVisitor.class": "7ba517c1c49f8490fad82e03c047700fb8288a81dc7f22020b723fd063b6ef98",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/NativeHeapDiagnostics$Roots.class": "e14414bbfa19a6674cb678fe8af54c232cb93df2a452d7e9ef40bb7f2f8a3685",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/NativeHeapDiagnostics$Status.class": "6853cd5364c3c874ec06fb6010c45977429bee9f6c4d1430f13d1b9086d42fa4",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/NativeHeapDiagnostics.class": "902ae38ddc00f70ac57f116e42fd0e7bedf340faad11bf2084f2d6415ccd3249",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/NativeHeapGraph$Edge.class": "8f241a90ff2787104faf7a08ed268f5fb4f5113e867f05e79521200358ec35db",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/NativeHeapGraph$Node.class": "e47c69f5c52f836c7636318f502aa0dba7df6155723596a50c0739e4d627fad5",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/NativeHeapGraph$Snapshot.class": "7959fe5f8379e96c66b99fde18c6275b2f78886b0fb368734a9a35de967657af",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/NativeHeapGraph.class": "0d26c614a94a1c78970b68e11f3a00a4b7996278962422985652553e30aca033",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/NativeHeapGraphTool.class": "4a3b5c64570ea2265d3a88c3189e99d1a3908f3ed26f5f843101d0b12033c329",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/NativeReferences.class": "46253db7c2879d70662c2d808a665d43fceb41bb24bf602bc50d4206f4873696",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/ReceiverDiagnostics.class": "19f4b8909fe90ee76dc3602dd9549f326f87de2bce135b07856db16d095d34a4",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/StructuralRuntime.class": "f7b5d3878a2a7d17684716bb9caec2a362a67a54dfa73d826e46abeef5d253e1",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/VMAlien.class": "ddb78fa763da69cf098bbb994ea687a90dc8807f0f68f268ecf65f937a5fc405",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/internal/VMPrimitiveValue.class": "3bd0220d032be98b4fc89fbd548249f5ff17b2be19d1dcbd2f66399e0ef77c87",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/values/Activation.class": "ba8ff0f0cc1d508b177db8f3bd07e0e1e8acddc0f1ae6816c67ab54a041794d6",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/values/InitializerActivation.class": "5452a9986c499747f8a8066a35be65d69f129c66a6052efb71cc667fad14f3ca",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/values/LexicalObjectScope.class": "69d9eeb752222385bfa0b7ba7105d12bb3166d0b4ee0b2d08a30d9658839b65d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/values/MethodActivation.class": "8b17da43500f4a69c42d9aec42f534c023c243ffcb3035f777df4d89b1eda650",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/values/ReturnHomeActivation.class": "4e58bd7f41393489645914c35d0993d1f33d9bebbe961751e9b8a93423cb6636",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/values/VMClass.class": "ba51801aa7b409ef88779f1988f8df405d4d7683eb4a1326c303bf40e6880f51",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/values/VMClosure.class": "64d4136fd853b76804b5317f5fa919720fd4c883c83ed961c5c79fc031491fbc",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/values/VMInitializationEdge.class": "d1122c3af1f44c52d2244722073624f42b92cbc39d27fd263c8e3e1cf3d324f1",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/values/VMLambdaClosure.class": "543602dfc4c43d1f90846aa920a31c8965856f55d978f706ba17e990155aa4e0",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/values/VMMetaclass.class": "ab0d5250d6700b6819ea5c520262d9ba84e7458e211354a44eac9c426e6dbdd4",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/values/VMMethodClosure.class": "1e6c7dcae6a57f91ef15d1159c6b79a81b5e3d804d22c257a54096eba077d941",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/values/VMMixinClosure.class": "13714ffd0aa8f1d8ce0632e84b5a18ea0135aea0ad3e9880b6aebc163b9d4553",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/values/VMObject$MemberClassBinding$Failed.class": "4901c3ad7bb7d8c26fd9c3973e11830d5f3ea824278e800ab642fb08cd29336a",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/values/VMObject$MemberClassBinding$Pending.class": "5902fbc6219bf487301c9bdb7564a1fd68e36990899e2b2be1d8901526e91ca8",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/values/VMObject$MemberClassBinding$Realized.class": "fd55d03b6334f0b8faa95fbbc51077b491ff596b528e9b7a7cf9a410a1855201",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/values/VMObject$MemberClassBinding$State.class": "fb9d8628d4c8c965409875f4b484e744f9863da0a5e37d6f34c8ec8515d90c80",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/values/VMObject$MemberClassBinding.class": "7ecc6550dbd3223096a0da1f780c1b760bc1e09ef4b10d01601c21bcb7c89411",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/values/VMObject$MemberClassKey.class": "47f6b8dfe1e70c7c06a152653b80e46eb97979c40081563bef6e34e45ffa62e9",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/values/VMObject.class": "97e0afbb156ecf06c82552b9f0804443e0d21ab58b6f0fdb9d35ed9ea2b1d0db",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/values/VMUninitialized.class": "b771474a1d28d86176092fe64ef804641048b2db633589f164cc47f2b838b7a4",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/values/VMValue.class": "98969b23b9b6534b3660069207fdc8baed4b78662a77cd775ccb71655d898f6d",
+          "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main/vh/vm/values/VMValueWithClass.class": "aa51f99d0e97406a18e6898b05f0f0aac604fdfceb48c6af39052784a8d0aff9",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.13.2/fc3db6d844df652a3d5db31c87fa12757f13691d/antlr4-runtime-4.13.2.jar": "dd3e8a13a2d669bf84fb8d834de35ce4875f27157698d206241ec8488aadcaf7",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.obpcdl/reader-infra/2.0.0/4c5579121334f5d2d64720b0727a6f27ca8546f9/reader-infra-2.0.0.jar": "b9ba2419ff77fd8533737d556415db280f4e244657ecd5b6bd9c410dca802908",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.10.0/8fea1d9c58b2156f1b998f2f18da04bc9e087f74/junit-jupiter-5.10.0.jar": "8e4bde23ee28fc443975654a7b28c410a3b78d6be96b78c99ab73695ec344f7c",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.10.0/89a1922534ed102be1fb2a8c0b2c6151297a12bf/junit-platform-launcher-1.10.0.jar": "8c60b661ac170701a635dfc67565efbb8c85b5c5cdd5a4a9576e3a015c7111a4",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.10.0/9041c7365495a897a64782ea5a6fdb99dab1814e/junit-jupiter-params-5.10.0.jar": "f259a7322cce375430c2236a2dcb24d4a49d22045b723ad85af88e11704391c2",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.10.0/90587932d718fc51a48112d33045a18476c542ad/junit-jupiter-engine-5.10.0.jar": "57ea48e6f795200791065bbc86b70b84cd05367c5c9f2ac8f9268e27154c88a8",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.10.0/2fe4ba3d31d5067878e468c96aa039005a9134d3/junit-jupiter-api-5.10.0.jar": "108088fd7ea46a8e65a0ce7f5d75ae3ff7865606770a078715f5a6e5709e17d8",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.10.0/276c4edcf64fabb5a139fa7b4f99330d7a93b804/junit-platform-engine-1.10.0.jar": "cd338efd02ee73966ea754e0c0c71e1a11f4af5db9c2003e4b6137e119155abe",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.10.0/d533ff2c286eaf963566f92baf5f8a06628d2609/junit-platform-commons-1.10.0.jar": "6083db08ca11fca1e16099d0dcfede0193d80b3762b276349d80d3da536791b2",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.3.0/152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e/opentest4j-1.3.0.jar": "48e2df636cab6563ced64dcdff8abb2355627cb236ef0bf37598682ddf742f1b"
+        },
+        "Lean": {
+          "/home/runner/work/variohyve/variohyve/vh-lean/.lake/build/bin/semanticsConformance": "1c9b75b1f419020ec4d8a8afa8a4284baa0e984f4f5709dbd6d675892a249ee5"
+        },
+        "CPython": {
+          "/opt/hostedtoolcache/Python/3.14.7/x64/bin/python3": "631044ebcc2c8df60f5a3f5800b074d5c1e3b6e3bca6bd8ac5d766d1aeabded7"
+        },
+        "GraalPy": {
+          "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java": "39651cd982b259de1dbe6860fd1f8d5388ce2bab9fb0ca0b34a16aa81b3f485c",
+          "/home/runner/work/variohyve/variohyve/vh-benchmarks/build/classes/java/graalpy/vh/benchmarks/GraalPyRunner.class": "cb9bde90fe197ae44bfbf45373ecc72e803df5021904c4f87558d8ee6f43ce2f",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-community/25.0.4/5fa2de84d7daa107bd562ca8a0f3a569edd4e7db/python-community-25.0.4.pom": "c25d3322740d24a0fdf7735b0bbca7ea4cf72d133e961f6c3c95d6456190027b",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python/25.0.4/f629b0bd8e65fe5f30cd0352f0aa695cf000d542/python-25.0.4.pom": "e901b99a05d240ca78752ea18dc7caa24bf02e584f083417adb4269a8e273775",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-language/25.0.4/d18d38591a7921d79bd827b07a9ac634d1b2fdc2/python-language-25.0.4.jar": "91f91e0b63dd869f91a57b33523876283b1ec12bd5d41ed5b6ee2aa7e617f04c",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-resources/25.0.4/6ba99240f1e37f505031279abdfa0ccf514f61c8/python-resources-25.0.4.jar": "4bffd1b3b15da4aa096251d20db3fc73d684ecf700d78ee24d5a6c6863d4014e",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-runtime/25.0.4/e3441fb01ff2b514ddd1fe234cd196a7ab6261de/truffle-runtime-25.0.4.jar": "611e3bea983366c1b04146870a1ddf765bc899201e0348de8a5ebcfbde3bae64",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.tools/profiler-tool/25.0.4/28e870a088437639f42352b47b2b240e02e93060/profiler-tool-25.0.4.jar": "029b6d9a8335ebd5185055ad61582747f06700a44922449052a9b3b992f244ba",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.regex/regex/25.0.4/6fe97c9dd29f2e5e759d11fd05330aa2e3830101/regex-25.0.4.jar": "a838ae2e635f3cc4d44a0361a17f0cda6b05b15f39de765ba7cce1e8e176bd67",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-libffi/25.0.4/3e495c7cc64b02b7b981b508864900dbbcdb3b7e/truffle-nfi-libffi-25.0.4.jar": "14d1a9b0b8fdee070ff174ccbf0879bf925a87fd622af7b60fe00fe7ec17bbe3",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-panama/25.0.4/38944336a2e569ef506ee01b4b8c698daf1d048b/truffle-nfi-panama-25.0.4.jar": "574329ae1490579b7ff961896c95350937e175f6dc30d8f32338eb76fc4ae0b9",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi/25.0.4/36a802c5e343a5f4126a0e4821f74e80b0b38a2e/truffle-nfi-25.0.4.jar": "b8b32084542a54abcd5ff57b43bc3ce9db21f0e8b38b4c1557009b8c0168814c",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-api/25.0.4/56088bcea6520fbaa6afccf4bafbef14ebefc6a4/truffle-api-25.0.4.jar": "c437c6e221c0cae2db96f00a829b6d59df4852e484b0bdd16377a21afa210a9e",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.polyglot/polyglot/25.0.4/f9e303d2cc47d91446bb733afa83701689caac1b/polyglot-25.0.4.jar": "2f0de83536f9754a1bb4c0e4405f8332b2b9c2e949023da070379e5b3b656b87",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/jniutils/25.0.4/72b023da2e3dab1bd7773553445bfa882b34ccb5/jniutils-25.0.4.jar": "e61bb126ccba8ad37e4439216988bead5428ff64ae9126b9456590f164e1a261",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/collections/25.0.4/9815551d102a1d0bd151eb87d5ccad93e7edbdb2/collections-25.0.4.jar": "f78840945e4d746ca37aadd3d04a3266c3b7fd644a303d5b85fb03aa012b4fd4",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/icu4j/25.0.4/995cdbca0c327116c5289e2bce1ee1a2fbe65ff/icu4j-25.0.4.jar": "58f46bc96b93a09b91fcea6d3a18d914013beb49593a32b0a914d435452bcde3",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/nativeimage/25.0.4/72a635962132a5a2e45eb9f7dcbdaa56a11763da/nativeimage-25.0.4.jar": "a42f260174e9a059ecfbbca2aa5b8243e80e84b9dc3f70096a5213aebbeac450",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/word/25.0.4/e71e5209b901fcf4be14d7ef1ae0c3985fd190da/word-25.0.4.jar": "b91cd74e61e6257416f52dac5925e3a9d03b756035d48f4e8c56106fe11d7eff",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/xz/25.0.4/b9d42f3d701b838429f422ea76a0a2bd6d847b77/xz-25.0.4.jar": "96de136c6b9ea378ed3f87bc8db05b78792db776e770cb0dbf7e56efd1055b0d",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-compiler/25.0.4/75f8232d91fc753faba586e2570f9ebcd842962e/truffle-compiler-25.0.4.jar": "3e9973775adb2f6c276fadfff2ef12ac4f20e71f8bbc12c773d36c90c8471c00",
+          "/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/json/25.0.4/e14b66da13c3a276538f530a2be57ae3fe944f3d/json-25.0.4.jar": "6c1fbde877a59674693d41743f7ed4ca147ce5b4c1f589e753fbd5611c97e58c"
+        }
+      },
+      "host_options": {
+        "JAVA_TOOL_OPTIONS": null,
+        "JDK_JAVA_OPTIONS": null,
+        "_JAVA_OPTIONS": null
+      },
+      "lean_binary_sha256": "1c9b75b1f419020ec4d8a8afa8a4284baa0e984f4f5709dbd6d675892a249ee5",
+      "engines": [
+        "VarioHyve",
+        "Lean",
+        "CPython",
+        "GraalPy"
+      ],
+      "cases": [
+        {
+          "name": "arguments",
+          "params": {
+            "size": 0,
+            "repetitions": 32,
+            "batch": 8
+          },
+          "source": "class RuntimeBench[token] {\npub stable = token;\npub var changed = self;\ntarget() { stable }\ntick { target() }\npub run { tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick }\n}\n",
+          "python_source": "def build(token):\n    class Bench:\n        def __init__(self):\n            self.changed = self\n        def target(self): return token\n        def tick(self): return self.target()\n        def run(self):\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            return result\n    return Bench()\n",
+          "core_sha256": "4c6d2c720f7cdbe91178343ea165f6cd395d92d0239d5a04496c3a19ccf6348c",
+          "runtimes": {
+            "VarioHyve": {
+              "mean": 690.2460875,
+              "min": 535.955625,
+              "max": 1234.15375,
+              "median": 589.3824999999999,
+              "q1": 556.26615625,
+              "q3": 693.5069687499999,
+              "samples": [
+                932.6045,
+                579.759625,
+                575.381875,
+                549.89425,
+                548.614,
+                599.005375,
+                535.955625,
+                713.468,
+                633.623875,
+                1234.15375
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    8123.56175,
+                    1741.083,
+                    2536.3555,
+                    1115.3485,
+                    1047.459875,
+                    1737.0785,
+                    1577.2305,
+                    1372.1005,
+                    783.512,
+                    762.9735,
+                    730.406,
+                    694.057625,
+                    830.90525,
+                    693.46975,
+                    1471.459375,
+                    1099.565375
+                  ],
+                  "samples_us": [
+                    932.6045,
+                    579.759625,
+                    575.381875,
+                    549.89425,
+                    548.614
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    7387.426,
+                    3041.419125,
+                    1354.94375,
+                    2007.826625,
+                    903.01975,
+                    924.958375,
+                    1423.812875,
+                    1317.511125,
+                    763.29675,
+                    698.273375,
+                    1337.57225,
+                    979.5755,
+                    642.100875,
+                    763.181875,
+                    1004.253375,
+                    610.476625
+                  ],
+                  "samples_us": [
+                    599.005375,
+                    535.955625,
+                    713.468,
+                    633.623875,
+                    1234.15375
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test:/home/runner/work/variohyve/variohyve/vh-core/build/resources/test:/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main:/home/runner/work/variohyve/variohyve/vh-core/build/resources/main:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.13.2/fc3db6d844df652a3d5db31c87fa12757f13691d/antlr4-runtime-4.13.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.obpcdl/reader-infra/2.0.0/4c5579121334f5d2d64720b0727a6f27ca8546f9/reader-infra-2.0.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.10.0/8fea1d9c58b2156f1b998f2f18da04bc9e087f74/junit-jupiter-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.10.0/89a1922534ed102be1fb2a8c0b2c6151297a12bf/junit-platform-launcher-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.10.0/9041c7365495a897a64782ea5a6fdb99dab1814e/junit-jupiter-params-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.10.0/90587932d718fc51a48112d33045a18476c542ad/junit-jupiter-engine-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.10.0/2fe4ba3d31d5067878e468c96aa039005a9134d3/junit-jupiter-api-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.10.0/276c4edcf64fabb5a139fa7b4f99330d7a93b804/junit-platform-engine-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.10.0/d533ff2c286eaf963566f92baf5f8a06628d2609/junit-platform-commons-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.3.0/152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e/opentest4j-1.3.0.jar",
+                  "vh.vm.NativeJavaDriver",
+                  "--bulk-slices"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "openjdk version \"23.0.2\" 2025-01-21\nOpenJDK Runtime Environment Temurin-23.0.2+7 (build 23.0.2+7)\nOpenJDK 64-Bit Server VM Temurin-23.0.2+7 (build 23.0.2+7, mixed mode, sharing)\n",
+                "lean_toolchain": null,
+                "native_gc": "allocation-debt"
+              }
+            },
+            "Lean": {
+              "mean": 553.8036999999999,
+              "min": 541.480625,
+              "max": 580.9505,
+              "median": 552.362125,
+              "q1": 548.0565624999999,
+              "q3": 554.03696875,
+              "samples": [
+                547.2135,
+                547.12425,
+                550.58575,
+                580.9505,
+                541.480625,
+                558.83925,
+                552.46775,
+                552.2565,
+                552.604375,
+                554.5145
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    628.215375,
+                    562.213,
+                    550.98725,
+                    552.86725,
+                    553.224125,
+                    535.843,
+                    557.455,
+                    548.0275,
+                    560.703875,
+                    541.23875,
+                    554.77275,
+                    549.11,
+                    548.240625,
+                    539.75125,
+                    558.27825,
+                    553.8215
+                  ],
+                  "samples_us": [
+                    547.2135,
+                    547.12425,
+                    550.58575,
+                    580.9505,
+                    541.480625
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    582.7255,
+                    559.00475,
+                    560.321125,
+                    557.705125,
+                    573.847,
+                    557.79,
+                    560.532875,
+                    558.321375,
+                    551.946125,
+                    555.140625,
+                    554.150125,
+                    557.281125,
+                    547.288875,
+                    554.701125,
+                    560.94025,
+                    544.00875
+                  ],
+                  "samples_us": [
+                    558.83925,
+                    552.46775,
+                    552.2565,
+                    552.604375,
+                    554.5145
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/home/runner/work/variohyve/variohyve/vh-lean/.lake/build/bin/semanticsConformance",
+                  "--native",
+                  "--raw-conformance"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": "leanprover/lean4:v4.35.0",
+                "native_gc": "allocation-debt"
+              }
+            },
+            "CPython": {
+              "mean": 52.2283,
+              "min": 49.862125,
+              "max": 60.635625,
+              "median": 51.0794375,
+              "q1": 50.194156250000006,
+              "q3": 52.02103125,
+              "samples": [
+                52.0635,
+                55.292625,
+                49.9315,
+                50.16575,
+                50.279375,
+                60.635625,
+                51.422875,
+                50.736,
+                49.862125,
+                51.893625
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    52.500375,
+                    52.405625,
+                    53.928,
+                    51.63925,
+                    54.833875,
+                    55.750875,
+                    74.866,
+                    49.574,
+                    52.046,
+                    59.314875,
+                    48.24175,
+                    47.662625,
+                    49.688375,
+                    46.77175,
+                    72.376125,
+                    61.542375
+                  ],
+                  "samples_us": [
+                    52.0635,
+                    55.292625,
+                    49.9315,
+                    50.16575,
+                    50.279375
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    67.832875,
+                    62.538375,
+                    52.23275,
+                    51.352875,
+                    46.29925,
+                    58.7615,
+                    51.0405,
+                    52.761625,
+                    59.005875,
+                    53.41475,
+                    53.033875,
+                    70.54675,
+                    57.093875,
+                    51.977625,
+                    68.039625,
+                    50.319375
+                  ],
+                  "samples_us": [
+                    60.635625,
+                    51.422875,
+                    50.736,
+                    49.862125,
+                    51.893625
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.14.7/x64/bin/python3",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "CPython",
+                "guest_jit": false,
+                "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                "gc_enabled": true
+              }
+            },
+            "GraalPy": {
+              "mean": 2383.9115874999998,
+              "min": 2003.052875,
+              "max": 3332.351625,
+              "median": 2198.9108125000002,
+              "q1": 2076.13728125,
+              "q3": 2379.8881874999997,
+              "samples": [
+                2195.28225,
+                3332.351625,
+                2435.63375,
+                2042.571375,
+                2003.052875,
+                2212.6515,
+                3241.60925,
+                2065.562625,
+                2202.539375,
+                2107.86125
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    3384.90925,
+                    4417.972375,
+                    3910.816,
+                    4077.9185,
+                    4272.4425,
+                    2572.485625,
+                    2620.571875,
+                    2903.54675,
+                    3866.104375,
+                    3776.481375,
+                    3964.32825,
+                    2255.87025,
+                    3637.5455,
+                    2847.423375,
+                    3743.477875,
+                    2109.30475
+                  ],
+                  "samples_us": [
+                    2195.28225,
+                    3332.351625,
+                    2435.63375,
+                    2042.571375,
+                    2003.052875
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    3544.58925,
+                    3839.303625,
+                    4878.555625,
+                    2866.622625,
+                    4198.25475,
+                    2561.576625,
+                    4387.41925,
+                    3060.06275,
+                    3381.199625,
+                    2816.402,
+                    4185.88075,
+                    2295.3825,
+                    3742.2545,
+                    2373.698125,
+                    2886.69775,
+                    2519.04175
+                  ],
+                  "samples_us": [
+                    2212.6515,
+                    3241.60925,
+                    2065.562625,
+                    2202.539375,
+                    2107.86125
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-benchmarks/build/classes/java/graalpy:/home/runner/work/variohyve/variohyve/vh-benchmarks/build/resources/graalpy:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-community/25.0.4/5fa2de84d7daa107bd562ca8a0f3a569edd4e7db/python-community-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python/25.0.4/f629b0bd8e65fe5f30cd0352f0aa695cf000d542/python-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-language/25.0.4/d18d38591a7921d79bd827b07a9ac634d1b2fdc2/python-language-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-resources/25.0.4/6ba99240f1e37f505031279abdfa0ccf514f61c8/python-resources-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-runtime/25.0.4/e3441fb01ff2b514ddd1fe234cd196a7ab6261de/truffle-runtime-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.tools/profiler-tool/25.0.4/28e870a088437639f42352b47b2b240e02e93060/profiler-tool-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.regex/regex/25.0.4/6fe97c9dd29f2e5e759d11fd05330aa2e3830101/regex-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-libffi/25.0.4/3e495c7cc64b02b7b981b508864900dbbcdb3b7e/truffle-nfi-libffi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-panama/25.0.4/38944336a2e569ef506ee01b4b8c698daf1d048b/truffle-nfi-panama-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi/25.0.4/36a802c5e343a5f4126a0e4821f74e80b0b38a2e/truffle-nfi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-api/25.0.4/56088bcea6520fbaa6afccf4bafbef14ebefc6a4/truffle-api-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.polyglot/polyglot/25.0.4/f9e303d2cc47d91446bb733afa83701689caac1b/polyglot-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/jniutils/25.0.4/72b023da2e3dab1bd7773553445bfa882b34ccb5/jniutils-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/collections/25.0.4/9815551d102a1d0bd151eb87d5ccad93e7edbdb2/collections-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/icu4j/25.0.4/995cdbca0c327116c5289e2bce1ee1a2fbe65ff/icu4j-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/nativeimage/25.0.4/72a635962132a5a2e45eb9f7dcbdaa56a11763da/nativeimage-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/word/25.0.4/e71e5209b901fcf4be14d7ef1ae0c3985fd190da/word-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/xz/25.0.4/b9d42f3d701b838429f422ea76a0a2bd6d847b77/xz-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-compiler/25.0.4/75f8232d91fc753faba586e2570f9ebcd842962e/truffle-compiler-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/json/25.0.4/e14b66da13c3a276538f530a2be57ae3fe944f3d/json-25.0.4.jar",
+                  "vh.benchmarks.GraalPyRunner",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "23.0.2+7",
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "graalpy-jvm-interpreter",
+                "guest_jit": false,
+                "engine_implementation": "Interpreted",
+                "engine_options": {
+                  "engine.WarnInterpreterOnly": "false"
+                },
+                "java_vm": "OpenJDK 64-Bit Server VM",
+                "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                "jvm_args": [
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m"
+                ],
+                "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                "gc_enabled": true
+              }
+            }
+          }
+        },
+        {
+          "name": "arguments",
+          "params": {
+            "size": 8,
+            "repetitions": 32,
+            "batch": 8
+          },
+          "source": "class RuntimeBench[token] {\npub stable = token;\npub var changed = self;\ntarget(p0, p1, p2, p3, p4, p5, p6, p7) { p7 }\ntick { target(self, self, self, self, self, self, self, stable) }\npub run { tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick }\n}\n",
+          "python_source": "def build(token):\n    class Bench:\n        def __init__(self):\n            self.changed = self\n        def target(self, p0, p1, p2, p3, p4, p5, p6, p7): return p7\n        def tick(self): return self.target(self, self, self, self, self, self, self, token)\n        def run(self):\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            return result\n    return Bench()\n",
+          "core_sha256": "8fd97491ed787298d22d962e4c09425024d607ef7d6894a73a0fec591ff4d315",
+          "runtimes": {
+            "VarioHyve": {
+              "mean": 1202.9168875,
+              "min": 919.734375,
+              "max": 1711.08025,
+              "median": 1173.51075,
+              "q1": 993.18021875,
+              "q3": 1303.633125,
+              "samples": [
+                1087.592,
+                1274.21925,
+                1711.08025,
+                961.709625,
+                919.734375,
+                1234.72725,
+                1112.29425,
+                947.24275,
+                1313.43775,
+                1467.131375
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    8654.748625,
+                    4444.17625,
+                    3342.6755,
+                    1849.43025,
+                    2478.9585,
+                    2259.55325,
+                    2380.566125,
+                    1684.34975,
+                    1471.222375,
+                    1241.240375,
+                    1869.37925,
+                    1740.2425,
+                    1483.69225,
+                    1040.708875,
+                    1017.133375,
+                    1038.43925
+                  ],
+                  "samples_us": [
+                    1087.592,
+                    1274.21925,
+                    1711.08025,
+                    961.709625,
+                    919.734375
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    10441.151,
+                    3374.003375,
+                    4169.074375,
+                    2658.171375,
+                    2035.59275,
+                    1773.857,
+                    1985.297625,
+                    1388.689375,
+                    1282.722,
+                    1176.6345,
+                    1504.056125,
+                    1842.481875,
+                    1088.95575,
+                    1018.1045,
+                    1165.34675,
+                    1239.828875
+                  ],
+                  "samples_us": [
+                    1234.72725,
+                    1112.29425,
+                    947.24275,
+                    1313.43775,
+                    1467.131375
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test:/home/runner/work/variohyve/variohyve/vh-core/build/resources/test:/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main:/home/runner/work/variohyve/variohyve/vh-core/build/resources/main:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.13.2/fc3db6d844df652a3d5db31c87fa12757f13691d/antlr4-runtime-4.13.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.obpcdl/reader-infra/2.0.0/4c5579121334f5d2d64720b0727a6f27ca8546f9/reader-infra-2.0.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.10.0/8fea1d9c58b2156f1b998f2f18da04bc9e087f74/junit-jupiter-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.10.0/89a1922534ed102be1fb2a8c0b2c6151297a12bf/junit-platform-launcher-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.10.0/9041c7365495a897a64782ea5a6fdb99dab1814e/junit-jupiter-params-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.10.0/90587932d718fc51a48112d33045a18476c542ad/junit-jupiter-engine-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.10.0/2fe4ba3d31d5067878e468c96aa039005a9134d3/junit-jupiter-api-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.10.0/276c4edcf64fabb5a139fa7b4f99330d7a93b804/junit-platform-engine-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.10.0/d533ff2c286eaf963566f92baf5f8a06628d2609/junit-platform-commons-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.3.0/152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e/opentest4j-1.3.0.jar",
+                  "vh.vm.NativeJavaDriver",
+                  "--bulk-slices"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "openjdk version \"23.0.2\" 2025-01-21\nOpenJDK Runtime Environment Temurin-23.0.2+7 (build 23.0.2+7)\nOpenJDK 64-Bit Server VM Temurin-23.0.2+7 (build 23.0.2+7, mixed mode, sharing)\n",
+                "lean_toolchain": null,
+                "native_gc": "allocation-debt"
+              }
+            },
+            "Lean": {
+              "mean": 853.5487125,
+              "min": 840.86075,
+              "max": 870.421875,
+              "median": 852.622125,
+              "q1": 847.7486875,
+              "q3": 859.5399375000001,
+              "samples": [
+                855.766875,
+                846.553,
+                853.41025,
+                851.33575,
+                851.834,
+                860.797625,
+                870.421875,
+                842.671125,
+                861.835875,
+                840.86075
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    996.865625,
+                    868.416375,
+                    854.062625,
+                    865.613375,
+                    873.608875,
+                    847.980625,
+                    839.438875,
+                    845.075125,
+                    855.0815,
+                    856.5925,
+                    864.28675,
+                    858.57925,
+                    878.92075,
+                    867.072875,
+                    841.776,
+                    851.19275
+                  ],
+                  "samples_us": [
+                    855.766875,
+                    846.553,
+                    853.41025,
+                    851.33575,
+                    851.834
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    966.218,
+                    853.734875,
+                    869.40675,
+                    863.776,
+                    877.741,
+                    859.746875,
+                    863.881,
+                    861.42325,
+                    862.502625,
+                    868.562,
+                    857.266,
+                    858.1445,
+                    866.500875,
+                    887.0235,
+                    868.476,
+                    856.74875
+                  ],
+                  "samples_us": [
+                    860.797625,
+                    870.421875,
+                    842.671125,
+                    861.835875,
+                    840.86075
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/home/runner/work/variohyve/variohyve/vh-lean/.lake/build/bin/semanticsConformance",
+                  "--native",
+                  "--raw-conformance"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": "leanprover/lean4:v4.35.0",
+                "native_gc": "allocation-debt"
+              }
+            },
+            "CPython": {
+              "mean": 49.025525,
+              "min": 33.216875,
+              "max": 56.250375,
+              "median": 51.970749999999995,
+              "q1": 49.49421875,
+              "q3": 52.522343750000005,
+              "samples": [
+                38.935375,
+                52.655625,
+                50.891375,
+                33.216875,
+                51.82525,
+                53.213125,
+                52.11625,
+                52.1225,
+                49.0285,
+                56.250375
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    53.672,
+                    54.1665,
+                    50.66,
+                    50.803,
+                    53.697375,
+                    55.7755,
+                    51.577,
+                    50.79725,
+                    52.509375,
+                    54.222375,
+                    52.743375,
+                    62.430125,
+                    67.80175,
+                    70.622875,
+                    51.4715,
+                    53.949375
+                  ],
+                  "samples_us": [
+                    38.935375,
+                    52.655625,
+                    50.891375,
+                    33.216875,
+                    51.82525
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    36.309375,
+                    66.499375,
+                    59.992125,
+                    50.92375,
+                    55.44125,
+                    34.62025,
+                    54.645125,
+                    52.30475,
+                    58.1135,
+                    55.458625,
+                    51.113875,
+                    52.406875,
+                    53.40625,
+                    38.8185,
+                    61.118625,
+                    56.463625
+                  ],
+                  "samples_us": [
+                    53.213125,
+                    52.11625,
+                    52.1225,
+                    49.0285,
+                    56.250375
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.14.7/x64/bin/python3",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "CPython",
+                "guest_jit": false,
+                "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                "gc_enabled": true
+              }
+            },
+            "GraalPy": {
+              "mean": 2630.6569375,
+              "min": 2113.704125,
+              "max": 3702.2435,
+              "median": 2448.39175,
+              "q1": 2245.40853125,
+              "q3": 2990.37275,
+              "samples": [
+                3119.937,
+                2273.314625,
+                3082.32825,
+                2542.98975,
+                2353.79375,
+                2167.645625,
+                3702.2435,
+                2113.704125,
+                2236.1065,
+                2714.50625
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    5877.1355,
+                    5176.415125,
+                    4949.831375,
+                    2703.465,
+                    2590.525375,
+                    2463.144625,
+                    4514.254875,
+                    4287.772375,
+                    2538.17225,
+                    2623.7305,
+                    4625.191625,
+                    2339.669625,
+                    3240.18375,
+                    2693.42325,
+                    2360.66125,
+                    3208.003625
+                  ],
+                  "samples_us": [
+                    3119.937,
+                    2273.314625,
+                    3082.32825,
+                    2542.98975,
+                    2353.79375
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    5397.49025,
+                    2961.708125,
+                    2880.54575,
+                    4409.3985,
+                    5284.973125,
+                    2794.85475,
+                    2718.382,
+                    4466.43475,
+                    3667.627375,
+                    2553.467375,
+                    2721.597125,
+                    2438.2965,
+                    3083.728875,
+                    2367.202,
+                    4234.319625,
+                    2590.988875
+                  ],
+                  "samples_us": [
+                    2167.645625,
+                    3702.2435,
+                    2113.704125,
+                    2236.1065,
+                    2714.50625
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-benchmarks/build/classes/java/graalpy:/home/runner/work/variohyve/variohyve/vh-benchmarks/build/resources/graalpy:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-community/25.0.4/5fa2de84d7daa107bd562ca8a0f3a569edd4e7db/python-community-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python/25.0.4/f629b0bd8e65fe5f30cd0352f0aa695cf000d542/python-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-language/25.0.4/d18d38591a7921d79bd827b07a9ac634d1b2fdc2/python-language-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-resources/25.0.4/6ba99240f1e37f505031279abdfa0ccf514f61c8/python-resources-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-runtime/25.0.4/e3441fb01ff2b514ddd1fe234cd196a7ab6261de/truffle-runtime-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.tools/profiler-tool/25.0.4/28e870a088437639f42352b47b2b240e02e93060/profiler-tool-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.regex/regex/25.0.4/6fe97c9dd29f2e5e759d11fd05330aa2e3830101/regex-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-libffi/25.0.4/3e495c7cc64b02b7b981b508864900dbbcdb3b7e/truffle-nfi-libffi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-panama/25.0.4/38944336a2e569ef506ee01b4b8c698daf1d048b/truffle-nfi-panama-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi/25.0.4/36a802c5e343a5f4126a0e4821f74e80b0b38a2e/truffle-nfi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-api/25.0.4/56088bcea6520fbaa6afccf4bafbef14ebefc6a4/truffle-api-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.polyglot/polyglot/25.0.4/f9e303d2cc47d91446bb733afa83701689caac1b/polyglot-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/jniutils/25.0.4/72b023da2e3dab1bd7773553445bfa882b34ccb5/jniutils-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/collections/25.0.4/9815551d102a1d0bd151eb87d5ccad93e7edbdb2/collections-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/icu4j/25.0.4/995cdbca0c327116c5289e2bce1ee1a2fbe65ff/icu4j-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/nativeimage/25.0.4/72a635962132a5a2e45eb9f7dcbdaa56a11763da/nativeimage-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/word/25.0.4/e71e5209b901fcf4be14d7ef1ae0c3985fd190da/word-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/xz/25.0.4/b9d42f3d701b838429f422ea76a0a2bd6d847b77/xz-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-compiler/25.0.4/75f8232d91fc753faba586e2570f9ebcd842962e/truffle-compiler-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/json/25.0.4/e14b66da13c3a276538f530a2be57ae3fe944f3d/json-25.0.4.jar",
+                  "vh.benchmarks.GraalPyRunner",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "23.0.2+7",
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "graalpy-jvm-interpreter",
+                "guest_jit": false,
+                "engine_implementation": "Interpreted",
+                "engine_options": {
+                  "engine.WarnInterpreterOnly": "false"
+                },
+                "java_vm": "OpenJDK 64-Bit Server VM",
+                "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                "jvm_args": [
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m"
+                ],
+                "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                "gc_enabled": true
+              }
+            }
+          }
+        },
+        {
+          "name": "arguments",
+          "params": {
+            "size": 32,
+            "repetitions": 32,
+            "batch": 8
+          },
+          "source": "class RuntimeBench[token] {\npub stable = token;\npub var changed = self;\ntarget(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23, p24, p25, p26, p27, p28, p29, p30, p31) { p31 }\ntick { target(self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, stable) }\npub run { tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick }\n}\n",
+          "python_source": "def build(token):\n    class Bench:\n        def __init__(self):\n            self.changed = self\n        def target(self, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23, p24, p25, p26, p27, p28, p29, p30, p31): return p31\n        def tick(self): return self.target(self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, self, token)\n        def run(self):\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            return result\n    return Bench()\n",
+          "core_sha256": "3f7ab369a503617a7d3d9ff4471ae8b17fb0c1def135ff00e93fa16db71d12be",
+          "runtimes": {
+            "VarioHyve": {
+              "mean": 2525.5924125,
+              "min": 1867.502625,
+              "max": 3131.178875,
+              "median": 2509.6553125,
+              "q1": 2326.05075,
+              "q3": 2737.2946875,
+              "samples": [
+                2492.8,
+                1867.502625,
+                2257.6415,
+                2350.09125,
+                2712.673875,
+                2318.03725,
+                2745.501625,
+                2526.510625,
+                2853.9865,
+                3131.178875
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    16047.132625,
+                    8995.291125,
+                    5012.200625,
+                    4690.173125,
+                    3655.806375,
+                    3238.91775,
+                    3174.1255,
+                    2741.252375,
+                    2814.03425,
+                    2399.036125,
+                    2796.121625,
+                    2526.765375,
+                    2091.14,
+                    2253.511125,
+                    2683.86825,
+                    3085.547
+                  ],
+                  "samples_us": [
+                    2492.8,
+                    1867.502625,
+                    2257.6415,
+                    2350.09125,
+                    2712.673875
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    13419.258375,
+                    7243.12425,
+                    5025.393,
+                    5501.77025,
+                    4492.79475,
+                    3322.82725,
+                    3099.5395,
+                    3264.144375,
+                    2242.585625,
+                    2559.597875,
+                    2858.032125,
+                    2114.960625,
+                    2064.018375,
+                    2098.962875,
+                    2092.766375,
+                    3040.81625
+                  ],
+                  "samples_us": [
+                    2318.03725,
+                    2745.501625,
+                    2526.510625,
+                    2853.9865,
+                    3131.178875
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test:/home/runner/work/variohyve/variohyve/vh-core/build/resources/test:/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main:/home/runner/work/variohyve/variohyve/vh-core/build/resources/main:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.13.2/fc3db6d844df652a3d5db31c87fa12757f13691d/antlr4-runtime-4.13.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.obpcdl/reader-infra/2.0.0/4c5579121334f5d2d64720b0727a6f27ca8546f9/reader-infra-2.0.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.10.0/8fea1d9c58b2156f1b998f2f18da04bc9e087f74/junit-jupiter-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.10.0/89a1922534ed102be1fb2a8c0b2c6151297a12bf/junit-platform-launcher-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.10.0/9041c7365495a897a64782ea5a6fdb99dab1814e/junit-jupiter-params-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.10.0/90587932d718fc51a48112d33045a18476c542ad/junit-jupiter-engine-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.10.0/2fe4ba3d31d5067878e468c96aa039005a9134d3/junit-jupiter-api-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.10.0/276c4edcf64fabb5a139fa7b4f99330d7a93b804/junit-platform-engine-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.10.0/d533ff2c286eaf963566f92baf5f8a06628d2609/junit-platform-commons-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.3.0/152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e/opentest4j-1.3.0.jar",
+                  "vh.vm.NativeJavaDriver",
+                  "--bulk-slices"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "openjdk version \"23.0.2\" 2025-01-21\nOpenJDK Runtime Environment Temurin-23.0.2+7 (build 23.0.2+7)\nOpenJDK 64-Bit Server VM Temurin-23.0.2+7 (build 23.0.2+7, mixed mode, sharing)\n",
+                "lean_toolchain": null,
+                "native_gc": "allocation-debt"
+              }
+            },
+            "Lean": {
+              "mean": 1846.7185375,
+              "min": 1817.38425,
+              "max": 1871.5035,
+              "median": 1850.522625,
+              "q1": 1832.98321875,
+              "q3": 1858.19275,
+              "samples": [
+                1844.2255,
+                1834.354875,
+                1856.81975,
+                1871.5035,
+                1858.40025,
+                1817.38425,
+                1825.194,
+                1857.57025,
+                1869.207,
+                1832.526
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    2281.838,
+                    1928.912,
+                    1884.457625,
+                    1850.828625,
+                    1846.077,
+                    1838.742625,
+                    1864.171375,
+                    1836.597125,
+                    1903.40075,
+                    1847.272,
+                    1861.270375,
+                    1861.174625,
+                    1854.158625,
+                    1847.695375,
+                    1872.413875,
+                    1857.086625
+                  ],
+                  "samples_us": [
+                    1844.2255,
+                    1834.354875,
+                    1856.81975,
+                    1871.5035,
+                    1858.40025
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    2056.433625,
+                    1826.40525,
+                    1832.7875,
+                    1858.131,
+                    1845.4345,
+                    1864.09175,
+                    1858.962875,
+                    1837.31875,
+                    1852.81675,
+                    1840.20725,
+                    1849.829375,
+                    1860.59775,
+                    1837.5465,
+                    1830.919625,
+                    1848.548,
+                    1840.096625
+                  ],
+                  "samples_us": [
+                    1817.38425,
+                    1825.194,
+                    1857.57025,
+                    1869.207,
+                    1832.526
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/home/runner/work/variohyve/variohyve/vh-lean/.lake/build/bin/semanticsConformance",
+                  "--native",
+                  "--raw-conformance"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": "leanprover/lean4:v4.35.0",
+                "native_gc": "allocation-debt"
+              }
+            },
+            "CPython": {
+              "mean": 78.55745,
+              "min": 72.213625,
+              "max": 89.03025,
+              "median": 76.78975,
+              "q1": 73.97368750000001,
+              "q3": 81.3849375,
+              "samples": [
+                74.495875,
+                88.369125,
+                76.795,
+                89.03025,
+                76.7845,
+                73.799625,
+                77.68125,
+                72.213625,
+                73.78575,
+                82.6195
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    75.573125,
+                    85.458875,
+                    72.984375,
+                    76.725125,
+                    73.758875,
+                    74.063375,
+                    78.73975,
+                    72.822625,
+                    74.60425,
+                    74.0855,
+                    82.346,
+                    77.2465,
+                    71.21425,
+                    75.928875,
+                    70.664875,
+                    74.406125
+                  ],
+                  "samples_us": [
+                    74.495875,
+                    88.369125,
+                    76.795,
+                    89.03025,
+                    76.7845
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    93.8205,
+                    90.091625,
+                    81.78875,
+                    80.92375,
+                    86.31575,
+                    91.68725,
+                    72.40225,
+                    78.24525,
+                    73.29175,
+                    79.13175,
+                    77.339875,
+                    53.00375,
+                    80.0615,
+                    73.1395,
+                    69.87275,
+                    89.398
+                  ],
+                  "samples_us": [
+                    73.799625,
+                    77.68125,
+                    72.213625,
+                    73.78575,
+                    82.6195
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.14.7/x64/bin/python3",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "CPython",
+                "guest_jit": false,
+                "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                "gc_enabled": true
+              }
+            },
+            "GraalPy": {
+              "mean": 2636.7880375,
+              "min": 2361.32675,
+              "max": 3203.604125,
+              "median": 2639.3568125,
+              "q1": 2391.4395624999997,
+              "q3": 2766.375,
+              "samples": [
+                2543.173125,
+                2361.32675,
+                2389.88525,
+                2379.9375,
+                2766.552,
+                2735.5405,
+                2825.914625,
+                2765.844,
+                3203.604125,
+                2396.1025
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    3627.621875,
+                    4682.984875,
+                    4170.902625,
+                    2907.701,
+                    2935.06175,
+                    4678.2835,
+                    3604.7455,
+                    4329.051,
+                    3170.885125,
+                    3040.09125,
+                    5002.85775,
+                    4313.8465,
+                    2662.264875,
+                    4715.8235,
+                    4143.381125,
+                    5874.76175
+                  ],
+                  "samples_us": [
+                    2543.173125,
+                    2361.32675,
+                    2389.88525,
+                    2379.9375,
+                    2766.552
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    6452.991,
+                    3658.24425,
+                    3563.10425,
+                    5204.0855,
+                    5018.17075,
+                    4659.851375,
+                    5493.1375,
+                    3174.9725,
+                    3084.5925,
+                    4392.776375,
+                    4705.61675,
+                    4377.539125,
+                    4194.7505,
+                    4097.29275,
+                    2988.9175,
+                    3336.451625
+                  ],
+                  "samples_us": [
+                    2735.5405,
+                    2825.914625,
+                    2765.844,
+                    3203.604125,
+                    2396.1025
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-benchmarks/build/classes/java/graalpy:/home/runner/work/variohyve/variohyve/vh-benchmarks/build/resources/graalpy:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-community/25.0.4/5fa2de84d7daa107bd562ca8a0f3a569edd4e7db/python-community-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python/25.0.4/f629b0bd8e65fe5f30cd0352f0aa695cf000d542/python-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-language/25.0.4/d18d38591a7921d79bd827b07a9ac634d1b2fdc2/python-language-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-resources/25.0.4/6ba99240f1e37f505031279abdfa0ccf514f61c8/python-resources-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-runtime/25.0.4/e3441fb01ff2b514ddd1fe234cd196a7ab6261de/truffle-runtime-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.tools/profiler-tool/25.0.4/28e870a088437639f42352b47b2b240e02e93060/profiler-tool-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.regex/regex/25.0.4/6fe97c9dd29f2e5e759d11fd05330aa2e3830101/regex-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-libffi/25.0.4/3e495c7cc64b02b7b981b508864900dbbcdb3b7e/truffle-nfi-libffi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-panama/25.0.4/38944336a2e569ef506ee01b4b8c698daf1d048b/truffle-nfi-panama-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi/25.0.4/36a802c5e343a5f4126a0e4821f74e80b0b38a2e/truffle-nfi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-api/25.0.4/56088bcea6520fbaa6afccf4bafbef14ebefc6a4/truffle-api-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.polyglot/polyglot/25.0.4/f9e303d2cc47d91446bb733afa83701689caac1b/polyglot-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/jniutils/25.0.4/72b023da2e3dab1bd7773553445bfa882b34ccb5/jniutils-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/collections/25.0.4/9815551d102a1d0bd151eb87d5ccad93e7edbdb2/collections-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/icu4j/25.0.4/995cdbca0c327116c5289e2bce1ee1a2fbe65ff/icu4j-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/nativeimage/25.0.4/72a635962132a5a2e45eb9f7dcbdaa56a11763da/nativeimage-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/word/25.0.4/e71e5209b901fcf4be14d7ef1ae0c3985fd190da/word-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/xz/25.0.4/b9d42f3d701b838429f422ea76a0a2bd6d847b77/xz-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-compiler/25.0.4/75f8232d91fc753faba586e2570f9ebcd842962e/truffle-compiler-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/json/25.0.4/e14b66da13c3a276538f530a2be57ae3fe944f3d/json-25.0.4.jar",
+                  "vh.benchmarks.GraalPyRunner",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "23.0.2+7",
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "graalpy-jvm-interpreter",
+                "guest_jit": false,
+                "engine_implementation": "Interpreted",
+                "engine_options": {
+                  "engine.WarnInterpreterOnly": "false"
+                },
+                "java_vm": "OpenJDK 64-Bit Server VM",
+                "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                "jvm_args": [
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m"
+                ],
+                "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                "gc_enabled": true
+              }
+            }
+          }
+        },
+        {
+          "name": "slots",
+          "params": {
+            "size": 1,
+            "repetitions": 32,
+            "batch": 8
+          },
+          "source": "class RuntimeBench[token] {\npub stable = token;\npub var changed = self;\nvar cell0 = self;\ntick { cell0 = stable; changed = cell0; changed }\npub run { tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick }\n}\n",
+          "python_source": "def build(token):\n    class Bench:\n        def __init__(self):\n            self.changed = self\n            self.cell0 = self\n        def tick(self):\n            self.cell0 = token\n            self.changed = self.cell0\n            return self.changed\n        def run(self):\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            return result\n    return Bench()\n",
+          "core_sha256": "fd267d0f614a8c29f30264d3713e9be2afc674305c9c07f008b05ae8bd2b4a5a",
+          "runtimes": {
+            "VarioHyve": {
+              "mean": 1016.7599875,
+              "min": 872.436125,
+              "max": 1456.686625,
+              "median": 934.453875,
+              "q1": 902.40853125,
+              "q3": 963.3622499999999,
+              "samples": [
+                900.851375,
+                937.05375,
+                1357.6575,
+                907.08,
+                872.436125,
+                1456.686625,
+                931.854,
+                944.556375,
+                969.630875,
+                889.79325
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    9239.037625,
+                    3890.22825,
+                    4086.540375,
+                    2584.891875,
+                    2205.62375,
+                    1797.25,
+                    1838.569875,
+                    1344.82325,
+                    2502.669875,
+                    1742.2075,
+                    980.74075,
+                    1035.95225,
+                    1488.211,
+                    959.75275,
+                    878.993,
+                    856.397625
+                  ],
+                  "samples_us": [
+                    900.851375,
+                    937.05375,
+                    1357.6575,
+                    907.08,
+                    872.436125
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    9508.234625,
+                    4153.8315,
+                    3868.67825,
+                    1750.090875,
+                    1559.641,
+                    1521.877125,
+                    1439.615125,
+                    1392.212875,
+                    1575.431625,
+                    1823.889125,
+                    1350.70475,
+                    1239.18625,
+                    1465.518,
+                    1087.433375,
+                    1300.36325,
+                    929.602375
+                  ],
+                  "samples_us": [
+                    1456.686625,
+                    931.854,
+                    944.556375,
+                    969.630875,
+                    889.79325
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test:/home/runner/work/variohyve/variohyve/vh-core/build/resources/test:/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main:/home/runner/work/variohyve/variohyve/vh-core/build/resources/main:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.13.2/fc3db6d844df652a3d5db31c87fa12757f13691d/antlr4-runtime-4.13.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.obpcdl/reader-infra/2.0.0/4c5579121334f5d2d64720b0727a6f27ca8546f9/reader-infra-2.0.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.10.0/8fea1d9c58b2156f1b998f2f18da04bc9e087f74/junit-jupiter-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.10.0/89a1922534ed102be1fb2a8c0b2c6151297a12bf/junit-platform-launcher-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.10.0/9041c7365495a897a64782ea5a6fdb99dab1814e/junit-jupiter-params-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.10.0/90587932d718fc51a48112d33045a18476c542ad/junit-jupiter-engine-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.10.0/2fe4ba3d31d5067878e468c96aa039005a9134d3/junit-jupiter-api-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.10.0/276c4edcf64fabb5a139fa7b4f99330d7a93b804/junit-platform-engine-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.10.0/d533ff2c286eaf963566f92baf5f8a06628d2609/junit-platform-commons-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.3.0/152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e/opentest4j-1.3.0.jar",
+                  "vh.vm.NativeJavaDriver",
+                  "--bulk-slices"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "openjdk version \"23.0.2\" 2025-01-21\nOpenJDK Runtime Environment Temurin-23.0.2+7 (build 23.0.2+7)\nOpenJDK 64-Bit Server VM Temurin-23.0.2+7 (build 23.0.2+7, mixed mode, sharing)\n",
+                "lean_toolchain": null,
+                "native_gc": "allocation-debt"
+              }
+            },
+            "Lean": {
+              "mean": 1144.1444,
+              "min": 1133.824875,
+              "max": 1154.394875,
+              "median": 1145.0488125000002,
+              "q1": 1138.6601875000001,
+              "q3": 1146.877,
+              "samples": [
+                1133.824875,
+                1137.508875,
+                1144.673125,
+                1136.891125,
+                1146.425875,
+                1147.027375,
+                1153.15925,
+                1142.114125,
+                1154.394875,
+                1145.4245
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    1179.912625,
+                    1145.945625,
+                    1121.286625,
+                    1131.235125,
+                    1129.699,
+                    1141.0805,
+                    1150.342625,
+                    1150.43875,
+                    1111.401875,
+                    1155.523875,
+                    1167.716375,
+                    1145.998375,
+                    1143.621,
+                    1130.598125,
+                    1123.146375,
+                    1138.78275
+                  ],
+                  "samples_us": [
+                    1133.824875,
+                    1137.508875,
+                    1144.673125,
+                    1136.891125,
+                    1146.425875
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    1412.326,
+                    1153.75325,
+                    1136.26125,
+                    1159.4855,
+                    1155.1055,
+                    1150.95375,
+                    1147.924125,
+                    1170.055625,
+                    1161.343125,
+                    1145.4045,
+                    1158.350125,
+                    1149.94025,
+                    1152.06775,
+                    1143.01875,
+                    1148.59625,
+                    1150.375625
+                  ],
+                  "samples_us": [
+                    1147.027375,
+                    1153.15925,
+                    1142.114125,
+                    1154.394875,
+                    1145.4245
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/home/runner/work/variohyve/variohyve/vh-lean/.lake/build/bin/semanticsConformance",
+                  "--native",
+                  "--raw-conformance"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": "leanprover/lean4:v4.35.0",
+                "native_gc": "allocation-debt"
+              }
+            },
+            "CPython": {
+              "mean": 58.701925,
+              "min": 53.856625,
+              "max": 78.568,
+              "median": 56.581125,
+              "q1": 54.5688125,
+              "q3": 59.02253125,
+              "samples": [
+                60.545375,
+                54.676625,
+                53.856625,
+                54.532875,
+                56.8015,
+                56.36075,
+                54.360375,
+                59.3865,
+                78.568,
+                57.930625
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    57.561125,
+                    55.3265,
+                    33.806625,
+                    56.733125,
+                    74.893625,
+                    59.23275,
+                    56.64675,
+                    54.46675,
+                    53.213875,
+                    58.955375,
+                    55.867,
+                    55.3625,
+                    75.740125,
+                    54.23875,
+                    57.115875,
+                    60.06825
+                  ],
+                  "samples_us": [
+                    60.545375,
+                    54.676625,
+                    53.856625,
+                    54.532875,
+                    56.8015
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    61.45025,
+                    55.4015,
+                    39.462375,
+                    80.05675,
+                    56.9665,
+                    57.259375,
+                    56.323375,
+                    55.81925,
+                    58.02875,
+                    58.96875,
+                    54.737875,
+                    55.756125,
+                    58.1105,
+                    54.642125,
+                    69.84675,
+                    59.37025
+                  ],
+                  "samples_us": [
+                    56.36075,
+                    54.360375,
+                    59.3865,
+                    78.568,
+                    57.930625
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.14.7/x64/bin/python3",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "CPython",
+                "guest_jit": false,
+                "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                "gc_enabled": true
+              }
+            },
+            "GraalPy": {
+              "mean": 2848.1299,
+              "min": 2480.851375,
+              "max": 3877.7635,
+              "median": 2651.728,
+              "q1": 2535.61396875,
+              "q3": 3079.70353125,
+              "samples": [
+                3877.7635,
+                2665.734,
+                2482.59375,
+                2520.698875,
+                2480.851375,
+                2580.35925,
+                3206.815625,
+                2637.722,
+                2698.36725,
+                3330.393375
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    4031.235125,
+                    3307.642375,
+                    5354.072875,
+                    3095.290875,
+                    2987.452625,
+                    3019.847,
+                    3028.69075,
+                    4330.169,
+                    3752.214125,
+                    2878.017625,
+                    2705.170375,
+                    5018.588625,
+                    2894.52,
+                    2632.335625,
+                    2685.064875,
+                    3838.243375
+                  ],
+                  "samples_us": [
+                    3877.7635,
+                    2665.734,
+                    2482.59375,
+                    2520.698875,
+                    2480.851375
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    6409.896625,
+                    4666.231625,
+                    3077.968875,
+                    2911.571,
+                    4356.094125,
+                    2793.16575,
+                    2645.08275,
+                    2616.30975,
+                    2674.239375,
+                    2721.653625,
+                    2730.399,
+                    2621.949375,
+                    2564.64975,
+                    2367.688,
+                    4019.362,
+                    3974.028875
+                  ],
+                  "samples_us": [
+                    2580.35925,
+                    3206.815625,
+                    2637.722,
+                    2698.36725,
+                    3330.393375
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-benchmarks/build/classes/java/graalpy:/home/runner/work/variohyve/variohyve/vh-benchmarks/build/resources/graalpy:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-community/25.0.4/5fa2de84d7daa107bd562ca8a0f3a569edd4e7db/python-community-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python/25.0.4/f629b0bd8e65fe5f30cd0352f0aa695cf000d542/python-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-language/25.0.4/d18d38591a7921d79bd827b07a9ac634d1b2fdc2/python-language-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-resources/25.0.4/6ba99240f1e37f505031279abdfa0ccf514f61c8/python-resources-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-runtime/25.0.4/e3441fb01ff2b514ddd1fe234cd196a7ab6261de/truffle-runtime-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.tools/profiler-tool/25.0.4/28e870a088437639f42352b47b2b240e02e93060/profiler-tool-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.regex/regex/25.0.4/6fe97c9dd29f2e5e759d11fd05330aa2e3830101/regex-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-libffi/25.0.4/3e495c7cc64b02b7b981b508864900dbbcdb3b7e/truffle-nfi-libffi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-panama/25.0.4/38944336a2e569ef506ee01b4b8c698daf1d048b/truffle-nfi-panama-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi/25.0.4/36a802c5e343a5f4126a0e4821f74e80b0b38a2e/truffle-nfi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-api/25.0.4/56088bcea6520fbaa6afccf4bafbef14ebefc6a4/truffle-api-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.polyglot/polyglot/25.0.4/f9e303d2cc47d91446bb733afa83701689caac1b/polyglot-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/jniutils/25.0.4/72b023da2e3dab1bd7773553445bfa882b34ccb5/jniutils-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/collections/25.0.4/9815551d102a1d0bd151eb87d5ccad93e7edbdb2/collections-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/icu4j/25.0.4/995cdbca0c327116c5289e2bce1ee1a2fbe65ff/icu4j-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/nativeimage/25.0.4/72a635962132a5a2e45eb9f7dcbdaa56a11763da/nativeimage-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/word/25.0.4/e71e5209b901fcf4be14d7ef1ae0c3985fd190da/word-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/xz/25.0.4/b9d42f3d701b838429f422ea76a0a2bd6d847b77/xz-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-compiler/25.0.4/75f8232d91fc753faba586e2570f9ebcd842962e/truffle-compiler-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/json/25.0.4/e14b66da13c3a276538f530a2be57ae3fe944f3d/json-25.0.4.jar",
+                  "vh.benchmarks.GraalPyRunner",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "23.0.2+7",
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "graalpy-jvm-interpreter",
+                "guest_jit": false,
+                "engine_implementation": "Interpreted",
+                "engine_options": {
+                  "engine.WarnInterpreterOnly": "false"
+                },
+                "java_vm": "OpenJDK 64-Bit Server VM",
+                "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                "jvm_args": [
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m"
+                ],
+                "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                "gc_enabled": true
+              }
+            }
+          }
+        },
+        {
+          "name": "slots",
+          "params": {
+            "size": 32,
+            "repetitions": 32,
+            "batch": 8
+          },
+          "source": "class RuntimeBench[token] {\npub stable = token;\npub var changed = self;\nvar cell0 = self;\nvar cell1 = self;\nvar cell2 = self;\nvar cell3 = self;\nvar cell4 = self;\nvar cell5 = self;\nvar cell6 = self;\nvar cell7 = self;\nvar cell8 = self;\nvar cell9 = self;\nvar cell10 = self;\nvar cell11 = self;\nvar cell12 = self;\nvar cell13 = self;\nvar cell14 = self;\nvar cell15 = self;\nvar cell16 = self;\nvar cell17 = self;\nvar cell18 = self;\nvar cell19 = self;\nvar cell20 = self;\nvar cell21 = self;\nvar cell22 = self;\nvar cell23 = self;\nvar cell24 = self;\nvar cell25 = self;\nvar cell26 = self;\nvar cell27 = self;\nvar cell28 = self;\nvar cell29 = self;\nvar cell30 = self;\nvar cell31 = self;\ntick { cell0 = stable; cell1 = stable; cell2 = stable; cell3 = stable; cell4 = stable; cell5 = stable; cell6 = stable; cell7 = stable; cell8 = stable; cell9 = stable; cell10 = stable; cell11 = stable; cell12 = stable; cell13 = stable; cell14 = stable; cell15 = stable; cell16 = stable; cell17 = stable; cell18 = stable; cell19 = stable; cell20 = stable; cell21 = stable; cell22 = stable; cell23 = stable; cell24 = stable; cell25 = stable; cell26 = stable; cell27 = stable; cell28 = stable; cell29 = stable; cell30 = stable; cell31 = stable; changed = cell31; changed }\npub run { tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick }\n}\n",
+          "python_source": "def build(token):\n    class Bench:\n        def __init__(self):\n            self.changed = self\n            self.cell0 = self\n            self.cell1 = self\n            self.cell2 = self\n            self.cell3 = self\n            self.cell4 = self\n            self.cell5 = self\n            self.cell6 = self\n            self.cell7 = self\n            self.cell8 = self\n            self.cell9 = self\n            self.cell10 = self\n            self.cell11 = self\n            self.cell12 = self\n            self.cell13 = self\n            self.cell14 = self\n            self.cell15 = self\n            self.cell16 = self\n            self.cell17 = self\n            self.cell18 = self\n            self.cell19 = self\n            self.cell20 = self\n            self.cell21 = self\n            self.cell22 = self\n            self.cell23 = self\n            self.cell24 = self\n            self.cell25 = self\n            self.cell26 = self\n            self.cell27 = self\n            self.cell28 = self\n            self.cell29 = self\n            self.cell30 = self\n            self.cell31 = self\n        def tick(self):\n            self.cell0 = token\n            self.cell1 = token\n            self.cell2 = token\n            self.cell3 = token\n            self.cell4 = token\n            self.cell5 = token\n            self.cell6 = token\n            self.cell7 = token\n            self.cell8 = token\n            self.cell9 = token\n            self.cell10 = token\n            self.cell11 = token\n            self.cell12 = token\n            self.cell13 = token\n            self.cell14 = token\n            self.cell15 = token\n            self.cell16 = token\n            self.cell17 = token\n            self.cell18 = token\n            self.cell19 = token\n            self.cell20 = token\n            self.cell21 = token\n            self.cell22 = token\n            self.cell23 = token\n            self.cell24 = token\n            self.cell25 = token\n            self.cell26 = token\n            self.cell27 = token\n            self.cell28 = token\n            self.cell29 = token\n            self.cell30 = token\n            self.cell31 = token\n            self.changed = self.cell31\n            return self.changed\n        def run(self):\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            return result\n    return Bench()\n",
+          "core_sha256": "1dbcba97d8548d8fc44f9f6293cb1174b11f3887442b90543c181f38e08941ba",
+          "runtimes": {
+            "VarioHyve": {
+              "mean": 5042.42795,
+              "min": 4056.492125,
+              "max": 6638.762875,
+              "median": 4850.800625,
+              "q1": 4461.30759375,
+              "q3": 5491.86146875,
+              "samples": [
+                4706.417125,
+                4995.184125,
+                5058.267625,
+                4372.762125,
+                4056.492125,
+                5636.39275,
+                6028.596375,
+                6638.762875,
+                4474.491375,
+                4456.913
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    24687.82625,
+                    12984.444375,
+                    11675.92525,
+                    9048.956375,
+                    7359.639625,
+                    8520.410625,
+                    8140.677125,
+                    11043.659,
+                    10180.477875,
+                    9074.34875,
+                    7114.877625,
+                    6396.23725,
+                    5858.372,
+                    6567.390625,
+                    5791.518625,
+                    5582.529875
+                  ],
+                  "samples_us": [
+                    4706.417125,
+                    4995.184125,
+                    5058.267625,
+                    4372.762125,
+                    4056.492125
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    24525.165375,
+                    13202.99325,
+                    9553.9185,
+                    8523.42,
+                    7747.886625,
+                    9073.751,
+                    8510.445625,
+                    8777.0515,
+                    9557.01475,
+                    9443.819375,
+                    10365.83225,
+                    6490.29625,
+                    7037.51675,
+                    6874.0955,
+                    7740.406375,
+                    5766.475625
+                  ],
+                  "samples_us": [
+                    5636.39275,
+                    6028.596375,
+                    6638.762875,
+                    4474.491375,
+                    4456.913
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test:/home/runner/work/variohyve/variohyve/vh-core/build/resources/test:/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main:/home/runner/work/variohyve/variohyve/vh-core/build/resources/main:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.13.2/fc3db6d844df652a3d5db31c87fa12757f13691d/antlr4-runtime-4.13.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.obpcdl/reader-infra/2.0.0/4c5579121334f5d2d64720b0727a6f27ca8546f9/reader-infra-2.0.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.10.0/8fea1d9c58b2156f1b998f2f18da04bc9e087f74/junit-jupiter-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.10.0/89a1922534ed102be1fb2a8c0b2c6151297a12bf/junit-platform-launcher-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.10.0/9041c7365495a897a64782ea5a6fdb99dab1814e/junit-jupiter-params-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.10.0/90587932d718fc51a48112d33045a18476c542ad/junit-jupiter-engine-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.10.0/2fe4ba3d31d5067878e468c96aa039005a9134d3/junit-jupiter-api-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.10.0/276c4edcf64fabb5a139fa7b4f99330d7a93b804/junit-platform-engine-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.10.0/d533ff2c286eaf963566f92baf5f8a06628d2609/junit-platform-commons-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.3.0/152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e/opentest4j-1.3.0.jar",
+                  "vh.vm.NativeJavaDriver",
+                  "--bulk-slices"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "openjdk version \"23.0.2\" 2025-01-21\nOpenJDK Runtime Environment Temurin-23.0.2+7 (build 23.0.2+7)\nOpenJDK 64-Bit Server VM Temurin-23.0.2+7 (build 23.0.2+7, mixed mode, sharing)\n",
+                "lean_toolchain": null,
+                "native_gc": "allocation-debt"
+              }
+            },
+            "Lean": {
+              "mean": 31486.7468,
+              "min": 31212.913625,
+              "max": 32101.134625,
+              "median": 31396.8265625,
+              "q1": 31340.728218750002,
+              "q3": 31540.20796875,
+              "samples": [
+                31368.27225,
+                31484.677875,
+                31558.718,
+                31704.783875,
+                31369.682375,
+                31423.97075,
+                31311.76775,
+                31331.546875,
+                31212.913625,
+                32101.134625
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    30711.044375,
+                    30325.46725,
+                    30657.66325,
+                    30621.527375,
+                    30451.776625,
+                    30326.380375,
+                    30357.173375,
+                    30500.233375,
+                    30343.001,
+                    30312.82175,
+                    30446.132,
+                    30235.483125,
+                    31204.995,
+                    31593.695625,
+                    31676.951875,
+                    31387.41575
+                  ],
+                  "samples_us": [
+                    31368.27225,
+                    31484.677875,
+                    31558.718,
+                    31704.783875,
+                    31369.682375
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    30339.08825,
+                    30549.87625,
+                    30354.841875,
+                    30228.896875,
+                    30263.71225,
+                    30250.55475,
+                    30468.641875,
+                    30491.360875,
+                    30266.654875,
+                    30153.923375,
+                    30381.073125,
+                    30382.3575,
+                    30894.910875,
+                    31347.748,
+                    31199.433,
+                    31264.229625
+                  ],
+                  "samples_us": [
+                    31423.97075,
+                    31311.76775,
+                    31331.546875,
+                    31212.913625,
+                    32101.134625
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/home/runner/work/variohyve/variohyve/vh-lean/.lake/build/bin/semanticsConformance",
+                  "--native",
+                  "--raw-conformance"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": "leanprover/lean4:v4.35.0",
+                "native_gc": "allocation-debt"
+              }
+            },
+            "CPython": {
+              "mean": 69.1309875,
+              "min": 67.355,
+              "max": 74.54875,
+              "median": 68.929125,
+              "q1": 67.90159374999999,
+              "q3": 69.1568125,
+              "samples": [
+                68.95575,
+                67.88475,
+                70.07375,
+                74.54875,
+                67.355,
+                67.4555,
+                67.952125,
+                69.22275,
+                68.9025,
+                68.959
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    74.119125,
+                    74.0545,
+                    91.104875,
+                    74.185875,
+                    69.64625,
+                    70.724625,
+                    68.78175,
+                    70.95975,
+                    77.644875,
+                    45.531625,
+                    71.724375,
+                    45.151125,
+                    66.4695,
+                    72.459375,
+                    71.377875,
+                    73.071625
+                  ],
+                  "samples_us": [
+                    68.95575,
+                    67.88475,
+                    70.07375,
+                    74.54875,
+                    67.355
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    146.625875,
+                    69.9425,
+                    73.315375,
+                    69.7605,
+                    66.244625,
+                    71.37475,
+                    71.996625,
+                    71.474125,
+                    71.646,
+                    69.703,
+                    70.75475,
+                    72.939875,
+                    49.3065,
+                    69.327625,
+                    74.965625,
+                    69.18325
+                  ],
+                  "samples_us": [
+                    67.4555,
+                    67.952125,
+                    69.22275,
+                    68.9025,
+                    68.959
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.14.7/x64/bin/python3",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "CPython",
+                "guest_jit": false,
+                "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                "gc_enabled": true
+              }
+            },
+            "GraalPy": {
+              "mean": 4027.0559125,
+              "min": 3617.185625,
+              "max": 4962.27475,
+              "median": 3881.9656875,
+              "q1": 3703.71990625,
+              "q3": 4195.5460625,
+              "samples": [
+                3693.55125,
+                3893.981,
+                4149.3905,
+                4962.27475,
+                3869.950375,
+                3680.020375,
+                4210.93125,
+                4459.048125,
+                3734.225875,
+                3617.185625
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    9476.141125,
+                    5868.068875,
+                    4593.8495,
+                    4483.987,
+                    6332.41925,
+                    5605.1755,
+                    6715.657,
+                    5450.130375,
+                    4170.997875,
+                    4774.973375,
+                    3919.355125,
+                    3916.350875,
+                    3810.824125,
+                    5495.372,
+                    4369.339,
+                    5957.955
+                  ],
+                  "samples_us": [
+                    3693.55125,
+                    3893.981,
+                    4149.3905,
+                    4962.27475,
+                    3869.950375
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    5828.235875,
+                    5191.306125,
+                    7493.222625,
+                    4749.901625,
+                    4616.636125,
+                    6659.4205,
+                    4720.39925,
+                    4530.651875,
+                    5196.871625,
+                    5119.264,
+                    4236.80275,
+                    6211.2135,
+                    6986.2925,
+                    5695.604125,
+                    4006.85825,
+                    5596.90425
+                  ],
+                  "samples_us": [
+                    3680.020375,
+                    4210.93125,
+                    4459.048125,
+                    3734.225875,
+                    3617.185625
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-benchmarks/build/classes/java/graalpy:/home/runner/work/variohyve/variohyve/vh-benchmarks/build/resources/graalpy:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-community/25.0.4/5fa2de84d7daa107bd562ca8a0f3a569edd4e7db/python-community-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python/25.0.4/f629b0bd8e65fe5f30cd0352f0aa695cf000d542/python-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-language/25.0.4/d18d38591a7921d79bd827b07a9ac634d1b2fdc2/python-language-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-resources/25.0.4/6ba99240f1e37f505031279abdfa0ccf514f61c8/python-resources-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-runtime/25.0.4/e3441fb01ff2b514ddd1fe234cd196a7ab6261de/truffle-runtime-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.tools/profiler-tool/25.0.4/28e870a088437639f42352b47b2b240e02e93060/profiler-tool-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.regex/regex/25.0.4/6fe97c9dd29f2e5e759d11fd05330aa2e3830101/regex-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-libffi/25.0.4/3e495c7cc64b02b7b981b508864900dbbcdb3b7e/truffle-nfi-libffi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-panama/25.0.4/38944336a2e569ef506ee01b4b8c698daf1d048b/truffle-nfi-panama-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi/25.0.4/36a802c5e343a5f4126a0e4821f74e80b0b38a2e/truffle-nfi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-api/25.0.4/56088bcea6520fbaa6afccf4bafbef14ebefc6a4/truffle-api-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.polyglot/polyglot/25.0.4/f9e303d2cc47d91446bb733afa83701689caac1b/polyglot-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/jniutils/25.0.4/72b023da2e3dab1bd7773553445bfa882b34ccb5/jniutils-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/collections/25.0.4/9815551d102a1d0bd151eb87d5ccad93e7edbdb2/collections-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/icu4j/25.0.4/995cdbca0c327116c5289e2bce1ee1a2fbe65ff/icu4j-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/nativeimage/25.0.4/72a635962132a5a2e45eb9f7dcbdaa56a11763da/nativeimage-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/word/25.0.4/e71e5209b901fcf4be14d7ef1ae0c3985fd190da/word-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/xz/25.0.4/b9d42f3d701b838429f422ea76a0a2bd6d847b77/xz-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-compiler/25.0.4/75f8232d91fc753faba586e2570f9ebcd842962e/truffle-compiler-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/json/25.0.4/e14b66da13c3a276538f530a2be57ae3fe944f3d/json-25.0.4.jar",
+                  "vh.benchmarks.GraalPyRunner",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "23.0.2+7",
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "graalpy-jvm-interpreter",
+                "guest_jit": false,
+                "engine_implementation": "Interpreted",
+                "engine_options": {
+                  "engine.WarnInterpreterOnly": "false"
+                },
+                "java_vm": "OpenJDK 64-Bit Server VM",
+                "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                "jvm_args": [
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m"
+                ],
+                "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                "gc_enabled": true
+              }
+            }
+          }
+        },
+        {
+          "name": "closure",
+          "params": {
+            "size": 1,
+            "repetitions": 32,
+            "batch": 8
+          },
+          "source": "class RuntimeBench[token] {\npub stable = token;\npub var changed = self;\ntick { let captured = stable; (fun { captured }).apply() }\npub run { tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick }\n}\n",
+          "python_source": "def build(token):\n    class Bench:\n        def __init__(self):\n            self.changed = self\n        def tick(self):\n            captured = token\n            return (lambda: captured)()\n        def run(self):\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            return result\n    return Bench()\n",
+          "core_sha256": "8a2df9c3f3ee8e35fff366231755a7e839b489c06956bbef00e5df76ff5bb281",
+          "runtimes": {
+            "VarioHyve": {
+              "mean": 902.1799375,
+              "min": 642.92,
+              "max": 1363.015625,
+              "median": 823.0319375,
+              "q1": 767.32575,
+              "q3": 927.68925,
+              "samples": [
+                778.0095,
+                716.72325,
+                799.7335,
+                642.92,
+                1297.709375,
+                865.011375,
+                948.581875,
+                763.7645,
+                846.330375,
+                1363.015625
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    7136.33925,
+                    3851.080125,
+                    3711.252,
+                    2257.108375,
+                    1917.26625,
+                    1156.82075,
+                    1517.45175,
+                    1183.253625,
+                    1001.075,
+                    1013.673375,
+                    1905.14025,
+                    1200.19975,
+                    1448.166875,
+                    1230.101,
+                    771.93675,
+                    1070.697375
+                  ],
+                  "samples_us": [
+                    778.0095,
+                    716.72325,
+                    799.7335,
+                    642.92,
+                    1297.709375
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    7356.725,
+                    6495.127375,
+                    2374.486875,
+                    2311.3005,
+                    1285.144,
+                    1228.943375,
+                    1264.6675,
+                    1402.350875,
+                    1597.27175,
+                    969.018125,
+                    1274.97125,
+                    886.80175,
+                    966.752625,
+                    809.472125,
+                    730.16575,
+                    1049.276125
+                  ],
+                  "samples_us": [
+                    865.011375,
+                    948.581875,
+                    763.7645,
+                    846.330375,
+                    1363.015625
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test:/home/runner/work/variohyve/variohyve/vh-core/build/resources/test:/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main:/home/runner/work/variohyve/variohyve/vh-core/build/resources/main:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.13.2/fc3db6d844df652a3d5db31c87fa12757f13691d/antlr4-runtime-4.13.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.obpcdl/reader-infra/2.0.0/4c5579121334f5d2d64720b0727a6f27ca8546f9/reader-infra-2.0.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.10.0/8fea1d9c58b2156f1b998f2f18da04bc9e087f74/junit-jupiter-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.10.0/89a1922534ed102be1fb2a8c0b2c6151297a12bf/junit-platform-launcher-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.10.0/9041c7365495a897a64782ea5a6fdb99dab1814e/junit-jupiter-params-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.10.0/90587932d718fc51a48112d33045a18476c542ad/junit-jupiter-engine-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.10.0/2fe4ba3d31d5067878e468c96aa039005a9134d3/junit-jupiter-api-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.10.0/276c4edcf64fabb5a139fa7b4f99330d7a93b804/junit-platform-engine-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.10.0/d533ff2c286eaf963566f92baf5f8a06628d2609/junit-platform-commons-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.3.0/152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e/opentest4j-1.3.0.jar",
+                  "vh.vm.NativeJavaDriver",
+                  "--bulk-slices"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "openjdk version \"23.0.2\" 2025-01-21\nOpenJDK Runtime Environment Temurin-23.0.2+7 (build 23.0.2+7)\nOpenJDK 64-Bit Server VM Temurin-23.0.2+7 (build 23.0.2+7, mixed mode, sharing)\n",
+                "lean_toolchain": null,
+                "native_gc": "allocation-debt"
+              }
+            },
+            "Lean": {
+              "mean": 820.1464,
+              "min": 807.65875,
+              "max": 868.782,
+              "median": 817.216,
+              "q1": 810.1325,
+              "q3": 819.7401562499999,
+              "samples": [
+                807.65875,
+                808.01725,
+                819.21375,
+                819.915625,
+                822.569875,
+                811.047125,
+                809.827625,
+                868.782,
+                817.65575,
+                816.77625
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    896.81225,
+                    816.064,
+                    806.705125,
+                    825.415625,
+                    808.625625,
+                    816.02625,
+                    811.819125,
+                    814.039375,
+                    805.837375,
+                    808.691,
+                    798.471125,
+                    810.859375,
+                    823.628125,
+                    821.855125,
+                    813.052625,
+                    791.611625
+                  ],
+                  "samples_us": [
+                    807.65875,
+                    808.01725,
+                    819.21375,
+                    819.915625,
+                    822.569875
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    820.84725,
+                    850.506625,
+                    817.1625,
+                    814.366,
+                    809.422375,
+                    812.863125,
+                    799.79975,
+                    832.6895,
+                    814.915625,
+                    814.75325,
+                    813.83125,
+                    808.840625,
+                    805.9045,
+                    816.343,
+                    814.2755,
+                    814.210375
+                  ],
+                  "samples_us": [
+                    811.047125,
+                    809.827625,
+                    868.782,
+                    817.65575,
+                    816.77625
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/home/runner/work/variohyve/variohyve/vh-lean/.lake/build/bin/semanticsConformance",
+                  "--native",
+                  "--raw-conformance"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": "leanprover/lean4:v4.35.0",
+                "native_gc": "allocation-debt"
+              }
+            },
+            "CPython": {
+              "mean": 61.0587375,
+              "min": 53.427375,
+              "max": 70.6395,
+              "median": 59.4865625,
+              "q1": 57.45903125,
+              "q3": 64.96546875,
+              "samples": [
+                59.45625,
+                70.6395,
+                56.809125,
+                59.40875,
+                59.516875,
+                54.21075,
+                53.427375,
+                61.27425,
+                66.195875,
+                69.648625
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    69.599875,
+                    47.04225,
+                    70.018375,
+                    70.080125,
+                    58.999625,
+                    57.0315,
+                    59.13825,
+                    59.50525,
+                    60.575125,
+                    39.95775,
+                    72.45025,
+                    69.887125,
+                    72.33675,
+                    66.345375,
+                    59.963625,
+                    56.549625
+                  ],
+                  "samples_us": [
+                    59.45625,
+                    70.6395,
+                    56.809125,
+                    59.40875,
+                    59.516875
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    37.111125,
+                    56.255125,
+                    55.361,
+                    57.495125,
+                    56.5195,
+                    55.46525,
+                    57.85525,
+                    60.2875,
+                    57.332125,
+                    55.034125,
+                    62.801,
+                    56.024,
+                    54.682875,
+                    71.3005,
+                    59.9485,
+                    53.980125
+                  ],
+                  "samples_us": [
+                    54.21075,
+                    53.427375,
+                    61.27425,
+                    66.195875,
+                    69.648625
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.14.7/x64/bin/python3",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "CPython",
+                "guest_jit": false,
+                "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                "gc_enabled": true
+              }
+            },
+            "GraalPy": {
+              "mean": 2210.6029375,
+              "min": 1928.13025,
+              "max": 2623.225875,
+              "median": 2091.9661875,
+              "q1": 1988.63615625,
+              "q3": 2483.72596875,
+              "samples": [
+                2014.3225,
+                1999.931625,
+                1984.871,
+                1928.13025,
+                1946.214875,
+                2169.609875,
+                2526.015625,
+                2356.857,
+                2556.85075,
+                2623.225875
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    5296.154625,
+                    4397.39925,
+                    2656.385625,
+                    3284.15775,
+                    2655.747,
+                    3459.645125,
+                    4775.738875,
+                    3618.390375,
+                    3266.218,
+                    3464.06725,
+                    4836.591125,
+                    4151.18575,
+                    3115.71025,
+                    4248.78675,
+                    3744.18925,
+                    2681.866375
+                  ],
+                  "samples_us": [
+                    2014.3225,
+                    1999.931625,
+                    1984.871,
+                    1928.13025,
+                    1946.214875
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    5087.04525,
+                    4532.771,
+                    5372.22575,
+                    3179.702,
+                    2568.204375,
+                    2637.555,
+                    2800.747,
+                    4946.665875,
+                    3632.657,
+                    2516.378375,
+                    4707.95,
+                    3530.644375,
+                    3785.16175,
+                    4201.733,
+                    2884.3285,
+                    2187.071875
+                  ],
+                  "samples_us": [
+                    2169.609875,
+                    2526.015625,
+                    2356.857,
+                    2556.85075,
+                    2623.225875
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-benchmarks/build/classes/java/graalpy:/home/runner/work/variohyve/variohyve/vh-benchmarks/build/resources/graalpy:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-community/25.0.4/5fa2de84d7daa107bd562ca8a0f3a569edd4e7db/python-community-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python/25.0.4/f629b0bd8e65fe5f30cd0352f0aa695cf000d542/python-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-language/25.0.4/d18d38591a7921d79bd827b07a9ac634d1b2fdc2/python-language-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-resources/25.0.4/6ba99240f1e37f505031279abdfa0ccf514f61c8/python-resources-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-runtime/25.0.4/e3441fb01ff2b514ddd1fe234cd196a7ab6261de/truffle-runtime-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.tools/profiler-tool/25.0.4/28e870a088437639f42352b47b2b240e02e93060/profiler-tool-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.regex/regex/25.0.4/6fe97c9dd29f2e5e759d11fd05330aa2e3830101/regex-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-libffi/25.0.4/3e495c7cc64b02b7b981b508864900dbbcdb3b7e/truffle-nfi-libffi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-panama/25.0.4/38944336a2e569ef506ee01b4b8c698daf1d048b/truffle-nfi-panama-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi/25.0.4/36a802c5e343a5f4126a0e4821f74e80b0b38a2e/truffle-nfi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-api/25.0.4/56088bcea6520fbaa6afccf4bafbef14ebefc6a4/truffle-api-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.polyglot/polyglot/25.0.4/f9e303d2cc47d91446bb733afa83701689caac1b/polyglot-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/jniutils/25.0.4/72b023da2e3dab1bd7773553445bfa882b34ccb5/jniutils-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/collections/25.0.4/9815551d102a1d0bd151eb87d5ccad93e7edbdb2/collections-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/icu4j/25.0.4/995cdbca0c327116c5289e2bce1ee1a2fbe65ff/icu4j-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/nativeimage/25.0.4/72a635962132a5a2e45eb9f7dcbdaa56a11763da/nativeimage-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/word/25.0.4/e71e5209b901fcf4be14d7ef1ae0c3985fd190da/word-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/xz/25.0.4/b9d42f3d701b838429f422ea76a0a2bd6d847b77/xz-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-compiler/25.0.4/75f8232d91fc753faba586e2570f9ebcd842962e/truffle-compiler-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/json/25.0.4/e14b66da13c3a276538f530a2be57ae3fe944f3d/json-25.0.4.jar",
+                  "vh.benchmarks.GraalPyRunner",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "23.0.2+7",
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "graalpy-jvm-interpreter",
+                "guest_jit": false,
+                "engine_implementation": "Interpreted",
+                "engine_options": {
+                  "engine.WarnInterpreterOnly": "false"
+                },
+                "java_vm": "OpenJDK 64-Bit Server VM",
+                "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                "jvm_args": [
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m"
+                ],
+                "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                "gc_enabled": true
+              }
+            }
+          }
+        },
+        {
+          "name": "object",
+          "params": {
+            "size": 1,
+            "repetitions": 32,
+            "batch": 8
+          },
+          "source": "class RuntimeBench[token] {\npub stable = token;\npub var changed = self;\nValue = class[x] { pub result = x; };\ntick { Value.new(stable).result }\npub run { tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick }\n}\n",
+          "python_source": "def build(token):\n    class Value:\n        def __init__(self, x): self.result = x\n    class Bench:\n        def __init__(self):\n            self.changed = self\n        def tick(self): return Value(token).result\n        def run(self):\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            return result\n    return Bench()\n",
+          "core_sha256": "3894f262dadf0c4f1ea782850b577b1e7f839f090c1e4f0b08f7185cc259d5e4",
+          "runtimes": {
+            "VarioHyve": {
+              "mean": 1792.3395,
+              "min": 1439.895,
+              "max": 2757.287625,
+              "median": 1627.27225,
+              "q1": 1559.807625,
+              "q3": 1985.97559375,
+              "samples": [
+                1620.37375,
+                1646.024875,
+                2099.2925,
+                1558.072125,
+                2161.45525,
+                1634.17075,
+                1439.895,
+                1441.809,
+                1565.014125,
+                2757.287625
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    13903.32625,
+                    5634.890375,
+                    5115.7045,
+                    4618.19,
+                    4561.8435,
+                    2159.0635,
+                    2712.135125,
+                    2027.45375,
+                    2692.198875,
+                    2854.564125,
+                    1744.136125,
+                    1674.559125,
+                    1696.414125,
+                    1698.27575,
+                    2142.037875,
+                    1821.799
+                  ],
+                  "samples_us": [
+                    1620.37375,
+                    1646.024875,
+                    2099.2925,
+                    1558.072125,
+                    2161.45525
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    13599.958,
+                    5565.522375,
+                    5538.364875,
+                    2799.164625,
+                    3091.4125,
+                    2267.044375,
+                    3179.149,
+                    2089.377625,
+                    1804.282875,
+                    2713.741875,
+                    2463.56425,
+                    2127.2845,
+                    1697.87675,
+                    1873.648875,
+                    2090.98675,
+                    1784.51275
+                  ],
+                  "samples_us": [
+                    1634.17075,
+                    1439.895,
+                    1441.809,
+                    1565.014125,
+                    2757.287625
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test:/home/runner/work/variohyve/variohyve/vh-core/build/resources/test:/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main:/home/runner/work/variohyve/variohyve/vh-core/build/resources/main:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.13.2/fc3db6d844df652a3d5db31c87fa12757f13691d/antlr4-runtime-4.13.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.obpcdl/reader-infra/2.0.0/4c5579121334f5d2d64720b0727a6f27ca8546f9/reader-infra-2.0.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.10.0/8fea1d9c58b2156f1b998f2f18da04bc9e087f74/junit-jupiter-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.10.0/89a1922534ed102be1fb2a8c0b2c6151297a12bf/junit-platform-launcher-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.10.0/9041c7365495a897a64782ea5a6fdb99dab1814e/junit-jupiter-params-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.10.0/90587932d718fc51a48112d33045a18476c542ad/junit-jupiter-engine-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.10.0/2fe4ba3d31d5067878e468c96aa039005a9134d3/junit-jupiter-api-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.10.0/276c4edcf64fabb5a139fa7b4f99330d7a93b804/junit-platform-engine-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.10.0/d533ff2c286eaf963566f92baf5f8a06628d2609/junit-platform-commons-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.3.0/152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e/opentest4j-1.3.0.jar",
+                  "vh.vm.NativeJavaDriver",
+                  "--bulk-slices"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "openjdk version \"23.0.2\" 2025-01-21\nOpenJDK Runtime Environment Temurin-23.0.2+7 (build 23.0.2+7)\nOpenJDK 64-Bit Server VM Temurin-23.0.2+7 (build 23.0.2+7, mixed mode, sharing)\n",
+                "lean_toolchain": null,
+                "native_gc": "allocation-debt"
+              }
+            },
+            "Lean": {
+              "mean": 1268.5263375,
+              "min": 1252.793875,
+              "max": 1291.280125,
+              "median": 1263.481625,
+              "q1": 1259.55703125,
+              "q3": 1278.6850937499999,
+              "samples": [
+                1280.390125,
+                1254.690375,
+                1263.77975,
+                1273.57,
+                1284.738,
+                1291.280125,
+                1263.1835,
+                1258.69525,
+                1262.142375,
+                1252.793875
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    1390.67425,
+                    1284.673125,
+                    1257.193875,
+                    1286.3985,
+                    1269.04225,
+                    1271.724,
+                    1272.864375,
+                    1269.8515,
+                    1271.847,
+                    1300.868875,
+                    1288.117625,
+                    1283.455875,
+                    1312.488375,
+                    1296.174875,
+                    1256.332625,
+                    1279.1055
+                  ],
+                  "samples_us": [
+                    1280.390125,
+                    1254.690375,
+                    1263.77975,
+                    1273.57,
+                    1284.738
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    1501.709125,
+                    1249.89625,
+                    1263.954375,
+                    1267.74625,
+                    1274.972375,
+                    1267.299,
+                    1261.705125,
+                    1259.66125,
+                    1288.126125,
+                    1276.06975,
+                    1244.80775,
+                    1269.82025,
+                    1285.712,
+                    1253.1085,
+                    1240.417875,
+                    1263.49575
+                  ],
+                  "samples_us": [
+                    1291.280125,
+                    1263.1835,
+                    1258.69525,
+                    1262.142375,
+                    1252.793875
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/home/runner/work/variohyve/variohyve/vh-lean/.lake/build/bin/semanticsConformance",
+                  "--native",
+                  "--raw-conformance"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": "leanprover/lean4:v4.35.0",
+                "native_gc": "allocation-debt"
+              }
+            },
+            "CPython": {
+              "mean": 57.3278875,
+              "min": 54.946,
+              "max": 62.201875,
+              "median": 56.7580625,
+              "q1": 55.25234375,
+              "q3": 58.537968750000005,
+              "samples": [
+                58.825875,
+                56.1575,
+                55.193875,
+                57.67425,
+                54.946,
+                55.42775,
+                62.201875,
+                60.532875,
+                57.358625,
+                54.96025
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    60.105875,
+                    57.97225,
+                    56.702375,
+                    60.107125,
+                    58.445625,
+                    56.036,
+                    56.6295,
+                    55.01375,
+                    54.061,
+                    58.556125,
+                    56.2565,
+                    54.788875,
+                    61.397375,
+                    55.425,
+                    55.9335,
+                    58.649625
+                  ],
+                  "samples_us": [
+                    58.825875,
+                    56.1575,
+                    55.193875,
+                    57.67425,
+                    54.946
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    59.139625,
+                    60.135625,
+                    56.556,
+                    53.8385,
+                    58.536375,
+                    68.9425,
+                    54.810125,
+                    57.192125,
+                    63.65425,
+                    57.288875,
+                    58.4035,
+                    58.619375,
+                    55.002375,
+                    54.569,
+                    52.744125,
+                    55.606625
+                  ],
+                  "samples_us": [
+                    55.42775,
+                    62.201875,
+                    60.532875,
+                    57.358625,
+                    54.96025
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.14.7/x64/bin/python3",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "CPython",
+                "guest_jit": false,
+                "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                "gc_enabled": true
+              }
+            },
+            "GraalPy": {
+              "mean": 2449.7865125,
+              "min": 2021.13225,
+              "max": 3664.042125,
+              "median": 2235.6321875,
+              "q1": 2185.234125,
+              "q3": 2469.43971875,
+              "samples": [
+                2948.872375,
+                3664.042125,
+                2361.405875,
+                2021.13225,
+                2150.202375,
+                2227.553,
+                2243.711375,
+                2182.720875,
+                2505.451,
+                2192.773875
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    4402.44625,
+                    3080.695375,
+                    2929.859,
+                    4090.3995,
+                    2856.092875,
+                    2747.04325,
+                    2794.798125,
+                    3026.606125,
+                    2747.234375,
+                    3993.607875,
+                    4521.427875,
+                    2392.772125,
+                    3772.262125,
+                    4492.705875,
+                    4314.882125,
+                    2526.31175
+                  ],
+                  "samples_us": [
+                    2948.872375,
+                    3664.042125,
+                    2361.405875,
+                    2021.13225,
+                    2150.202375
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    3563.450875,
+                    4710.79225,
+                    6133.146875,
+                    3574.66275,
+                    2752.87125,
+                    2807.532625,
+                    2692.915875,
+                    2856.90075,
+                    4007.521125,
+                    2749.235625,
+                    4823.2735,
+                    3975.31825,
+                    3741.888375,
+                    4851.773625,
+                    2397.959875,
+                    2282.8175
+                  ],
+                  "samples_us": [
+                    2227.553,
+                    2243.711375,
+                    2182.720875,
+                    2505.451,
+                    2192.773875
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-benchmarks/build/classes/java/graalpy:/home/runner/work/variohyve/variohyve/vh-benchmarks/build/resources/graalpy:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-community/25.0.4/5fa2de84d7daa107bd562ca8a0f3a569edd4e7db/python-community-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python/25.0.4/f629b0bd8e65fe5f30cd0352f0aa695cf000d542/python-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-language/25.0.4/d18d38591a7921d79bd827b07a9ac634d1b2fdc2/python-language-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-resources/25.0.4/6ba99240f1e37f505031279abdfa0ccf514f61c8/python-resources-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-runtime/25.0.4/e3441fb01ff2b514ddd1fe234cd196a7ab6261de/truffle-runtime-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.tools/profiler-tool/25.0.4/28e870a088437639f42352b47b2b240e02e93060/profiler-tool-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.regex/regex/25.0.4/6fe97c9dd29f2e5e759d11fd05330aa2e3830101/regex-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-libffi/25.0.4/3e495c7cc64b02b7b981b508864900dbbcdb3b7e/truffle-nfi-libffi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-panama/25.0.4/38944336a2e569ef506ee01b4b8c698daf1d048b/truffle-nfi-panama-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi/25.0.4/36a802c5e343a5f4126a0e4821f74e80b0b38a2e/truffle-nfi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-api/25.0.4/56088bcea6520fbaa6afccf4bafbef14ebefc6a4/truffle-api-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.polyglot/polyglot/25.0.4/f9e303d2cc47d91446bb733afa83701689caac1b/polyglot-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/jniutils/25.0.4/72b023da2e3dab1bd7773553445bfa882b34ccb5/jniutils-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/collections/25.0.4/9815551d102a1d0bd151eb87d5ccad93e7edbdb2/collections-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/icu4j/25.0.4/995cdbca0c327116c5289e2bce1ee1a2fbe65ff/icu4j-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/nativeimage/25.0.4/72a635962132a5a2e45eb9f7dcbdaa56a11763da/nativeimage-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/word/25.0.4/e71e5209b901fcf4be14d7ef1ae0c3985fd190da/word-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/xz/25.0.4/b9d42f3d701b838429f422ea76a0a2bd6d847b77/xz-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-compiler/25.0.4/75f8232d91fc753faba586e2570f9ebcd842962e/truffle-compiler-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/json/25.0.4/e14b66da13c3a276538f530a2be57ae3fe944f3d/json-25.0.4.jar",
+                  "vh.benchmarks.GraalPyRunner",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "23.0.2+7",
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "graalpy-jvm-interpreter",
+                "guest_jit": false,
+                "engine_implementation": "Interpreted",
+                "engine_options": {
+                  "engine.WarnInterpreterOnly": "false"
+                },
+                "java_vm": "OpenJDK 64-Bit Server VM",
+                "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                "jvm_args": [
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m"
+                ],
+                "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                "gc_enabled": true
+              }
+            }
+          }
+        },
+        {
+          "name": "class",
+          "params": {
+            "size": 1,
+            "repetitions": 32,
+            "batch": 8
+          },
+          "source": "class RuntimeBench[token] {\npub stable = token;\npub var changed = self;\ntick { (class[x] { pub result = x; }).new(stable).result }\npub run { tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick }\n}\n",
+          "python_source": "def build(token):\n    class Bench:\n        def __init__(self):\n            self.changed = self\n        def tick(self):\n            class Value:\n                def __init__(self, x): self.result = x\n            return Value(token).result\n        def run(self):\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            return result\n    return Bench()\n",
+          "core_sha256": "32021198ad927817710dd805bc69dd1e50153778ba65107b99abc3111727c268",
+          "runtimes": {
+            "VarioHyve": {
+              "mean": 2085.2393625,
+              "min": 1861.019,
+              "max": 2464.330625,
+              "median": 2045.3228749999998,
+              "q1": 2000.7582187500002,
+              "q3": 2167.96009375,
+              "samples": [
+                2464.330625,
+                2265.134875,
+                1996.463625,
+                1861.019,
+                2076.553125,
+                1885.584375,
+                2014.092625,
+                2013.642,
+                2077.439875,
+                2198.1335
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    21818.63425,
+                    10659.0395,
+                    6809.6255,
+                    3531.982125,
+                    3135.110625,
+                    2999.964375,
+                    3155.32375,
+                    3541.9115,
+                    5373.12775,
+                    4320.96475,
+                    3438.02175,
+                    3051.976125,
+                    2624.278625,
+                    2972.69775,
+                    2973.468375,
+                    2874.057
+                  ],
+                  "samples_us": [
+                    2464.330625,
+                    2265.134875,
+                    1996.463625,
+                    1861.019,
+                    2076.553125
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    24208.078125,
+                    9573.069875,
+                    6497.14875,
+                    3624.34775,
+                    3995.775875,
+                    3120.7235,
+                    3223.223625,
+                    3337.810625,
+                    2480.28,
+                    4091.865875,
+                    3348.21375,
+                    2198.942125,
+                    2378.556,
+                    2427.79225,
+                    2680.249,
+                    3064.3135
+                  ],
+                  "samples_us": [
+                    1885.584375,
+                    2014.092625,
+                    2013.642,
+                    2077.439875,
+                    2198.1335
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test:/home/runner/work/variohyve/variohyve/vh-core/build/resources/test:/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main:/home/runner/work/variohyve/variohyve/vh-core/build/resources/main:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.13.2/fc3db6d844df652a3d5db31c87fa12757f13691d/antlr4-runtime-4.13.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.obpcdl/reader-infra/2.0.0/4c5579121334f5d2d64720b0727a6f27ca8546f9/reader-infra-2.0.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.10.0/8fea1d9c58b2156f1b998f2f18da04bc9e087f74/junit-jupiter-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.10.0/89a1922534ed102be1fb2a8c0b2c6151297a12bf/junit-platform-launcher-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.10.0/9041c7365495a897a64782ea5a6fdb99dab1814e/junit-jupiter-params-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.10.0/90587932d718fc51a48112d33045a18476c542ad/junit-jupiter-engine-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.10.0/2fe4ba3d31d5067878e468c96aa039005a9134d3/junit-jupiter-api-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.10.0/276c4edcf64fabb5a139fa7b4f99330d7a93b804/junit-platform-engine-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.10.0/d533ff2c286eaf963566f92baf5f8a06628d2609/junit-platform-commons-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.3.0/152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e/opentest4j-1.3.0.jar",
+                  "vh.vm.NativeJavaDriver",
+                  "--bulk-slices"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "openjdk version \"23.0.2\" 2025-01-21\nOpenJDK Runtime Environment Temurin-23.0.2+7 (build 23.0.2+7)\nOpenJDK 64-Bit Server VM Temurin-23.0.2+7 (build 23.0.2+7, mixed mode, sharing)\n",
+                "lean_toolchain": null,
+                "native_gc": "allocation-debt"
+              }
+            },
+            "Lean": {
+              "mean": 1724.8930125,
+              "min": 1696.980375,
+              "max": 1753.618875,
+              "median": 1724.53825,
+              "q1": 1712.27078125,
+              "q3": 1741.50359375,
+              "samples": [
+                1698.203875,
+                1713.00925,
+                1740.968375,
+                1743.36625,
+                1731.14725,
+                1741.682,
+                1753.618875,
+                1717.92925,
+                1696.980375,
+                1712.024625
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    1835.871,
+                    1735.068625,
+                    1721.012,
+                    1713.356875,
+                    1718.35125,
+                    1712.587,
+                    1707.747625,
+                    1718.283375,
+                    1746.848125,
+                    1721.398875,
+                    1723.461375,
+                    1735.726875,
+                    1745.116125,
+                    1739.502375,
+                    1742.08425,
+                    1715.774875
+                  ],
+                  "samples_us": [
+                    1698.203875,
+                    1713.00925,
+                    1740.968375,
+                    1743.36625,
+                    1731.14725
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    2128.730375,
+                    1717.9635,
+                    1726.51325,
+                    1712.268875,
+                    1733.008125,
+                    1719.54175,
+                    1724.3365,
+                    1705.201625,
+                    1728.282625,
+                    1722.2375,
+                    1739.145,
+                    1774.879875,
+                    1697.9345,
+                    1723.857125,
+                    1727.14275,
+                    1749.3495
+                  ],
+                  "samples_us": [
+                    1741.682,
+                    1753.618875,
+                    1717.92925,
+                    1696.980375,
+                    1712.024625
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/home/runner/work/variohyve/variohyve/vh-lean/.lake/build/bin/semanticsConformance",
+                  "--native",
+                  "--raw-conformance"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": "leanprover/lean4:v4.35.0",
+                "native_gc": "allocation-debt"
+              }
+            },
+            "CPython": {
+              "mean": 272.9105875,
+              "min": 230.005,
+              "max": 302.56775,
+              "median": 280.4329375,
+              "q1": 267.79334374999996,
+              "q3": 288.56053125,
+              "samples": [
+                285.5625,
+                230.262,
+                289.559875,
+                270.148625,
+                284.53625,
+                267.00825,
+                230.005,
+                302.56775,
+                293.126,
+                276.329625
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    296.583625,
+                    625.39825,
+                    233.865375,
+                    276.654125,
+                    269.524,
+                    265.572125,
+                    227.684875,
+                    284.644125,
+                    276.54675,
+                    261.87725,
+                    215.067625,
+                    270.807625,
+                    259.678125,
+                    262.012875,
+                    228.24475,
+                    266.409375
+                  ],
+                  "samples_us": [
+                    285.5625,
+                    230.262,
+                    289.559875,
+                    270.148625,
+                    284.53625
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    275.554125,
+                    661.870875,
+                    221.79725,
+                    269.05825,
+                    292.397875,
+                    262.4045,
+                    237.1325,
+                    265.207875,
+                    278.41075,
+                    287.4525,
+                    223.084,
+                    278.86675,
+                    268.142,
+                    270.665625,
+                    242.663375,
+                    299.551
+                  ],
+                  "samples_us": [
+                    267.00825,
+                    230.005,
+                    302.56775,
+                    293.126,
+                    276.329625
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.14.7/x64/bin/python3",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "CPython",
+                "guest_jit": false,
+                "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                "gc_enabled": true
+              }
+            },
+            "GraalPy": {
+              "mean": 13358.1659875,
+              "min": 11175.132625,
+              "max": 19230.257875,
+              "median": 13223.1586875,
+              "q1": 12247.562062500001,
+              "q3": 13436.57465625,
+              "samples": [
+                13449.930125,
+                12252.6915,
+                11525.15525,
+                11175.132625,
+                12245.85225,
+                13364.835125,
+                19230.257875,
+                13081.48225,
+                13859.814625,
+                13396.50825
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    19063.29325,
+                    8046.127625,
+                    8956.852625,
+                    7106.939875,
+                    11674.574625,
+                    11900.1355,
+                    15931.077875,
+                    12259.54475,
+                    10479.523375,
+                    9116.731,
+                    12385.34775,
+                    13709.46225,
+                    14404.539875,
+                    13741.5965,
+                    19162.743375,
+                    11640.9165
+                  ],
+                  "samples_us": [
+                    13449.930125,
+                    12252.6915,
+                    11525.15525,
+                    11175.132625,
+                    12245.85225
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    10766.21825,
+                    8580.376875,
+                    7895.164625,
+                    9820.7655,
+                    7811.075625,
+                    8549.21775,
+                    8713.646875,
+                    13081.388875,
+                    11567.78825,
+                    12924.000125,
+                    14990.2475,
+                    11377.62925,
+                    11132.364875,
+                    13302.672375,
+                    15872.43575,
+                    13753.1825
+                  ],
+                  "samples_us": [
+                    13364.835125,
+                    19230.257875,
+                    13081.48225,
+                    13859.814625,
+                    13396.50825
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-benchmarks/build/classes/java/graalpy:/home/runner/work/variohyve/variohyve/vh-benchmarks/build/resources/graalpy:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-community/25.0.4/5fa2de84d7daa107bd562ca8a0f3a569edd4e7db/python-community-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python/25.0.4/f629b0bd8e65fe5f30cd0352f0aa695cf000d542/python-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-language/25.0.4/d18d38591a7921d79bd827b07a9ac634d1b2fdc2/python-language-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-resources/25.0.4/6ba99240f1e37f505031279abdfa0ccf514f61c8/python-resources-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-runtime/25.0.4/e3441fb01ff2b514ddd1fe234cd196a7ab6261de/truffle-runtime-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.tools/profiler-tool/25.0.4/28e870a088437639f42352b47b2b240e02e93060/profiler-tool-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.regex/regex/25.0.4/6fe97c9dd29f2e5e759d11fd05330aa2e3830101/regex-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-libffi/25.0.4/3e495c7cc64b02b7b981b508864900dbbcdb3b7e/truffle-nfi-libffi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-panama/25.0.4/38944336a2e569ef506ee01b4b8c698daf1d048b/truffle-nfi-panama-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi/25.0.4/36a802c5e343a5f4126a0e4821f74e80b0b38a2e/truffle-nfi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-api/25.0.4/56088bcea6520fbaa6afccf4bafbef14ebefc6a4/truffle-api-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.polyglot/polyglot/25.0.4/f9e303d2cc47d91446bb733afa83701689caac1b/polyglot-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/jniutils/25.0.4/72b023da2e3dab1bd7773553445bfa882b34ccb5/jniutils-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/collections/25.0.4/9815551d102a1d0bd151eb87d5ccad93e7edbdb2/collections-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/icu4j/25.0.4/995cdbca0c327116c5289e2bce1ee1a2fbe65ff/icu4j-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/nativeimage/25.0.4/72a635962132a5a2e45eb9f7dcbdaa56a11763da/nativeimage-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/word/25.0.4/e71e5209b901fcf4be14d7ef1ae0c3985fd190da/word-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/xz/25.0.4/b9d42f3d701b838429f422ea76a0a2bd6d847b77/xz-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-compiler/25.0.4/75f8232d91fc753faba586e2570f9ebcd842962e/truffle-compiler-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/json/25.0.4/e14b66da13c3a276538f530a2be57ae3fe944f3d/json-25.0.4.jar",
+                  "vh.benchmarks.GraalPyRunner",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "23.0.2+7",
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "graalpy-jvm-interpreter",
+                "guest_jit": false,
+                "engine_implementation": "Interpreted",
+                "engine_options": {
+                  "engine.WarnInterpreterOnly": "false"
+                },
+                "java_vm": "OpenJDK 64-Bit Server VM",
+                "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                "jvm_args": [
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m"
+                ],
+                "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                "gc_enabled": true
+              }
+            }
+          }
+        },
+        {
+          "name": "inherited",
+          "params": {
+            "size": 4,
+            "repetitions": 32,
+            "batch": 8
+          },
+          "source": "class RuntimeBench[token] {\npub stable = token;\npub var changed = self;\nclass C0 { pub target { stable } }\nclass C1 < C0 {  }\nclass C2 < C1 {  }\nclass C3 < C2 {  }\nclass C4 < C3 {  }\nreceiver = C4.new;\ntick { receiver.target }\npub run { tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick }\n}\n",
+          "python_source": "def build(token):\n    class C0:\n        def target(self): return token\n    class C1(C0):\n        pass\n    class C2(C1):\n        pass\n    class C3(C2):\n        pass\n    class C4(C3):\n        pass\n    receiver = C4()\n    class Bench:\n        def __init__(self):\n            self.changed = self\n        def tick(self): return receiver.target()\n        def run(self):\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            return result\n    return Bench()\n",
+          "core_sha256": "a25eeef8e4fcbfb1cade6f5d44279078916bcce7799c53964bc5fe7396caffdd",
+          "runtimes": {
+            "VarioHyve": {
+              "mean": 1002.16205,
+              "min": 783.452125,
+              "max": 1886.013375,
+              "median": 912.2825,
+              "q1": 788.78296875,
+              "q3": 1053.56665625,
+              "samples": [
+                795.517875,
+                786.538,
+                1059.0625,
+                923.973875,
+                1886.013375,
+                785.14375,
+                900.591125,
+                783.452125,
+                1044.8585,
+                1056.469375
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    7546.990625,
+                    4074.089875,
+                    3214.23825,
+                    2937.900875,
+                    2334.22225,
+                    1847.66275,
+                    1376.131375,
+                    1151.4765,
+                    1031.12675,
+                    1055.336875,
+                    1333.3885,
+                    861.94625,
+                    1199.99,
+                    917.500125,
+                    1157.2135,
+                    837.14375
+                  ],
+                  "samples_us": [
+                    795.517875,
+                    786.538,
+                    1059.0625,
+                    923.973875,
+                    1886.013375
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    7462.941375,
+                    4610.26625,
+                    2620.973375,
+                    2409.761125,
+                    1995.28025,
+                    1248.7635,
+                    1195.866,
+                    1586.37425,
+                    1080.1985,
+                    1117.15225,
+                    1595.06025,
+                    1368.405125,
+                    885.999875,
+                    1209.884875,
+                    801.134625,
+                    794.84675
+                  ],
+                  "samples_us": [
+                    785.14375,
+                    900.591125,
+                    783.452125,
+                    1044.8585,
+                    1056.469375
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test:/home/runner/work/variohyve/variohyve/vh-core/build/resources/test:/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main:/home/runner/work/variohyve/variohyve/vh-core/build/resources/main:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.13.2/fc3db6d844df652a3d5db31c87fa12757f13691d/antlr4-runtime-4.13.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.obpcdl/reader-infra/2.0.0/4c5579121334f5d2d64720b0727a6f27ca8546f9/reader-infra-2.0.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.10.0/8fea1d9c58b2156f1b998f2f18da04bc9e087f74/junit-jupiter-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.10.0/89a1922534ed102be1fb2a8c0b2c6151297a12bf/junit-platform-launcher-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.10.0/9041c7365495a897a64782ea5a6fdb99dab1814e/junit-jupiter-params-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.10.0/90587932d718fc51a48112d33045a18476c542ad/junit-jupiter-engine-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.10.0/2fe4ba3d31d5067878e468c96aa039005a9134d3/junit-jupiter-api-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.10.0/276c4edcf64fabb5a139fa7b4f99330d7a93b804/junit-platform-engine-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.10.0/d533ff2c286eaf963566f92baf5f8a06628d2609/junit-platform-commons-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.3.0/152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e/opentest4j-1.3.0.jar",
+                  "vh.vm.NativeJavaDriver",
+                  "--bulk-slices"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "openjdk version \"23.0.2\" 2025-01-21\nOpenJDK Runtime Environment Temurin-23.0.2+7 (build 23.0.2+7)\nOpenJDK 64-Bit Server VM Temurin-23.0.2+7 (build 23.0.2+7, mixed mode, sharing)\n",
+                "lean_toolchain": null,
+                "native_gc": "allocation-debt"
+              }
+            },
+            "Lean": {
+              "mean": 1023.852475,
+              "min": 1003.400125,
+              "max": 1049.12925,
+              "median": 1025.0749375,
+              "q1": 1013.71015625,
+              "q3": 1031.7578125,
+              "samples": [
+                1027.1845,
+                1005.82075,
+                1017.306125,
+                1049.12925,
+                1024.984,
+                1003.400125,
+                1012.5115,
+                1033.28225,
+                1039.740375,
+                1025.165875
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    1448.181,
+                    1044.22525,
+                    1029.041125,
+                    1031.565375,
+                    1028.0685,
+                    1011.57575,
+                    1033.788375,
+                    1003.357625,
+                    1010.77675,
+                    1037.529,
+                    1013.04275,
+                    1030.65775,
+                    1020.5765,
+                    1016.485125,
+                    1021.19875,
+                    1024.316125
+                  ],
+                  "samples_us": [
+                    1027.1845,
+                    1005.82075,
+                    1017.306125,
+                    1049.12925,
+                    1024.984
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    1435.56275,
+                    1030.271625,
+                    1040.75925,
+                    1032.307375,
+                    1032.1235,
+                    1029.700125,
+                    1013.36575,
+                    1014.259375,
+                    1031.35325,
+                    996.80325,
+                    1037.5515,
+                    1022.243,
+                    1026.00675,
+                    1015.351125,
+                    1031.644375,
+                    1017.720625
+                  ],
+                  "samples_us": [
+                    1003.400125,
+                    1012.5115,
+                    1033.28225,
+                    1039.740375,
+                    1025.165875
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/home/runner/work/variohyve/variohyve/vh-lean/.lake/build/bin/semanticsConformance",
+                  "--native",
+                  "--raw-conformance"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": "leanprover/lean4:v4.35.0",
+                "native_gc": "allocation-debt"
+              }
+            },
+            "CPython": {
+              "mean": 48.549275,
+              "min": 30.644125,
+              "max": 69.0655,
+              "median": 52.3785,
+              "q1": 34.9603125,
+              "q3": 55.93365625,
+              "samples": [
+                34.643,
+                30.644125,
+                52.314375,
+                56.2065,
+                69.0655,
+                35.91225,
+                68.397,
+                55.115125,
+                52.442625,
+                30.75225
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    53.86675,
+                    53.815375,
+                    54.4305,
+                    71.971,
+                    66.0005,
+                    66.090875,
+                    52.350875,
+                    62.63175,
+                    70.056375,
+                    47.68225,
+                    59.4135,
+                    70.774875,
+                    51.333875,
+                    55.6285,
+                    71.47625,
+                    54.06725
+                  ],
+                  "samples_us": [
+                    34.643,
+                    30.644125,
+                    52.314375,
+                    56.2065,
+                    69.0655
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    56.5365,
+                    33.499625,
+                    52.626375,
+                    32.91875,
+                    72.409625,
+                    52.033875,
+                    52.219625,
+                    33.959875,
+                    69.213,
+                    50.082375,
+                    63.55125,
+                    69.947375,
+                    67.423125,
+                    41.298875,
+                    54.88725,
+                    30.3645
+                  ],
+                  "samples_us": [
+                    35.91225,
+                    68.397,
+                    55.115125,
+                    52.442625,
+                    30.75225
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.14.7/x64/bin/python3",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "CPython",
+                "guest_jit": false,
+                "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                "gc_enabled": true
+              }
+            },
+            "GraalPy": {
+              "mean": 2335.5036,
+              "min": 2054.46425,
+              "max": 3502.980625,
+              "median": 2203.6074375,
+              "q1": 2124.37396875,
+              "q3": 2289.55053125,
+              "samples": [
+                2303.51125,
+                2175.087375,
+                2189.827875,
+                2217.387,
+                3502.980625,
+                2490.74025,
+                2247.668375,
+                2065.8995,
+                2107.4695,
+                2054.46425
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    5090.04425,
+                    4901.389625,
+                    3496.832,
+                    4890.93275,
+                    4706.334375,
+                    3659.428,
+                    3859.1605,
+                    3376.106125,
+                    2554.506,
+                    3262.47575,
+                    4124.7885,
+                    2234.680625,
+                    2176.4995,
+                    2294.02525,
+                    3656.90275,
+                    2211.773875
+                  ],
+                  "samples_us": [
+                    2303.51125,
+                    2175.087375,
+                    2189.827875,
+                    2217.387,
+                    3502.980625
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    4247.280875,
+                    2974.989875,
+                    3204.644125,
+                    2990.1495,
+                    2713.611875,
+                    4257.728125,
+                    4470.21225,
+                    2593.8555,
+                    2670.26,
+                    2514.685625,
+                    2489.518,
+                    2403.346875,
+                    3080.96375,
+                    3942.5605,
+                    2387.871,
+                    2593.334125
+                  ],
+                  "samples_us": [
+                    2490.74025,
+                    2247.668375,
+                    2065.8995,
+                    2107.4695,
+                    2054.46425
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-benchmarks/build/classes/java/graalpy:/home/runner/work/variohyve/variohyve/vh-benchmarks/build/resources/graalpy:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-community/25.0.4/5fa2de84d7daa107bd562ca8a0f3a569edd4e7db/python-community-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python/25.0.4/f629b0bd8e65fe5f30cd0352f0aa695cf000d542/python-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-language/25.0.4/d18d38591a7921d79bd827b07a9ac634d1b2fdc2/python-language-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-resources/25.0.4/6ba99240f1e37f505031279abdfa0ccf514f61c8/python-resources-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-runtime/25.0.4/e3441fb01ff2b514ddd1fe234cd196a7ab6261de/truffle-runtime-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.tools/profiler-tool/25.0.4/28e870a088437639f42352b47b2b240e02e93060/profiler-tool-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.regex/regex/25.0.4/6fe97c9dd29f2e5e759d11fd05330aa2e3830101/regex-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-libffi/25.0.4/3e495c7cc64b02b7b981b508864900dbbcdb3b7e/truffle-nfi-libffi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-panama/25.0.4/38944336a2e569ef506ee01b4b8c698daf1d048b/truffle-nfi-panama-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi/25.0.4/36a802c5e343a5f4126a0e4821f74e80b0b38a2e/truffle-nfi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-api/25.0.4/56088bcea6520fbaa6afccf4bafbef14ebefc6a4/truffle-api-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.polyglot/polyglot/25.0.4/f9e303d2cc47d91446bb733afa83701689caac1b/polyglot-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/jniutils/25.0.4/72b023da2e3dab1bd7773553445bfa882b34ccb5/jniutils-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/collections/25.0.4/9815551d102a1d0bd151eb87d5ccad93e7edbdb2/collections-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/icu4j/25.0.4/995cdbca0c327116c5289e2bce1ee1a2fbe65ff/icu4j-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/nativeimage/25.0.4/72a635962132a5a2e45eb9f7dcbdaa56a11763da/nativeimage-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/word/25.0.4/e71e5209b901fcf4be14d7ef1ae0c3985fd190da/word-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/xz/25.0.4/b9d42f3d701b838429f422ea76a0a2bd6d847b77/xz-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-compiler/25.0.4/75f8232d91fc753faba586e2570f9ebcd842962e/truffle-compiler-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/json/25.0.4/e14b66da13c3a276538f530a2be57ae3fe944f3d/json-25.0.4.jar",
+                  "vh.benchmarks.GraalPyRunner",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "23.0.2+7",
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "graalpy-jvm-interpreter",
+                "guest_jit": false,
+                "engine_implementation": "Interpreted",
+                "engine_options": {
+                  "engine.WarnInterpreterOnly": "false"
+                },
+                "java_vm": "OpenJDK 64-Bit Server VM",
+                "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                "jvm_args": [
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m"
+                ],
+                "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                "gc_enabled": true
+              }
+            }
+          }
+        },
+        {
+          "name": "inherited",
+          "params": {
+            "size": 32,
+            "repetitions": 32,
+            "batch": 8
+          },
+          "source": "class RuntimeBench[token] {\npub stable = token;\npub var changed = self;\nclass C0 { pub target { stable } }\nclass C1 < C0 {  }\nclass C2 < C1 {  }\nclass C3 < C2 {  }\nclass C4 < C3 {  }\nclass C5 < C4 {  }\nclass C6 < C5 {  }\nclass C7 < C6 {  }\nclass C8 < C7 {  }\nclass C9 < C8 {  }\nclass C10 < C9 {  }\nclass C11 < C10 {  }\nclass C12 < C11 {  }\nclass C13 < C12 {  }\nclass C14 < C13 {  }\nclass C15 < C14 {  }\nclass C16 < C15 {  }\nclass C17 < C16 {  }\nclass C18 < C17 {  }\nclass C19 < C18 {  }\nclass C20 < C19 {  }\nclass C21 < C20 {  }\nclass C22 < C21 {  }\nclass C23 < C22 {  }\nclass C24 < C23 {  }\nclass C25 < C24 {  }\nclass C26 < C25 {  }\nclass C27 < C26 {  }\nclass C28 < C27 {  }\nclass C29 < C28 {  }\nclass C30 < C29 {  }\nclass C31 < C30 {  }\nclass C32 < C31 {  }\nreceiver = C32.new;\ntick { receiver.target }\npub run { tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick }\n}\n",
+          "python_source": "def build(token):\n    class C0:\n        def target(self): return token\n    class C1(C0):\n        pass\n    class C2(C1):\n        pass\n    class C3(C2):\n        pass\n    class C4(C3):\n        pass\n    class C5(C4):\n        pass\n    class C6(C5):\n        pass\n    class C7(C6):\n        pass\n    class C8(C7):\n        pass\n    class C9(C8):\n        pass\n    class C10(C9):\n        pass\n    class C11(C10):\n        pass\n    class C12(C11):\n        pass\n    class C13(C12):\n        pass\n    class C14(C13):\n        pass\n    class C15(C14):\n        pass\n    class C16(C15):\n        pass\n    class C17(C16):\n        pass\n    class C18(C17):\n        pass\n    class C19(C18):\n        pass\n    class C20(C19):\n        pass\n    class C21(C20):\n        pass\n    class C22(C21):\n        pass\n    class C23(C22):\n        pass\n    class C24(C23):\n        pass\n    class C25(C24):\n        pass\n    class C26(C25):\n        pass\n    class C27(C26):\n        pass\n    class C28(C27):\n        pass\n    class C29(C28):\n        pass\n    class C30(C29):\n        pass\n    class C31(C30):\n        pass\n    class C32(C31):\n        pass\n    receiver = C32()\n    class Bench:\n        def __init__(self):\n            self.changed = self\n        def tick(self): return receiver.target()\n        def run(self):\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            return result\n    return Bench()\n",
+          "core_sha256": "9d5e79673cc5bfd6c8fd757e359793afbcc9b7a45c76e5d124b31f011007ce64",
+          "runtimes": {
+            "VarioHyve": {
+              "mean": 1268.6324,
+              "min": 930.390125,
+              "max": 2047.58925,
+              "median": 1135.9903125,
+              "q1": 962.92575,
+              "q3": 1373.1654375,
+              "samples": [
+                2047.58925,
+                1096.3875,
+                930.390125,
+                1175.593125,
+                1334.79525,
+                955.720375,
+                1826.517625,
+                959.163875,
+                974.211375,
+                1385.9555
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    7835.582,
+                    4949.602,
+                    2163.044,
+                    3037.476625,
+                    2714.177625,
+                    1616.0055,
+                    2542.703875,
+                    1679.806625,
+                    1961.879875,
+                    1045.122,
+                    1047.227375,
+                    1102.715125,
+                    1022.49675,
+                    2127.392,
+                    1111.369875,
+                    1319.979375
+                  ],
+                  "samples_us": [
+                    2047.58925,
+                    1096.3875,
+                    930.390125,
+                    1175.593125,
+                    1334.79525
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    7190.6195,
+                    3159.227875,
+                    4194.089375,
+                    3316.340625,
+                    2100.574,
+                    2768.724875,
+                    2628.86325,
+                    1887.565375,
+                    1667.59875,
+                    1799.08675,
+                    1540.6835,
+                    1332.9575,
+                    1540.98875,
+                    1927.24,
+                    980.05375,
+                    986.226875
+                  ],
+                  "samples_us": [
+                    955.720375,
+                    1826.517625,
+                    959.163875,
+                    974.211375,
+                    1385.9555
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test:/home/runner/work/variohyve/variohyve/vh-core/build/resources/test:/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main:/home/runner/work/variohyve/variohyve/vh-core/build/resources/main:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.13.2/fc3db6d844df652a3d5db31c87fa12757f13691d/antlr4-runtime-4.13.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.obpcdl/reader-infra/2.0.0/4c5579121334f5d2d64720b0727a6f27ca8546f9/reader-infra-2.0.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.10.0/8fea1d9c58b2156f1b998f2f18da04bc9e087f74/junit-jupiter-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.10.0/89a1922534ed102be1fb2a8c0b2c6151297a12bf/junit-platform-launcher-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.10.0/9041c7365495a897a64782ea5a6fdb99dab1814e/junit-jupiter-params-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.10.0/90587932d718fc51a48112d33045a18476c542ad/junit-jupiter-engine-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.10.0/2fe4ba3d31d5067878e468c96aa039005a9134d3/junit-jupiter-api-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.10.0/276c4edcf64fabb5a139fa7b4f99330d7a93b804/junit-platform-engine-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.10.0/d533ff2c286eaf963566f92baf5f8a06628d2609/junit-platform-commons-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.3.0/152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e/opentest4j-1.3.0.jar",
+                  "vh.vm.NativeJavaDriver",
+                  "--bulk-slices"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "openjdk version \"23.0.2\" 2025-01-21\nOpenJDK Runtime Environment Temurin-23.0.2+7 (build 23.0.2+7)\nOpenJDK 64-Bit Server VM Temurin-23.0.2+7 (build 23.0.2+7, mixed mode, sharing)\n",
+                "lean_toolchain": null,
+                "native_gc": "allocation-debt"
+              }
+            },
+            "Lean": {
+              "mean": 4993.131525,
+              "min": 4968.248625,
+              "max": 5040.06975,
+              "median": 4987.36125,
+              "q1": 4982.47971875,
+              "q3": 4999.79271875,
+              "samples": [
+                4980.333875,
+                4989.803,
+                4968.248625,
+                5001.756125,
+                4993.9025,
+                5040.06975,
+                5006.54725,
+                4982.092125,
+                4984.9195,
+                4983.6425
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    4997.446875,
+                    4985.53925,
+                    4979.81875,
+                    5015.314,
+                    5035.56575,
+                    5086.447,
+                    4972.781875,
+                    5022.83425,
+                    4964.852125,
+                    4975.5435,
+                    5023.105125,
+                    5001.92725,
+                    4967.9295,
+                    4999.39575,
+                    5008.8625,
+                    4990.164875
+                  ],
+                  "samples_us": [
+                    4980.333875,
+                    4989.803,
+                    4968.248625,
+                    5001.756125,
+                    4993.9025
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    5001.91975,
+                    4973.430875,
+                    4989.38875,
+                    5081.188625,
+                    5017.366,
+                    5079.987125,
+                    5024.662625,
+                    5004.522625,
+                    5135.654375,
+                    5001.231625,
+                    5004.678,
+                    4994.93,
+                    4969.765125,
+                    5028.907125,
+                    4994.57725,
+                    4970.7155
+                  ],
+                  "samples_us": [
+                    5040.06975,
+                    5006.54725,
+                    4982.092125,
+                    4984.9195,
+                    4983.6425
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/home/runner/work/variohyve/variohyve/vh-lean/.lake/build/bin/semanticsConformance",
+                  "--native",
+                  "--raw-conformance"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": "leanprover/lean4:v4.35.0",
+                "native_gc": "allocation-debt"
+              }
+            },
+            "CPython": {
+              "mean": 56.574374999999996,
+              "min": 38.565,
+              "max": 69.367625,
+              "median": 55.614125,
+              "q1": 53.525375000000004,
+              "q3": 65.84884375,
+              "samples": [
+                56.392875,
+                54.835375,
+                54.655625,
+                53.148625,
+                66.3475,
+                64.352875,
+                69.023,
+                39.05525,
+                38.565,
+                69.367625
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    58.55025,
+                    55.647875,
+                    73.07175,
+                    53.28325,
+                    68.69875,
+                    67.36775,
+                    39.330375,
+                    52.1565,
+                    65.73175,
+                    63.779625,
+                    50.28725,
+                    36.00175,
+                    58.916125,
+                    36.848125,
+                    62.916875,
+                    71.387125
+                  ],
+                  "samples_us": [
+                    56.392875,
+                    54.835375,
+                    54.655625,
+                    53.148625,
+                    66.3475
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    68.249,
+                    73.8665,
+                    30.75475,
+                    71.0185,
+                    36.18575,
+                    62.676375,
+                    70.265625,
+                    68.448875,
+                    70.789625,
+                    70.15725,
+                    68.812,
+                    62.285625,
+                    65.763,
+                    69.02,
+                    35.608375,
+                    72.367125
+                  ],
+                  "samples_us": [
+                    64.352875,
+                    69.023,
+                    39.05525,
+                    38.565,
+                    69.367625
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.14.7/x64/bin/python3",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "CPython",
+                "guest_jit": false,
+                "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                "gc_enabled": true
+              }
+            },
+            "GraalPy": {
+              "mean": 2300.6006375,
+              "min": 1835.70675,
+              "max": 3685.081625,
+              "median": 1966.6180625000002,
+              "q1": 1909.95784375,
+              "q3": 2371.3978125000003,
+              "samples": [
+                2105.16,
+                3685.081625,
+                1974.89,
+                1913.88025,
+                1908.650375,
+                1958.346125,
+                3290.630375,
+                1873.517125,
+                1835.70675,
+                2460.14375
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    3372.31725,
+                    3065.984125,
+                    4153.57975,
+                    4411.241625,
+                    4009.019375,
+                    2521.065875,
+                    3304.57375,
+                    2818.021,
+                    3043.409,
+                    2469.721625,
+                    2413.125625,
+                    3627.512375,
+                    2327.414625,
+                    2281.164625,
+                    2270.99375,
+                    2789.839
+                  ],
+                  "samples_us": [
+                    2105.16,
+                    3685.081625,
+                    1974.89,
+                    1913.88025,
+                    1908.650375
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    5007.103625,
+                    5062.185125,
+                    4773.372625,
+                    2620.2525,
+                    2657.938125,
+                    4233.02225,
+                    4069.186875,
+                    2395.98825,
+                    3584.983625,
+                    2325.730625,
+                    4393.030875,
+                    2045.53475,
+                    2098.74175,
+                    4251.891875,
+                    3582.29,
+                    1962.53175
+                  ],
+                  "samples_us": [
+                    1958.346125,
+                    3290.630375,
+                    1873.517125,
+                    1835.70675,
+                    2460.14375
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-benchmarks/build/classes/java/graalpy:/home/runner/work/variohyve/variohyve/vh-benchmarks/build/resources/graalpy:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-community/25.0.4/5fa2de84d7daa107bd562ca8a0f3a569edd4e7db/python-community-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python/25.0.4/f629b0bd8e65fe5f30cd0352f0aa695cf000d542/python-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-language/25.0.4/d18d38591a7921d79bd827b07a9ac634d1b2fdc2/python-language-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-resources/25.0.4/6ba99240f1e37f505031279abdfa0ccf514f61c8/python-resources-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-runtime/25.0.4/e3441fb01ff2b514ddd1fe234cd196a7ab6261de/truffle-runtime-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.tools/profiler-tool/25.0.4/28e870a088437639f42352b47b2b240e02e93060/profiler-tool-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.regex/regex/25.0.4/6fe97c9dd29f2e5e759d11fd05330aa2e3830101/regex-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-libffi/25.0.4/3e495c7cc64b02b7b981b508864900dbbcdb3b7e/truffle-nfi-libffi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-panama/25.0.4/38944336a2e569ef506ee01b4b8c698daf1d048b/truffle-nfi-panama-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi/25.0.4/36a802c5e343a5f4126a0e4821f74e80b0b38a2e/truffle-nfi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-api/25.0.4/56088bcea6520fbaa6afccf4bafbef14ebefc6a4/truffle-api-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.polyglot/polyglot/25.0.4/f9e303d2cc47d91446bb733afa83701689caac1b/polyglot-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/jniutils/25.0.4/72b023da2e3dab1bd7773553445bfa882b34ccb5/jniutils-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/collections/25.0.4/9815551d102a1d0bd151eb87d5ccad93e7edbdb2/collections-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/icu4j/25.0.4/995cdbca0c327116c5289e2bce1ee1a2fbe65ff/icu4j-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/nativeimage/25.0.4/72a635962132a5a2e45eb9f7dcbdaa56a11763da/nativeimage-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/word/25.0.4/e71e5209b901fcf4be14d7ef1ae0c3985fd190da/word-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/xz/25.0.4/b9d42f3d701b838429f422ea76a0a2bd6d847b77/xz-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-compiler/25.0.4/75f8232d91fc753faba586e2570f9ebcd842962e/truffle-compiler-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/json/25.0.4/e14b66da13c3a276538f530a2be57ae3fe944f3d/json-25.0.4.jar",
+                  "vh.benchmarks.GraalPyRunner",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "23.0.2+7",
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "graalpy-jvm-interpreter",
+                "guest_jit": false,
+                "engine_implementation": "Interpreted",
+                "engine_options": {
+                  "engine.WarnInterpreterOnly": "false"
+                },
+                "java_vm": "OpenJDK 64-Bit Server VM",
+                "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                "jvm_args": [
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m"
+                ],
+                "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                "gc_enabled": true
+              }
+            }
+          }
+        },
+        {
+          "name": "superChain",
+          "params": {
+            "size": 4,
+            "repetitions": 32,
+            "batch": 8
+          },
+          "source": "class RuntimeBench[token] {\npub stable = token;\npub var changed = self;\nclass C0 { pub target { stable } }\nclass C1 < C0 { pub target { super.target } }\nclass C2 < C1 { pub target { super.target } }\nclass C3 < C2 { pub target { super.target } }\nclass C4 < C3 { pub target { super.target } }\nreceiver = C4.new;\ntick { receiver.target }\npub run { tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick }\n}\n",
+          "python_source": "def build(token):\n    class C0:\n        def target(self): return token\n    class C1(C0):\n        def target(self): return super().target()\n    class C2(C1):\n        def target(self): return super().target()\n    class C3(C2):\n        def target(self): return super().target()\n    class C4(C3):\n        def target(self): return super().target()\n    receiver = C4()\n    class Bench:\n        def __init__(self):\n            self.changed = self\n        def tick(self): return receiver.target()\n        def run(self):\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            return result\n    return Bench()\n",
+          "core_sha256": "9650755f98c2be1b21e4121009f932a8e09640a3e58f75beb06d8c651a1f3bd1",
+          "runtimes": {
+            "VarioHyve": {
+              "mean": 1641.1401,
+              "min": 1267.798,
+              "max": 2122.7975,
+              "median": 1660.404125,
+              "q1": 1428.2462500000001,
+              "q3": 1796.8315625,
+              "samples": [
+                1858.955125,
+                1642.09075,
+                1682.610875,
+                1324.470625,
+                2122.7975,
+                1834.905125,
+                1649.1095,
+                1671.69875,
+                1267.798,
+                1356.96475
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    13351.22375,
+                    5790.71775,
+                    3476.08575,
+                    3404.57175,
+                    3551.894125,
+                    2188.6025,
+                    2000.59575,
+                    1931.40825,
+                    1875.992875,
+                    1817.147875,
+                    2482.20025,
+                    1740.388125,
+                    1907.077375,
+                    2638.72675,
+                    1803.557375,
+                    1500.975875
+                  ],
+                  "samples_us": [
+                    1858.955125,
+                    1642.09075,
+                    1682.610875,
+                    1324.470625,
+                    2122.7975
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    12668.624625,
+                    3681.491875,
+                    3605.98525,
+                    3407.726375,
+                    3753.0345,
+                    2331.97275,
+                    2585.72375,
+                    2653.0665,
+                    1889.83575,
+                    1871.017375,
+                    2157.6465,
+                    2079.133,
+                    1564.26725,
+                    1601.178875,
+                    1548.791625,
+                    1511.81875
+                  ],
+                  "samples_us": [
+                    1834.905125,
+                    1649.1095,
+                    1671.69875,
+                    1267.798,
+                    1356.96475
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test:/home/runner/work/variohyve/variohyve/vh-core/build/resources/test:/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main:/home/runner/work/variohyve/variohyve/vh-core/build/resources/main:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.13.2/fc3db6d844df652a3d5db31c87fa12757f13691d/antlr4-runtime-4.13.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.obpcdl/reader-infra/2.0.0/4c5579121334f5d2d64720b0727a6f27ca8546f9/reader-infra-2.0.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.10.0/8fea1d9c58b2156f1b998f2f18da04bc9e087f74/junit-jupiter-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.10.0/89a1922534ed102be1fb2a8c0b2c6151297a12bf/junit-platform-launcher-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.10.0/9041c7365495a897a64782ea5a6fdb99dab1814e/junit-jupiter-params-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.10.0/90587932d718fc51a48112d33045a18476c542ad/junit-jupiter-engine-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.10.0/2fe4ba3d31d5067878e468c96aa039005a9134d3/junit-jupiter-api-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.10.0/276c4edcf64fabb5a139fa7b4f99330d7a93b804/junit-platform-engine-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.10.0/d533ff2c286eaf963566f92baf5f8a06628d2609/junit-platform-commons-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.3.0/152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e/opentest4j-1.3.0.jar",
+                  "vh.vm.NativeJavaDriver",
+                  "--bulk-slices"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "openjdk version \"23.0.2\" 2025-01-21\nOpenJDK Runtime Environment Temurin-23.0.2+7 (build 23.0.2+7)\nOpenJDK 64-Bit Server VM Temurin-23.0.2+7 (build 23.0.2+7, mixed mode, sharing)\n",
+                "lean_toolchain": null,
+                "native_gc": "allocation-debt"
+              }
+            },
+            "Lean": {
+              "mean": 1964.0177875,
+              "min": 1938.195,
+              "max": 1989.433625,
+              "median": 1963.6414375,
+              "q1": 1958.56478125,
+              "q3": 1968.337875,
+              "samples": [
+                1962.292375,
+                1954.837,
+                1969.653875,
+                1976.771,
+                1938.195,
+                1964.296125,
+                1957.32225,
+                1989.433625,
+                1964.389875,
+                1962.98675
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    2014.15575,
+                    1991.390375,
+                    1967.679375,
+                    1954.037625,
+                    2002.105,
+                    1955.86825,
+                    1967.1095,
+                    1953.460625,
+                    1952.807875,
+                    1959.9745,
+                    1989.6165,
+                    1956.69875,
+                    1976.19225,
+                    1954.570125,
+                    1984.267875,
+                    1962.2775
+                  ],
+                  "samples_us": [
+                    1962.292375,
+                    1954.837,
+                    1969.653875,
+                    1976.771,
+                    1938.195
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    2271.75625,
+                    1972.439625,
+                    1933.160125,
+                    1943.775375,
+                    1959.072375,
+                    1951.95025,
+                    1973.64725,
+                    1999.864,
+                    1956.121875,
+                    1954.493375,
+                    1972.682125,
+                    1952.844625,
+                    1947.329125,
+                    1946.642625,
+                    1972.3845,
+                    1954.115
+                  ],
+                  "samples_us": [
+                    1964.296125,
+                    1957.32225,
+                    1989.433625,
+                    1964.389875,
+                    1962.98675
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/home/runner/work/variohyve/variohyve/vh-lean/.lake/build/bin/semanticsConformance",
+                  "--native",
+                  "--raw-conformance"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": "leanprover/lean4:v4.35.0",
+                "native_gc": "allocation-debt"
+              }
+            },
+            "CPython": {
+              "mean": 60.3554375,
+              "min": 39.76125,
+              "max": 76.444875,
+              "median": 61.561687500000005,
+              "q1": 57.54075,
+              "q3": 68.319125,
+              "samples": [
+                69.992375,
+                61.048375,
+                42.150375,
+                71.491,
+                76.444875,
+                56.435625,
+                39.76125,
+                62.075,
+                63.299375,
+                60.856125
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    37.905125,
+                    44.562375,
+                    66.935375,
+                    56.316375,
+                    60.909875,
+                    72.552875,
+                    64.313125,
+                    43.0775,
+                    71.657375,
+                    71.380125,
+                    59.54125,
+                    59.488625,
+                    67.18075,
+                    57.625625,
+                    58.974875,
+                    34.664125
+                  ],
+                  "samples_us": [
+                    69.992375,
+                    61.048375,
+                    42.150375,
+                    71.491,
+                    76.444875
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    60.414125,
+                    60.499625,
+                    57.113625,
+                    60.549,
+                    59.321,
+                    55.975375,
+                    60.9505,
+                    58.220125,
+                    56.732125,
+                    63.99975,
+                    56.317625,
+                    59.47125,
+                    57.8495,
+                    47.312125,
+                    57.936375,
+                    57.56675
+                  ],
+                  "samples_us": [
+                    56.435625,
+                    39.76125,
+                    62.075,
+                    63.299375,
+                    60.856125
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.14.7/x64/bin/python3",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "CPython",
+                "guest_jit": false,
+                "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                "gc_enabled": true
+              }
+            },
+            "GraalPy": {
+              "mean": 3329.61985,
+              "min": 2774.561375,
+              "max": 4122.1035,
+              "median": 3199.9393124999997,
+              "q1": 2994.9876249999998,
+              "q3": 3693.5783125,
+              "samples": [
+                4122.1035,
+                3851.1475,
+                3154.054875,
+                3245.82375,
+                2774.561375,
+                3781.6785,
+                3084.10975,
+                2965.28025,
+                3429.27775,
+                2888.16125
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    5049.565375,
+                    5634.03525,
+                    3811.651125,
+                    4166.592375,
+                    3686.38325,
+                    3638.625125,
+                    4251.176375,
+                    3596.61975,
+                    4635.329375,
+                    4315.67425,
+                    5121.7825,
+                    3232.42275,
+                    4377.867,
+                    3275.18125,
+                    4273.872625,
+                    3753.528
+                  ],
+                  "samples_us": [
+                    4122.1035,
+                    3851.1475,
+                    3154.054875,
+                    3245.82375,
+                    2774.561375
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    7758.82775,
+                    7286.295875,
+                    5736.003875,
+                    5384.868,
+                    5466.826875,
+                    3476.360625,
+                    3615.969625,
+                    3491.47175,
+                    4698.195875,
+                    5209.662875,
+                    4573.478375,
+                    5391.895625,
+                    3226.903,
+                    8406.42375,
+                    4460.65,
+                    3106.746
+                  ],
+                  "samples_us": [
+                    3781.6785,
+                    3084.10975,
+                    2965.28025,
+                    3429.27775,
+                    2888.16125
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-benchmarks/build/classes/java/graalpy:/home/runner/work/variohyve/variohyve/vh-benchmarks/build/resources/graalpy:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-community/25.0.4/5fa2de84d7daa107bd562ca8a0f3a569edd4e7db/python-community-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python/25.0.4/f629b0bd8e65fe5f30cd0352f0aa695cf000d542/python-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-language/25.0.4/d18d38591a7921d79bd827b07a9ac634d1b2fdc2/python-language-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-resources/25.0.4/6ba99240f1e37f505031279abdfa0ccf514f61c8/python-resources-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-runtime/25.0.4/e3441fb01ff2b514ddd1fe234cd196a7ab6261de/truffle-runtime-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.tools/profiler-tool/25.0.4/28e870a088437639f42352b47b2b240e02e93060/profiler-tool-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.regex/regex/25.0.4/6fe97c9dd29f2e5e759d11fd05330aa2e3830101/regex-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-libffi/25.0.4/3e495c7cc64b02b7b981b508864900dbbcdb3b7e/truffle-nfi-libffi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-panama/25.0.4/38944336a2e569ef506ee01b4b8c698daf1d048b/truffle-nfi-panama-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi/25.0.4/36a802c5e343a5f4126a0e4821f74e80b0b38a2e/truffle-nfi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-api/25.0.4/56088bcea6520fbaa6afccf4bafbef14ebefc6a4/truffle-api-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.polyglot/polyglot/25.0.4/f9e303d2cc47d91446bb733afa83701689caac1b/polyglot-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/jniutils/25.0.4/72b023da2e3dab1bd7773553445bfa882b34ccb5/jniutils-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/collections/25.0.4/9815551d102a1d0bd151eb87d5ccad93e7edbdb2/collections-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/icu4j/25.0.4/995cdbca0c327116c5289e2bce1ee1a2fbe65ff/icu4j-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/nativeimage/25.0.4/72a635962132a5a2e45eb9f7dcbdaa56a11763da/nativeimage-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/word/25.0.4/e71e5209b901fcf4be14d7ef1ae0c3985fd190da/word-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/xz/25.0.4/b9d42f3d701b838429f422ea76a0a2bd6d847b77/xz-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-compiler/25.0.4/75f8232d91fc753faba586e2570f9ebcd842962e/truffle-compiler-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/json/25.0.4/e14b66da13c3a276538f530a2be57ae3fe944f3d/json-25.0.4.jar",
+                  "vh.benchmarks.GraalPyRunner",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "23.0.2+7",
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "graalpy-jvm-interpreter",
+                "guest_jit": false,
+                "engine_implementation": "Interpreted",
+                "engine_options": {
+                  "engine.WarnInterpreterOnly": "false"
+                },
+                "java_vm": "OpenJDK 64-Bit Server VM",
+                "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                "jvm_args": [
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m"
+                ],
+                "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                "gc_enabled": true
+              }
+            }
+          }
+        },
+        {
+          "name": "superChain",
+          "params": {
+            "size": 32,
+            "repetitions": 32,
+            "batch": 8
+          },
+          "source": "class RuntimeBench[token] {\npub stable = token;\npub var changed = self;\nclass C0 { pub target { stable } }\nclass C1 < C0 { pub target { super.target } }\nclass C2 < C1 { pub target { super.target } }\nclass C3 < C2 { pub target { super.target } }\nclass C4 < C3 { pub target { super.target } }\nclass C5 < C4 { pub target { super.target } }\nclass C6 < C5 { pub target { super.target } }\nclass C7 < C6 { pub target { super.target } }\nclass C8 < C7 { pub target { super.target } }\nclass C9 < C8 { pub target { super.target } }\nclass C10 < C9 { pub target { super.target } }\nclass C11 < C10 { pub target { super.target } }\nclass C12 < C11 { pub target { super.target } }\nclass C13 < C12 { pub target { super.target } }\nclass C14 < C13 { pub target { super.target } }\nclass C15 < C14 { pub target { super.target } }\nclass C16 < C15 { pub target { super.target } }\nclass C17 < C16 { pub target { super.target } }\nclass C18 < C17 { pub target { super.target } }\nclass C19 < C18 { pub target { super.target } }\nclass C20 < C19 { pub target { super.target } }\nclass C21 < C20 { pub target { super.target } }\nclass C22 < C21 { pub target { super.target } }\nclass C23 < C22 { pub target { super.target } }\nclass C24 < C23 { pub target { super.target } }\nclass C25 < C24 { pub target { super.target } }\nclass C26 < C25 { pub target { super.target } }\nclass C27 < C26 { pub target { super.target } }\nclass C28 < C27 { pub target { super.target } }\nclass C29 < C28 { pub target { super.target } }\nclass C30 < C29 { pub target { super.target } }\nclass C31 < C30 { pub target { super.target } }\nclass C32 < C31 { pub target { super.target } }\nreceiver = C32.new;\ntick { receiver.target }\npub run { tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick }\n}\n",
+          "python_source": "def build(token):\n    class C0:\n        def target(self): return token\n    class C1(C0):\n        def target(self): return super().target()\n    class C2(C1):\n        def target(self): return super().target()\n    class C3(C2):\n        def target(self): return super().target()\n    class C4(C3):\n        def target(self): return super().target()\n    class C5(C4):\n        def target(self): return super().target()\n    class C6(C5):\n        def target(self): return super().target()\n    class C7(C6):\n        def target(self): return super().target()\n    class C8(C7):\n        def target(self): return super().target()\n    class C9(C8):\n        def target(self): return super().target()\n    class C10(C9):\n        def target(self): return super().target()\n    class C11(C10):\n        def target(self): return super().target()\n    class C12(C11):\n        def target(self): return super().target()\n    class C13(C12):\n        def target(self): return super().target()\n    class C14(C13):\n        def target(self): return super().target()\n    class C15(C14):\n        def target(self): return super().target()\n    class C16(C15):\n        def target(self): return super().target()\n    class C17(C16):\n        def target(self): return super().target()\n    class C18(C17):\n        def target(self): return super().target()\n    class C19(C18):\n        def target(self): return super().target()\n    class C20(C19):\n        def target(self): return super().target()\n    class C21(C20):\n        def target(self): return super().target()\n    class C22(C21):\n        def target(self): return super().target()\n    class C23(C22):\n        def target(self): return super().target()\n    class C24(C23):\n        def target(self): return super().target()\n    class C25(C24):\n        def target(self): return super().target()\n    class C26(C25):\n        def target(self): return super().target()\n    class C27(C26):\n        def target(self): return super().target()\n    class C28(C27):\n        def target(self): return super().target()\n    class C29(C28):\n        def target(self): return super().target()\n    class C30(C29):\n        def target(self): return super().target()\n    class C31(C30):\n        def target(self): return super().target()\n    class C32(C31):\n        def target(self): return super().target()\n    receiver = C32()\n    class Bench:\n        def __init__(self):\n            self.changed = self\n        def tick(self): return receiver.target()\n        def run(self):\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            return result\n    return Bench()\n",
+          "core_sha256": "c563dff28172aea6e014c8687020d208d54d6791d49444bbbc1f354a5f224e14",
+          "runtimes": {
+            "VarioHyve": {
+              "mean": 5005.1235875,
+              "min": 4450.159375,
+              "max": 5741.15375,
+              "median": 4794.701125,
+              "q1": 4623.1559375,
+              "q3": 5504.33959375,
+              "samples": [
+                5176.029625,
+                5636.412375,
+                4577.8445,
+                4770.585875,
+                4450.159375,
+                5613.77625,
+                5741.15375,
+                4818.816375,
+                4653.37475,
+                4613.083
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    33220.868,
+                    13616.045875,
+                    10425.51625,
+                    10213.93525,
+                    9847.114125,
+                    8570.94,
+                    8410.742375,
+                    8623.4395,
+                    7099.16475,
+                    8139.06225,
+                    6913.364375,
+                    7452.514875,
+                    7753.086875,
+                    8005.828125,
+                    7163.264125,
+                    5869.234375
+                  ],
+                  "samples_us": [
+                    5176.029625,
+                    5636.412375,
+                    4577.8445,
+                    4770.585875,
+                    4450.159375
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    29312.1805,
+                    14377.4955,
+                    10024.504875,
+                    9502.8745,
+                    8745.943125,
+                    8733.053625,
+                    7773.187,
+                    8090.19275,
+                    6695.243875,
+                    6867.56775,
+                    6110.05975,
+                    5271.32275,
+                    5618.9395,
+                    6968.367,
+                    5068.16475,
+                    5674.21475
+                  ],
+                  "samples_us": [
+                    5613.77625,
+                    5741.15375,
+                    4818.816375,
+                    4653.37475,
+                    4613.083
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test:/home/runner/work/variohyve/variohyve/vh-core/build/resources/test:/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main:/home/runner/work/variohyve/variohyve/vh-core/build/resources/main:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.13.2/fc3db6d844df652a3d5db31c87fa12757f13691d/antlr4-runtime-4.13.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.obpcdl/reader-infra/2.0.0/4c5579121334f5d2d64720b0727a6f27ca8546f9/reader-infra-2.0.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.10.0/8fea1d9c58b2156f1b998f2f18da04bc9e087f74/junit-jupiter-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.10.0/89a1922534ed102be1fb2a8c0b2c6151297a12bf/junit-platform-launcher-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.10.0/9041c7365495a897a64782ea5a6fdb99dab1814e/junit-jupiter-params-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.10.0/90587932d718fc51a48112d33045a18476c542ad/junit-jupiter-engine-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.10.0/2fe4ba3d31d5067878e468c96aa039005a9134d3/junit-jupiter-api-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.10.0/276c4edcf64fabb5a139fa7b4f99330d7a93b804/junit-platform-engine-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.10.0/d533ff2c286eaf963566f92baf5f8a06628d2609/junit-platform-commons-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.3.0/152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e/opentest4j-1.3.0.jar",
+                  "vh.vm.NativeJavaDriver",
+                  "--bulk-slices"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "openjdk version \"23.0.2\" 2025-01-21\nOpenJDK Runtime Environment Temurin-23.0.2+7 (build 23.0.2+7)\nOpenJDK 64-Bit Server VM Temurin-23.0.2+7 (build 23.0.2+7, mixed mode, sharing)\n",
+                "lean_toolchain": null,
+                "native_gc": "allocation-debt"
+              }
+            },
+            "Lean": {
+              "mean": 26300.1423625,
+              "min": 25591.879625,
+              "max": 26727.9135,
+              "median": 26375.622125,
+              "q1": 25972.41734375,
+              "q3": 26611.07840625,
+              "samples": [
+                25591.879625,
+                25846.50775,
+                25813.818,
+                26727.9135,
+                26371.201,
+                26380.04325,
+                26599.954125,
+                26350.146125,
+                26705.17375,
+                26614.7865
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    25587.179375,
+                    25475.885875,
+                    25599.0915,
+                    25666.957875,
+                    25646.052875,
+                    25644.787625,
+                    25615.45275,
+                    25557.67825,
+                    25726.481375,
+                    25582.884,
+                    26318.32825,
+                    25620.567375,
+                    26178.712875,
+                    25650.40125,
+                    25622.595125,
+                    25777.4265
+                  ],
+                  "samples_us": [
+                    25591.879625,
+                    25846.50775,
+                    25813.818,
+                    26727.9135,
+                    26371.201
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    25585.32825,
+                    25589.414625,
+                    25662.07125,
+                    25684.473125,
+                    25653.577125,
+                    25968.461625,
+                    25690.792,
+                    25720.95475,
+                    25685.516125,
+                    26397.415,
+                    26434.333625,
+                    26601.780875,
+                    26969.28725,
+                    26416.7635,
+                    26264.361375,
+                    26447.24825
+                  ],
+                  "samples_us": [
+                    26380.04325,
+                    26599.954125,
+                    26350.146125,
+                    26705.17375,
+                    26614.7865
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/home/runner/work/variohyve/variohyve/vh-lean/.lake/build/bin/semanticsConformance",
+                  "--native",
+                  "--raw-conformance"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": "leanprover/lean4:v4.35.0",
+                "native_gc": "allocation-debt"
+              }
+            },
+            "CPython": {
+              "mean": 127.56245,
+              "min": 99.87075,
+              "max": 189.728,
+              "median": 123.44550000000001,
+              "q1": 112.73728125000001,
+              "q3": 126.41340625000001,
+              "samples": [
+                119.1705,
+                110.282,
+                99.87075,
+                125.759125,
+                121.985,
+                126.6315,
+                110.592875,
+                146.69875,
+                124.906,
+                189.728
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    115.2,
+                    123.772625,
+                    111.863625,
+                    119.07075,
+                    98.448625,
+                    129.479125,
+                    120.829125,
+                    102.3465,
+                    87.41925,
+                    125.491,
+                    89.767625,
+                    88.75375,
+                    111.40825,
+                    122.07025,
+                    111.7495,
+                    127.71125
+                  ],
+                  "samples_us": [
+                    119.1705,
+                    110.282,
+                    99.87075,
+                    125.759125,
+                    121.985
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    113.204,
+                    118.61,
+                    90.255125,
+                    113.451875,
+                    111.373625,
+                    109.457875,
+                    128.942625,
+                    121.98675,
+                    124.88625,
+                    132.02475,
+                    115.180625,
+                    129.011125,
+                    133.668625,
+                    110.233,
+                    112.30825,
+                    117.3755
+                  ],
+                  "samples_us": [
+                    126.6315,
+                    110.592875,
+                    146.69875,
+                    124.906,
+                    189.728
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.14.7/x64/bin/python3",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "CPython",
+                "guest_jit": false,
+                "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                "gc_enabled": true
+              }
+            },
+            "GraalPy": {
+              "mean": 8632.059337499999,
+              "min": 7627.772125,
+              "max": 10004.99375,
+              "median": 8334.2256875,
+              "q1": 7935.6669375,
+              "q3": 9439.7013125,
+              "samples": [
+                9917.98625,
+                10004.99375,
+                8147.835,
+                7627.772125,
+                8271.383,
+                8397.068375,
+                9758.71575,
+                7864.94425,
+                7847.236875,
+                8482.658
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    20226.164375,
+                    12495.025875,
+                    11622.10975,
+                    14065.126625,
+                    13820.377125,
+                    14924.585625,
+                    15186.055875,
+                    12456.143,
+                    16615.94175,
+                    13593.7315,
+                    15317.4595,
+                    12211.785875,
+                    12339.14675,
+                    12998.390125,
+                    11327.77125,
+                    10813.234625
+                  ],
+                  "samples_us": [
+                    9917.98625,
+                    10004.99375,
+                    8147.835,
+                    7627.772125,
+                    8271.383
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    20001.248875,
+                    12292.27,
+                    14015.11775,
+                    11958.08275,
+                    11039.86675,
+                    11717.504625,
+                    12598.6765,
+                    11006.46925,
+                    8880.370625,
+                    9594.859125,
+                    8028.625125,
+                    10408.935125,
+                    8992.14975,
+                    9188.839625,
+                    9737.020625,
+                    8193.747125
+                  ],
+                  "samples_us": [
+                    8397.068375,
+                    9758.71575,
+                    7864.94425,
+                    7847.236875,
+                    8482.658
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-benchmarks/build/classes/java/graalpy:/home/runner/work/variohyve/variohyve/vh-benchmarks/build/resources/graalpy:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-community/25.0.4/5fa2de84d7daa107bd562ca8a0f3a569edd4e7db/python-community-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python/25.0.4/f629b0bd8e65fe5f30cd0352f0aa695cf000d542/python-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-language/25.0.4/d18d38591a7921d79bd827b07a9ac634d1b2fdc2/python-language-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-resources/25.0.4/6ba99240f1e37f505031279abdfa0ccf514f61c8/python-resources-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-runtime/25.0.4/e3441fb01ff2b514ddd1fe234cd196a7ab6261de/truffle-runtime-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.tools/profiler-tool/25.0.4/28e870a088437639f42352b47b2b240e02e93060/profiler-tool-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.regex/regex/25.0.4/6fe97c9dd29f2e5e759d11fd05330aa2e3830101/regex-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-libffi/25.0.4/3e495c7cc64b02b7b981b508864900dbbcdb3b7e/truffle-nfi-libffi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-panama/25.0.4/38944336a2e569ef506ee01b4b8c698daf1d048b/truffle-nfi-panama-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi/25.0.4/36a802c5e343a5f4126a0e4821f74e80b0b38a2e/truffle-nfi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-api/25.0.4/56088bcea6520fbaa6afccf4bafbef14ebefc6a4/truffle-api-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.polyglot/polyglot/25.0.4/f9e303d2cc47d91446bb733afa83701689caac1b/polyglot-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/jniutils/25.0.4/72b023da2e3dab1bd7773553445bfa882b34ccb5/jniutils-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/collections/25.0.4/9815551d102a1d0bd151eb87d5ccad93e7edbdb2/collections-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/icu4j/25.0.4/995cdbca0c327116c5289e2bce1ee1a2fbe65ff/icu4j-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/nativeimage/25.0.4/72a635962132a5a2e45eb9f7dcbdaa56a11763da/nativeimage-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/word/25.0.4/e71e5209b901fcf4be14d7ef1ae0c3985fd190da/word-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/xz/25.0.4/b9d42f3d701b838429f422ea76a0a2bd6d847b77/xz-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-compiler/25.0.4/75f8232d91fc753faba586e2570f9ebcd842962e/truffle-compiler-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/json/25.0.4/e14b66da13c3a276538f530a2be57ae3fe944f3d/json-25.0.4.jar",
+                  "vh.benchmarks.GraalPyRunner",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "23.0.2+7",
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "graalpy-jvm-interpreter",
+                "guest_jit": false,
+                "engine_implementation": "Interpreted",
+                "engine_options": {
+                  "engine.WarnInterpreterOnly": "false"
+                },
+                "java_vm": "OpenJDK 64-Bit Server VM",
+                "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                "jvm_args": [
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m"
+                ],
+                "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                "gc_enabled": true
+              }
+            }
+          }
+        },
+        {
+          "name": "recursion",
+          "params": {
+            "size": 16,
+            "repetitions": 32,
+            "batch": 8
+          },
+          "source": "class RuntimeBench[token] {\npub stable = token;\npub var changed = self;\nclass End { pub walk { stable } }\nclass Link[next] { tail = next; pub walk { tail.walk } }\nchain0 = End.new;\nchain1 = Link.new(chain0);\nchain2 = Link.new(chain1);\nchain3 = Link.new(chain2);\nchain4 = Link.new(chain3);\nchain5 = Link.new(chain4);\nchain6 = Link.new(chain5);\nchain7 = Link.new(chain6);\nchain8 = Link.new(chain7);\nchain9 = Link.new(chain8);\nchain10 = Link.new(chain9);\nchain11 = Link.new(chain10);\nchain12 = Link.new(chain11);\nchain13 = Link.new(chain12);\nchain14 = Link.new(chain13);\nchain15 = Link.new(chain14);\nchain16 = Link.new(chain15);\ntick { chain16.walk }\npub run { tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick }\n}\n",
+          "python_source": "def build(token):\n    class End:\n        def walk(self): return token\n    class Link:\n        def __init__(self, tail): self.tail = tail\n        def walk(self): return self.tail.walk()\n    chain = End()\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    class Bench:\n        def __init__(self):\n            self.changed = self\n        def tick(self): return chain.walk()\n        def run(self):\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            return result\n    return Bench()\n",
+          "core_sha256": "d5fcbc86fbd8c43b4e056b1870d37bf0788a1c013ad32e339289b1bfcd1bda0f",
+          "runtimes": {
+            "VarioHyve": {
+              "mean": 3573.2392250000003,
+              "min": 3135.904125,
+              "max": 5368.4515,
+              "median": 3325.9461874999997,
+              "q1": 3279.08153125,
+              "q3": 3476.4105,
+              "samples": [
+                3333.912125,
+                3867.085625,
+                3243.23425,
+                3317.98025,
+                5368.4515,
+                3135.904125,
+                3400.393125,
+                3501.749625,
+                3276.32225,
+                3287.359375
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    20181.969,
+                    9007.73075,
+                    7536.8815,
+                    6360.962125,
+                    6744.3905,
+                    6654.975,
+                    4574.245875,
+                    4705.793,
+                    5325.898625,
+                    4099.922875,
+                    4981.911625,
+                    5146.939625,
+                    3919.22425,
+                    3789.71325,
+                    4329.852875,
+                    4519.453
+                  ],
+                  "samples_us": [
+                    3333.912125,
+                    3867.085625,
+                    3243.23425,
+                    3317.98025,
+                    5368.4515
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    23031.50875,
+                    9926.70625,
+                    6860.858875,
+                    8083.72225,
+                    5259.809125,
+                    4658.74475,
+                    4511.21975,
+                    4828.64275,
+                    5001.83675,
+                    4245.201875,
+                    4204.48475,
+                    4543.783375,
+                    4181.41075,
+                    3831.912125,
+                    4475.9465,
+                    4711.67525
+                  ],
+                  "samples_us": [
+                    3135.904125,
+                    3400.393125,
+                    3501.749625,
+                    3276.32225,
+                    3287.359375
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test:/home/runner/work/variohyve/variohyve/vh-core/build/resources/test:/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main:/home/runner/work/variohyve/variohyve/vh-core/build/resources/main:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.13.2/fc3db6d844df652a3d5db31c87fa12757f13691d/antlr4-runtime-4.13.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.obpcdl/reader-infra/2.0.0/4c5579121334f5d2d64720b0727a6f27ca8546f9/reader-infra-2.0.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.10.0/8fea1d9c58b2156f1b998f2f18da04bc9e087f74/junit-jupiter-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.10.0/89a1922534ed102be1fb2a8c0b2c6151297a12bf/junit-platform-launcher-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.10.0/9041c7365495a897a64782ea5a6fdb99dab1814e/junit-jupiter-params-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.10.0/90587932d718fc51a48112d33045a18476c542ad/junit-jupiter-engine-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.10.0/2fe4ba3d31d5067878e468c96aa039005a9134d3/junit-jupiter-api-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.10.0/276c4edcf64fabb5a139fa7b4f99330d7a93b804/junit-platform-engine-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.10.0/d533ff2c286eaf963566f92baf5f8a06628d2609/junit-platform-commons-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.3.0/152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e/opentest4j-1.3.0.jar",
+                  "vh.vm.NativeJavaDriver",
+                  "--bulk-slices"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "openjdk version \"23.0.2\" 2025-01-21\nOpenJDK Runtime Environment Temurin-23.0.2+7 (build 23.0.2+7)\nOpenJDK 64-Bit Server VM Temurin-23.0.2+7 (build 23.0.2+7, mixed mode, sharing)\n",
+                "lean_toolchain": null,
+                "native_gc": "allocation-debt"
+              }
+            },
+            "Lean": {
+              "mean": 6208.5858875,
+              "min": 6137.8035,
+              "max": 6355.834,
+              "median": 6164.7111875,
+              "q1": 6145.5043125,
+              "q3": 6267.275187499999,
+              "samples": [
+                6137.8035,
+                6151.52725,
+                6177.895125,
+                6141.794125,
+                6143.83675,
+                6200.433125,
+                6150.507,
+                6289.555875,
+                6336.672125,
+                6355.834
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    6203.64475,
+                    6105.869375,
+                    6160.664,
+                    6211.641875,
+                    6142.224125,
+                    6236.948625,
+                    6138.90425,
+                    6153.525875,
+                    6141.628375,
+                    6123.25225,
+                    6143.95675,
+                    6150.434375,
+                    6120.099125,
+                    6091.323125,
+                    6184.6435,
+                    6146.384875
+                  ],
+                  "samples_us": [
+                    6137.8035,
+                    6151.52725,
+                    6177.895125,
+                    6141.794125,
+                    6143.83675
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    6395.417375,
+                    6220.311,
+                    6172.087125,
+                    6143.255875,
+                    6166.342375,
+                    6168.346375,
+                    6266.8,
+                    6192.1755,
+                    6148.312125,
+                    6154.694625,
+                    6129.31575,
+                    6132.927125,
+                    6160.31575,
+                    6179.6005,
+                    6165.0345,
+                    6160.838625
+                  ],
+                  "samples_us": [
+                    6200.433125,
+                    6150.507,
+                    6289.555875,
+                    6336.672125,
+                    6355.834
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/home/runner/work/variohyve/variohyve/vh-lean/.lake/build/bin/semanticsConformance",
+                  "--native",
+                  "--raw-conformance"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": "leanprover/lean4:v4.35.0",
+                "native_gc": "allocation-debt"
+              }
+            },
+            "CPython": {
+              "mean": 71.925325,
+              "min": 64.9415,
+              "max": 86.459625,
+              "median": 67.9331875,
+              "q1": 65.52921875000001,
+              "q3": 76.7190625,
+              "samples": [
+                68.44225,
+                86.459625,
+                65.473625,
+                65.51775,
+                78.74075,
+                70.654,
+                86.036,
+                67.424125,
+                65.563625,
+                64.9415
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    82.336375,
+                    66.26775,
+                    63.316,
+                    86.45875,
+                    66.462375,
+                    67.26425,
+                    70.711,
+                    64.40575,
+                    44.929125,
+                    80.172375,
+                    67.94075,
+                    41.45425,
+                    76.83525,
+                    71.350125,
+                    84.3215,
+                    86.476375
+                  ],
+                  "samples_us": [
+                    68.44225,
+                    86.459625,
+                    65.473625,
+                    65.51775,
+                    78.74075
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    80.37775,
+                    66.626,
+                    67.54125,
+                    69.3675,
+                    63.846125,
+                    68.836125,
+                    79.378875,
+                    77.18725,
+                    66.2035,
+                    65.145375,
+                    69.550125,
+                    66.124375,
+                    69.49375,
+                    79.807375,
+                    72.98375,
+                    67.868875
+                  ],
+                  "samples_us": [
+                    70.654,
+                    86.036,
+                    67.424125,
+                    65.563625,
+                    64.9415
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.14.7/x64/bin/python3",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "CPython",
+                "guest_jit": false,
+                "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                "gc_enabled": true
+              }
+            },
+            "GraalPy": {
+              "mean": 4538.706,
+              "min": 3951.91225,
+              "max": 6651.68725,
+              "median": 4420.031312499999,
+              "q1": 4153.71246875,
+              "q3": 4533.93009375,
+              "samples": [
+                4492.6725,
+                6651.68725,
+                4188.753875,
+                3951.91225,
+                3986.210125,
+                4510.386375,
+                4142.032,
+                4541.778,
+                4574.2375,
+                4347.390125
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    7472.66525,
+                    5055.739125,
+                    7471.27625,
+                    4837.954375,
+                    5336.139625,
+                    4581.07325,
+                    6444.109625,
+                    4719.791125,
+                    4491.342625,
+                    4484.37475,
+                    4459.143125,
+                    4277.21725,
+                    4328.527,
+                    5278.876875,
+                    4228.836,
+                    4095.61425
+                  ],
+                  "samples_us": [
+                    4492.6725,
+                    6651.68725,
+                    4188.753875,
+                    3951.91225,
+                    3986.210125
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    6372.842,
+                    6722.93925,
+                    4582.372625,
+                    4563.055,
+                    4383.334625,
+                    6202.651375,
+                    6622.848125,
+                    5834.44275,
+                    4658.7085,
+                    4721.24775,
+                    6478.994,
+                    4005.65925,
+                    5214.3925,
+                    4262.116,
+                    5837.61525,
+                    4234.04425
+                  ],
+                  "samples_us": [
+                    4510.386375,
+                    4142.032,
+                    4541.778,
+                    4574.2375,
+                    4347.390125
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-benchmarks/build/classes/java/graalpy:/home/runner/work/variohyve/variohyve/vh-benchmarks/build/resources/graalpy:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-community/25.0.4/5fa2de84d7daa107bd562ca8a0f3a569edd4e7db/python-community-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python/25.0.4/f629b0bd8e65fe5f30cd0352f0aa695cf000d542/python-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-language/25.0.4/d18d38591a7921d79bd827b07a9ac634d1b2fdc2/python-language-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-resources/25.0.4/6ba99240f1e37f505031279abdfa0ccf514f61c8/python-resources-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-runtime/25.0.4/e3441fb01ff2b514ddd1fe234cd196a7ab6261de/truffle-runtime-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.tools/profiler-tool/25.0.4/28e870a088437639f42352b47b2b240e02e93060/profiler-tool-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.regex/regex/25.0.4/6fe97c9dd29f2e5e759d11fd05330aa2e3830101/regex-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-libffi/25.0.4/3e495c7cc64b02b7b981b508864900dbbcdb3b7e/truffle-nfi-libffi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-panama/25.0.4/38944336a2e569ef506ee01b4b8c698daf1d048b/truffle-nfi-panama-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi/25.0.4/36a802c5e343a5f4126a0e4821f74e80b0b38a2e/truffle-nfi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-api/25.0.4/56088bcea6520fbaa6afccf4bafbef14ebefc6a4/truffle-api-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.polyglot/polyglot/25.0.4/f9e303d2cc47d91446bb733afa83701689caac1b/polyglot-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/jniutils/25.0.4/72b023da2e3dab1bd7773553445bfa882b34ccb5/jniutils-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/collections/25.0.4/9815551d102a1d0bd151eb87d5ccad93e7edbdb2/collections-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/icu4j/25.0.4/995cdbca0c327116c5289e2bce1ee1a2fbe65ff/icu4j-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/nativeimage/25.0.4/72a635962132a5a2e45eb9f7dcbdaa56a11763da/nativeimage-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/word/25.0.4/e71e5209b901fcf4be14d7ef1ae0c3985fd190da/word-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/xz/25.0.4/b9d42f3d701b838429f422ea76a0a2bd6d847b77/xz-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-compiler/25.0.4/75f8232d91fc753faba586e2570f9ebcd842962e/truffle-compiler-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/json/25.0.4/e14b66da13c3a276538f530a2be57ae3fe944f3d/json-25.0.4.jar",
+                  "vh.benchmarks.GraalPyRunner",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "23.0.2+7",
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "graalpy-jvm-interpreter",
+                "guest_jit": false,
+                "engine_implementation": "Interpreted",
+                "engine_options": {
+                  "engine.WarnInterpreterOnly": "false"
+                },
+                "java_vm": "OpenJDK 64-Bit Server VM",
+                "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                "jvm_args": [
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m"
+                ],
+                "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                "gc_enabled": true
+              }
+            }
+          }
+        },
+        {
+          "name": "recursion",
+          "params": {
+            "size": 128,
+            "repetitions": 32,
+            "batch": 8
+          },
+          "source": "class RuntimeBench[token] {\npub stable = token;\npub var changed = self;\nclass End { pub walk { stable } }\nclass Link[next] { tail = next; pub walk { tail.walk } }\nchain0 = End.new;\nchain1 = Link.new(chain0);\nchain2 = Link.new(chain1);\nchain3 = Link.new(chain2);\nchain4 = Link.new(chain3);\nchain5 = Link.new(chain4);\nchain6 = Link.new(chain5);\nchain7 = Link.new(chain6);\nchain8 = Link.new(chain7);\nchain9 = Link.new(chain8);\nchain10 = Link.new(chain9);\nchain11 = Link.new(chain10);\nchain12 = Link.new(chain11);\nchain13 = Link.new(chain12);\nchain14 = Link.new(chain13);\nchain15 = Link.new(chain14);\nchain16 = Link.new(chain15);\nchain17 = Link.new(chain16);\nchain18 = Link.new(chain17);\nchain19 = Link.new(chain18);\nchain20 = Link.new(chain19);\nchain21 = Link.new(chain20);\nchain22 = Link.new(chain21);\nchain23 = Link.new(chain22);\nchain24 = Link.new(chain23);\nchain25 = Link.new(chain24);\nchain26 = Link.new(chain25);\nchain27 = Link.new(chain26);\nchain28 = Link.new(chain27);\nchain29 = Link.new(chain28);\nchain30 = Link.new(chain29);\nchain31 = Link.new(chain30);\nchain32 = Link.new(chain31);\nchain33 = Link.new(chain32);\nchain34 = Link.new(chain33);\nchain35 = Link.new(chain34);\nchain36 = Link.new(chain35);\nchain37 = Link.new(chain36);\nchain38 = Link.new(chain37);\nchain39 = Link.new(chain38);\nchain40 = Link.new(chain39);\nchain41 = Link.new(chain40);\nchain42 = Link.new(chain41);\nchain43 = Link.new(chain42);\nchain44 = Link.new(chain43);\nchain45 = Link.new(chain44);\nchain46 = Link.new(chain45);\nchain47 = Link.new(chain46);\nchain48 = Link.new(chain47);\nchain49 = Link.new(chain48);\nchain50 = Link.new(chain49);\nchain51 = Link.new(chain50);\nchain52 = Link.new(chain51);\nchain53 = Link.new(chain52);\nchain54 = Link.new(chain53);\nchain55 = Link.new(chain54);\nchain56 = Link.new(chain55);\nchain57 = Link.new(chain56);\nchain58 = Link.new(chain57);\nchain59 = Link.new(chain58);\nchain60 = Link.new(chain59);\nchain61 = Link.new(chain60);\nchain62 = Link.new(chain61);\nchain63 = Link.new(chain62);\nchain64 = Link.new(chain63);\nchain65 = Link.new(chain64);\nchain66 = Link.new(chain65);\nchain67 = Link.new(chain66);\nchain68 = Link.new(chain67);\nchain69 = Link.new(chain68);\nchain70 = Link.new(chain69);\nchain71 = Link.new(chain70);\nchain72 = Link.new(chain71);\nchain73 = Link.new(chain72);\nchain74 = Link.new(chain73);\nchain75 = Link.new(chain74);\nchain76 = Link.new(chain75);\nchain77 = Link.new(chain76);\nchain78 = Link.new(chain77);\nchain79 = Link.new(chain78);\nchain80 = Link.new(chain79);\nchain81 = Link.new(chain80);\nchain82 = Link.new(chain81);\nchain83 = Link.new(chain82);\nchain84 = Link.new(chain83);\nchain85 = Link.new(chain84);\nchain86 = Link.new(chain85);\nchain87 = Link.new(chain86);\nchain88 = Link.new(chain87);\nchain89 = Link.new(chain88);\nchain90 = Link.new(chain89);\nchain91 = Link.new(chain90);\nchain92 = Link.new(chain91);\nchain93 = Link.new(chain92);\nchain94 = Link.new(chain93);\nchain95 = Link.new(chain94);\nchain96 = Link.new(chain95);\nchain97 = Link.new(chain96);\nchain98 = Link.new(chain97);\nchain99 = Link.new(chain98);\nchain100 = Link.new(chain99);\nchain101 = Link.new(chain100);\nchain102 = Link.new(chain101);\nchain103 = Link.new(chain102);\nchain104 = Link.new(chain103);\nchain105 = Link.new(chain104);\nchain106 = Link.new(chain105);\nchain107 = Link.new(chain106);\nchain108 = Link.new(chain107);\nchain109 = Link.new(chain108);\nchain110 = Link.new(chain109);\nchain111 = Link.new(chain110);\nchain112 = Link.new(chain111);\nchain113 = Link.new(chain112);\nchain114 = Link.new(chain113);\nchain115 = Link.new(chain114);\nchain116 = Link.new(chain115);\nchain117 = Link.new(chain116);\nchain118 = Link.new(chain117);\nchain119 = Link.new(chain118);\nchain120 = Link.new(chain119);\nchain121 = Link.new(chain120);\nchain122 = Link.new(chain121);\nchain123 = Link.new(chain122);\nchain124 = Link.new(chain123);\nchain125 = Link.new(chain124);\nchain126 = Link.new(chain125);\nchain127 = Link.new(chain126);\nchain128 = Link.new(chain127);\ntick { chain128.walk }\npub run { tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick }\n}\n",
+          "python_source": "def build(token):\n    class End:\n        def walk(self): return token\n    class Link:\n        def __init__(self, tail): self.tail = tail\n        def walk(self): return self.tail.walk()\n    chain = End()\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    chain = Link(chain)\n    class Bench:\n        def __init__(self):\n            self.changed = self\n        def tick(self): return chain.walk()\n        def run(self):\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            result = self.tick()\n            return result\n    return Bench()\n",
+          "core_sha256": "f6618de9304b03a58efc592c85be46da08e459c29bfe3461a089d2aa226a340f",
+          "runtimes": {
+            "VarioHyve": {
+              "mean": 12324.1904125,
+              "min": 10796.34975,
+              "max": 16458.57,
+              "median": 11691.046312499999,
+              "q1": 11037.27103125,
+              "q3": 13013.2245625,
+              "samples": [
+                10989.8975,
+                13494.710375,
+                11974.387625,
+                10796.34975,
+                12934.9045,
+                16458.57,
+                11001.518,
+                13039.33125,
+                11407.705,
+                11144.530125
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    58837.73825,
+                    37901.4495,
+                    28939.7275,
+                    23412.1065,
+                    22703.993125,
+                    21353.359,
+                    18569.08525,
+                    13701.015125,
+                    15932.290875,
+                    14770.365875,
+                    16273.856,
+                    10888.294,
+                    14558.745375,
+                    11262.6305,
+                    11880.335,
+                    11653.10025
+                  ],
+                  "samples_us": [
+                    10989.8975,
+                    13494.710375,
+                    11974.387625,
+                    10796.34975,
+                    12934.9045
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    60145.9255,
+                    38150.049375,
+                    29634.640625,
+                    24312.629,
+                    22526.629375,
+                    21913.46275,
+                    16402.052,
+                    12879.167875,
+                    14290.27,
+                    14896.044125,
+                    12636.148375,
+                    11139.030625,
+                    13777.723375,
+                    11514.867625,
+                    11234.54775,
+                    13296.16725
+                  ],
+                  "samples_us": [
+                    16458.57,
+                    11001.518,
+                    13039.33125,
+                    11407.705,
+                    11144.530125
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test:/home/runner/work/variohyve/variohyve/vh-core/build/resources/test:/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main:/home/runner/work/variohyve/variohyve/vh-core/build/resources/main:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.13.2/fc3db6d844df652a3d5db31c87fa12757f13691d/antlr4-runtime-4.13.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.obpcdl/reader-infra/2.0.0/4c5579121334f5d2d64720b0727a6f27ca8546f9/reader-infra-2.0.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.10.0/8fea1d9c58b2156f1b998f2f18da04bc9e087f74/junit-jupiter-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.10.0/89a1922534ed102be1fb2a8c0b2c6151297a12bf/junit-platform-launcher-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.10.0/9041c7365495a897a64782ea5a6fdb99dab1814e/junit-jupiter-params-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.10.0/90587932d718fc51a48112d33045a18476c542ad/junit-jupiter-engine-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.10.0/2fe4ba3d31d5067878e468c96aa039005a9134d3/junit-jupiter-api-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.10.0/276c4edcf64fabb5a139fa7b4f99330d7a93b804/junit-platform-engine-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.10.0/d533ff2c286eaf963566f92baf5f8a06628d2609/junit-platform-commons-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.3.0/152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e/opentest4j-1.3.0.jar",
+                  "vh.vm.NativeJavaDriver",
+                  "--bulk-slices"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "openjdk version \"23.0.2\" 2025-01-21\nOpenJDK Runtime Environment Temurin-23.0.2+7 (build 23.0.2+7)\nOpenJDK 64-Bit Server VM Temurin-23.0.2+7 (build 23.0.2+7, mixed mode, sharing)\n",
+                "lean_toolchain": null,
+                "native_gc": "allocation-debt"
+              }
+            },
+            "Lean": {
+              "mean": 49447.4559125,
+              "min": 49197.8105,
+              "max": 49916.9185,
+              "median": 49428.5376875,
+              "q1": 49358.444125,
+              "q3": 49489.68909375,
+              "samples": [
+                49404.235625,
+                49452.83975,
+                49357.025625,
+                49197.8105,
+                49288.412375,
+                49486.348875,
+                49517.46575,
+                49362.699625,
+                49490.8025,
+                49916.9185
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    48052.748875,
+                    48001.59375,
+                    48427.8955,
+                    48322.21875,
+                    48431.475625,
+                    49074.92175,
+                    49339.116625,
+                    49435.214875,
+                    49192.790375,
+                    49231.901875,
+                    49258.824375,
+                    49391.245875,
+                    49772.734875,
+                    49154.710125,
+                    49093.8265,
+                    49058.03325
+                  ],
+                  "samples_us": [
+                    49404.235625,
+                    49452.83975,
+                    49357.025625,
+                    49197.8105,
+                    49288.412375
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    48012.31175,
+                    47935.183625,
+                    48184.955875,
+                    48185.470125,
+                    48665.811625,
+                    49643.64325,
+                    49363.44775,
+                    49332.92025,
+                    49281.5055,
+                    49565.06525,
+                    50623.79075,
+                    49304.420875,
+                    49298.151875,
+                    49254.979625,
+                    49395.838,
+                    49358.02875
+                  ],
+                  "samples_us": [
+                    49486.348875,
+                    49517.46575,
+                    49362.699625,
+                    49490.8025,
+                    49916.9185
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/home/runner/work/variohyve/variohyve/vh-lean/.lake/build/bin/semanticsConformance",
+                  "--native",
+                  "--raw-conformance"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": "leanprover/lean4:v4.35.0",
+                "native_gc": "allocation-debt"
+              }
+            },
+            "CPython": {
+              "mean": 145.8489875,
+              "min": 130.87075,
+              "max": 158.73875,
+              "median": 148.2506875,
+              "q1": 138.342625,
+              "q3": 152.30634375,
+              "samples": [
+                150.056875,
+                146.4445,
+                152.7995,
+                134.325,
+                130.87075,
+                155.320375,
+                150.826875,
+                137.131625,
+                158.73875,
+                141.975625
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    154.572125,
+                    148.11875,
+                    132.126,
+                    151.45025,
+                    136.137375,
+                    151.115125,
+                    147.6365,
+                    144.094,
+                    146.73525,
+                    146.706,
+                    130.690875,
+                    108.609875,
+                    144.398625,
+                    144.465875,
+                    147.746125,
+                    133.277375
+                  ],
+                  "samples_us": [
+                    150.056875,
+                    146.4445,
+                    152.7995,
+                    134.325,
+                    130.87075
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    133.013125,
+                    134.076875,
+                    138.219375,
+                    134.682375,
+                    133.77875,
+                    134.28425,
+                    132.559375,
+                    144.9185,
+                    136.806,
+                    156.1155,
+                    133.339125,
+                    146.986625,
+                    144.009,
+                    135.421625,
+                    147.227875,
+                    146.893
+                  ],
+                  "samples_us": [
+                    155.320375,
+                    150.826875,
+                    137.131625,
+                    158.73875,
+                    141.975625
+                  ],
+                  "runtime": {
+                    "label": "CPython",
+                    "guest_jit": false,
+                    "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.14.7/x64/bin/python3",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "CPython",
+                "guest_jit": false,
+                "python": "3.14.7 (main, Aug  6 2026, 02:19:46) [GCC 13.3.0]",
+                "gc_enabled": true
+              }
+            },
+            "GraalPy": {
+              "mean": 13650.3203,
+              "min": 11647.2955,
+              "max": 17178.451375,
+              "median": 13478.342625000001,
+              "q1": 11858.0030625,
+              "q3": 14826.00253125,
+              "samples": [
+                12475.116,
+                11693.60125,
+                11647.2955,
+                12252.739875,
+                11726.424125,
+                15618.05475,
+                17178.451375,
+                14481.56925,
+                14937.029625,
+                14492.92125
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    19035.804,
+                    20996.311375,
+                    18322.046375,
+                    20056.25325,
+                    19384.486625,
+                    20148.471125,
+                    20165.741125,
+                    19447.609375,
+                    18703.03525,
+                    19638.39,
+                    23874.388125,
+                    22486.809875,
+                    17028.576625,
+                    15297.839875,
+                    13026.097625,
+                    10868.749
+                  ],
+                  "samples_us": [
+                    12475.116,
+                    11693.60125,
+                    11647.2955,
+                    12252.739875,
+                    11726.424125
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                },
+                {
+                  "warmups_us": [
+                    20743.548875,
+                    21450.72225,
+                    19413.95975,
+                    20324.853875,
+                    19017.78775,
+                    22370.238875,
+                    22521.402375,
+                    19531.724875,
+                    19337.063,
+                    20880.422625,
+                    16246.677,
+                    13638.072125,
+                    15495.08,
+                    13999.301625,
+                    13542.378875,
+                    14835.382625
+                  ],
+                  "samples_us": [
+                    15618.05475,
+                    17178.451375,
+                    14481.56925,
+                    14937.029625,
+                    14492.92125
+                  ],
+                  "runtime": {
+                    "label": "graalpy-jvm-interpreter",
+                    "guest_jit": false,
+                    "engine_implementation": "Interpreted",
+                    "engine_options": {
+                      "engine.WarnInterpreterOnly": "false"
+                    },
+                    "java_version": "23.0.2+7",
+                    "java_vm": "OpenJDK 64-Bit Server VM",
+                    "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                    "jvm_args": [
+                      "-Xms512m",
+                      "-Xmx512m",
+                      "-Xss128m"
+                    ],
+                    "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                    "gc_enabled": true
+                  }
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-benchmarks/build/classes/java/graalpy:/home/runner/work/variohyve/variohyve/vh-benchmarks/build/resources/graalpy:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-community/25.0.4/5fa2de84d7daa107bd562ca8a0f3a569edd4e7db/python-community-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python/25.0.4/f629b0bd8e65fe5f30cd0352f0aa695cf000d542/python-25.0.4.pom:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-language/25.0.4/d18d38591a7921d79bd827b07a9ac634d1b2fdc2/python-language-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.python/python-resources/25.0.4/6ba99240f1e37f505031279abdfa0ccf514f61c8/python-resources-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-runtime/25.0.4/e3441fb01ff2b514ddd1fe234cd196a7ab6261de/truffle-runtime-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.tools/profiler-tool/25.0.4/28e870a088437639f42352b47b2b240e02e93060/profiler-tool-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.regex/regex/25.0.4/6fe97c9dd29f2e5e759d11fd05330aa2e3830101/regex-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-libffi/25.0.4/3e495c7cc64b02b7b981b508864900dbbcdb3b7e/truffle-nfi-libffi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi-panama/25.0.4/38944336a2e569ef506ee01b4b8c698daf1d048b/truffle-nfi-panama-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-nfi/25.0.4/36a802c5e343a5f4126a0e4821f74e80b0b38a2e/truffle-nfi-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-api/25.0.4/56088bcea6520fbaa6afccf4bafbef14ebefc6a4/truffle-api-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.polyglot/polyglot/25.0.4/f9e303d2cc47d91446bb733afa83701689caac1b/polyglot-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/jniutils/25.0.4/72b023da2e3dab1bd7773553445bfa882b34ccb5/jniutils-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/collections/25.0.4/9815551d102a1d0bd151eb87d5ccad93e7edbdb2/collections-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/icu4j/25.0.4/995cdbca0c327116c5289e2bce1ee1a2fbe65ff/icu4j-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/nativeimage/25.0.4/72a635962132a5a2e45eb9f7dcbdaa56a11763da/nativeimage-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.sdk/word/25.0.4/e71e5209b901fcf4be14d7ef1ae0c3985fd190da/word-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/xz/25.0.4/b9d42f3d701b838429f422ea76a0a2bd6d847b77/xz-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.truffle/truffle-compiler/25.0.4/75f8232d91fc753faba586e2570f9ebcd842962e/truffle-compiler-25.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.graalvm.shadowed/json/25.0.4/e14b66da13c3a276538f530a2be57ae3fe944f3d/json-25.0.4.jar",
+                  "vh.benchmarks.GraalPyRunner",
+                  "/home/runner/work/variohyve/variohyve/scripts/benchmark_runtimes.py"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "23.0.2+7",
+                "lean_toolchain": null,
+                "native_gc": null,
+                "label": "graalpy-jvm-interpreter",
+                "guest_jit": false,
+                "engine_implementation": "Interpreted",
+                "engine_options": {
+                  "engine.WarnInterpreterOnly": "false"
+                },
+                "java_vm": "OpenJDK 64-Bit Server VM",
+                "java_home": "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64",
+                "jvm_args": [
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-Xss128m"
+                ],
+                "python": "3.12.8 (Thu Nov 05 14:43:40 UTC 2026)\n[Graal, Interpreted, Java 23.0.2 (amd64)]",
+                "gc_enabled": true
+              }
+            }
+          }
+        },
+        {
+          "name": "memberCached",
+          "params": {
+            "size": 1,
+            "repetitions": 32,
+            "batch": 8
+          },
+          "source": "class RuntimeBench[token] {\npub stable = token;\npub var changed = self;\nclass Owner { pub class Member { pub result { stable } } }\nowner = Owner.new;\ntick { owner.Member.new.result }\npub run { tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick }\n}\n",
+          "python_source": null,
+          "core_sha256": "c04fc7682ca3eaaca05d562314bce203cde78bd9035c662e2545809a30fb4275",
+          "runtimes": {
+            "VarioHyve": {
+              "mean": 1760.5925375,
+              "min": 1330.3465,
+              "max": 2642.6475,
+              "median": 1649.023375,
+              "q1": 1445.656125,
+              "q3": 1868.440125,
+              "samples": [
+                1535.7795,
+                1415.615,
+                1733.25225,
+                1330.3465,
+                2352.0905,
+                1564.7945,
+                1908.84975,
+                1747.21125,
+                1375.338625,
+                2642.6475
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    16577.624375,
+                    5889.612375,
+                    4022.5005,
+                    2702.9565,
+                    3383.223625,
+                    2175.8825,
+                    2081.4,
+                    2662.362375,
+                    2807.565,
+                    2116.622,
+                    2495.192625,
+                    2092.215,
+                    1744.359375,
+                    2510.706,
+                    1450.7285,
+                    1994.499875
+                  ],
+                  "samples_us": [
+                    1535.7795,
+                    1415.615,
+                    1733.25225,
+                    1330.3465,
+                    2352.0905
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    15919.58175,
+                    4638.529,
+                    5278.592,
+                    3843.569375,
+                    4220.84525,
+                    2111.458375,
+                    3148.861875,
+                    2841.557375,
+                    3438.81275,
+                    1996.78225,
+                    2448.0615,
+                    1636.037,
+                    1569.557625,
+                    1647.128,
+                    1586.198625,
+                    2250.4335
+                  ],
+                  "samples_us": [
+                    1564.7945,
+                    1908.84975,
+                    1747.21125,
+                    1375.338625,
+                    2642.6475
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test:/home/runner/work/variohyve/variohyve/vh-core/build/resources/test:/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main:/home/runner/work/variohyve/variohyve/vh-core/build/resources/main:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.13.2/fc3db6d844df652a3d5db31c87fa12757f13691d/antlr4-runtime-4.13.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.obpcdl/reader-infra/2.0.0/4c5579121334f5d2d64720b0727a6f27ca8546f9/reader-infra-2.0.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.10.0/8fea1d9c58b2156f1b998f2f18da04bc9e087f74/junit-jupiter-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.10.0/89a1922534ed102be1fb2a8c0b2c6151297a12bf/junit-platform-launcher-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.10.0/9041c7365495a897a64782ea5a6fdb99dab1814e/junit-jupiter-params-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.10.0/90587932d718fc51a48112d33045a18476c542ad/junit-jupiter-engine-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.10.0/2fe4ba3d31d5067878e468c96aa039005a9134d3/junit-jupiter-api-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.10.0/276c4edcf64fabb5a139fa7b4f99330d7a93b804/junit-platform-engine-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.10.0/d533ff2c286eaf963566f92baf5f8a06628d2609/junit-platform-commons-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.3.0/152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e/opentest4j-1.3.0.jar",
+                  "vh.vm.NativeJavaDriver",
+                  "--bulk-slices"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "openjdk version \"23.0.2\" 2025-01-21\nOpenJDK Runtime Environment Temurin-23.0.2+7 (build 23.0.2+7)\nOpenJDK 64-Bit Server VM Temurin-23.0.2+7 (build 23.0.2+7, mixed mode, sharing)\n",
+                "lean_toolchain": null,
+                "native_gc": "allocation-debt"
+              }
+            },
+            "Lean": {
+              "mean": 1430.5715125,
+              "min": 1398.340125,
+              "max": 1458.7845,
+              "median": 1432.0039375000001,
+              "q1": 1421.663375,
+              "q3": 1439.17709375,
+              "samples": [
+                1420.30725,
+                1420.652,
+                1439.258625,
+                1426.568875,
+                1424.6975,
+                1458.7845,
+                1440.73475,
+                1437.439,
+                1398.340125,
+                1438.9325
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    1840.969625,
+                    1425.02925,
+                    1430.01775,
+                    1419.32125,
+                    1445.43325,
+                    1425.798,
+                    1404.486375,
+                    1415.334,
+                    1437.52925,
+                    1413.585125,
+                    1431.254,
+                    1423.73975,
+                    1453.7975,
+                    1409.277375,
+                    1415.684875,
+                    1405.67075
+                  ],
+                  "samples_us": [
+                    1420.30725,
+                    1420.652,
+                    1439.258625,
+                    1426.568875,
+                    1424.6975
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    1585.899,
+                    1427.27725,
+                    1505.727125,
+                    1722.616875,
+                    1437.33525,
+                    1423.380125,
+                    1427.847375,
+                    1406.576,
+                    1421.801,
+                    1409.685,
+                    1427.2005,
+                    1448.68725,
+                    1442.43125,
+                    1466.11875,
+                    1491.153,
+                    1486.41425
+                  ],
+                  "samples_us": [
+                    1458.7845,
+                    1440.73475,
+                    1437.439,
+                    1398.340125,
+                    1438.9325
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/home/runner/work/variohyve/variohyve/vh-lean/.lake/build/bin/semanticsConformance",
+                  "--native",
+                  "--raw-conformance"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": "leanprover/lean4:v4.35.0",
+                "native_gc": "allocation-debt"
+              }
+            }
+          }
+        },
+        {
+          "name": "memberFresh",
+          "params": {
+            "size": 1,
+            "repetitions": 32,
+            "batch": 8
+          },
+          "source": "class RuntimeBench[token] {\npub stable = token;\npub var changed = self;\nclass Owner { pub class Member { pub result { stable } } }\nowner = Owner.new;\ntick { Owner.new.Member.new.result }\npub run { tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick }\n}\n",
+          "python_source": null,
+          "core_sha256": "6c517a40fd4e30844b979351731b8f9750e342c054c83b8e53337f4f74761149",
+          "runtimes": {
+            "VarioHyve": {
+              "mean": 2828.8139125,
+              "min": 2536.28175,
+              "max": 3284.6805,
+              "median": 2800.68925,
+              "q1": 2588.36540625,
+              "q3": 3017.7795312499998,
+              "samples": [
+                3170.02025,
+                2860.82525,
+                3070.097625,
+                2766.40325,
+                2583.875,
+                3284.6805,
+                2579.143625,
+                2834.97525,
+                2601.836625,
+                2536.28175
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    25524.59975,
+                    13556.805,
+                    7042.35675,
+                    3928.255625,
+                    5361.90275,
+                    3793.0795,
+                    2990.295375,
+                    3837.400125,
+                    4704.768125,
+                    2975.112125,
+                    3260.529375,
+                    4027.931625,
+                    3272.819125,
+                    3371.200375,
+                    2849.016125,
+                    2916.070625
+                  ],
+                  "samples_us": [
+                    3170.02025,
+                    2860.82525,
+                    3070.097625,
+                    2766.40325,
+                    2583.875
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    27070.440875,
+                    9363.094125,
+                    8957.098125,
+                    5493.24,
+                    4767.544,
+                    3803.265,
+                    4046.42325,
+                    3776.86825,
+                    3222.946375,
+                    3102.65,
+                    3443.9525,
+                    4375.721,
+                    2820.910125,
+                    2701.3725,
+                    2767.330375,
+                    2995.97175
+                  ],
+                  "samples_us": [
+                    3284.6805,
+                    2579.143625,
+                    2834.97525,
+                    2601.836625,
+                    2536.28175
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test:/home/runner/work/variohyve/variohyve/vh-core/build/resources/test:/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main:/home/runner/work/variohyve/variohyve/vh-core/build/resources/main:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.13.2/fc3db6d844df652a3d5db31c87fa12757f13691d/antlr4-runtime-4.13.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.obpcdl/reader-infra/2.0.0/4c5579121334f5d2d64720b0727a6f27ca8546f9/reader-infra-2.0.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.10.0/8fea1d9c58b2156f1b998f2f18da04bc9e087f74/junit-jupiter-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.10.0/89a1922534ed102be1fb2a8c0b2c6151297a12bf/junit-platform-launcher-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.10.0/9041c7365495a897a64782ea5a6fdb99dab1814e/junit-jupiter-params-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.10.0/90587932d718fc51a48112d33045a18476c542ad/junit-jupiter-engine-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.10.0/2fe4ba3d31d5067878e468c96aa039005a9134d3/junit-jupiter-api-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.10.0/276c4edcf64fabb5a139fa7b4f99330d7a93b804/junit-platform-engine-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.10.0/d533ff2c286eaf963566f92baf5f8a06628d2609/junit-platform-commons-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.3.0/152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e/opentest4j-1.3.0.jar",
+                  "vh.vm.NativeJavaDriver",
+                  "--bulk-slices"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "openjdk version \"23.0.2\" 2025-01-21\nOpenJDK Runtime Environment Temurin-23.0.2+7 (build 23.0.2+7)\nOpenJDK 64-Bit Server VM Temurin-23.0.2+7 (build 23.0.2+7, mixed mode, sharing)\n",
+                "lean_toolchain": null,
+                "native_gc": "allocation-debt"
+              }
+            },
+            "Lean": {
+              "mean": 2888.8237625,
+              "min": 2863.238,
+              "max": 2928.01525,
+              "median": 2888.480125,
+              "q1": 2871.0768125,
+              "q3": 2901.9558125000003,
+              "samples": [
+                2863.238,
+                2865.74825,
+                2878.974125,
+                2928.01525,
+                2906.302625,
+                2903.63425,
+                2885.317125,
+                2868.444375,
+                2891.643125,
+                2896.9205
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    3184.07875,
+                    2865.2875,
+                    2883.302,
+                    2854.627,
+                    2867.0885,
+                    2906.683125,
+                    2922.2775,
+                    2887.123625,
+                    2907.5025,
+                    2899.23825,
+                    2914.408875,
+                    2878.51975,
+                    2880.8645,
+                    2918.116375,
+                    2967.146625,
+                    2881.973625
+                  ],
+                  "samples_us": [
+                    2863.238,
+                    2865.74825,
+                    2878.974125,
+                    2928.01525,
+                    2906.302625
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    3196.982,
+                    2889.51925,
+                    2870.549125,
+                    2902.916875,
+                    2859.35575,
+                    2882.2685,
+                    2882.566125,
+                    2878.56875,
+                    2864.8425,
+                    2911.879875,
+                    2881.532375,
+                    2883.6765,
+                    2891.880375,
+                    2866.959875,
+                    2897.6715,
+                    2912.048375
+                  ],
+                  "samples_us": [
+                    2903.63425,
+                    2885.317125,
+                    2868.444375,
+                    2891.643125,
+                    2896.9205
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/home/runner/work/variohyve/variohyve/vh-lean/.lake/build/bin/semanticsConformance",
+                  "--native",
+                  "--raw-conformance"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": "leanprover/lean4:v4.35.0",
+                "native_gc": "allocation-debt"
+              }
+            }
+          }
+        },
+        {
+          "name": "mixins",
+          "params": {
+            "size": 8,
+            "repetitions": 32,
+            "batch": 8
+          },
+          "source": "class RuntimeBench[token] {\npub stable = token;\npub var changed = self;\nclass M0 { pub padding0 { self } }\nclass M1 { pub padding1 { self } }\nclass M2 { pub padding2 { self } }\nclass M3 { pub padding3 { self } }\nclass M4 { pub padding4 { self } }\nclass M5 { pub padding5 { self } }\nclass M6 { pub padding6 { self } }\nclass M7 { pub target { stable } }\nclass Combined <: M0, M1, M2, M3, M4, M5, M6, M7 {}\nreceiver = Combined.new;\ntick { receiver.target }\npub run { tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick }\n}\n",
+          "python_source": null,
+          "core_sha256": "8ab9c4613d07d72c50abc7c16fe00b2f62a7fbec96d2f195bca8859dec788dc8",
+          "runtimes": {
+            "VarioHyve": {
+              "mean": 1118.0341875,
+              "min": 768.289625,
+              "max": 1776.414125,
+              "median": 941.932125,
+              "q1": 842.37959375,
+              "q3": 1328.5925937499999,
+              "samples": [
+                1398.10775,
+                889.791125,
+                1120.047125,
+                768.289625,
+                819.717875,
+                1711.904,
+                994.073125,
+                868.2365,
+                833.760625,
+                1776.414125
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    8602.105125,
+                    4297.408625,
+                    1588.646625,
+                    1853.2905,
+                    1423.141125,
+                    1494.839875,
+                    1663.914125,
+                    1236.598,
+                    1207.294875,
+                    1642.992375,
+                    1364.696875,
+                    936.68275,
+                    947.495375,
+                    974.754,
+                    924.1835,
+                    1218.497125
+                  ],
+                  "samples_us": [
+                    1398.10775,
+                    889.791125,
+                    1120.047125,
+                    768.289625,
+                    819.717875
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    7677.542,
+                    3345.08975,
+                    2196.67425,
+                    2867.85025,
+                    2020.789875,
+                    1740.483625,
+                    1249.745375,
+                    1264.5295,
+                    1200.062375,
+                    1491.496375,
+                    1064.697625,
+                    958.00625,
+                    949.701,
+                    970.11075,
+                    940.316875,
+                    1051.779125
+                  ],
+                  "samples_us": [
+                    1711.904,
+                    994.073125,
+                    868.2365,
+                    833.760625,
+                    1776.414125
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test:/home/runner/work/variohyve/variohyve/vh-core/build/resources/test:/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main:/home/runner/work/variohyve/variohyve/vh-core/build/resources/main:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.13.2/fc3db6d844df652a3d5db31c87fa12757f13691d/antlr4-runtime-4.13.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.obpcdl/reader-infra/2.0.0/4c5579121334f5d2d64720b0727a6f27ca8546f9/reader-infra-2.0.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.10.0/8fea1d9c58b2156f1b998f2f18da04bc9e087f74/junit-jupiter-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.10.0/89a1922534ed102be1fb2a8c0b2c6151297a12bf/junit-platform-launcher-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.10.0/9041c7365495a897a64782ea5a6fdb99dab1814e/junit-jupiter-params-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.10.0/90587932d718fc51a48112d33045a18476c542ad/junit-jupiter-engine-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.10.0/2fe4ba3d31d5067878e468c96aa039005a9134d3/junit-jupiter-api-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.10.0/276c4edcf64fabb5a139fa7b4f99330d7a93b804/junit-platform-engine-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.10.0/d533ff2c286eaf963566f92baf5f8a06628d2609/junit-platform-commons-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.3.0/152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e/opentest4j-1.3.0.jar",
+                  "vh.vm.NativeJavaDriver",
+                  "--bulk-slices"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "openjdk version \"23.0.2\" 2025-01-21\nOpenJDK Runtime Environment Temurin-23.0.2+7 (build 23.0.2+7)\nOpenJDK 64-Bit Server VM Temurin-23.0.2+7 (build 23.0.2+7, mixed mode, sharing)\n",
+                "lean_toolchain": null,
+                "native_gc": "allocation-debt"
+              }
+            },
+            "Lean": {
+              "mean": 1374.3598625,
+              "min": 1351.288875,
+              "max": 1396.6185,
+              "median": 1373.9878125,
+              "q1": 1367.90159375,
+              "q3": 1381.7564375,
+              "samples": [
+                1364.6235,
+                1383.0855,
+                1377.292375,
+                1368.80825,
+                1370.68325,
+                1377.76925,
+                1367.599375,
+                1396.6185,
+                1385.82975,
+                1351.288875
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    1713.801125,
+                    1373.754125,
+                    1372.059125,
+                    1397.225,
+                    1355.112,
+                    1359.683125,
+                    1368.17175,
+                    1376.51175,
+                    1389.209875,
+                    1382.005,
+                    1367.589,
+                    1389.34075,
+                    1380.030625,
+                    1393.653625,
+                    1374.8065,
+                    1363.238375
+                  ],
+                  "samples_us": [
+                    1364.6235,
+                    1383.0855,
+                    1377.292375,
+                    1368.80825,
+                    1370.68325
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    1521.481875,
+                    1366.968,
+                    1377.542625,
+                    1379.17925,
+                    1359.553,
+                    1359.948,
+                    1379.91,
+                    1477.214625,
+                    1479.02225,
+                    1390.963875,
+                    1366.6,
+                    1366.80025,
+                    1365.158375,
+                    1358.874,
+                    1355.435625,
+                    1349.951625
+                  ],
+                  "samples_us": [
+                    1377.76925,
+                    1367.599375,
+                    1396.6185,
+                    1385.82975,
+                    1351.288875
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/home/runner/work/variohyve/variohyve/vh-lean/.lake/build/bin/semanticsConformance",
+                  "--native",
+                  "--raw-conformance"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": "leanprover/lean4:v4.35.0",
+                "native_gc": "allocation-debt"
+              }
+            }
+          }
+        },
+        {
+          "name": "mixins",
+          "params": {
+            "size": 32,
+            "repetitions": 32,
+            "batch": 8
+          },
+          "source": "class RuntimeBench[token] {\npub stable = token;\npub var changed = self;\nclass M0 { pub padding0 { self } }\nclass M1 { pub padding1 { self } }\nclass M2 { pub padding2 { self } }\nclass M3 { pub padding3 { self } }\nclass M4 { pub padding4 { self } }\nclass M5 { pub padding5 { self } }\nclass M6 { pub padding6 { self } }\nclass M7 { pub padding7 { self } }\nclass M8 { pub padding8 { self } }\nclass M9 { pub padding9 { self } }\nclass M10 { pub padding10 { self } }\nclass M11 { pub padding11 { self } }\nclass M12 { pub padding12 { self } }\nclass M13 { pub padding13 { self } }\nclass M14 { pub padding14 { self } }\nclass M15 { pub padding15 { self } }\nclass M16 { pub padding16 { self } }\nclass M17 { pub padding17 { self } }\nclass M18 { pub padding18 { self } }\nclass M19 { pub padding19 { self } }\nclass M20 { pub padding20 { self } }\nclass M21 { pub padding21 { self } }\nclass M22 { pub padding22 { self } }\nclass M23 { pub padding23 { self } }\nclass M24 { pub padding24 { self } }\nclass M25 { pub padding25 { self } }\nclass M26 { pub padding26 { self } }\nclass M27 { pub padding27 { self } }\nclass M28 { pub padding28 { self } }\nclass M29 { pub padding29 { self } }\nclass M30 { pub padding30 { self } }\nclass M31 { pub target { stable } }\nclass Combined <: M0, M1, M2, M3, M4, M5, M6, M7, M8, M9, M10, M11, M12, M13, M14, M15, M16, M17, M18, M19, M20, M21, M22, M23, M24, M25, M26, M27, M28, M29, M30, M31 {}\nreceiver = Combined.new;\ntick { receiver.target }\npub run { tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick; tick }\n}\n",
+          "python_source": null,
+          "core_sha256": "c7ac8217ab823d1d4e91234310fbe66dffd54c9f8f1433201f51fa29b60f78ad",
+          "runtimes": {
+            "VarioHyve": {
+              "mean": 1235.41335,
+              "min": 970.91,
+              "max": 2086.371875,
+              "median": 1170.687875,
+              "q1": 1062.88975,
+              "q3": 1248.2968125,
+              "samples": [
+                1056.01825,
+                1324.342,
+                1083.50425,
+                1255.84725,
+                2086.371875,
+                1010.118625,
+                970.91,
+                1119.2655,
+                1222.11025,
+                1225.6455
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    9684.540625,
+                    2639.368,
+                    3442.08,
+                    2493.74475,
+                    2832.334875,
+                    2406.952125,
+                    1618.323,
+                    2123.715875,
+                    2452.6555,
+                    1742.30825,
+                    1076.71,
+                    1367.158875,
+                    1868.521125,
+                    3824.09175,
+                    1069.52225,
+                    1093.361875
+                  ],
+                  "samples_us": [
+                    1056.01825,
+                    1324.342,
+                    1083.50425,
+                    1255.84725,
+                    2086.371875
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    10005.383875,
+                    4117.506625,
+                    3328.238125,
+                    2249.60525,
+                    2137.285375,
+                    1929.10075,
+                    1635.21875,
+                    2937.11325,
+                    1524.587875,
+                    1405.031375,
+                    1142.983625,
+                    1085.760875,
+                    1073.749625,
+                    2117.079375,
+                    1213.541625,
+                    1014.3555
+                  ],
+                  "samples_us": [
+                    1010.118625,
+                    970.91,
+                    1119.2655,
+                    1222.11025,
+                    1225.6455
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/23.0.2-7/x64/bin/java",
+                  "-Xms512m",
+                  "-Xmx512m",
+                  "-cp",
+                  "/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/test:/home/runner/work/variohyve/variohyve/vh-core/build/resources/test:/home/runner/work/variohyve/variohyve/vh-core/build/classes/java/main:/home/runner/work/variohyve/variohyve/vh-core/build/resources/main:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.13.2/fc3db6d844df652a3d5db31c87fa12757f13691d/antlr4-runtime-4.13.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.obpcdl/reader-infra/2.0.0/4c5579121334f5d2d64720b0727a6f27ca8546f9/reader-infra-2.0.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.10.0/8fea1d9c58b2156f1b998f2f18da04bc9e087f74/junit-jupiter-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.10.0/89a1922534ed102be1fb2a8c0b2c6151297a12bf/junit-platform-launcher-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.10.0/9041c7365495a897a64782ea5a6fdb99dab1814e/junit-jupiter-params-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.10.0/90587932d718fc51a48112d33045a18476c542ad/junit-jupiter-engine-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.10.0/2fe4ba3d31d5067878e468c96aa039005a9134d3/junit-jupiter-api-5.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.10.0/276c4edcf64fabb5a139fa7b4f99330d7a93b804/junit-platform-engine-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.10.0/d533ff2c286eaf963566f92baf5f8a06628d2609/junit-platform-commons-1.10.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.3.0/152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e/opentest4j-1.3.0.jar",
+                  "vh.vm.NativeJavaDriver",
+                  "--bulk-slices"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": "openjdk version \"23.0.2\" 2025-01-21\nOpenJDK Runtime Environment Temurin-23.0.2+7 (build 23.0.2+7)\nOpenJDK 64-Bit Server VM Temurin-23.0.2+7 (build 23.0.2+7, mixed mode, sharing)\n",
+                "lean_toolchain": null,
+                "native_gc": "allocation-debt"
+              }
+            },
+            "Lean": {
+              "mean": 5214.9395125,
+              "min": 5181.686125,
+              "max": 5238.394125,
+              "median": 5216.092500000001,
+              "q1": 5205.2580625,
+              "q3": 5232.556125,
+              "samples": [
+                5205.232125,
+                5235.129,
+                5190.875625,
+                5181.686125,
+                5205.335875,
+                5225.723625,
+                5211.89325,
+                5238.394125,
+                5220.29175,
+                5234.833625
+              ],
+              "forks": [
+                {
+                  "warmups_us": [
+                    5206.23025,
+                    5187.188,
+                    5200.476625,
+                    5232.53875,
+                    5262.747375,
+                    5205.44175,
+                    5246.827625,
+                    5226.660625,
+                    5214.731125,
+                    5145.824,
+                    5141.31975,
+                    5256.498875,
+                    5207.949875,
+                    5237.755375,
+                    5242.266,
+                    5178.81575
+                  ],
+                  "samples_us": [
+                    5205.232125,
+                    5235.129,
+                    5190.875625,
+                    5181.686125,
+                    5205.335875
+                  ],
+                  "runtime": {}
+                },
+                {
+                  "warmups_us": [
+                    5663.3465,
+                    5250.647875,
+                    5152.866875,
+                    5183.840375,
+                    5217.930125,
+                    5200.3565,
+                    5234.65425,
+                    5206.761375,
+                    5209.759875,
+                    5234.074375,
+                    5107.55525,
+                    5226.297,
+                    5230.48325,
+                    5227.735625,
+                    5210.91225,
+                    5160.186625
+                  ],
+                  "samples_us": [
+                    5225.723625,
+                    5211.89325,
+                    5238.394125,
+                    5220.29175,
+                    5234.833625
+                  ],
+                  "runtime": {}
+                }
+              ],
+              "runtime": {
+                "command": [
+                  "/home/runner/work/variohyve/variohyve/vh-lean/.lake/build/bin/semanticsConformance",
+                  "--native",
+                  "--raw-conformance"
+                ],
+                "forks": 2,
+                "warmups": 16,
+                "measurements": 5,
+                "java_version": null,
+                "lean_toolchain": "leanprover/lean4:v4.35.0",
+                "native_gc": "allocation-debt"
+              }
+            }
+          }
+        }
+      ],
+      "configuration": {
+        "forks": 2,
+        "warmups": 16,
+        "samples": 5,
+        "batch": 8,
+        "repetitions": 32
+      }
+    },
+    "id": "42258718742-1",
+    "branch": "main",
+    "commit": {
+      "id": "ddc2fcdeb106b1374b7aa99473f0a09b193f218a",
+      "url": "https://github.com/plug-obp/variohyve/commit/ddc2fcdeb106b1374b7aa99473f0a09b193f218a",
+      "message": "Prove short-circuit lexical candidate lookup and report local VM benchmarks"
+    },
+    "run_url": "https://github.com/plug-obp/variohyve/actions/runs/42258718742/attempts/1"
   }
 ];
