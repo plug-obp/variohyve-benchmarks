@@ -14,9 +14,16 @@ Preview installers are public GitHub release assets. See
 The [site maintenance skill](.agents/skills/maintain-variohyve-site/SKILL.md)
 routes preview, benchmark and specification work to their sources and checks.
 
-The performance dashboard separates three timing scopes:
+The [0.6.1 publication record](PUBLICATION.md) maps the public audit findings to
+fixes, validation and remaining access/platform limits.
 
-- **Payload · prepared runtime** is the primary series for new measurements. A
+The performance dashboard separates four timing scopes:
+
+- **Native sessions** compares warmed Java/Lean/CPython/GraalPy session batches,
+  including the declared guest, transport, handles and GC costs. It is separate
+  from JMH and does not measure isolated VM instructions.
+
+- **Payload · prepared runtime** is the primary JMH series for new measurements. A
   fresh independent runtime is prepared outside the timer for each payload and
   used once. The timed work includes workload class/object construction,
   execution, boundary calls, correctness checks and execution-time GC. Parsing,
@@ -38,9 +45,14 @@ influence GC and caches, and allocation-profiler values are not payload-only
 allocation figures. Python context/interpreter initialization is already outside
 its workload timer.
 
-The dashboard defaults to prepared-runtime payloads once published measurements
-exist, and otherwise shows the existing fresh-world history. Initialization and
+The dashboard defaults to native sessions when available, then prepared-runtime
+payloads, then the existing fresh-world history. Initialization and
 fresh-world controls remain selectable. Original archives and sample records are
 preserved; the raw download includes both. UI sources are maintained in the
 VarioHyve source repository under `scripts/benchmark-dashboard/` and copied here
 by report publication.
+
+The project homepage is generated from `preview/manifest.json` and
+[its template](templates/home.html) by `python3 scripts/render-site.py`.
+Promotion and refresh regenerate it together with specification navigation,
+so version and PDF destinations cannot drift independently.

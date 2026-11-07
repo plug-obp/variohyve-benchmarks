@@ -1,18 +1,31 @@
-(function () {
+(async function () {
   'use strict';
   const $ = id => document.getElementById(id);
-  const raw = window.BENCHMARK_DATA;
-  if (!raw) { $('status').textContent = 'Benchmark history could not be loaded. Please reload this page.'; return; }
-  const rich = window.BENCHMARK_RUNS || [];
-  const cases = BenchmarkModel.normalize(raw, rich);
+  async function json(url) {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`Could not load ${url}: ${response.status}`);
+    return response.json();
+  }
+  let index;
+  try { index = await json('history-index.json'); }
+  catch (error) { $('status').textContent = 'Benchmark summary could not be loaded. Please reload. ' + error.message; return; }
+  const cases = index.cases;
+  const loaded = new Map();
+  let drawRequest = 0;
+  json('../../preview/manifest.json').then(release => {
+    const measured = index.latestCommit?.id || 'none';
+    const exact = index.commits.includes(release.source.commit);
+    $('release-status').textContent = `Downloadable preview v${release.version}: ${release.source.commit.slice(0,12)}. Latest measured revision: ${measured.slice(0,12)}. ${exact ? 'Exact-release measurements are available in this history.' : 'No exact-release measurement is published; these are development measurements.'} JUnit links cover the modules and revisions named in each report, not the whole release suite.`;
+  }).catch(() => { /* Keep the static manifest link and development-history label. */ });
   const colors = {VarioHyve:'#007f73', Lean:'#a24191', CPython:'#5264d9', GraalPy:'#bd6720'};
-  const labels = {VarioHyve:'VarioHyve · Java', Lean:'VarioHyve · Lean', CPython:'CPython', GraalPy:'GraalPy · no guest JIT'};
+  const labels = {VarioHyve:'VarioHyve · Java', Lean:'VarioHyve · Lean', CPython:'CPython', GraalPy:'GraalPy, guest JIT off'};
   const nativeSession = run => run.timingScope === 'native-session-v1';
   const ratioValues = run => nativeSession(run) ? run.leanRatios : run.ratios;
   const numerator = run => nativeSession(run) ? 'Lean' : 'Java';
   const initialScope = BenchmarkModel.defaultTimingScope(cases);
   const state = {view:'comparison', key:cases.find(c => c.timingScope === initialScope && c.profile === 'tracing' && c.name === 'methodSend')?.key};
   const number = value => Number.isFinite(value) ? value.toLocaleString(undefined, {maximumSignificantDigits:4}) : '—';
+  const ratio = value => Number.isFinite(value) ? value.toLocaleString(undefined, {maximumSignificantDigits:2}) : '—';
   const mean = metric => metric ? `${metric.approximate ? '≈ ' : ''}${number(metric.mean)}` : '—';
   const short = commit => commit.id.slice(0,7);
   function element(tag, text, className) {
@@ -27,7 +40,7 @@
     node.target = '_blank'; node.rel = 'noopener'; return node;
   }
   function option(select, value, label) { const node = element('option',label); node.value = value; select.append(node); }
-  const branches = [...new Set(cases.flatMap(c => c.runs.map(r => r.branch)))].sort();
+  const branches = index.branches;
   for (const branch of branches) option($('branch'),branch,branch);
   for (const profile of new Set(cases.map(c => c.profile))) if (!['tracing','legacy','not-applicable'].includes(profile)) option($('profile'),profile,profile);
   $('timing-scope').value = initialScope;
@@ -36,13 +49,23 @@
     if (!scoped.some(c => c.profile === $('profile').value)) $('profile').value = scoped.find(c => c.profile === 'tracing')?.profile || scoped.find(c => c.profile !== 'not-applicable')?.profile || 'tracing';
   }
   selectAvailableProfile();
-  const totalRuns = new Set(cases.flatMap(c => c.runs.map(r => r.id))).size;
-  $('status').textContent = `${totalRuns} runs · ${branches.length} branches · Java, Lean, CPython and GraalPy · lower is faster`;
-  $('updated').textContent = `Last published ${new Date(Math.max(Number(raw.lastUpdate) || 0, ...rich.map(r => Date.parse(r.date)).filter(Number.isFinite))).toLocaleString()}`;
-  $('download').onclick = () => {
-    const url = URL.createObjectURL(new Blob([JSON.stringify({archive:raw, measurements:rich},null,2)],{type:'application/json'}));
-    const anchor = element('a'); anchor.href = url; anchor.download = 'variohyve-performance.json'; anchor.click();
-    setTimeout(() => URL.revokeObjectURL(url),1000);
+  $('status').textContent = `${index.totalRuns} runs · ${branches.length} branches · Java, Lean, CPython and GraalPy, guest JIT off · lower is faster`;
+  $('updated').textContent = `Last published ${new Date(index.lastUpdate).toLocaleString()}`;
+  $('download').onclick = async () => {
+    const button = $('download'); button.disabled = true; button.textContent = 'Preparing archive…';
+    try {
+      const load = async (url, prefix) => {
+        const response = await fetch(url); if (!response.ok) throw new Error(url);
+        const text = await response.text();
+        if (!text.startsWith(prefix)) throw new Error('Unrecognized archive');
+        return JSON.parse(text.slice(prefix.length).trim().replace(/;$/, ''));
+      };
+      const [archive, measurements] = await Promise.all([load('data.js', 'window.BENCHMARK_DATA = '), load('measurements.js', 'window.BENCHMARK_RUNS = ')]);
+      const url = URL.createObjectURL(new Blob([JSON.stringify({conditions:{GraalPy:'guest JIT off'},archive,measurements})],{type:'application/json'}));
+      const anchor = element('a'); anchor.href = url; anchor.download = 'variohyve-performance.json'; anchor.click();
+      setTimeout(() => URL.revokeObjectURL(url),1000);
+    } catch (error) { $('status').textContent = 'Archive download failed; please retry.'; }
+    finally { button.disabled = false; button.textContent = 'Download data ↓'; }
   };
   function filteredCases() {
     const query = $('search').value.toLowerCase().trim();
@@ -80,16 +103,38 @@
       button.onclick = () => { state.key = c.key; refresh(); $('chart-title').scrollIntoView({behavior:'smooth',block:'center'}); };
       title.append(button,element('small',[BenchmarkModel.paramsKey(c.params), c.batchSize ? `batch=${c.batchSize} · per payload` : ''].filter(Boolean).join(' · ') || (c.family === 'setup' ? 'Initialization diagnostic' : 'Core workload')));
       row.append(title);
-      for (const runtime of ['VarioHyve','Lean','CPython','GraalPy']) row.append(element('td',mean(run.runtimes[runtime])));
-      row.append(element('td',run.leanRatios?.VarioHyve ? `${number(run.leanRatios.VarioHyve)}×` : '—'));
+      for (const runtime of ['VarioHyve','Lean','CPython','GraalPy']) {
+        const metric = run.runtimes[runtime], cell = element('td',mean(metric));
+        if (metric?.sampleCount) cell.append(element('small',`n=${metric.sampleCount} · ${number(metric.min)}–${number(metric.max)}`));
+        else if (metric) cell.append(element('small','samples unavailable'));
+        row.append(cell);
+      }
+      row.append(element('td',run.leanRatios?.VarioHyve ? `${ratio(run.leanRatios.VarioHyve)}×` : '—'));
       for (const runtime of ['CPython','GraalPy']) {
-        const cell = element('td'); cell.append(element('span',run.ratios[runtime] ? `${number(run.ratios[runtime])}×` : '—','ratio')); row.append(cell);
+        const cell = element('td'); cell.append(element('span',run.ratios[runtime] ? `${ratio(run.ratios[runtime])}×` : '—','ratio')); row.append(cell);
       }
       const revision = element('td'); revision.append(element('span',run.branch),element('small',`${short(run.commit)} · ${new Date(run.date).toLocaleDateString()}`));
       revision.title = `${run.branch}\n${run.commit.message || ''}`; row.append(revision); body.append(row);
     }
     if (!filtered.length) { const row = element('tr'), cell = element('td','No workloads match these filters.'); cell.colSpan = 9; row.append(cell); body.append(row); }
-    draw(filtered.find(c => c.key === state.key));
+    loadHistory(filtered.find(c => c.key === state.key));
+  }
+  async function loadHistory(scenario) {
+    const request = ++drawRequest;
+    if (!scenario) { draw(null); return; }
+    // Branch filtering may need older runs than the latest twenty across all branches.
+    const url = $('limit').value === '20' && $('branch').value === 'all' ? scenario.recent : scenario.history;
+    $('plot').replaceChildren(); $('legend').replaceChildren(); $('tooltip').hidden = true;
+    $('selection').textContent = 'Loading selected workload…';
+    try {
+      if (!loaded.has(url)) loaded.set(url, json(url));
+      const runs = await loaded.get(url);
+      if (request !== drawRequest) return;
+      draw({...scenario, runs:runs.filter(r => $('branch').value === 'all' || r.branch === $('branch').value)});
+    } catch (error) {
+      loaded.delete(url);
+      if (request === drawRequest) $('selection').textContent = 'Workload history could not be loaded; select it again to retry.';
+    }
   }
   const svgNS = 'http://www.w3.org/2000/svg';
   function svgElement(tag, attrs = {}, text) {
@@ -101,7 +146,7 @@
   function detailLines(run, runtime) {
     const metric = run.runtimes[runtime];
     const lines = [`${labels[runtime]} · ${run.branch}`, `${short(run.commit)} · ${new Date(run.date).toLocaleString()}`, (run.commit.message || '').split('\n')[0]];
-    if (state.view === 'ratio') lines.push(`${numerator(run)} / ${labels[runtime]}: ${number(ratioValues(run)[runtime])}×`);
+    if (state.view === 'ratio') lines.push(`${numerator(run)} / ${labels[runtime]}: ${ratio(ratioValues(run)[runtime])}×`);
     lines.push(`${runtime === 'VarioHyve' ? 'Timing scope' : 'VarioHyve comparison scope'}: ${BenchmarkModel.TIMING_SCOPES[run.timingScope]} (${run.timingScope})`);
     if (run.profile === 'not-applicable') lines.push('GC profile: not applicable · no native heap');
     if (run.batchSize && runtime === 'VarioHyve') lines.push(`Batch: ${run.batchSize} fresh worlds · normalized per payload operation`);
@@ -139,7 +184,7 @@
       : state.view === 'ratio' ? native ? ['VarioHyve','CPython','GraalPy'] : ['CPython','GraalPy'] : available;
     const series = candidates.filter(runtime => runs.some(run => positiveMetric(run.runtimes[runtime])));
     for (const runtime of series) {
-      const label = element('span',state.view === 'ratio' ? `${native ? 'Lean' : 'Java'} / ${runtime === 'VarioHyve' ? 'Java' : runtime}` : labels[runtime]);
+      const label = element('span',state.view === 'ratio' ? `${native ? 'Lean' : 'Java'} / ${runtime === 'VarioHyve' ? 'Java' : labels[runtime]}` : labels[runtime]);
       label.style.setProperty('--color',colors[runtime]); $('legend').append(label);
     }
     const getValue = (run,runtime) => state.view === 'ratio' ? ratioValues(run)[runtime] : run.runtimes[runtime]?.mean;

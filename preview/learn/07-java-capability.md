@@ -56,7 +56,7 @@ Plainly saving the callback proxy does not keep it usable after the invocation.
 The label maker only reads a String, so it needs no retention declaration.
 
 [use-label.vh](examples/java/use-label.vh) declares
-`class Program(kernel, labelMaker)`. It retains the label maker in a slot and
+`class Program[kernel, labelMaker]`. It retains the label maker in a slot and
 sends `labels.label("Ada")`. A Java capability used inside VarioHyve is called
 an **Alien**; the source uses it by sending messages, just like the console.
 

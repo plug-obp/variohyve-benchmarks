@@ -3,7 +3,7 @@
 ## Language essentials
 
 These rules apply to the language independently of the starter's Java services.
-The complete [specification](../spec/src/SUMMARY.md) owns their detailed meaning.
+The complete [specification](https://obpcdl.org/variohyve-benchmarks/spec/index.html) owns their detailed meaning.
 
 | Form or idea | Meaning in these lessons |
 |---|---|
@@ -32,7 +32,7 @@ See [lesson 9](09-worlds.md) for this separation in a complete project.
 Composition preserves each applied contribution's own slots, even when names
 match. Applying a mixin imports its owned contribution; inheriting a superclass
 retains its assembled chain. Public publication and private lexical authority
-remain distinct. The [objects and classes chapter](../spec/src/objects-and-classes.md)
+remain distinct. The [objects and classes chapter](https://obpcdl.org/variohyve-benchmarks/spec/objects-and-classes.html)
 covers composition beyond this introductory course.
 
 ## Java and Lean
@@ -48,8 +48,21 @@ callbacks are its library/boundary choices. Native number and text libraries
 have their own contracts; these lessons do not claim to run unchanged in a
 scalar-free Lean world. Java–Lean differential tests compare results, failures,
 aliases and effects on supported shared inputs. They do not prove the Java VM
-or arbitrary foreign adapters correct. The [conformance map](../conformance.md#specification-java-and-lean)
+or arbitrary foreign adapters correct. The [conformance map](https://obpcdl.org/variohyve-benchmarks/preview/versions/0.6.1/reference/conformance.html#specification-java-and-lean)
 connects the specification, tests and Lean proof scope.
+
+## Three layers of a world
+
+| Layer | What it determines |
+|---|---|
+| Language | Objects, messages, visibility, storage, composition and control. |
+| Selected adapters or libraries | Protocols for values such as numbers and strings. |
+| Module constructor inputs | Services and capabilities supplied to that application. |
+
+Numeric literals do not imply an ambient application kernel. The starter selects
+scalar protocols when creating its runtime, then separately passes a kernel as an
+explicit module input. [Lesson 11](11-composition.md) shows how a small application combines supplied
+components and replaces one without changing the application.
 
 ## Starter world
 

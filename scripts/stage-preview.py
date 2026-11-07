@@ -6,6 +6,7 @@ import json
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
 from pathlib import Path
 
@@ -82,7 +83,9 @@ def decorate(release, preview):
         page = filename.relative_to(release).as_posix()
         head = f'\n<link data-version-navigation rel="stylesheet" href="{base}/versions.css">\n<script data-version-navigation src="{base}/versions.js" defer></script>\n'
         text = text.replace('</head>', head + '</head>', 1)
-        bar = f'\n<!-- version navigation --><div class="version-navigation wrap" data-version="{version}" data-page="{html.escape(page, quote=True)}"><span>Preview v{version}</span> · <a href="{base}/versions.html">All tutorial versions</a></div><!-- /version navigation -->\n'
+        latest = read_manifest(preview)['version']
+        archived_note = (f' · Archived release; <a href="{base}/">use v{latest} for current downloads and corrected guides</a>' if version != latest else '')
+        bar = f'\n<!-- version navigation --><div class="version-navigation wrap" data-version="{version}" data-page="{html.escape(page, quote=True)}"><span>Preview v{version}</span> · <a href="{base}/versions.html">All tutorial versions</a>{archived_note}</div><!-- /version navigation -->\n'
         if '</header>' not in text:
             raise ValueError(f'Page has no navigation header: {filename}')
         filename.write_text(text.replace('</header>', '</header>' + bar, 1))
@@ -187,6 +190,7 @@ def main():
     else:
         refresh(preview)
         print('Refreshed version navigation')
+    subprocess.run([sys.executable, str(ROOT / 'scripts/render-site.py')], check=True)
 
 
 if __name__ == '__main__':

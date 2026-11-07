@@ -69,7 +69,7 @@ they do not add global names or implicit imports to VarioHyve.
 
 ## Substitute an Alien without changing the application
 
-Follow [Bring your own Alien package](../../vh-packaging/CUSTOM-ALIENS.md#build-a-provider)
+Follow [Bring your own Alien package](https://obpcdl.org/variohyve-benchmarks/preview/versions/0.6.1/reference/custom-aliens.html#build-a-provider)
 to compile the Java multiplier, package its separate dependency JAR and write
 `aliens/multiplier/alien.json` with their actual digests. That guide is also
 included as `CUSTOM-ALIENS.md` in the tools archive. The provider implements the
@@ -148,3 +148,5 @@ The host code is necessary here only to adapt the foreign library to the Alien
 boundary; composition and packaging policy remain native.
 
 Back to [Learn VarioHyve](README.md).
+
+[Next: Bring components together](11-composition.md)

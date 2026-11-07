@@ -131,6 +131,13 @@
       "source": "java/LabelMaker.vh",
       "stdout": "fixtures/contract.out",
       "exit": 0
+    },
+    {
+      "name": "review-desk",
+      "mode": "run",
+      "source": "federation.vh",
+      "stdout": "fixtures/federation.out",
+      "exit": 0
     }
   ]
 }

@@ -76,7 +76,9 @@ source edits cannot enter the release:
 node scripts/render-reference.cjs /path/to/variohyve FULL_SOURCE_COMMIT 0.3.2 /path/to/staged/preview/reference /path/to/node_modules/markdown-it
 ```
 
-The renderer uses a fixed three-document allowlist. Tutorial links that point
+The renderer uses a fixed allowlist for release guides, changelogs and evidence.
+The evidence page exports selected exact theorem declarations and source hashes;
+it explicitly distinguishes statement inspection from independent proof replay. Tutorial links that point
 outside `learn/` to the packaging guides are translated into these public
 supplements. Text and code remain identical to the tagged documents.
 
@@ -205,3 +207,10 @@ Only when reproducing the original v0.1.0 tutorial from its starter, first apply
 `scripts/learn-v0.1.0-inline.patch` inside the extracted `learn/` directory. The
 patch adds inline examples and download links without changing its API or
 example files. Check before applying; an already patched tutorial needs no patch.
+
+After promotion or a navigation refresh, run `python3 scripts/check-site.py`
+as well as the preview checks. The homepage and specification navigation derive
+the release and PDF from the manifest. Source-only specification links must be
+mapped during publication. Keep historical PDFs unchanged; when specification
+inputs are byte-identical to a prior release, the manifest may retain that PDF
+with its original source revision and an explicit input-equality check.

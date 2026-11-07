@@ -1,0 +1,8 @@
+.project-intro { max-width: 780px; padding: 5rem 0 4rem; }
+.project-intro .lead { font-size: 1.3rem; }
+.project-intro > p:not(.eyebrow) { color: var(--muted); }
+.project-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.project-cards a { font-size: .9rem; margin-top: .5rem; }
+.site-header { flex-wrap: wrap; }
+.site-header nav { flex-wrap: wrap; }
+@media(max-width:680px) { .project-cards { grid-template-columns:1fr; } .project-intro { padding:3rem 0; } }

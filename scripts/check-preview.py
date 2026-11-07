@@ -178,7 +178,8 @@ def main():
             assert f'data-version="{page_version}"' in path.read_text(), f'{path}: missing version selector'
         for link in page.links:
             url = urlsplit(link)
-            if url.scheme or url.netloc:
+            public_site = url.netloc == 'obpcdl.org' and url.path.startswith('/variohyve-benchmarks/')
+            if (url.scheme or url.netloc) and not public_site:
                 continue
             if url.path.startswith('/variohyve-benchmarks/'):
                 target = (root / unquote(url.path.removeprefix('/variohyve-benchmarks/'))).resolve()

@@ -87,3 +87,9 @@ footer p { margin: 0; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 .tool-downloads { grid-template-columns: repeat(3, 1fr); }
 @media (max-width: 680px) { .tool-downloads { grid-template-columns: 1fr; } }
+
+.site-header, .site-header nav { flex-wrap: wrap; }
+.table-scroll { overflow-x:auto; margin:1.2rem 0; }
+.platform-table { border-collapse:collapse; width:100%; font-size:.85rem; }
+.platform-table th, .platform-table td { padding:.85rem; text-align:left; vertical-align:top; border-bottom:1px solid var(--line); }
+.platform-table th { background:var(--soft); }

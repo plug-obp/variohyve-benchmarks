@@ -1,8 +1,8 @@
 # Install and say hello
 
-You need a Java 23 JDK and a matching VarioHyve starter archive and VS Code
+You need JDK 23 or newer (tested with JDK 23) and a matching VarioHyve starter archive and VS Code
 extension (`.vsix`). Get both from the
-[matching public release downloads](https://obpcdl.org/variohyve-benchmarks/preview/versions/0.6.0/).
+[matching public release downloads](https://obpcdl.org/variohyve-benchmarks/preview/versions/0.6.1/).
 If you are building them yourself, follow the contributor commands below first.
 
 Extract the starter archive into a folder of your choice. It contains `bin`,
@@ -13,7 +13,7 @@ java -version
 javac -version
 ```
 
-Make sure both commands select Java 23. Set `JAVA_HOME` to that JDK and put its
+Make sure both commands select JDK 23 or newer; this release is tested with JDK 23. Set `JAVA_HOME` to that JDK and put its
 `bin` directory first on your `PATH` if another Java installation is the default.
 The launcher reads `JAVA_HOME`; the later Java lessons also need `java` and
 `javac` on `PATH`. In a terminal, change into the extracted starter's `learn`
@@ -62,7 +62,7 @@ and use `vh` from any directory.
 ## Use VS Code
 
 1. Open VS Code's Extensions view, choose **Install from VSIX...**, and select
-   the matching `vh-lsp-vscode-0.6.0.vsix` artifact.
+   the matching `vh-lsp-vscode-0.6.1.vsix` artifact.
 2. Open the starter's `learn` folder and trust it when you want to run its code.
 3. If Java is not found, set **Vh: Java Home** (`vh.javaHome`) to the JDK folder.
 4. Open `examples/hello.vh`. In the Command Palette select
@@ -123,7 +123,7 @@ that file alone is not evidence of a Windows smoke test.
 [Next: Values, messages and input](02-values-and-input.md)
 
 For an application with explicit native dependencies and a portable deployment,
-use the [packaging distribution or the bundled VS Code tools](../../vh-packaging/GETTING-STARTED.md).
+use the [packaging distribution or the bundled VS Code tools](https://obpcdl.org/variohyve-benchmarks/preview/versions/0.6.1/reference/getting-started.html).
 The public release downloads include `variohyve-packaging-*.zip` alongside the
 starter archive and VSIX. The packaging guide covers creating a project, native
 tests, packaging and running the output without the original installation.

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Release evidence and its limits · VarioHyve v0.6.1</title><link rel="stylesheet" href="../preview.css"><link rel="stylesheet" href="../learn/learn.css"><link rel="stylesheet" href="../learn/highlight.css">
+<link data-version-navigation rel="stylesheet" href="../../../versions.css">
+<script data-version-navigation src="../../../versions.js" defer></script>
+</head>
+<body><a class="skip" href="#reference">Skip to reference</a><header class="site-header wrap"><a class="wordmark" href="../">VarioHyve<span aria-hidden="true">.</span></a><nav aria-label="Release navigation"><a href="../learn/">Tutorial</a><a href="../#downloads">Downloads</a></nav></header>
+<!-- version navigation --><div class="version-navigation wrap" data-version="0.6.1" data-page="reference/evidence.html"><span>Preview v0.6.1</span> · <a href="../../../versions.html">All tutorial versions</a></div><!-- /version navigation -->
+
+<main id="reference" class="lesson"><p class="eyebrow">RELEASE REFERENCE · V0.6.1</p><p>This public reference is rendered from the v0.6.1 source commit <code>8232f4876b00485e56ef457f62b2016154a538d1</code>. Code, test and design-note links point to that exact revision in the private source repository and require repository access. Specification, tutorial and packaging-guide links are public.</p><h1 id="release-evidence-and-its-limits">Release evidence and its limits</h1>
+<p>The public preview downloads contain the <strong>Java implementation</strong>, its starter,
+packaging tools and VS Code extension. The Lean native implementation and proof
+development are maintained separately; this release does not offer a Lean binary.
+The <a href="conformance.html#specification-java-and-lean">conformance map</a> separates the
+language contract, Java regressions, cross-VM comparisons and scoped proofs.</p>
+<h2 id="what-the-proof-results-cover">What the proof results cover</h2>
+<table>
+<thead>
+<tr>
+<th>Result family</th>
+<th>Meaning and premises</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Native source adequacy</td>
+<td>For admitted source, a valid source configuration, a supported literal translation and the stated source/native representation relation, lowering preserves and reflects termination and relates divergence. Source-backed retained histories additionally require retained catalogs, compatible worlds/registries and sufficient frontend and execution budgets.</td>
+</tr>
+<tr>
+<td>Immutable reference observation</td>
+<td>After initialization has settled, a realized immutable slot retains its reference through admitted source steps. Heap correspondence relates the source cell to its physical representation. This does not freeze the referenced object.</td>
+</tr>
+<tr>
+<td>Immutable references after collection</td>
+<td>The same observation holds for a receiver retained by a supported collector graph, with explicit heap/address correspondence and liveness. Unreachable objects may be collected.</td>
+</tr>
+</tbody>
+</table>
+<p>The public release reference exports selected <strong>exact theorem declarations</strong>, their
+premises, owning namespaces, source-file digests and the source revision. These
+are an inspectable statement sample, not the complete proof development and not
+an independently replayable proof artifact. The full definitions, proofs and
+dependencies are currently in the access-limited source repository. Logs and
+hashes provide traceability; they do not substitute for independent replay.</p>
+<p>See the <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-lean/semantics/proof-obligations.md" title="Private source repository; access required">proof ledger</a> for the complete
+coverage account. The exported sample is drawn from
+<a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-lean/semantics/VarioHyve/Semantics/Refinement/SourceAdequacy.lean" title="Private source repository; access required">source adequacy</a>
+and <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-lean/semantics/VarioHyve/Semantics/Refinement/LanguageImmutable.lean" title="Private source repository; access required">immutable references</a>.</p>
+<h2 id="validation-identity">Validation identity</h2>
+<p>The release manifest records the runtime tag and full source commit, artifact
+byte sizes and SHA-256 hashes, toolchains, commands, results and platform scope.
+A later documentation or harness correction has its own revision; it does not
+change the identity of an already published binary. Test totals belong to the
+named revision and module set, not every version of the project.</p>
+<p>The release checks use these entry points:</p>
+<pre><code class="hljs language-sh">python3 scripts/check-docs.py
+python3 scripts/check-learn.py --<span class="hljs-built_in">source</span>-only
+bash scripts/check-bootstrap.sh
+bash scripts/check-lean.sh
+./gradlew <span class="hljs-built_in">test</span>
+python3 scripts/check-starter-package.py
+python3 vh-packaging/scripts/check-user-journey.py
+python3 vh-packaging/scripts/check-user-journey.py --custom-alien
+</code></pre>
+
+<p>The assembled ZIP/VSIX gate additionally checks public help destinations,
+matching versions, installed Markdown links, licenses and the runtime JAR.
+The extension has separate typechecking, unit tests and an installed-editor
+journey. Only checks actually run for a release are recorded as passing.</p>
+<h2 id="boundaries-and-open-work">Boundaries and open work</h2>
+<ul>
+<li>Java uses regression and differential evidence; no formal Java refinement is claimed.</li>
+<li>Native library laws depend on their representation and callback contracts.
+VM proofs do not certify arbitrary libraries, worlds or foreign adapters.</li>
+<li>Complete Alien/Expat source adequacy and general resource bounds remain open
+obligations. Existing budget/resumption results are not general time or memory bounds.</li>
+<li>Lean's kernel, compiler and runtime are accepted infrastructure trust boundaries.</li>
+<li>Platform status is specific to OS, architecture and test scope. CLI checks do
+not imply editor checks, and one platform's pass does not certify another.</li>
+<li>Benchmark histories may measure different revisions from the downloadable
+preview. Timing scopes include their stated setup, transport and GC costs;
+they are not isolated VM-instruction costs or universal speed rankings.</li>
+</ul>
+<p>The <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-lean/semantics/proof-obligations.md#verification-roadmap" title="Private source repository; access required">verification roadmap</a>
+keeps deferred obligations distinct from established results.</p>
+<h2 id=theorem-statements>Selected theorem statements</h2><p><a href=theorem-statements.json download>Download exact declarations, premises and source hashes</a>. The file identifies its source revision and toolchain. It is statement evidence, not a replayable proof bundle.</p><p><a href=../manifest.json>Release validation, commands and artifact hashes</a></p></main>
+<footer class="wrap"><p>Supplemental reference · VarioHyve v0.6.1</p><a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/docs/release-evidence.md" title="Private source repository; access required">Pinned Markdown source (access required)</a></footer></body></html>

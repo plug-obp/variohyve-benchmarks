@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bring components together · Learn VarioHyve</title><link rel="stylesheet" href="../preview.css"><link rel="stylesheet" href="./highlight.css"><link rel="stylesheet" href="./learn.css">
+<link data-version-navigation rel="stylesheet" href="../versions.css">
+<script data-version-navigation src="../versions.js" defer></script>
+</head>
+<body><a class="skip" href="#lesson">Skip to lesson</a><header class="site-header wrap"><a class="wordmark" href="../">VarioHyve<span aria-hidden="true">.</span></a><nav aria-label="Tutorial navigation"><a href="./">All lessons</a><a href="../#downloads">Downloads</a></nav></header>
+<!-- version navigation --><div class="version-navigation wrap" data-version="0.6.1" data-page="learn/11-composition.html"><span>Preview v0.6.1</span> · <a href="../versions.html">All tutorial versions</a></div><!-- /version navigation -->
+
+<main id="lesson" class="lesson"><p class="eyebrow">LEARN VARIOHYVE · V0.6.1</p><h1 id="bring-components-together">Bring components together</h1>
+<p>You can now write objects, give them state, test them and package an application.
+Let's use those skills to build a tiny <strong>review desk</strong>: one component checks a
+model's name, and another keeps a numbered notebook of the results.</p>
+<p>This is a small taste of VarioHyve's purpose: bring useful components together
+while letting each keep its own job. You decide what the application receives.</p>
+<h2 id="three-small-jobs">Three small jobs</h2>
+<ul>
+<li><code>Checker</code> supplies an <code>inspect(name)</code> message. Our first version produces a
+friendly line of text; it is a demonstration, not a real model checker.</li>
+<li><code>Notebook</code> owns its entry counter and supplies <code>record(text)</code>.</li>
+<li><code>ReviewDesk</code> receives both objects and connects their messages.</li>
+</ul>
+<p>The desk doesn't create its own checker or notebook. That simple choice makes
+it easy to try a different checker or share a notebook.</p>
+<pre><code class="hljs language-vh"><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span>[kernel] {
+    Console = kernel<span class="hljs-title">.Console</span>;
+
+    <span class="hljs-keyword">class</span> <span class="hljs-title">Checker</span> {
+        <span class="hljs-keyword">pub</span> <span class="hljs-title">inspect</span>(name) { <span class="hljs-string">&quot;Checked: &quot;</span><span class="hljs-title">.concat</span>(name) }
+    }
+
+    <span class="hljs-keyword">class</span> <span class="hljs-title">Notebook</span> {
+        <span class="hljs-keyword">var</span> entries = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">pub</span> <span class="hljs-title">record</span>(text) {
+            entries = entries<span class="hljs-title">.plus</span>(<span class="hljs-number">1</span>);
+            <span class="hljs-string">&quot;Note &quot;</span><span class="hljs-title">.concat</span>(entries<span class="hljs-title">.toString</span>)<span class="hljs-title">.concat</span>(<span class="hljs-string">&quot;: &quot;</span>)<span class="hljs-title">.concat</span>(text)
+        }
+    }
+
+    <span class="hljs-keyword">class</span> <span class="hljs-title">ReviewDesk</span>[checker, notebook] {
+        checks = checker;
+        notes = notebook;
+        <span class="hljs-keyword">pub</span> <span class="hljs-title">review</span>(name) { notes<span class="hljs-title">.record</span>(checks<span class="hljs-title">.inspect</span>(name)) }
+    }
+
+    <span class="hljs-keyword">pub</span> <span class="hljs-title">run</span> {
+        <span class="hljs-keyword">let</span> notebook = Notebook();
+        <span class="hljs-keyword">let</span> desk = ReviewDesk(Checker(), notebook);
+        Console<span class="hljs-title">.printLine</span>(desk<span class="hljs-title">.review</span>(<span class="hljs-string">&quot;Bridge model&quot;</span>));
+        Console<span class="hljs-title">.printLine</span>(desk<span class="hljs-title">.review</span>(<span class="hljs-string">&quot;Station model&quot;</span>));
+        <span class="hljs-keyword">let</span> friendlyChecker = { <span class="hljs-keyword">pub</span> <span class="hljs-title">inspect</span>(name) { <span class="hljs-string">&quot;Ready to discuss: &quot;</span><span class="hljs-title">.concat</span>(name) } };
+        <span class="hljs-keyword">let</span> friendlyDesk = ReviewDesk(friendlyChecker, notebook);
+        Console<span class="hljs-title">.printLine</span>(friendlyDesk<span class="hljs-title">.review</span>(<span class="hljs-string">&quot;Garden model&quot;</span>))
+    }
+}
+</code></pre>
+
+<p><a href="examples/federation.vh" class="button example-download" download="federation.vh">Download federation.vh</a></p>
+<h2 id="run-it">Run it</h2>
+<p>From the starter's <code>learn</code> directory:</p>
+<pre><code class="hljs language-sh">../bin/vh run examples/federation.vh
+</code></pre>
+
+<p>On Windows PowerShell:</p>
+<pre><code class="language-powershell">..\bin\vh.bat run examples\federation.vh
+</code></pre>
+<p>Or open the file in VS Code and choose <strong>VarioHyve: Run File</strong>.</p>
+<pre><code class="hljs language-text">Note 1: Checked: Bridge model
+Note 2: Checked: Station model
+Note 3: Ready to discuss: Garden model
+</code></pre>
+
+<p>The last review uses a new checker. <code>ReviewDesk</code> is unchanged: it still sends
+<code>inspect</code> and <code>record</code>. Both desks receive the same notebook, so its numbering
+continues. The checker chooses the wording; the notebook owns the counter; the
+desk chooses how the work flows between them.</p>
+<h2 id="make-it-yours">Make it yours</h2>
+<p>Try changing the friendly checker's message, adding a fourth review, or giving
+the second desk a new <code>Notebook()</code>. Predict the output, then run the program.
+You already have the pieces to make these choices yourself.</p>
+<p>When you are ready to connect a real external tool, <a href="07-java-capability.html">lesson 7</a>
+shows how a Java capability answers an ordinary VarioHyve message.
+<a href="09-worlds.html">Lessons 9</a> and <a href="10-native-packages.html">10</a> take that idea into a
+recipe: the same application can receive a native package or a Java provider,
+then carry its chosen ingredients in a deployment.</p>
+<p>That is the next step from this small desk to your own application. Start with
+one useful protocol, supply the components explicitly, and keep each component's
+responsibility clear.</p>
+</main>
+<footer class="wrap"><p>Public preview v0.6.1 · Download the files shown in each lesson. Recipe projects use the packaging tools.</p><a href="../">Back to the preview</a></footer></body></html>

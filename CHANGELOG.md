@@ -3,6 +3,19 @@
 User-visible changes to the public VarioHyve preview. Preview versions may change
 the Java embedding API. Java 23 is required and is not bundled.
 
+## 0.6.1 — 2026-11-07
+
+- Repair installed documentation and extension help/support links; pin public
+  guides to the matching release. Include a starter quick start and license.
+- Check assembled ZIP/VSIX documentation and release identity before publication.
+  Launchers explain the JDK 23 minimum before application class loading.
+- Add a beginner-friendly component composition lesson and a three-layer world
+  explanation. Correct the Java-capability lesson's constructor spelling.
+- Clarify shipped Java tools, separately maintained Lean proofs, platform evidence
+  and benchmark revision/scope. Improve benchmark loading and variability labels.
+- Include the post-0.6.0 library-backed game worlds and bounded frontend/callback
+  adapter validation already merged on main. No source-language contract change.
+
 ## 0.6.0 — 2026-11-07
 
 The first seedless language revision intentionally breaks the
@@ -31,7 +44,7 @@ The first seedless language revision intentionally breaks the
 
 Source/native proof integration, the full Lean audit, Java tests and cross-VM
 conformance checks pass. The
-[accepted design note](docs/design-notes/seedless-language-and-explicit-values.md)
+[accepted design note](https://github.com/plug-obp/variohyve/blob/v0.6.1/docs/design-notes/seedless-language-and-explicit-values.md) (source access required)
 records the contract, validation evidence and proof boundaries.
 
 ## 0.5.0 — 2026-10-28

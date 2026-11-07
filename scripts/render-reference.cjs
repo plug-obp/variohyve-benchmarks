@@ -1,9 +1,13 @@
 // Render a fixed set of public release references from pinned source, never the working tree.
 const fs = require('node:fs');
 const path = require('node:path');
+const crypto = require('node:crypto');
 const { execFileSync } = require('node:child_process');
 const references = {
   'docs/conformance.md': 'conformance.html',
+  'docs/release-evidence.md': 'evidence.html',
+  'CHANGELOG.md': 'changelog.html',
+  'vh-lsp-vscode/CHANGELOG.md': 'extension-changelog.html',
   'vh-packaging/GETTING-STARTED.md': 'getting-started.html',
   'vh-packaging/CUSTOM-ALIENS.md': 'custom-aliens.html'
 };
@@ -79,10 +83,30 @@ function render(sourceRepository, commit, version, destination, markdownModule) 
     fs.writeFileSync(path.join(destination, output), `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${title} · VarioHyve v${version}</title><link rel="stylesheet" href="../preview.css"><link rel="stylesheet" href="../learn/learn.css"><link rel="stylesheet" href="../learn/highlight.css"></head>
 <body><a class="skip" href="#reference">Skip to reference</a><header class="site-header wrap"><a class="wordmark" href="../">VarioHyve<span aria-hidden="true">.</span></a><nav aria-label="Release navigation"><a href="../learn/">Tutorial</a><a href="../#downloads">Downloads</a></nav></header>
-<main id="reference" class="lesson"><p class="eyebrow">RELEASE REFERENCE · V${version}</p><p>This public reference is rendered from the v${version} source commit <code>${commit}</code>. Code, test and design-note links point to that exact revision in the private source repository and require repository access. Specification, tutorial and packaging-guide links are public.</p>${md.render(markdown)}</main>
+<main id="reference" class="lesson"><p class="eyebrow">RELEASE REFERENCE · V${version}</p><p>This public reference is rendered from the v${version} source commit <code>${commit}</code>. Code, test and design-note links point to that exact revision in the private source repository and require repository access. Specification, tutorial and packaging-guide links are public.</p>${md.render(markdown)}${output === 'evidence.html' ? '<h2 id=theorem-statements>Selected theorem statements</h2><p><a href=theorem-statements.json download>Download exact declarations, premises and source hashes</a>. The file identifies its source revision and toolchain. It is statement evidence, not a replayable proof bundle.</p><p><a href=../manifest.json>Release validation, commands and artifact hashes</a></p>' : ''}</main>
 <footer class="wrap"><p>Supplemental reference · VarioHyve v${version}</p><a href="${sourceUrl}" title="Private source repository; access required">Pinned Markdown source (access required)</a></footer></body></html>
 `);
   }
+
+  const theoremFiles = [
+    'vh-lean/semantics/VarioHyve/Semantics/Refinement/SourceAdequacy.lean',
+    'vh-lean/semantics/VarioHyve/Semantics/Refinement/LanguageImmutable.lean'
+  ];
+  const show = file => execFileSync('git', ['-C',sourceRepository,'show',`${commit}:${file}`],{encoding:'utf8'});
+  const evidence = {source_commit:commit, release:version,
+    lean_toolchain:show('vh-lean/lean-toolchain').trim(),
+    scope:'Selected exact declarations and premises; definitions and proof dependencies are required for independent replay.',
+    files:theoremFiles.map(file => {
+      const source = show(file);
+      const declarations = [...source.matchAll(/^theorem [\s\S]*?(?= := by)/gm)].map(match=>match[0]);
+      if (!declarations.length) throw new Error(`No theorem declarations in ${file}`);
+      return {path:file, sha256:crypto.createHash('sha256').update(source).digest('hex'),
+        imports:source.split('\n').filter(line=>line.startsWith('import ')),
+        namespaces:source.split('\n').filter(line=>line.startsWith('namespace ') || line.startsWith('open ')), declarations};
+    })};
+  fs.writeFileSync(path.join(destination,'theorem-statements.json'), JSON.stringify(evidence,null,2)+'\n');
+  fs.writeFileSync(path.join(destination,'launch.schema.json'),show('vh-lsp-vscode/schemas/launch.schema.json'));
+
 }
 
 if (require.main === module) {

@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Contract and conformance map · VarioHyve v0.6.1</title><link rel="stylesheet" href="../preview.css"><link rel="stylesheet" href="../learn/learn.css"><link rel="stylesheet" href="../learn/highlight.css">
+<link data-version-navigation rel="stylesheet" href="../../../versions.css">
+<script data-version-navigation src="../../../versions.js" defer></script>
+</head>
+<body><a class="skip" href="#reference">Skip to reference</a><header class="site-header wrap"><a class="wordmark" href="../">VarioHyve<span aria-hidden="true">.</span></a><nav aria-label="Release navigation"><a href="../learn/">Tutorial</a><a href="../#downloads">Downloads</a></nav></header>
+<!-- version navigation --><div class="version-navigation wrap" data-version="0.6.1" data-page="reference/conformance.html"><span>Preview v0.6.1</span> · <a href="../../../versions.html">All tutorial versions</a></div><!-- /version navigation -->
+
+<main id="reference" class="lesson"><p class="eyebrow">RELEASE REFERENCE · V0.6.1</p><p>This public reference is rendered from the v0.6.1 source commit <code>8232f4876b00485e56ef457f62b2016154a538d1</code>. Code, test and design-note links point to that exact revision in the private source repository and require repository access. Specification, tutorial and packaging-guide links are public.</p><h1 id="contract-and-conformance-map">Contract and conformance map</h1>
+<p>These stable IDs connect current contracts to their owners and executable
+evidence. They are navigation anchors, not a claim of complete language
+conformance. “Implemented” describes the listed scope; release validation is
+recorded separately. Proposed persistence, abstract execution and deep families
+remain outside this executable contract.</p>
+<p>The <a href="/variohyve-benchmarks/spec/index.html">specification</a> defines language semantics and labelled
+runtime/tooling contracts. <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/docs/design-notes/README.md" title="Private source repository; access required">Accepted decisions</a> record
+rationale. Tests check implementations and examples; they do not redefine either.</p>
+<table>
+<thead>
+<tr>
+<th>Stable ID</th>
+<th>Contract / authority</th>
+<th>Owner and profile</th>
+<th>Status / executable evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VH-LANG-MODULE-001</td>
+<td><a href="/variohyve-benchmarks/spec/program-structure.html">Isolated module construction and explicit inputs</a></td>
+<td><code>vh-core</code>, normal module entry, all profiles</td>
+<td>Implemented: <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/test/java/boundaryclient/ModuleEntryTest.java" title="Private source repository; access required">ModuleEntryTest</a>. Tooling evaluation is a separate entry.</td>
+</tr>
+<tr>
+<td>VH-LANG-VALUES-001</td>
+<td><a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/docs/design-notes/seedless-language-and-explicit-values.md" title="Private source repository; access required">Explicit source values</a></td>
+<td><code>vh-core</code>, admitted source and lowering</td>
+<td>Implemented: <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/test/java/vh/syntax/checks/ExplicitValueCheckTest.java" title="Private source repository; access required">ExplicitValueCheckTest</a>, <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/test/java/vh/syntax/lowering/ExplicitValueLoweringTest.java" title="Private source repository; access required">ExplicitValueLoweringTest</a>. Initializers and ordinary routine results are mandatory; private initialization completion supplies no language value.</td>
+</tr>
+<tr>
+<td>VH-LANG-STARTUP-001</td>
+<td><a href="/variohyve-benchmarks/spec/possible-seeds-and-worlds.html">Fixed structural startup and ordinary value libraries</a></td>
+<td><code>vh-core</code>, all profiles</td>
+<td>Implemented: <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/test/java/vh/vm/StructuralRuntimeTest.java" title="Private source repository; access required">StructuralRuntimeTest</a>, <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/test/java/vh/vm/internal/BoundaryProfilesTest.java" title="Private source repository; access required">BoundaryProfilesTest</a>, <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/test/java/boundaryclient/HostValueAdapterTest.java" title="Private source repository; access required">HostValueAdapterTest</a>. Object has no inherited value protocol; host null and Booleans cross as foreign values.</td>
+</tr>
+<tr>
+<td>VH-LANG-LOOKUP-001</td>
+<td><a href="/variohyve-benchmarks/spec/name-resolution.html">Declaration-relative lexical lookup and ordinary sends</a></td>
+<td><code>vh-core</code>, native objects</td>
+<td>Implemented: <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/test/java/boundaryclient/UnifiedInvocationTest.java" title="Private source repository; access required">UnifiedInvocationTest</a>, <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/test/java/boundaryclient/OuterSemanticsTest.java" title="Private source repository; access required">OuterSemanticsTest</a>.</td>
+</tr>
+<tr>
+<td>VH-LANG-OBJECT-001</td>
+<td><a href="/variohyve-benchmarks/spec/objects-and-classes.html">Contributions, application occurrences and flat metaclasses</a></td>
+<td><code>vh-core</code>, native objects</td>
+<td>Implemented subset: <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/test/java/boundaryclient/ClassCompositionTest.java" title="Private source repository; access required">ClassCompositionTest</a>, <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/test/java/boundaryclient/OwnedMixinApplicationTest.java" title="Private source repository; access required">OwnedMixinApplicationTest</a>. Deep-family proposals are separate.</td>
+</tr>
+<tr>
+<td>VH-LANG-HOME-001</td>
+<td><a href="/variohyve-benchmarks/spec/literals.html">Initializer and return-home lifetime</a></td>
+<td><code>vh-core</code>, native execution and Alien callback barrier</td>
+<td>Implemented: <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/test/java/boundaryclient/InitializerReturnHomeTest.java" title="Private source repository; access required">InitializerReturnHomeTest</a>.</td>
+</tr>
+<tr>
+<td>VH-LANG-EXAMPLE-001</td>
+<td><a href="/variohyve-benchmarks/spec/index.html">Executable specification examples</a></td>
+<td><code>vh-host</code> assertions over actual source blocks; each test selects its profile</td>
+<td>Implemented for every fenced <code>vh</code> block: <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-host/src/test/java/vh/host/SpecExamplesTest.java" title="Private source repository; access required">SpecExamplesTest</a>. Stable <code>example-id</code> markers survive chapter reordering.</td>
+</tr>
+<tr>
+<td>VH-BOUNDARY-SOURCE-001</td>
+<td><a href="/variohyve-benchmarks/spec/program-structure.html">Explicit import and evaluation services</a></td>
+<td><code>vh-core</code>, ordinary Alien/Expat source boundary</td>
+<td>Implemented: <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/test/java/boundaryclient/SourceServicesTest.java" title="Private source repository; access required">SourceServicesTest</a>. Imported modules inherit no ambient tooling context.</td>
+</tr>
+<tr>
+<td>VH-BOUNDARY-MEMBRANE-001</td>
+<td><a href="/variohyve-benchmarks/spec/foreign-objects.html">Foreign semantics, identity and failure kinds</a></td>
+<td><code>vh-core</code>, Java boundary</td>
+<td>Implemented synchronous boundary: <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/test/java/boundaryclient/SemanticMembraneTest.java" title="Private source repository; access required">SemanticMembraneTest</a>, <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/test/java/vh/vm/internal/BoundaryProfilesTest.java" title="Private source repository; access required">BoundaryProfilesTest</a>.</td>
+</tr>
+<tr>
+<td>VH-BOUNDARY-LIMIT-001</td>
+<td><a href="/variohyve-benchmarks/spec/interpreter-design.html">Execution admission and nested budgets</a></td>
+<td><code>vh-core</code>, immutable <code>ExecutionPolicy</code>; default 100000 steps</td>
+<td>Implemented: <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/test/java/boundaryclient/ExecutionPolicyTest.java" title="Private source repository; access required">ExecutionPolicyTest</a>. Independent entry selection is distinct from nested remaining budget.</td>
+</tr>
+<tr>
+<td>VH-WORLD-STARTUP-001</td>
+<td><a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/docs/design-notes/packaging-development-worlds.md" title="Private source repository; access required">Explicit startup adapter and provisions</a></td>
+<td><code>vh-packaging</code>, <code>host-values</code> / <code>host-scalars</code>, none / stdio</td>
+<td>Implemented: <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-packaging/src/test/java/vh/packaging/DeploymentStartupTest.java" title="Private source repository; access required">DeploymentStartupTest</a>. JavaHostKernel is optional composition, not a mandatory module input.</td>
+</tr>
+<tr>
+<td>VH-PACKAGE-ALIEN-001</td>
+<td><a href="custom-aliens.html">Packaged realizer convention</a></td>
+<td><code>vh-packaging</code>, <code>variohyve-java-alien-1</code>, Java 23 boundary</td>
+<td>Implemented: <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-packaging/src/test/java/vh/packaging/AlienPackageLoaderTest.java" title="Private source repository; access required">AlienPackageLoaderTest</a> and custom-Alien archive journey. Java isolation is not sandboxing.</td>
+</tr>
+<tr>
+<td>VH-PACKAGE-PIN-001</td>
+<td><a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-packaging/README.md" title="Private source repository; access required">Declared deployment inventory and captured bytes</a></td>
+<td>Native policy plus host output/capture services, <code>variohyve-deployment-1</code></td>
+<td>Implemented: <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-packaging/src/test/java/vh/packaging/DeploymentOutputTest.java" title="Private source repository; access required">DeploymentOutputTest</a>, <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-packaging/src/test/java/vh/packaging/DeploymentLaunchTest.java" title="Private source repository; access required">DeploymentLaunchTest</a>. No implicit transitive discovery or registry.</td>
+</tr>
+<tr>
+<td>VH-PACKAGE-NATIVE-001</td>
+<td><a href="/variohyve-benchmarks/preview/versions/0.6.1/learn/packages/multiplier/index.html">Native folder, entry, inputs and protocol</a></td>
+<td>Ordinary source modules; host scalar integer protocol selected explicitly</td>
+<td>Implemented: <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-packaging/scripts/check-user-journey.py" title="Private source repository; access required">archive journey</a> copies an independent producer, preserves application/tests under Alien substitution and runs the relocated result.</td>
+</tr>
+<tr>
+<td>VH-TOOL-INDEPENDENCE-001</td>
+<td><a href="/variohyve-benchmarks/spec/tooling-architecture.html#optional-metadata-and-source-coordinates">Optional tooling metadata</a></td>
+<td><code>vh-core</code> embedding entry; tools own their own configuration</td>
+<td>Implemented: <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-packaging/examples/direct-client/NativePackageClient.java" title="Private source repository; access required">direct client</a> runs the same modules with explicit inputs and no IDE, sidecars or API declarations in the archive journey.</td>
+</tr>
+<tr>
+<td>VH-TOOL-LAUNCH-001</td>
+<td><a href="getting-started.html">Recipe launch and native test status</a></td>
+<td>CLI / VS Code, <code>variohyve-launch-1</code></td>
+<td>Implemented: <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-packaging/src/test/java/vh/packaging/WorldLaunchTest.java" title="Private source repository; access required">WorldLaunchTest</a>, <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-lsp-vscode/tests/smoke-entry.cjs" title="Private source repository; access required">installed extension journey</a>. Native suites return Boolean and abort on raised failure; starter per-case recovery is a different tool contract.</td>
+</tr>
+<tr>
+<td>VH-TOOL-ASSIST-001</td>
+<td><a href="/variohyve-benchmarks/spec/tooling-architecture.html">Conservative recipe assistance</a></td>
+<td><code>vh-lsp</code>; adjacent sidecar or ancestor <code>.variohyve-project</code> marker</td>
+<td>Implemented: <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-lsp/src/test/java/vh/lsp/StarterEditorTest.java" title="Private source repository; access required">StarterEditorTest</a>. No execution of recipes to infer capabilities.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="specification-java-and-lean">Specification, Java and Lean</h2>
+<p>Use this map to follow a claim across the three maintained descriptions. The
+specification defines source behavior; Java regressions and differential runs
+are executable evidence; Lean theorems have the domains and premises recorded
+in the <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-lean/semantics/proof-obligations.md" title="Private source repository; access required">proof ledger</a>. No row asserts
+a formal refinement of Java. The detailed <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-lean/semantics/traceability.md" title="Private source repository; access required">Lean traceability map</a>
+owns construct-level theorem links rather than duplicating them here.</p>
+<table>
+<thead>
+<tr>
+<th>Shared contract</th>
+<th>Specification</th>
+<th>Java evidence</th>
+<th>Lean evidence and limits</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Explicit module authority</td>
+<td><a href="/variohyve-benchmarks/spec/program-structure.html">Program structure</a></td>
+<td><code>VH-LANG-MODULE-001</code>, <code>VH-BOUNDARY-SOURCE-001</code> above</td>
+<td><a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-lean/semantics/README.md" title="Private source repository; access required">Source-backed entry and confinement</a>; foreign source services retain separate adequacy obligations.</td>
+</tr>
+<tr>
+<td>Private/immutable declarations and composition</td>
+<td><a href="/variohyve-benchmarks/spec/slots.html">Slots</a>, <a href="/variohyve-benchmarks/spec/objects-and-classes.html">objects and classes</a></td>
+<td><a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/docs/design-notes/sovereign-composition-acceptance.md" title="Private source repository; access required">Sovereign acceptance catalog</a>, <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/test/java/vh/vm/ImmutableLocalsTest.java" title="Private source repository; access required">immutable-local regressions</a></td>
+<td><a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-lean/semantics/VarioHyve/Semantics/Sovereign/README.md" title="Private source repository; access required">Independent publication calculus</a>, <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-lean/semantics/proof-obligations.md#sovereign-composition-adoption-boundary" title="Private source repository; access required">adoption boundary</a>; arbitrary contributor laws are separate.</td>
+</tr>
+<tr>
+<td>Lexical selection and invocation</td>
+<td><a href="/variohyve-benchmarks/spec/name-resolution.html">Name resolution</a>, <a href="/variohyve-benchmarks/spec/message-sends.html">message sends</a></td>
+<td><code>VH-LANG-LOOKUP-001</code> above</td>
+<td><a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-lean/semantics/proof-obligations.md#lookup-and-message-sends" title="Private source repository; access required">Lookup and send refinements</a>, including selected origins and complete events.</td>
+</tr>
+<tr>
+<td>Capture, construction and return homes</td>
+<td><a href="/variohyve-benchmarks/spec/literals.html#initializer-completion">Literals</a></td>
+<td><code>VH-LANG-HOME-001</code> above</td>
+<td><a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-lean/semantics/specification-coherence.md#checked-boundaries" title="Private source repository; access required">Coherence review</a>; native source proofs do not establish foreign continuation transfer.</td>
+</tr>
+<tr>
+<td>Independent frontend and source execution</td>
+<td><a href="/variohyve-benchmarks/spec/formal-core.html">Appendix A</a>, <a href="/variohyve-benchmarks/spec/tooling-architecture.html">tooling contracts</a></td>
+<td>Parser/lowering regressions and <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-lean/semantics/execution-conformance/README.md#run-independently" title="Private source repository; access required">entrypoint comparisons</a></td>
+<td><a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-lean/semantics/proved-vm.md#initial-native-milestone-review" title="Private source repository; access required">Native milestone</a>: scalar-free/native-decimal source-backed histories, with initial-world and policy premises. Raw-core acceptance is a separate implementation contract.</td>
+</tr>
+<tr>
+<td>Budgets, retained state and resumption</td>
+<td><a href="/variohyve-benchmarks/spec/formal-core.html#execution-budgets-and-resumption">Execution budgets</a></td>
+<td><a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/test/java/vh/vm/ResumableExecutionChecks.java" title="Private source repository; access required">Resumable execution checks</a> and retained differential scenarios</td>
+<td><a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-lean/semantics/session-driver.md" title="Private source repository; access required">Session contract</a>; exact native slice laws do not require equal Java/Lean fuel, cleanup steps or physical addresses.</td>
+</tr>
+<tr>
+<td>Values and foreign services</td>
+<td><a href="/variohyve-benchmarks/spec/possible-seeds-and-worlds.html">Explicit worlds</a>, <a href="/variohyve-benchmarks/spec/foreign-objects.html">foreign objects</a></td>
+<td><code>VH-BOUNDARY-MEMBRANE-001</code>, starter/package tests</td>
+<td><a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-lean/semantics/proof-obligations.md#accepted-verification-scope" title="Private source repository; access required">Verification ownership</a>: library/world laws belong to their owners; general Alien/Expat adequacy and resource guarantees remain deferred.</td>
+</tr>
+</tbody>
+</table>
+<p>Run the <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/docs/README.md#validation-and-prerequisites" title="Private source repository; access required">validation matrix</a> for current
+evidence: <code>check-lean.sh</code> checks proofs, <code>./gradlew test</code> checks Java and executable
+specification examples, and the structural/native/entrypoint scripts compare
+implementations with independent expected observations. Passing one gate does
+not substitute for another. Performance reports remain revision-specific and
+do not establish semantic equivalence.</p>
+<h2 id="small-sdk-boundary">Small SDK boundary</h2>
+<p>The supported starter surface is the selected scalar protocols, explicit Console
+and parsers, small lists/maps, native SUnit and module composition. See the
+<a href="/variohyve-benchmarks/preview/versions/0.6.1/learn/reference.html">starter reference</a> for exact messages. This release
+does not promote a filesystem API, registry, solver, network stack or general
+collection framework into the language. New host operations require a concrete
+boundary need; application composition and orchestration should start in native
+VarioHyve.</p>
+</main>
+<footer class="wrap"><p>Supplemental reference · VarioHyve v0.6.1</p><a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/docs/conformance.md" title="Private source repository; access required">Pinned Markdown source (access required)</a></footer></body></html>

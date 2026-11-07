@@ -1,25 +1,25 @@
 {
   "schema_version": 1,
   "name": "VarioHyve public preview",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "date": "2026-11-07",
-  "java_requirement": "JDK 23; not bundled",
-  "extension_version": "0.6.0",
+  "java_requirement": "JDK 23 or newer; not bundled; tested versions and platform scopes below",
+  "extension_version": "0.6.1",
   "source": {
     "repository": "https://github.com/plug-obp/variohyve",
     "visibility": "private",
-    "tag": "v0.6.0",
-    "commit": "c8fbc4abdad5c13dabceb1299fdd51ab09b4de46"
+    "tag": "v0.6.1",
+    "commit": "8232f4876b00485e56ef457f62b2016154a538d1"
   },
   "ci": {
     "workflow": "Starter slice",
-    "run_id": 42369289483,
-    "url": "https://github.com/plug-obp/variohyve/actions/runs/42369289483",
+    "run_id": 42381055654,
+    "url": "https://github.com/plug-obp/variohyve/actions/runs/42381055654",
     "event": "push",
     "ref": "main",
-    "head_sha": "c8fbc4abdad5c13dabceb1299fdd51ab09b4de46",
+    "head_sha": "8232f4876b00485e56ef457f62b2016154a538d1",
     "conclusion": "cancelled",
-    "explanation": "No workflow steps ran. Windows/Linux jobs failed before startup under the account payment/spending limit; macOS was cancelled. Lean run 42369289779 likewise failed before startup.",
+    "explanation": "No validation steps ran. Linux/Windows jobs were blocked by account payment/spending limits; macOS runner configuration macos-14-arm64-us-xl was unsupported. Lean run 42381055644 also failed before startup under the payment/spending limit.",
     "platforms": [
       {
         "platform": "windows-2022",
@@ -40,102 +40,102 @@
   },
   "assets": [
     {
-      "name": "variohyve-0.6.0-linux.zip",
+      "name": "variohyve-0.6.1-linux.zip",
       "kind": "starter",
       "platform": "linux",
-      "bytes": 1599986,
-      "sha256": "c2a5fa7d25485be750991c15867db77b5e51b8115dbce30219c8261f50ceaad8",
+      "bytes": 1617529,
+      "sha256": "54578515f653de66b278360b52f6c4f2d5137f4b14a9f43506692ece5908c6f6",
       "ci_artifact": null,
-      "build_origin": "local-tagged-build-linux-arm64-docker-c8fbc4abdad5c13dabceb1299fdd51ab09b4de46"
+      "build_origin": "local-tagged-build-macos-arm64-8232f4876b00485e56ef457f62b2016154a538d1"
     },
     {
-      "name": "variohyve-0.6.0-macos.zip",
+      "name": "variohyve-0.6.1-macos.zip",
       "kind": "starter",
       "platform": "macos",
-      "bytes": 1600120,
-      "sha256": "a47230b5bc95b5dab0b4ef4c0262e0bb84cc80d3bb75b7b5b1ad4913ad39d198",
+      "bytes": 1617529,
+      "sha256": "54578515f653de66b278360b52f6c4f2d5137f4b14a9f43506692ece5908c6f6",
       "ci_artifact": null,
-      "build_origin": "local-tagged-build-macos-arm64-c8fbc4abdad5c13dabceb1299fdd51ab09b4de46"
+      "build_origin": "local-tagged-build-macos-arm64-8232f4876b00485e56ef457f62b2016154a538d1"
     },
     {
-      "name": "variohyve-0.6.0-windows.zip",
+      "name": "variohyve-0.6.1-windows.zip",
       "kind": "starter",
       "platform": "windows",
-      "bytes": 1600120,
-      "sha256": "a47230b5bc95b5dab0b4ef4c0262e0bb84cc80d3bb75b7b5b1ad4913ad39d198",
+      "bytes": 1617529,
+      "sha256": "54578515f653de66b278360b52f6c4f2d5137f4b14a9f43506692ece5908c6f6",
       "ci_artifact": null,
-      "build_origin": "local-tagged-build-macos-arm64-c8fbc4abdad5c13dabceb1299fdd51ab09b4de46"
+      "build_origin": "local-tagged-build-macos-arm64-8232f4876b00485e56ef457f62b2016154a538d1"
     },
     {
-      "name": "variohyve-packaging-0.6.0-linux.zip",
+      "name": "variohyve-packaging-0.6.1-linux.zip",
       "kind": "packaging",
       "platform": "linux",
-      "bytes": 1678884,
-      "sha256": "526739e99f427ef66cfc9fe8763d7fc3bbaec283a63f074dbaa2b27f32850b73",
+      "bytes": 1693396,
+      "sha256": "8d4b3a18c121a1e3627e093a330421bf56f9cdddb1e08c6ccd01d6c77f8d80bc",
       "ci_artifact": null,
-      "build_origin": "local-tagged-build-linux-arm64-docker-c8fbc4abdad5c13dabceb1299fdd51ab09b4de46"
+      "build_origin": "local-tagged-build-macos-arm64-8232f4876b00485e56ef457f62b2016154a538d1"
     },
     {
-      "name": "variohyve-packaging-0.6.0-macos.zip",
+      "name": "variohyve-packaging-0.6.1-macos.zip",
       "kind": "packaging",
       "platform": "macos",
-      "bytes": 1678884,
-      "sha256": "526739e99f427ef66cfc9fe8763d7fc3bbaec283a63f074dbaa2b27f32850b73",
+      "bytes": 1693396,
+      "sha256": "8d4b3a18c121a1e3627e093a330421bf56f9cdddb1e08c6ccd01d6c77f8d80bc",
       "ci_artifact": null,
-      "build_origin": "local-tagged-build-macos-arm64-c8fbc4abdad5c13dabceb1299fdd51ab09b4de46"
+      "build_origin": "local-tagged-build-macos-arm64-8232f4876b00485e56ef457f62b2016154a538d1"
     },
     {
-      "name": "variohyve-packaging-0.6.0-windows.zip",
+      "name": "variohyve-packaging-0.6.1-windows.zip",
       "kind": "packaging",
       "platform": "windows",
-      "bytes": 1678884,
-      "sha256": "526739e99f427ef66cfc9fe8763d7fc3bbaec283a63f074dbaa2b27f32850b73",
+      "bytes": 1693396,
+      "sha256": "8d4b3a18c121a1e3627e093a330421bf56f9cdddb1e08c6ccd01d6c77f8d80bc",
       "ci_artifact": null,
-      "build_origin": "local-tagged-build-macos-arm64-c8fbc4abdad5c13dabceb1299fdd51ab09b4de46"
+      "build_origin": "local-tagged-build-macos-arm64-8232f4876b00485e56ef457f62b2016154a538d1"
     },
     {
-      "name": "vh-lsp-vscode-0.6.0.vsix",
+      "name": "vh-lsp-vscode-0.6.1.vsix",
       "kind": "extension",
       "platform": "universal",
-      "bytes": 5545565,
-      "sha256": "6b7287a010cc5f14074e8979f017c6be1f7e860ae442b0158880437c5d07446b",
+      "bytes": 5595875,
+      "sha256": "75c99bb7cedc8ecd5c125275dc525c99e1fe94d9ec69c7a690e9664e4097e4db",
       "ci_artifact": null,
-      "build_origin": "local-tagged-build-macos-arm64-c8fbc4abdad5c13dabceb1299fdd51ab09b4de46"
+      "build_origin": "local-tagged-build-macos-arm64-8232f4876b00485e56ef457f62b2016154a538d1"
     }
   ],
   "build": {
     "origin": "local-tagged-build",
-    "source_commit": "c8fbc4abdad5c13dabceb1299fdd51ab09b4de46",
+    "source_commit": "8232f4876b00485e56ef457f62b2016154a538d1",
     "status": "passed",
     "host": "macOS arm64",
-    "jdk": "Java 23 Gradle toolchain",
+    "jdk": "GraalVM CE 23.0.2; Java 23 Gradle toolchain",
     "gradle": "9.1.0",
     "node": "v26.8.2",
-    "tag": "v0.6.0"
+    "tag": "v0.6.1"
   },
-  "packaging": "Built locally from the exact source tag. Linux ZIPs were built and validated in Linux/arm64 Docker with JDK 23. The macOS and Windows filenames are byte-identical aliases of universal Java ZIPs built on macOS; these bytes also passed the Linux container archive checks. All ZIPs include POSIX and Windows launchers. Windows is not tested. The universal VSIX was built locally on macOS. These are not CI artifacts.",
+  "packaging": "Built locally from the exact source tag. Every OS filename is a byte-identical alias of a universal Java archive built on macOS with POSIX and Windows launchers. The VSIX is a universal local macOS build. These are not CI artifacts. Actual platform checks are recorded separately below.",
   "release_limitations": [
     {
-      "platform": "Windows and Linux x86_64",
+      "platform": "Windows, Linux x86_64 and macOS x86_64",
       "status": "not_run",
-      "reason": "Local runtime/package validation covers macOS arm64 and Linux arm64; hosted CI was blocked before startup."
+      "reason": "No platform validation performed for this patch."
     },
     {
       "platform": "macOS VS Code",
-      "status": "smoke_timeout",
-      "reason": "VSIX installed and activated, but the isolated VS Code run timed out after 300 seconds while showing an untitled editor; no successful smoke-result.json was produced."
+      "status": "not_run",
+      "reason": "The installed-editor journey is checked separately on Linux arm64."
     },
     {
       "platform": "browser",
       "status": "not_run",
-      "reason": "Local browser use disabled in Work settings. Automated link, exact-source, asset-checksum and version-selector checks passed."
+      "reason": "Local browser access is disabled in Work settings; automated links, fragments, source, downloads and navigation checks are used."
     }
   ],
   "additional_validation": {
-    "source_commit": "c8fbc4abdad5c13dabceb1299fdd51ab09b4de46",
+    "source_commit": "8232f4876b00485e56ef457f62b2016154a538d1",
     "documentation": {
       "result": "passed",
-      "markdown_files": 268,
+      "markdown_files": 274,
       "command": "python3 scripts/check-docs.py",
       "spec_pdf": {
         "path": "spec/variohyve-spec-2026-11-07.pdf",
@@ -143,17 +143,16 @@
         "bytes": 835560,
         "sha256": "22ba111ab20ee972bc89db59b21cef7e191c9a4427adb637e94947e3a0e249f1",
         "visual_review": "All 143 pages rendered; pages 1, 2, 3, 40, 70, 78, 100, 120 and 143 visually inspected for layout and legibility.",
-        "publication_links": "88 source-only PDF links mapped to versioned public references or pinned private GitHub source; representative rendered page unchanged."
-      }
+        "publication_links": "88 source-only PDF links mapped to versioned public references or pinned private GitHub source; representative rendered page unchanged.",
+        "source_commit": "c8fbc4abdad5c13dabceb1299fdd51ab09b4de46",
+        "retained_from": "0.6.0",
+        "input_verification": "git diff v0.6.0 v0.6.1 -- docs/spec: empty. Existing PDF bytes and prior visual-review evidence retained; no new PDF build or visual review claimed."
+      },
+      "html": "mdbook build from an export of the exact source tag; public source-link mapping is a publication transformation"
     },
     "learn_source_check": {
       "result": "passed",
       "command": "python3 scripts/check-learn.py --source-only"
-    },
-    "lean": {
-      "result": "passed",
-      "command": "bash scripts/check-lean.sh",
-      "build": "3265 jobs, including cached proof replay; structure/audit regression checks passed"
     },
     "bootstrap": {
       "result": "passed",
@@ -161,7 +160,7 @@
     },
     "gradle": {
       "result": "passed",
-      "command": "GITHUB_REF_TYPE=tag GITHUB_REF_NAME=v0.6.0 ./gradlew validateTagVersion test :vh-host:distZip :vh-host:installDist :vh-lsp:installDist :vh-packaging:installDist :vh-packaging:distZip --rerun-tasks --no-daemon --no-parallel --max-workers=2",
+      "command": "GITHUB_REF_TYPE=tag GITHUB_REF_NAME=v0.6.1 JAVA_HOME=<GraalVM CE 23.0.2> ./gradlew validateTagVersion test :vh-host:distZip :vh-host:installDist :vh-lsp:installDist :vh-packaging:installDist :vh-packaging:distZip --rerun-tasks --offline --no-daemon --no-parallel --max-workers=2",
       "tasks_executed": 50,
       "modules": [
         {
@@ -201,27 +200,13 @@
         }
       ]
     },
-    "differential": {
-      "result": "passed",
-      "structural_observations": 45,
-      "native_assemblies": 52,
-      "native_observations": 823,
-      "generated_modules": 32,
-      "generated_observations": 286,
-      "seed": 20261022,
-      "retained_scenarios": 460,
-      "retained_checks": 4397,
-      "entrypoint_scenarios": 12,
-      "independent_graphs": 8,
-      "entrypoint_protocol_checks": 5288,
-      "resumed_slices": 3730
-    },
     "extracted_archive_journey": {
       "result": "passed",
-      "starter_learn_cases": 16,
+      "starter_learn_cases": 17,
       "native_package_checks": 13,
       "custom_alien_checks": 21,
-      "host": "macOS arm64"
+      "host": "macOS arm64",
+      "jdk": "GraalVM CE 23.0.2"
     },
     "vscode_extension": {
       "typecheck": "passed",
@@ -232,138 +217,99 @@
       },
       "vsix_packaging": "passed",
       "smoke_test": {
-        "result": "failed",
-        "reason": "VSIX installed and activated, but the isolated VS Code run timed out after 300 seconds while showing an untitled editor; no successful smoke-result.json was produced."
+        "result": "passed",
+        "platform": "Linux arm64 in Docker/Colima on macOS",
+        "vscode": "1.90.0",
+        "jdk": "Temurin 23.0.2+7",
+        "isolated": true,
+        "checks": [
+          "isolated HOME/PATH/credentials",
+          "untitled diagnostics and outline",
+          "parse",
+          "edit",
+          "completion",
+          "hover",
+          "definition",
+          "pub/var diagnostics and execution",
+          "bracket constructors and mixin/superclass routes",
+          "rename/hide/delegate wiring and outline",
+          "required mutable initializer",
+          "run",
+          "header and trailing descriptors",
+          "split navigation input",
+          "backspace and multiline input",
+          "stop",
+          "stale snapshot",
+          "restart",
+          "passing tests",
+          "failing tests",
+          "independent selection scratch",
+          "scratch runtime identity",
+          "scratch rerun",
+          "recipe scalar assistance",
+          "native recipe launch",
+          "dirty imported source save",
+          "cross-source runtime Problems",
+          "imported revision invalidation",
+          "new recipe project",
+          "user-compiled Alien and separate dependency JAR",
+          "project provider pin rejection",
+          "authored module and native dependencies",
+          "recipe test PASS/status 0",
+          "recipe test FAIL/status 1",
+          "declared stdio",
+          "native packaging command",
+          "relocated deployment without original project or tools"
+        ],
+        "source_commit": "8232f4876b00485e56ef457f62b2016154a538d1",
+        "asset": "vh-lsp-vscode-0.6.1.vsix",
+        "sha256": "75c99bb7cedc8ecd5c125275dc525c99e1fe94d9ec69c7a690e9664e4097e4db"
       }
+    },
+    "public_distribution": {
+      "result": "passed",
+      "command": "python3 scripts/check-public-distribution.py --version 0.6.1 <starter.zip> <packaging.zip> <extension.vsix>",
+      "regression_tests": 5,
+      "harness_source_commit": "af786a583f386799ed5ecba9d81594012ccccd67",
+      "scope": "Strict release mode on the exact artifacts; a later CI-only switch allows matching development suffixes without relaxing release mode."
+    },
+    "benchmark_presentation": {
+      "result": "passed",
+      "node_tests": 15,
+      "publisher_tests": 3,
+      "scope": "Derived summary/history partition; raw measurement files unchanged. No exact-release benchmark claimed."
+    },
+    "linux_archives": {
+      "result": "passed",
+      "platform": "Linux arm64 in Docker/Colima on macOS",
+      "jdk": "Temurin 23.0.2+7",
+      "starter_learn_cases": 17,
+      "native_package_checks": 13,
+      "custom_alien_checks": 21,
+      "scope": "Exact macOS-built release bytes on Linux; no Linux source rebuild or full Linux Java/Lean suite claimed."
     },
     "site_validation": {
       "result": "passed",
-      "preview_releases": 5,
-      "preview_pages": 101,
-      "specification_local_links": 1628,
-      "vh_blocks": 23,
+      "preview_releases": 6,
+      "preview_pages": 128,
+      "entry_spec_pages": 30,
+      "local_links": 1895,
+      "vh_blocks": 24,
       "java_blocks": 3,
-      "download_buttons": 28,
-      "complete_files": 10,
-      "chapter_transitions": 9,
-      "python_tests": 11,
+      "download_buttons": 29,
+      "complete_files": 11,
+      "chapter_transitions": 10,
+      "artifact_public_destinations": 58,
+      "python_tests": 12,
       "node_tests": 8,
       "browser_review": "not_run: local browser use disabled in Work settings"
     },
-    "linux_docker": {
+    "lean": {
       "result": "passed",
-      "platform": "Linux arm64, Colima on macOS arm64",
-      "jdk": "Temurin 23.0.2+7",
-      "gradle": "9.1.0",
-      "source_commit": "c8fbc4abdad5c13dabceb1299fdd51ab09b4de46",
-      "build": "Fresh offline build from tagged source; read-only cached dependency inputs, no build credentials supplied",
-      "tasks_executed": 50,
-      "modules": [
-        {
-          "module": "vh-core",
-          "tests": 1208,
-          "failures": 0,
-          "errors": 0,
-          "skipped": 0
-        },
-        {
-          "module": "vh-host",
-          "tests": 90,
-          "failures": 0,
-          "errors": 0,
-          "skipped": 0
-        },
-        {
-          "module": "vh-lsp",
-          "tests": 102,
-          "failures": 0,
-          "errors": 0,
-          "skipped": 0
-        },
-        {
-          "module": "vh-packaging",
-          "tests": 87,
-          "failures": 0,
-          "errors": 0,
-          "skipped": 0
-        },
-        {
-          "module": "vh-benchmarks",
-          "tests": 156,
-          "failures": 0,
-          "errors": 0,
-          "skipped": 0
-        }
-      ],
-      "linux_built_archives": {
-        "starter_cases": 16,
-        "native_package_checks": 13,
-        "custom_alien_checks": 21
-      },
-      "macos_built_archives_on_linux": {
-        "starter_cases": 16,
-        "native_package_checks": 13,
-        "custom_alien_checks": 21
-      },
-      "scope": "Java runtime and archives; no Linux Lean build or Linux VS Code editor smoke claimed."
-    }
-  },
-  "followup_validation": {
-    "vscode_extension": {
-      "date": "2026-11-07",
-      "result": "passed",
-      "runtime_source_commit": "c8fbc4abdad5c13dabceb1299fdd51ab09b4de46",
-      "harness_source_commit": "0fda0cc1e0cb6ab71e5231b8101e55b73903603a",
-      "platform": "Linux arm64 in Docker/Colima on macOS",
-      "vscode": "1.90.0",
-      "display": "Xvfb; Docker --init --shm-size=512m; unprivileged container user",
-      "asset": "vh-lsp-vscode-0.6.0.vsix",
-      "sha256": "6b7287a010cc5f14074e8979f017c6be1f7e860ae442b0158880437c5d07446b",
-      "checks": [
-        "isolated HOME/PATH/credentials",
-        "untitled diagnostics and outline",
-        "parse",
-        "edit",
-        "completion",
-        "hover",
-        "definition",
-        "pub/var diagnostics and execution",
-        "bracket constructors and mixin/superclass routes",
-        "rename/hide/delegate wiring and outline",
-        "required mutable initializer",
-        "run",
-        "header and trailing descriptors",
-        "split navigation input",
-        "backspace and multiline input",
-        "stop",
-        "stale snapshot",
-        "restart",
-        "passing tests",
-        "failing tests",
-        "independent selection scratch",
-        "scratch runtime identity",
-        "scratch rerun",
-        "recipe scalar assistance",
-        "native recipe launch",
-        "dirty imported source save",
-        "cross-source runtime Problems",
-        "imported revision invalidation",
-        "new recipe project",
-        "user-compiled Alien and separate dependency JAR",
-        "project provider pin rejection",
-        "authored module and native dependencies",
-        "recipe test PASS/status 0",
-        "recipe test FAIL/status 1",
-        "declared stdio",
-        "native packaging command",
-        "relocated deployment without original project or tools"
-      ],
-      "isolated": true,
-      "source_checks": {
-        "extension_unit_tests": 78,
-        "focused_lsp_tests": "SovereignCompositionEditorTest and StarterEditorTest passed"
-      },
-      "scope": "The exact published VSIX passed the complete installed editor journey. Updated test harness only; released binary and source tag unchanged. Original macOS timeout and untested Windows/Linux x86_64 remain recorded."
+      "command": "bash scripts/check-lean.sh",
+      "build_jobs": 3265,
+      "audited_semantics_declarations": 105197,
+      "scope": "Full workspace build, structure checks, all proof audits, audit regressions and declaration-inventory checks. Cons source declaration synchronized without weakening proof premises."
     }
   }
 }

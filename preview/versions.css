@@ -8,3 +8,5 @@
 .version-list li { border-top: 1px solid var(--line); padding-block: 1.5rem; }
 .version-list h2 { font-size: 1.3rem; }
 .latest { display: inline-block; margin-left: .7rem; padding: .2rem .5rem; border-radius: 5px; background: var(--soft); color: var(--accent); font-size: .75rem; vertical-align: middle; }
+
+.site-header, .site-header nav { flex-wrap: wrap; }

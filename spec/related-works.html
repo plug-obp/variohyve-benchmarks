@@ -176,7 +176,7 @@
                 </script>
 
                 <div id="mdbook-content" class="content">
-                    <main>
+                    <main><!-- public project navigation --><aside aria-label="Public project navigation" style="border:1px solid currentColor;padding:.8rem 1rem;margin:0 0 2rem;font-size:.85em"><nav aria-label="Project"><a href="../">VarioHyve</a> · <a href="../preview/">Downloads</a> · <a href="../preview/learn/">Learn</a> · <a href="../dev/bench/">Benchmarks</a> · <a href="../spec/variohyve-spec-2026-11-07.pdf">PDF</a> · <a href="../preview/reference/evidence.html">Evidence</a></nav><p>Specification published with preview v0.6.1. Source <code>8232f4876b00</code>. Implementation chapters and future directions state their own scope.</p></aside><!-- /public project navigation -->
                         <h1 id="connections-and-comparisons"><a class="header" href="#connections-and-comparisons">Connections and Comparisons</a></h1>
 <p>VarioHyve combines an object language with explicit boundaries for independently
 implemented behavior. These comparisons distinguish inherited ideas, alternative
@@ -219,7 +219,7 @@ without globals make dependencies construction inputs. VarioHyve likewise uses
 explicit module inputs and preserves declaration origins in lexical selection
 and mixin application. It specifies its own callable eligibility, initialization
 and class-side construction. The
-<a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/docs/design-notes/outer-newspeak-comparison.md">detailed comparison</a> records
+<a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/docs/design-notes/outer-newspeak-comparison.md">detailed comparison</a> <small>(source access required)</small> records
 deliberate differences, including exact captured ancestry for deeper repeated
 parent applications, and remaining implementation limits; complete
 Newspeak conformance is not claimed.
@@ -288,9 +288,9 @@ Neither establishes that a foreign provider meets its contract.
 protocol translations. Melocoton verifies OCaml/C interoperability with related
 language-local state. Both suggest obligations for conversions, roots and callback
 control; neither verifies VarioHyve’s Java adapter. The
-<a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/docs/design-notes/newspeak-formal-semantics-and-federation.md">research audit</a>
+<a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/docs/design-notes/newspeak-formal-semantics-and-federation.md">research audit</a> <small>(source access required)</small>
 expands these comparisons, including alternative boundary calculi, while the
-<a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/docs/catalog/README.md">case-study catalog</a> defines integration experiments
+<a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/docs/catalog/README.md">case-study catalog</a> <small>(source access required)</small> defines integration experiments
 and baselines. <a href="https://plv.mpi-sws.org/dimsum/">DimSum (2023)</a>,
 <a href="https://melocoton-project.github.io/">Melocoton (2023)</a></p>
 

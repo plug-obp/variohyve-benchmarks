@@ -17,6 +17,7 @@ example shown inline, with a download link so you can run and change it.
 8. [Call VarioHyve from Java](08-embedding.md)
 9. [From starter to your own world](09-worlds.md)
 10. [Publish and consume a tiny native package](10-native-packages.md)
+11. [Bring components together](11-composition.md)
 
 The [starter examples folder](examples/) contains the first eight lessons'
 programs and their input and output fixtures. The [recipe lesson files](projects/README.md)
@@ -25,16 +26,19 @@ lessons 9 and 10. Each lesson shows its files inline and links their downloads.
 The [starter reference](reference.md) collects details for when you need them.
 You do not need to read it before writing your first program.
 
-This edition accompanies VarioHyve **0.6.0**. Use its matching downloads: earlier
+This edition accompanies VarioHyve **0.6.1**. Use its matching downloads: earlier
 previews may use different declaration and constructor syntax.
 
-The first eight lessons use the Java starter with JavaHostKernel. The last two
+The first eight lessons use the Java starter with JavaHostKernel. Lessons 9 and 10
 assemble explicit recipe worlds and package their dependencies. The kernel gives us familiar
 numbers, text, collections and a console. A capability is simply a tool a program
 is given: our first program receives a console through its `kernel` input.
 The [language essentials](reference.md#language-essentials) collect the rules
 used throughout the lessons. The [runtime guide](reference.md#java-and-lean)
 explains how this starter relates to the Lean native implementation.
+
+Lesson 11 brings the pieces together in a small review desk with a replaceable
+checker and a shared notebook.
 
 Contributors can check the actual lesson files with
 `python3 scripts/check-learn.py --distribution vh-host/build/install/vh-host`

@@ -176,7 +176,7 @@
                 </script>
 
                 <div id="mdbook-content" class="content">
-                    <main>
+                    <main><!-- public project navigation --><aside aria-label="Public project navigation" style="border:1px solid currentColor;padding:.8rem 1rem;margin:0 0 2rem;font-size:.85em"><nav aria-label="Project"><a href="../">VarioHyve</a> · <a href="../preview/">Downloads</a> · <a href="../preview/learn/">Learn</a> · <a href="../dev/bench/">Benchmarks</a> · <a href="../spec/variohyve-spec-2026-11-07.pdf">PDF</a> · <a href="../preview/reference/evidence.html">Evidence</a></nav><p>Specification published with preview v0.6.1. Source <code>8232f4876b00</code>. Implementation chapters and future directions state their own scope.</p></aside><!-- /public project navigation -->
                         <h1 id="literals"><a class="header" href="#literals">Literals</a></h1>
 <p>The literal forms are numbers, strings, holes, lambdas, classes and objects.
 Class and object syntax is defined in <a href="objects-and-classes.html">Objects and Classes</a>;
@@ -199,7 +199,7 @@ or overflow behavior. The prototype’s supported subset is documented under
 <p>The experimental <a href="tooling-architecture.html#optional-native-integer-elaboration">explicit native integer elaboration</a>
 translates integer spelling into ordinary sends to a supplied numeric kernel.
 It is an opt-in frontend policy; loading a kernel does not select it or change
-the default literal profile. The native <a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/vh-source/lib/native-numbers/README.md">Scott and Church client libraries</a>
+the default literal profile. The native <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-source/lib/native-numbers/README.md">Scott and Church client libraries</a> <small>(source access required)</small>
 provide natural and signed-integer operations, not fractional or floating-point numbers.</p>
 <h2 id="string-literals"><a class="header" href="#string-literals">String Literals</a></h2>
 <p>Single and double quotes produce the same runtime kind of value. Both support:</p>
@@ -230,7 +230,7 @@ provide natural and signed-integer operations, not fractional or floating-point 
 <p>Raw newlines are allowed inside either quoted form. They preserve all whitespace
 between the quotes, including indentation; <code>"a\nb"</code> and the corresponding
 two-line literal have the same content. See the lexer in
-<a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/vh-core/src/main/antlr/vh.g4">vh.g4</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/main/antlr/vh.g4">vh.g4</a> <small>(source access required)</small>.</p>
 <p>An explicit <a href="tooling-architecture.html#optional-native-unicode-string-elaboration">native Unicode frontend policy</a>
 interprets decoded text through an ordinary client library’s scalar construction
 protocol. Its Unicode scalar domain and rejection rules belong to that selected
@@ -363,7 +363,7 @@ the home. Escaped data remain usable without retaining return authority.</li>
 its original home. The default Alien callback barrier remains in force; any
 future crossing support must preserve these initializer phase restrictions.
 Failures neither replay initialization nor roll back effects or retract an
-escaped receiver. See the <a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/docs/design-notes/initializer-return-homes.md">accepted policy</a>.</p>
+escaped receiver. See the <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/docs/design-notes/initializer-return-homes.md">accepted policy</a> <small>(source access required)</small>.</p>
 
                     </main>
 

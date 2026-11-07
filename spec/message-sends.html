@@ -176,7 +176,7 @@
                 </script>
 
                 <div id="mdbook-content" class="content">
-                    <main>
+                    <main><!-- public project navigation --><aside aria-label="Public project navigation" style="border:1px solid currentColor;padding:.8rem 1rem;margin:0 0 2rem;font-size:.85em"><nav aria-label="Project"><a href="../">VarioHyve</a> · <a href="../preview/">Downloads</a> · <a href="../preview/learn/">Learn</a> · <a href="../dev/bench/">Benchmarks</a> · <a href="../spec/variohyve-spec-2026-11-07.pdf">PDF</a> · <a href="../preview/reference/evidence.html">Evidence</a></nav><p>Specification published with preview v0.6.1. Source <code>8232f4876b00</code>. Implementation chapters and future directions state their own scope.</p></aside><!-- /public project navigation -->
                         <h1 id="message-sends"><a class="header" href="#message-sends">Message Sends</a></h1>
 <p>A selector is a name/arity pair. Ordinary access, invocation and assignment
 all send messages; there is no public direct field access or separate binding
@@ -344,7 +344,7 @@ failure is cached and propagated.</p>
 target; their computations may have effects and must produce native classes,
 excluding metaclasses. Explicit bracketed constructor arguments remain deferred until
 construction. See <a href="objects-and-classes.html">class realization</a> and the
-<a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/docs/design-notes/unified-callable-lookup.md">accepted decision</a>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/docs/design-notes/unified-callable-lookup.md">accepted decision</a> <small>(source access required)</small>.</p>
 <h2 id="cascade-"><a class="header" href="#cascade-">Cascade (<code>..</code>)</a></h2>
 <p>A cascade evaluates its receiver once and sends every arm to that saved receiver.
 Arms execute left-to-right; each arm’s arguments execute immediately before its
@@ -387,7 +387,7 @@ send select different receivers.</p>
 </div>
 <p>There is no <code>super..a..b</code> syntax: <code>super</code> is not a receiver value.
 Assignment has a separate <a href="syntactic-sugar.html#the-cascade-fence">cascade fence</a>.
-The precise grammar is <a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/vh-core/src/main/antlr/vh.g4">vh.g4</a>.</p>
+The precise grammar is <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/main/antlr/vh.g4">vh.g4</a> <small>(source access required)</small>.</p>
 
                     </main>
 
