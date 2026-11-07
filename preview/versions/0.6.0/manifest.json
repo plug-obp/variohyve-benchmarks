@@ -307,5 +307,63 @@
       },
       "scope": "Java runtime and archives; no Linux Lean build or Linux VS Code editor smoke claimed."
     }
+  },
+  "followup_validation": {
+    "vscode_extension": {
+      "date": "2026-11-07",
+      "result": "passed",
+      "runtime_source_commit": "c8fbc4abdad5c13dabceb1299fdd51ab09b4de46",
+      "harness_source_commit": "0fda0cc1e0cb6ab71e5231b8101e55b73903603a",
+      "platform": "Linux arm64 in Docker/Colima on macOS",
+      "vscode": "1.90.0",
+      "display": "Xvfb; Docker --init --shm-size=512m; unprivileged container user",
+      "asset": "vh-lsp-vscode-0.6.0.vsix",
+      "sha256": "6b7287a010cc5f14074e8979f017c6be1f7e860ae442b0158880437c5d07446b",
+      "checks": [
+        "isolated HOME/PATH/credentials",
+        "untitled diagnostics and outline",
+        "parse",
+        "edit",
+        "completion",
+        "hover",
+        "definition",
+        "pub/var diagnostics and execution",
+        "bracket constructors and mixin/superclass routes",
+        "rename/hide/delegate wiring and outline",
+        "required mutable initializer",
+        "run",
+        "header and trailing descriptors",
+        "split navigation input",
+        "backspace and multiline input",
+        "stop",
+        "stale snapshot",
+        "restart",
+        "passing tests",
+        "failing tests",
+        "independent selection scratch",
+        "scratch runtime identity",
+        "scratch rerun",
+        "recipe scalar assistance",
+        "native recipe launch",
+        "dirty imported source save",
+        "cross-source runtime Problems",
+        "imported revision invalidation",
+        "new recipe project",
+        "user-compiled Alien and separate dependency JAR",
+        "project provider pin rejection",
+        "authored module and native dependencies",
+        "recipe test PASS/status 0",
+        "recipe test FAIL/status 1",
+        "declared stdio",
+        "native packaging command",
+        "relocated deployment without original project or tools"
+      ],
+      "isolated": true,
+      "source_checks": {
+        "extension_unit_tests": 78,
+        "focused_lsp_tests": "SovereignCompositionEditorTest and StarterEditorTest passed"
+      },
+      "scope": "The exact published VSIX passed the complete installed editor journey. Updated test harness only; released binary and source tag unchanged. Original macOS timeout and untested Windows/Linux x86_64 remain recorded."
+    }
   }
 }
