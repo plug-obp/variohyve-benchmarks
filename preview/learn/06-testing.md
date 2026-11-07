@@ -132,4 +132,11 @@ class Tests[kernel, testing] {
 
 [Download runtime-error.vh](examples/intentional-failures/runtime-error.vh)
 
+## Choose your next project
+
+You can now write small programs, give objects state and check their behavior.
+Try [connecting a few components](11-composition.md) with the same starter, or
+continue below to use a Java tool. The [course contents](README.md#choose-what-to-try-next)
+lets you choose the route that interests you.
+
 [Next: Add a capability written in Java](07-java-capability.md)

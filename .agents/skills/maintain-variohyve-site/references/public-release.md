@@ -7,8 +7,14 @@ broken-link checker or source test suite cannot establish.
 
 ## Build one identifiable release
 
-Pin the release's source revision before building distributable bytes. Check the
-repository's tag/version validation and build using the release tag context:
+Before creating the immutable release tag, assemble a candidate ZIP/VSIX and run
+the strict distribution gate with the intended release version. Use the tagged
+build context for this candidate when needed to avoid development suffixes, but
+do not label it release evidence. Include the starter root README: its separate
+`vh-host/build.gradle` filter uses `publicReleaseLinks` from
+`gradle/public-distribution.gradle`, just like the other public documents.
+Then pin the source revision and rebuild the final distributable bytes from it.
+Check the repository's tag/version validation and build using the release tag context:
 ordinary branch CI may intentionally produce development-suffixed JARs. Bump a
 patch version for fixes to already published ZIPs or VSIX; keep old tags, assets
 and checksums unchanged. Update project versions deliberately, including package
@@ -67,8 +73,17 @@ Use the existing harnesses rather than recreating checks:
 
 Consult `--help` and the module guide for archive/JDK options and prerequisites.
 Retain paths-with-spaces coverage and the test that deployment runs after the
-producing tools/project are unavailable. Run required source validation for the
-changes as well; extracted-archive checks complement the full project suite.
+producing tools/project are unavailable. Inspect the generated application's
+contents too: notices present in the producing tools do not establish that they
+reach the deployment. Source `generateRuntimeIngredients` in
+`vh-packaging/build.gradle` declares `THIRD-PARTY.md` and dependency license files
+alongside runtime JARs. Keep their bytes unchanged during distribution filtering
+(including line endings), and ensure the deployment manifest admits each declared
+notice path without widening unrelated path rules. The relocation harness checks
+their exact contents,
+inventory kind and SHA-256 pins, then verifies that modifying a notice is rejected.
+Keep those checks for both native and custom-Alien deployments. Run required
+source validation for the changes as well; extracted-archive checks complement the full project suite.
 Investigate proof/source disagreements through the semantic workflow rather than
 weakening a proof or test to obtain a release pass.
 

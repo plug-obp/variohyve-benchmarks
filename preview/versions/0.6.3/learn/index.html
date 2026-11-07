@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learn VarioHyve · Learn VarioHyve</title><link rel="stylesheet" href="../preview.css"><link rel="stylesheet" href="./highlight.css"><link rel="stylesheet" href="./learn.css">
+<link data-version-navigation rel="stylesheet" href="../../../versions.css">
+<script data-version-navigation src="../../../versions.js" defer></script>
+</head>
+<body><a class="skip" href="#lesson">Skip to lesson</a><header class="site-header wrap"><a class="wordmark" href="../">VarioHyve<span aria-hidden="true">.</span></a><nav aria-label="Tutorial navigation"><a href="./">All lessons</a><a href="../#downloads">Downloads</a></nav></header>
+<!-- version navigation --><div class="version-navigation wrap" data-version="0.6.3" data-page="learn/index.html"><span>Preview v0.6.3</span> · <a href="../../../versions.html">All tutorial versions</a></div><!-- /version navigation -->
+
+<main id="lesson" class="lesson"><p class="eyebrow">LEARN VARIOHYVE · V0.6.3</p><h1 id="learn-variohyve">Learn VarioHyve</h1>
+<p>Welcome! Let's build small programs that greet someone, convert a temperature,
+count words and keep score. Along the way you will learn how VarioHyve objects
+communicate by sending messages, and how a program receives the tools it needs.</p>
+<p>Start with <a href="01-install.html">Install and say hello</a>. Each chapter has a complete
+example shown inline, with a download link so you can run and change it.</p>
+<h2 id="your-first-small-programs">Your first small programs</h2>
+<p>Lessons 1–6 take you from a greeting to objects you can test. Finishing them is
+a useful first milestone: you can write, change and check a small program.</p>
+<ol>
+<li><a href="01-install.html">Install and say hello</a></li>
+<li><a href="02-values-and-input.html">Values, messages and input</a></li>
+<li><a href="03-arithmetic-and-choices.html">Arithmetic and choices</a></li>
+<li><a href="04-collections.html">Repetition and collections</a></li>
+<li><a href="05-objects.html">Objects that remember</a></li>
+<li><a href="06-testing.html">Test your program</a></li>
+</ol>
+<h2 id="choose-what-to-try-next">Choose what to try next</h2>
+<p>Continue in order, or pick the path that interests you. These later lessons are
+optional; <a href="11-composition.html">Bring components together</a> needs only the objects
+and tests you have already tried.</p>
+<table>
+<thead>
+<tr>
+<th>What would you like to do?</th>
+<th>Start here</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Connect objects and replace a collaborator</td>
+<td><a href="11-composition.html">Bring components together</a></td>
+</tr>
+<tr>
+<td>Use an existing Java tool</td>
+<td><a href="07-java-capability.html">Add a capability written in Java</a></td>
+</tr>
+<tr>
+<td>Call your program from Java</td>
+<td><a href="08-embedding.html">Call VarioHyve from Java</a></td>
+</tr>
+<tr>
+<td>Assemble and distribute an application</td>
+<td><a href="09-worlds.html">Your own world</a>, then <a href="10-native-packages.html">native packages</a></td>
+</tr>
+<tr>
+<td>Look up a form while editing</td>
+<td><a href="reference.html">Starter reference</a></td>
+</tr>
+</tbody>
+</table>
+<p>Explore the later chapters:</p>
+<ol start="7">
+<li><a href="07-java-capability.html">Add a capability written in Java</a></li>
+<li><a href="08-embedding.html">Call VarioHyve from Java</a></li>
+<li><a href="09-worlds.html">From starter to your own world</a></li>
+<li><a href="10-native-packages.html">Publish and consume a tiny native package</a></li>
+<li><a href="11-composition.html">Bring components together</a></li>
+</ol>
+<p>The <a href="examples/">starter examples folder</a> contains the first eight lessons'
+programs and their input and output fixtures. The <a href="projects/index.html">recipe lesson files</a>
+contain the complete application, recipes, tests and launch configuration from
+lessons 9 and 10. Each lesson shows its files inline and links their downloads.
+The <a href="reference.html">starter reference</a> collects details for when you need them.
+You do not need to read it before writing your first program.</p>
+<p>This edition accompanies VarioHyve <strong>0.6.3</strong>. Use its matching downloads: earlier
+previews may use different declaration and constructor syntax.</p>
+<p>The first eight lessons use the Java starter with JavaHostKernel. Lessons 9 and 10
+assemble explicit recipe worlds and package their dependencies. The kernel gives us familiar
+numbers, text, collections and a console. A capability is simply a tool a program
+is given: our first program receives a console through its <code>kernel</code> input.
+The <a href="reference.html#language-essentials">language essentials</a> collect the rules
+used throughout the lessons. The <a href="reference.html#java-and-lean">runtime guide</a>
+explains how this starter relates to the Lean native implementation.</p>
+<p>Lesson 11 brings the pieces together in a small review desk with a replaceable
+checker and a shared notebook.</p>
+<p>Contributors can check the actual lesson files with
+<code>python3 scripts/check-learn.py --distribution vh-host/build/install/vh-host</code>
+from the repository root after building the starter distribution. The checker
+also compiles the Java lessons against the packaged jars.</p>
+<p>The <a href="packages/multiplier/index.html">native multiplier package</a> is a separate
+producer folder used by the packaging archive journey; it is not an additional
+starter-kernel lesson.</p>
+</main>
+<footer class="wrap"><p>Public preview v0.6.3 · Download the files shown in each lesson. Recipe projects use the packaging tools.</p><a href="../">Back to the preview</a></footer></body></html>

@@ -73,7 +73,7 @@ guide directly from the tagged source, so local
 source edits cannot enter the release:
 
 ```sh
-node scripts/render-reference.cjs /path/to/variohyve FULL_SOURCE_COMMIT 0.3.2 /path/to/staged/preview/reference /path/to/node_modules/markdown-it
+node scripts/render-reference.cjs /path/to/variohyve FULL_SOURCE_COMMIT VERSION /path/to/staged/preview/reference /path/to/node_modules/markdown-it
 ```
 
 The renderer uses a fixed allowlist for release guides, changelogs and evidence.
@@ -88,7 +88,7 @@ revision. Specification links point to the public book; tutorial links point to
 that release's permanent tutorial. Code, tests and other source references link
 to the exact source revision on GitHub, with an explicit private-access note.
 After building the specification, map its generated conformance link to
-`/variohyve-benchmarks/preview/versions/0.3.2/reference/conformance.html` for this
+`/variohyve-benchmarks/preview/versions/<version>/reference/conformance.html` for the selected
 release. This is a publication URL transformation, not a change to tagged source.
 
 ## Release assets and evidence

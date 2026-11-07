@@ -3,6 +3,16 @@
 User-visible changes to the public VarioHyve preview. Preview versions may change
 the Java embedding API. Java 23 is required and is not bundled.
 
+## 0.6.3 — 2026-11-07
+
+- Generate the starter quick-start download link from release metadata.
+- Carry runtime dependency notices and license texts into generated deployments,
+  with pinned inventory entries verified after relocation.
+- Make the beginner course's first milestone and optional integration paths
+  clearer. Put common editing questions first in the optional reference.
+- Welcome readers to the component example after objects and basic tests, and
+  describe its numbering literally. No source-language contract changes.
+
 ## 0.6.1 — 2026-11-07
 
 - Repair installed documentation and extension help/support links; pin public
@@ -44,7 +54,7 @@ The first seedless language revision intentionally breaks the
 
 Source/native proof integration, the full Lean audit, Java tests and cross-VM
 conformance checks pass. The
-[accepted design note](https://github.com/plug-obp/variohyve/blob/v0.6.1/docs/design-notes/seedless-language-and-explicit-values.md) (source access required)
+[accepted design note](https://github.com/plug-obp/variohyve/blob/v0.6.3/docs/design-notes/seedless-language-and-explicit-values.md) (source access required)
 records the contract, validation evidence and proof boundaries.
 
 ## 0.5.0 — 2026-10-28

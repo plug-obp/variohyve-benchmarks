@@ -14,7 +14,7 @@ Preview installers are public GitHub release assets. See
 The [site maintenance skill](.agents/skills/maintain-variohyve-site/SKILL.md)
 routes preview, benchmark and specification work to their sources and checks.
 
-The [0.6.1 publication record](PUBLICATION.md) maps the public audit findings to
+The [publication record](PUBLICATION.md) maps the public audit findings to
 fixes, validation and remaining access/platform limits.
 
 The performance dashboard separates four timing scopes:

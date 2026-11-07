@@ -2,7 +2,7 @@
 
 You need JDK 23 or newer (tested with JDK 23) and a matching VarioHyve starter archive and VS Code
 extension (`.vsix`). Get both from the
-[matching public release downloads](https://obpcdl.org/variohyve-benchmarks/preview/versions/0.6.1/).
+[matching public release downloads](https://obpcdl.org/variohyve-benchmarks/preview/versions/0.6.3/).
 If you are building them yourself, follow the contributor commands below first.
 
 Extract the starter archive into a folder of your choice. It contains `bin`,
@@ -62,7 +62,7 @@ and use `vh` from any directory.
 ## Use VS Code
 
 1. Open VS Code's Extensions view, choose **Install from VSIX...**, and select
-   the matching `vh-lsp-vscode-0.6.1.vsix` artifact.
+   the matching `vh-lsp-vscode-0.6.3.vsix` artifact.
 2. Open the starter's `learn` folder and trust it when you want to run its code.
 3. If Java is not found, set **Vh: Java Home** (`vh.javaHome`) to the JDK folder.
 4. Open `examples/hello.vh`. In the Command Palette select
@@ -123,7 +123,7 @@ that file alone is not evidence of a Windows smoke test.
 [Next: Values, messages and input](02-values-and-input.md)
 
 For an application with explicit native dependencies and a portable deployment,
-use the [packaging distribution or the bundled VS Code tools](https://obpcdl.org/variohyve-benchmarks/preview/versions/0.6.1/reference/getting-started.html).
+use the [packaging distribution or the bundled VS Code tools](https://obpcdl.org/variohyve-benchmarks/preview/versions/0.6.3/reference/getting-started.html).
 The public release downloads include `variohyve-packaging-*.zip` alongside the
 starter archive and VSIX. The packaging guide covers creating a project, native
 tests, packaging and running the output without the original installation.

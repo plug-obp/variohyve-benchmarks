@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "VarioHyve recipe launch",
+  "description": "Inert per-file launch data. The recipe constructs its world using explicitly supplied capabilities.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "root",
+    "recipe",
+    "selector",
+    "arguments"
+  ],
+  "properties": {
+    "format": {
+      "const": "variohyve-launch-1"
+    },
+    "root": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Source root relative to this metadata file's directory."
+    },
+    "recipe": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Recipe source path relative to root."
+    },
+    "selector": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "\\S",
+      "description": "Public selector sent to the realized native world."
+    },
+    "arguments": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {
+        "type": [
+          "string",
+          "number",
+          "boolean",
+          "null"
+        ]
+      },
+      "description": "Scalar arguments in ordinary message order. Objects and arrays are not wiring instructions."
+    },
+    "startup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "valueAdapter",
+        "profile",
+        "provisioning",
+        "result"
+      ],
+      "properties": {
+        "valueAdapter": {
+          "type": "string",
+          "pattern": "^aliens/"
+        },
+        "profile": {
+          "enum": [
+            "host-values",
+            "host-values"
+          ]
+        },
+        "provisioning": {
+          "enum": [
+            "none",
+            "stdio"
+          ]
+        },
+        "result": {
+          "enum": [
+            "display",
+            "discard"
+          ]
+        }
+      }
+    },
+    "test": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "selector",
+        "arguments"
+      ],
+      "properties": {
+        "selector": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "\\S",
+          "description": "Public selector sent to the realized native world."
+        },
+        "arguments": {
+          "type": "array",
+          "maxItems": 32,
+          "items": {
+            "type": [
+              "string",
+              "number",
+              "boolean",
+              "null"
+            ]
+          },
+          "description": "Scalar arguments in ordinary message order. Objects and arrays are not wiring instructions."
+        }
+      }
+    },
+    "packaging": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy",
+        "selector"
+      ],
+      "properties": {
+        "policy": {
+          "type": "string",
+          "minLength": 1
+        },
+        "selector": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "\\S",
+          "description": "Public selector sent to the realized native world."
+        }
+      }
+    },
+    "alienRoot": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Explicit provider root relative to this metadata file. Omitted: installed tools. No fallback search or merging."
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "maxSteps"
+      ],
+      "properties": {
+        "maxSteps": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991,
+          "description": "Budget per independent VM entry; nested imports and callbacks share the remaining budget. Default: 100000."
+        }
+      }
+    }
+  }
+}

@@ -176,7 +176,7 @@
                 </script>
 
                 <div id="mdbook-content" class="content">
-                    <main><!-- public project navigation --><aside aria-label="Public project navigation" style="border:1px solid currentColor;padding:.8rem 1rem;margin:0 0 2rem;font-size:.85em"><nav aria-label="Project"><a href="../">VarioHyve</a> · <a href="../preview/">Downloads</a> · <a href="../preview/learn/">Learn</a> · <a href="../dev/bench/">Benchmarks</a> · <a href="../spec/variohyve-spec-2026-11-07.pdf">PDF</a> · <a href="../preview/reference/evidence.html">Evidence</a></nav><p>Specification published with preview v0.6.1. Source <code>8232f4876b00</code>. Implementation chapters and future directions state their own scope.</p></aside><!-- /public project navigation -->
+                    <main><!-- public project navigation --><aside aria-label="Public project navigation" style="border:1px solid currentColor;padding:.8rem 1rem;margin:0 0 2rem;font-size:.85em"><nav aria-label="Project"><a href="../">VarioHyve</a> · <a href="../preview/">Downloads</a> · <a href="../preview/learn/">Learn</a> · <a href="../dev/bench/">Benchmarks</a> · <a href="../spec/variohyve-spec-2026-11-07.pdf">PDF</a> · <a href="../preview/reference/evidence.html">Evidence</a></nav><p>Specification published with preview v0.6.3. Source <code>873bd8bb0f30</code>. Implementation chapters and future directions state their own scope.</p></aside><!-- /public project navigation -->
                         <h1 id="tooling-architecture"><a class="header" href="#tooling-architecture">Tooling Architecture</a></h1>
 <p>This chapter defines reusable frontend and tooling contracts, followed by the
 starter editor’s supported scope. <a href="./descriptors.html">Descriptors</a> define inert
@@ -190,7 +190,7 @@ startup and native composition); and tool conventions (sidecars, project markers
 editor commands and publication). The latter two do not add language semantics.
 An embedding can supply the same module inputs without any IDE or launch metadata;
 a particular launcher still requires its own declared configuration. The
-<a href="/variohyve-benchmarks/preview/versions/0.6.1/reference/conformance.html">conformance map</a> links these distinctions to executable
+<a href="/variohyve-benchmarks/preview/versions/0.6.3/reference/conformance.html">conformance map</a> links these distinctions to executable
 evidence and selected profiles.</p>
 <h2 id="surface-lowering-and-executable-core"><a class="header" href="#surface-lowering-and-executable-core">Surface lowering and executable core</a></h2>
 <p>The Java and Lean implementations parse or accept surface syntax, check source
@@ -341,7 +341,7 @@ nonblocking style warning; it changes neither arity nor execution admission.</p>
 <p>Each <code>SyntacticCheck</code> owns its rule and traversal. <code>SyntacticChecks</code> selects an
 immutable ordered collection using <code>standard()</code>, <code>none()</code>, <code>with(check)</code> and
 <code>without(id)</code>. Independent rules share a diagnostic collector, not semantic
-state. The <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/docs/design-notes/syntactic-checks.md">check catalog</a> <small>(source access required)</small> lists standard
+state. The <a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/docs/design-notes/syntactic-checks.md">check catalog</a> <small>(source access required)</small> lists standard
 rules and their stable identifiers. Disabling a check is tooling configuration,
 not a different language contract. Reference interfaces for direct core or
 unchecked inputs retain their defensive guards. A source-specialized executor
@@ -373,7 +373,7 @@ optimization. The Java comparison adapter retains its broader core interface.</p
 <p>Every supported route retains ordinary isolated module entry and
 explicit constructor capabilities. The comparison bridges use the same surface
 JSON and native-core tables so either implementation can consume the other’s
-emitted code. Their <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-lean/semantics/native-artifacts.md">reference protocol and limits</a> <small>(source access required)</small>
+emitted code. Their <a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/vh-lean/semantics/native-artifacts.md">reference protocol and limits</a> <small>(source access required)</small>
 are validation interfaces, not a new language-visible privileged service or a
 stable deployment ABI. Optional metadata remains independent of all three routes.</p>
 <p>For the raw comparison drivers, a member row has its own declaration identity and name,
@@ -383,8 +383,8 @@ the row’s name for qualified <code>outer</code> in methods and factories; dire
 the descriptor keeps its own default name. Neither operation mutates shared code.
 Ordinary source lowering emits separate descriptors with matching member names,
 so this permissive core contract changes no source-language behavior. The
-<a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-lean/semantics/execution-conformance/README.md#core-table-format">code-table guide</a> <small>(source access required)</small>
-owns the representation and the <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-lean/semantics/specification-coherence.md">coherence note</a> <small>(source access required)</small>
+<a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/vh-lean/semantics/execution-conformance/README.md#core-table-format">code-table guide</a> <small>(source access required)</small>
+owns the representation and the <a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/vh-lean/semantics/specification-coherence.md">coherence note</a> <small>(source access required)</small>
 records the cross-implementation decision and evidence.</p>
 <h3 id="retained-core-code-across-imports"><a class="header" href="#retained-core-code-across-imports">Retained core code across imports</a></h3>
 <p>The native code interchange uses three finite code tables
@@ -487,7 +487,7 @@ expanded expression; descriptor contents do not select or execute the policy.
 The resulting core requires no parser, policy object, host integer or special
 runtime hook. Native arithmetic, zero normalization and failure behavior belong
 to the supplied kernel protocol. The
-<a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-source/bootstrap/symbolic-numbers/README.md">symbolic-number fixtures</a> <small>(source access required)</small>
+<a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/vh-source/bootstrap/symbolic-numbers/README.md">symbolic-number fixtures</a> <small>(source access required)</small>
 exercise this optional path with Peano, Scott and Church kernels above the
 existing structural runtime. Their tests establish bounded behavior, not correctness for every
 kernel implementation or a general source-to-core refinement theorem.</p>
@@ -504,7 +504,7 @@ or grapheme segmentation is performed.</p>
 receiver occurs once, even for empty text, and follows the same scope, virtual
 dispatch, fresh-AST and configuration-recording requirements as native integer
 elaboration. Literal source origins and descriptors remain attached.</p>
-<p>The <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-source/lib/native-text/README.md">native Text library</a> <small>(source access required)</small> implements
+<p>The <a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/vh-source/lib/native-text/README.md">native Text library</a> <small>(source access required)</small> implements
 this protocol using client-owned characters, validation and sequence operations.
 The frontend needs no runtime string tag or privileged List relationship. Its
 Java tests cover escaped supplementary scalars, lone-surrogate rejection and
@@ -837,17 +837,17 @@ permission to close arbitrary exported capabilities. Selected failures preserve
 their boundary kinds and do not cause fallback or automatic retry. Package
 metadata describes declared ingredients and compatibility, not verified behavior.</p>
 <p>P0 and P1 implement this contract in
-<a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-packaging/README.md">vh-packaging</a> <small>(source access required)</small>. The first native client uses
+<a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/vh-packaging/README.md">vh-packaging</a> <small>(source access required)</small>. The first native client uses
 existing isolated module entry with the loader as its explicit input. P2 adds
 the separately granted <a href="#admitted-source-services">source services</a>, as described in the
-<a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/docs/design-notes/packaging-development-worlds.md">packaging plan</a> <small>(source access required)</small>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/docs/design-notes/packaging-development-worlds.md">packaging plan</a> <small>(source access required)</small>.</p>
 <h2 id="native-recipe-launches"><a class="header" href="#native-recipe-launches">Native Recipe Launches</a></h2>
 <p>P3 associates a library with one launch through adjacent <code>&lt;file&gt;.vh.launch.json</code>
 metadata. The inert <code>variohyve-launch-1</code> format requires <code>format</code>, <code>root</code>,
 <code>recipe</code>, <code>selector</code> and <code>arguments</code>, with optional <code>startup</code>, <code>execution</code>, <code>test</code> and
 <code>packaging</code> objects, plus an optional <code>alienRoot</code> path. Unknown or duplicate fields are rejected. The root is relative to that metadata file;
 the recipe is a source path within the root; arguments are bounded JSON scalars.
-The <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-packaging/README.md#recipe-launches-p3">packaging guide</a> <small>(source access required)</small> defines
+The <a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/vh-packaging/README.md#recipe-launches-p3">packaging guide</a> <small>(source access required)</small> defines
 the concrete limits, examples and CLI. Reading metadata performs no native
 evaluation or provider loading and gives no completeness claim about the world.</p>
 <p><code>WorldLaunchMain</code> receives a tool distribution and launch file. The distribution
@@ -926,7 +926,7 @@ service consumes captured bytes and writes a pinned inventory; it does not
 interpret native wiring, enumerate a realized object graph or infer dependency
 closure from execution. Packaging validates its artifacts without evaluating the
 application recipe or initializing providers. The
-<a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-packaging/README.md#deployment-packaging-p4">packaging guide</a> <small>(source access required)</small> defines
+<a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/vh-packaging/README.md#deployment-packaging-p4">packaging guide</a> <small>(source access required)</small> defines
 the concrete protocol, format, limits and commands.</p>
 <p>A deployment session eagerly captures and verifies every declared file before
 realization. Its <code>files.resolve</code> capability admits only declared source names and
@@ -971,7 +971,7 @@ activation. The owning deployment session outlives the runtime/world uses.</p>
 <p>Native packaging policy chooses the adapter folder, boundary profile
 (<code>host-values</code> or <code>codec-values</code>), provisioning (<code>none</code> or <code>stdio</code>) and result
 presentation (<code>display</code> or <code>discard</code>) through <code>output.startup/4</code>. The format and
-validation limits live in the <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-packaging/README.md#packaged-learn-world">packaging guide</a> <small>(source access required)</small>.
+validation limits live in the <a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/vh-packaging/README.md#packaged-learn-world">packaging guide</a> <small>(source access required)</small>.
 Without this declaration, the existing scalar adapter, five-input recipe context
 and displayed result remain unchanged. Older readers reject the new optional
 field explicitly rather than silently launching with a different configuration.</p>

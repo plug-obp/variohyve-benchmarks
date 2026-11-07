@@ -1,7 +1,38 @@
 {
   "schema_version": 1,
-  "latest": "0.6.1",
+  "latest": "0.6.3",
   "versions": [
+    {
+      "version": "0.6.3",
+      "date": "2026-11-07",
+      "path": "versions/0.6.3/",
+      "source_commit": "873bd8bb0f302e5e82c651bdeaa0bd1c36efa147",
+      "pages": [
+        "index.html",
+        "learn/01-install.html",
+        "learn/02-values-and-input.html",
+        "learn/03-arithmetic-and-choices.html",
+        "learn/04-collections.html",
+        "learn/05-objects.html",
+        "learn/06-testing.html",
+        "learn/07-java-capability.html",
+        "learn/08-embedding.html",
+        "learn/09-worlds.html",
+        "learn/10-native-packages.html",
+        "learn/11-composition.html",
+        "learn/examples/index.html",
+        "learn/index.html",
+        "learn/packages/multiplier/index.html",
+        "learn/projects/index.html",
+        "learn/reference.html",
+        "reference/changelog.html",
+        "reference/conformance.html",
+        "reference/custom-aliens.html",
+        "reference/evidence.html",
+        "reference/extension-changelog.html",
+        "reference/getting-started.html"
+      ]
+    },
     {
       "version": "0.6.1",
       "date": "2026-11-07",

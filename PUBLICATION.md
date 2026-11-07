@@ -1,4 +1,37 @@
-# Public preview consolidation — 0.6.1
+# Public preview review follow-up — 0.6.3
+
+The follow-up review keeps Learn VarioHyve focused on small, rewarding programs.
+The source release is `v0.6.3`, commit
+`873bd8bb0f302e5e82c651bdeaa0bd1c36efa147`.
+
+| Finding | Resolution |
+|---|---|
+| Generated applications omitted runtime notices | `RuntimeIngredients.vh` now declares `THIRD-PARTY.md` and dependency license files. The manifest admits the root notice; distribution assembly preserves its exact bytes. Native and custom-Alien relocation checks verify contents, inventory pins and rejection of changed notice bytes. |
+| Homepage card suggested a first lesson but opened the component demo | Renamed to “See components working together”; the primary learning action still starts the course. |
+| Notebook metaphor suggested stored history | Lesson 11 says the component numbers each result; the program remains small and unchanged. |
+| Later topics looked mandatory | Lessons 1–6 mark a first milestone. Optional routes cover components, Java integration and packaging without renumbering the course. Lesson 11 welcomes readers after objects and tests. |
+| Reference opened with deep rules | Common editing questions come first, with the precise rules retained below. |
+| Suggested beginner edits needed predictable results | Changing wording, adding a fourth review and supplying a fresh notebook were run against the released starter and matched expected output. |
+| Starter root README bypassed release URL rewriting | Its build filter now uses the shared release-link generator. The assembled-distribution gate checks the root README as well as the remaining archive documentation. |
+
+The source-only v0.6.2 candidate failed the assembled-documentation gate before
+public promotion. Its existing source tag is preserved; no v0.6.2 download
+release was published. v0.6.3 contains the completed corrections.
+
+The [current manifest](preview/manifest.json) records exact bytes, commands and
+platform scope. Local validation is separate from hosted CI, which again ran no
+validation steps because of billing and runner configuration failures. Browser
+access remains disabled. The specification PDF is retained with its original
+source and hash after verifying unchanged inputs; unchanged Lean development
+retains its historical evidence without claiming a fresh build.
+
+The maintained release skill now covers generated-deployment notices as well as
+the producing archives, candidate checks before tagging, predictable beginner
+exercises, optional learning paths and labels that match their destinations.
+
+---
+
+# Previous consolidation — 0.6.1
 
 The 7 November 2026 public-preview review was addressed through a new patch
 release. The runtime tag is `v0.6.1`, source
@@ -24,7 +57,7 @@ already implemented `Cons.match` method, discovered by the release's full Lean
 check. This restores exact source-declaration alignment without weakening a
 proof or changing runtime behavior.
 
-Current validation is recorded in [the manifest](preview/manifest.json), with
+That release's validation is recorded in [its manifest](preview/versions/0.6.1/manifest.json), with
 commands, hashes and platform scope. Hosted CI performed no validation steps;
 local checks are not labelled as CI artifacts. Browser review is unavailable
 because local browser access is disabled. Automated site checks cover links,

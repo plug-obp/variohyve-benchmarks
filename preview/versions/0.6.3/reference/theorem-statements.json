@@ -1,0 +1,44 @@
+{
+  "source_commit": "873bd8bb0f302e5e82c651bdeaa0bd1c36efa147",
+  "release": "0.6.3",
+  "lean_toolchain": "leanprover/lean4:v4.35.0",
+  "scope": "Selected exact declarations and premises; definitions and proof dependencies are required for independent replay.",
+  "files": [
+    {
+      "path": "vh-lean/semantics/VarioHyve/Semantics/Refinement/SourceAdequacy.lean",
+      "sha256": "fe87db28abee3c6525d8feac1a150883d200f8090305890d47731c470f4bfc04",
+      "imports": [
+        "import VarioHyve.Semantics.Refinement.SourceForwardExecution",
+        "import VarioHyve.Semantics.Refinement.LanguageControlTerminationEquivalence",
+        "import VarioHyve.Semantics.Refinement.LanguageControlDivergenceEquivalence"
+      ],
+      "namespaces": [
+        "namespace VarioHyve.Semantics.Language.Refinement.ControlCorrespondence",
+        "open Execution Simulation Administrative Retained",
+        "open Execution.SourceTranslation Execution.SourceTranslation.Located"
+      ],
+      "declarations": [
+        "theorem lowered_termination_iff {literals units} {layout : Layout units}\n    {labels : SourceLocations.DeclarationLabels units} {source first tree last emissionFuel program profile}\n    (lowered : Expression literals source first tree last)\n    (emitted : SourceCore.Emission.build tree emissionFuel = .ok program)\n    {location names snapshot runtime scope nativeScope}\n    (located : SourceLocations.Located units location (.expression source))\n    (position : layout.position location = some [])\n    (following : layout.FollowsSource) (safe : literals.ClauseSafe)\n    (native : runtime.Coherent program) (history : WritesSupported runtime)\n    (related : Related program (emittedStaticCode literals layout labels emitted) names snapshot\n      (Ledger.runtime [] runtime))\n    (scopes : names.identities.RelScope scope nativeScope)\n    (world : Coherence.EntryWorld units labels snapshot scope)\n    (data : Coherence.SourceProgressData units profile)\n    (weights : Machine.HeadWeights profile)\n    (literalCode : LiteralCode profile\n      (EvaluationCode literals layout (.term tree) program (.term program.entry)))\n :\n    (∃ after observation, Machine.Evaluates units labels profile\n      ⟨snapshot, .program ⟨source, location⟩, scope, []⟩ after observation) ↔\n    ∃ count finish, Steps program count ⟨runtime, .eval program.entry, nativeScope, []⟩ finish ∧\n      Execution.Terminal finish",
+        "theorem lowered_divergence_iff {literals units} {layout : Layout units}\n    {labels : SourceLocations.DeclarationLabels units} {source first tree last emissionFuel program profile}\n    (lowered : Expression literals source first tree last)\n    (emitted : SourceCore.Emission.build tree emissionFuel = .ok program)\n    {location names snapshot runtime scope nativeScope}\n    (located : SourceLocations.Located units location (.expression source))\n    (position : layout.position location = some [])\n    (following : layout.FollowsSource) (safe : literals.ClauseSafe)\n    (native : runtime.Coherent program) (history : WritesSupported runtime)\n    (related : Related program (emittedStaticCode literals layout labels emitted) names snapshot\n      (Ledger.runtime [] runtime))\n    (scopes : names.identities.RelScope scope nativeScope)\n    (world : Coherence.EntryWorld units labels snapshot scope)\n    (data : Coherence.SourceProgressData units profile)\n    (weights : Machine.HeadWeights profile)\n    (literalCode : LiteralCode profile\n      (EvaluationCode literals layout (.term tree) program (.term program.entry)))\n :\n    Machine.Diverges units labels profile ⟨snapshot, .program ⟨source, location⟩, scope, []⟩ ↔\n      Execution.Diverges program ⟨runtime, .eval program.entry, nativeScope, []⟩",
+        "theorem lowered_reflects_termination {literals units} {layout : Layout units}\n    {labels : SourceLocations.DeclarationLabels units} {source first tree last emissionFuel program profile}\n    (lowered : Expression literals source first tree last)\n    (emitted : SourceCore.Emission.build tree emissionFuel = .ok program)\n    {location names snapshot runtime scope nativeScope}\n    (located : SourceLocations.Located units location (.expression source))\n    (position : layout.position location = some [])\n    (following : layout.FollowsSource) (safe : literals.ClauseSafe)\n    (native : runtime.Coherent program) (history : WritesSupported runtime)\n    (related : Related program (emittedStaticCode literals layout labels emitted) names snapshot\n      (Ledger.runtime [] runtime))\n    (scopes : names.identities.RelScope scope nativeScope)\n    (world : Coherence.EntryWorld units labels snapshot scope)\n    (data : Coherence.SourceProgressData units profile)\n    (weights : Machine.HeadWeights profile)\n    (literalCode : LiteralCode profile\n      (EvaluationCode literals layout (.term tree) program (.term program.entry)))\n\n    {count finish}\n    (trace : Steps program count ⟨runtime, .eval program.entry, nativeScope, []⟩ finish)\n    (terminal : Execution.Terminal finish) :\n    ∃ after observation next ledger,\n      Machine.Evaluates units labels profile\n        ⟨snapshot, .program ⟨source, location⟩, scope, []⟩ after observation ∧\n      names.Extends next ∧\n      Configurations program (EvaluationCode literals layout (.term tree) program (.term program.entry))\n        (HeaderExpressionCode literals layout (.term tree) program (.term program.entry))\n        (emittedStaticCode literals layout labels emitted) next ledger after finish ∧\n      Observation next observation finish"
+      ]
+    },
+    {
+      "path": "vh-lean/semantics/VarioHyve/Semantics/Refinement/LanguageImmutable.lean",
+      "sha256": "04ba55a828cc296d77a6f9e59c41e261c1b0e165432dd2ba904c431e4477f65f",
+      "imports": [
+        "import VarioHyve.Semantics.Language.ImmutablePreservation",
+        "import VarioHyve.Semantics.Refinement.LanguageAddressing",
+        "import VarioHyve.Semantics.Optimizations.GC.Snapshot"
+      ],
+      "namespaces": [
+        "namespace VarioHyve.Semantics.Language.Refinement",
+        "open Coherence Coherence.Immutable"
+      ],
+      "declarations": [
+        "theorem immutable_reference_observation\n    {units labels literals entry before after expression address names target physical}\n    (valid : SourceConfiguration units labels entry) (source : SourceData units literals)\n    (program : entry.control = .program expression)\n    (initialRun : Machine.Steps units labels literals entry before)\n    (cell : ImmutableCell before.snapshot.state address)\n    (settled : Settled address.receiver before)\n    (steps : Machine.Steps units labels literals before after)\n    (represented : Addressing.Heap names after.snapshot.state.heap target)\n    (location : names.Address address physical) :\n    names.identities.Content (before.snapshot.state.heap.storage address) (target.storage physical)",
+        "theorem immutable_reference_after_collection\n    {units labels literals entry before after expression address names physical}\n    (valid : SourceConfiguration units labels entry) (source : SourceData units literals)\n    (program : entry.control = .program expression)\n    (initialRun : Machine.Steps units labels literals entry before)\n    (cell : ImmutableCell before.snapshot.state address)\n    (settled : Settled address.receiver before)\n    (steps : Machine.Steps units labels literals before after)\n    (image : Optimizations.GC.Native.Image) (exports : List ValueId)\n    (represented : Addressing.Heap names after.snapshot.state.heap image.config.runtime.native)\n    (location : names.Address address physical)\n    (supported : (image.graph exports).Supported)\n    (live : (image.graph exports).Live (.value physical.receiver)) :\n    names.identities.Content (before.snapshot.state.heap.storage address)\n      ((image.collect exports).config.runtime.native.storage physical)"
+      ]
+    }
+  ]
+}

@@ -1,5 +1,22 @@
 # Language and starter reference
 
+Use this page when you want to look something up. You can keep writing programs
+without reading it from beginning to end.
+
+## While editing your first programs
+
+| I want to… | A useful starting point |
+|---|---|
+| Create an object | Define `class Counter[start] { ... }`, then create one with `Counter(10)`. See [objects](05-objects.md). |
+| Save an input for later use | Initialize a slot, such as `Console = kernel.Console;`, and use that slot in methods. See [your first program](01-install.md). |
+| Expose an operation | Write `pub count { current }` so another object can ask for the count. See [objects](05-objects.md). |
+| Keep or change state | Use `var current = start;` for a counter that changes, and `current = current.plus(1)` to increase it. See [objects](05-objects.md). |
+| Print something | Send `Console.printLine("Hello!")` to the console your program was given. See [values and input](02-values-and-input.md). |
+| Run a test | From the starter's `learn` directory, run `../bin/vh test examples/tests/lessons.vh` (Windows: `..\bin\vh.bat test examples\tests\lessons.vh`). See [testing](06-testing.md). |
+
+The sections below explain the precise rules and the starter's services. For a
+complete account, follow the linked specification chapters when you need them.
+
 ## Language essentials
 
 These rules apply to the language independently of the starter's Java services.
@@ -48,7 +65,7 @@ callbacks are its library/boundary choices. Native number and text libraries
 have their own contracts; these lessons do not claim to run unchanged in a
 scalar-free Lean world. Java–Lean differential tests compare results, failures,
 aliases and effects on supported shared inputs. They do not prove the Java VM
-or arbitrary foreign adapters correct. The [conformance map](https://obpcdl.org/variohyve-benchmarks/preview/versions/0.6.1/reference/conformance.html#specification-java-and-lean)
+or arbitrary foreign adapters correct. The [conformance map](https://obpcdl.org/variohyve-benchmarks/preview/versions/0.6.3/reference/conformance.html#specification-java-and-lean)
 connects the specification, tests and Lean proof scope.
 
 ## Three layers of a world

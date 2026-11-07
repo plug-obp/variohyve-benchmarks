@@ -35,6 +35,17 @@ Put advanced consequences in the reference/specification and link them optionall
 Keep claims concrete and link hero examples to complete reproducible projects,
 including the provider configuration that produces the advertised answer.
 
+Use the beginner success criterion: run it, understand the main idea, make a
+small change, and see a sensible result. A lesson should offer a visible payoff,
+a complete example with command/output, a focused explanation, a modest “Make
+it yours” exercise and a clear next step. Prefer distinct names and straightforward
+state ownership. Try suggested edits; if one exposes an advanced interaction,
+simplify the exercise rather than adding a semantic detour. Keep claims close
+to demonstrated behavior (a counter numbers results; it does not store a history).
+Mark the basic-course milestone and optional Java, packaging and component paths
+without renumbering lessons unnecessarily. Match homepage card labels to their
+destinations and put common editing questions before deep reference rules.
+
 Follow site `preview/README.md` for commands, manifests and version conventions.
 Distinguish a new software release from an explicitly requested tutorial
 correction:

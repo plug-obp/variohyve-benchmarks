@@ -1,8 +1,9 @@
 # Bring components together
 
-You can now write objects, give them state, test them and package an application.
-Let's use those skills to build a tiny **review desk**: one component checks a
-model's name, and another keeps a numbered notebook of the results.
+Once you have tried [objects](05-objects.md) and [basic tests](06-testing.md),
+you are ready to build a tiny **review desk**: one component checks a model's
+name, and another numbers each result. Use the same starter as before; you do
+not need the Java integration or packaging lessons to try this example.
 
 This is a small taste of VarioHyve's purpose: bring useful components together
 while letting each keep its own job. You decide what the application receives.

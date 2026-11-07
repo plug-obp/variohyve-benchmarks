@@ -1,0 +1,6 @@
+Suite: Lesson tests
+PASS arithmetic
+PASS temperature
+PASS collections
+PASS fresh counter
+Tests: 4, passed: 4, failed: 0, errors: 0

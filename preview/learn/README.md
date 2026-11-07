@@ -7,12 +7,34 @@ communicate by sending messages, and how a program receives the tools it needs.
 Start with [Install and say hello](01-install.md). Each chapter has a complete
 example shown inline, with a download link so you can run and change it.
 
+## Your first small programs
+
+Lessons 1–6 take you from a greeting to objects you can test. Finishing them is
+a useful first milestone: you can write, change and check a small program.
+
 1. [Install and say hello](01-install.md)
 2. [Values, messages and input](02-values-and-input.md)
 3. [Arithmetic and choices](03-arithmetic-and-choices.md)
 4. [Repetition and collections](04-collections.md)
 5. [Objects that remember](05-objects.md)
 6. [Test your program](06-testing.md)
+
+## Choose what to try next
+
+Continue in order, or pick the path that interests you. These later lessons are
+optional; [Bring components together](11-composition.md) needs only the objects
+and tests you have already tried.
+
+| What would you like to do? | Start here |
+|---|---|
+| Connect objects and replace a collaborator | [Bring components together](11-composition.md) |
+| Use an existing Java tool | [Add a capability written in Java](07-java-capability.md) |
+| Call your program from Java | [Call VarioHyve from Java](08-embedding.md) |
+| Assemble and distribute an application | [Your own world](09-worlds.md), then [native packages](10-native-packages.md) |
+| Look up a form while editing | [Starter reference](reference.md) |
+
+Explore the later chapters:
+
 7. [Add a capability written in Java](07-java-capability.md)
 8. [Call VarioHyve from Java](08-embedding.md)
 9. [From starter to your own world](09-worlds.md)
@@ -26,7 +48,7 @@ lessons 9 and 10. Each lesson shows its files inline and links their downloads.
 The [starter reference](reference.md) collects details for when you need them.
 You do not need to read it before writing your first program.
 
-This edition accompanies VarioHyve **0.6.1**. Use its matching downloads: earlier
+This edition accompanies VarioHyve **0.6.3**. Use its matching downloads: earlier
 previews may use different declaration and constructor syntax.
 
 The first eight lessons use the Java starter with JavaHostKernel. Lessons 9 and 10

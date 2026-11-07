@@ -176,15 +176,15 @@
                 </script>
 
                 <div id="mdbook-content" class="content">
-                    <main><!-- public project navigation --><aside aria-label="Public project navigation" style="border:1px solid currentColor;padding:.8rem 1rem;margin:0 0 2rem;font-size:.85em"><nav aria-label="Project"><a href="../">VarioHyve</a> · <a href="../preview/">Downloads</a> · <a href="../preview/learn/">Learn</a> · <a href="../dev/bench/">Benchmarks</a> · <a href="../spec/variohyve-spec-2026-11-07.pdf">PDF</a> · <a href="../preview/reference/evidence.html">Evidence</a></nav><p>Specification published with preview v0.6.1. Source <code>8232f4876b00</code>. Implementation chapters and future directions state their own scope.</p></aside><!-- /public project navigation -->
+                    <main><!-- public project navigation --><aside aria-label="Public project navigation" style="border:1px solid currentColor;padding:.8rem 1rem;margin:0 0 2rem;font-size:.85em"><nav aria-label="Project"><a href="../">VarioHyve</a> · <a href="../preview/">Downloads</a> · <a href="../preview/learn/">Learn</a> · <a href="../dev/bench/">Benchmarks</a> · <a href="../spec/variohyve-spec-2026-11-07.pdf">PDF</a> · <a href="../preview/reference/evidence.html">Evidence</a></nav><p>Specification published with preview v0.6.3. Source <code>873bd8bb0f30</code>. Implementation chapters and future directions state their own scope.</p></aside><!-- /public project navigation -->
                         <h1 id="java-interpreter"><a class="header" href="#java-interpreter">Java Interpreter</a></h1>
 <p><code>VisitorSemanticsVM</code> is the executable prototype. The older <code>VM</code> is not a
 semantic authority. This chapter records how Java realizes the language contracts
 and <a href="./formal-core.html">formal reference machine</a>, including implementation
 restrictions. It does not claim a completed refinement proof.</p>
-<p>The <a href="/variohyve-benchmarks/preview/versions/0.6.1/reference/conformance.html#specification-java-and-lean">shared conformance map</a>
+<p>The <a href="/variohyve-benchmarks/preview/versions/0.6.3/reference/conformance.html#specification-java-and-lean">shared conformance map</a>
 connects source contracts to Java tests and the Lean proof scope. The
-<a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-lean/semantics/README.md">Lean native machine</a> <small>(source access required)</small> has an independent
+<a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/vh-lean/semantics/README.md">Lean native machine</a> <small>(source access required)</small> has an independent
 source semantics and a proved frontend/native refinement for its stated
 source-backed profiles. That result does not verify this Java implementation
 or the JavaHostKernel adapters. Cross-VM checks compare observable results,
@@ -212,9 +212,9 @@ separate environment namespace.</p>
 </table>
 </div>
 <p><code>Control</code> distinguishes expression evaluation, exact host send, committed foreign
-call, returned value, terminal error and resumable budget suspension. <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/main/java/vh/vm/EvaluateStepVisitor.java">EvaluateStepVisitor</a> <small>(source access required)</small>
-handles expressions; <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/main/java/vh/vm/ContinuationStepVisitor.java">ContinuationStepVisitor</a> <small>(source access required)</small>
-handles completion; <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/main/java/vh/vm/ObjectProtocol.java">ObjectProtocol</a> <small>(source access required)</small>
+call, returned value, terminal error and resumable budget suspension. <a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/vh-core/src/main/java/vh/vm/EvaluateStepVisitor.java">EvaluateStepVisitor</a> <small>(source access required)</small>
+handles expressions; <a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/vh-core/src/main/java/vh/vm/ContinuationStepVisitor.java">ContinuationStepVisitor</a> <small>(source access required)</small>
+handles completion; <a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/vh-core/src/main/java/vh/vm/ObjectProtocol.java">ObjectProtocol</a> <small>(source access required)</small>
 selects and invokes operations. Its ordered loops, <code>getterSeen</code>, <code>Selection</code> and
 <code>EligibleAccessor</code> retain lookup evidence without repeating reads or selection.
 The language algorithm is specified in <a href="./message-sends.html">Message Sends</a>.</p>
@@ -258,7 +258,7 @@ not a replacement for the Java collector that manages the underlying objects.
 The native collector currently runs serially at safepoints; the
 <a href="./foreign-objects.html#control-tokens-and-execution-agreements">execution agreement</a>
 permits other correctly coordinated refinements, including concurrent collection.
-See <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/docs/design-notes/native-heap-gc.md">native heap collection</a> <small>(source access required)</small> for roots,
+See <a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/docs/design-notes/native-heap-gc.md">native heap collection</a> <small>(source access required)</small> for roots,
 boundary retention, measurements and limitations.</p>
 <p>Backend-only root provenance, shortest retention paths and Graphviz snapshots
 share the collector’s root enumerator and graph tracer. Graph snapshots can
@@ -266,7 +266,7 @@ start at the complete root set or selected addresses, including an idle structur
 before any execution configuration exists. Reports are non-owning observations rejected
 by the public boundary; no language selector or activation API is added. Audited
 field signatures, randomized graph oracles and GC-on/off execution comparisons
-guard coverage. See <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/docs/design-notes/native-heap-gc-hardening.md">graph hardening</a> <small>(source access required)</small>
+guard coverage. See <a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/docs/design-notes/native-heap-gc-hardening.md">graph hardening</a> <small>(source access required)</small>
 for guarantees and limits.</p>
 <h3 id="values"><a class="header" href="#values">Values</a></h3>
 <p><a href="./object-model.html">Runtime Object Representation</a> describes objects, classes,
@@ -471,7 +471,7 @@ frames. Step exhaustion uses <code>EXECUTION_POLICY</code> with reason
 <code>EXECUTION_POLICY</code>. The resource diagnostic accompanies a resumable native
 suspension, or explicit cancellation by a completion-only adapter. It is not
 a terminal guest failure merely because it has a diagnostic payload. See the
-<a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/docs/design-notes/vm-diagnostics.md">diagnostics decisions and evidence</a> <small>(source access required)</small>.</p>
+<a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/docs/design-notes/vm-diagnostics.md">diagnostics decisions and evidence</a> <small>(source access required)</small>.</p>
 <h3 id="boundary-implementation"><a class="header" href="#boundary-implementation">Boundary implementation</a></h3>
 <p><code>ForeignBoundary.identityMirror()</code> returns a stable, boundary-owned capability.
 It is supplied explicitly to modules and observes identity and membership through
@@ -482,7 +482,7 @@ stable native identity; preserved foreign values use their payload identity so
 collecting and recreating an Alien wrapper does not change the hash of a still
 live foreign referent. The concrete hashing algorithm is a backend policy, not
 a portable identifier.</p>
-<p><a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/main/java/vh/vm/internal/DefaultJavaBoundary.java">DefaultJavaBoundary</a> <small>(source access required)</small>
+<p><a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/vh-core/src/main/java/vh/vm/internal/DefaultJavaBoundary.java">DefaultJavaBoundary</a> <small>(source access required)</small>
 owns the <a href="./foreign-objects.html">Alien/Expat contract</a>. <code>BootstrapRuntime.boundary()</code>
 returns a narrow <code>PublicFacet</code>, delegating to the private boundary owner. Canonical Expat and
 Alien indexes preserve compatible round trips without acting as native roots.
@@ -617,7 +617,7 @@ any claim of unlimited execution.</p>
 <tr><th>Area</th><th>Current implementation status</th></tr>
 </thead>
 <tbody>
-<tr><td>Numbers and strings</td><td>Default literal transport supports signed 64-bit integers and decoded strings. An explicit host-preserving adapter may enable finite binary64 decimal literals and receiver protocols; unconfigured worlds still reject decimals. Optional <a href="tooling-architecture.html#optional-native-integer-elaboration">native integer elaboration</a> preserves arbitrary-length integer spelling as ordinary sends to the loadable Peano/Scott/Church kernels, subject to execution budgets. Native Natural/List and <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-source/lib/native-text/README.md">Unicode Scalar/Text libraries</a> <small>(source access required)</small> are implemented. The optional Java string-literal policy emits ordinary native construction sends; the standalone native artifact frontend does not yet expose that policy. These packages add no scalar primitive or seed role. Native fractions, floating-point arithmetic and complete Text library proofs remain open. <a href="java-host-kernel.html">JavaHostKernel</a> supplies separate foreign protocols.</td></tr>
+<tr><td>Numbers and strings</td><td>Default literal transport supports signed 64-bit integers and decoded strings. An explicit host-preserving adapter may enable finite binary64 decimal literals and receiver protocols; unconfigured worlds still reject decimals. Optional <a href="tooling-architecture.html#optional-native-integer-elaboration">native integer elaboration</a> preserves arbitrary-length integer spelling as ordinary sends to the loadable Peano/Scott/Church kernels, subject to execution budgets. Native Natural/List and <a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/vh-source/lib/native-text/README.md">Unicode Scalar/Text libraries</a> <small>(source access required)</small> are implemented. The optional Java string-literal policy emits ordinary native construction sends; the standalone native artifact frontend does not yet expose that policy. These packages add no scalar primitive or seed role. Native fractions, floating-point arithmetic and complete Text library proofs remain open. <a href="java-host-kernel.html">JavaHostKernel</a> supplies separate foreign protocols.</td></tr>
 <tr><td>Source checks</td><td>Independent configurable surface-AST traversals reject statically inadmissible forms before lowering; the bootstrap runner and LSP use the standard set. Parser-only and direct core entry remain available. See <a href="tooling-architecture.html#source-checks">source checks</a>.</td></tr>
 <tr><td>Qualified <code>outer</code></td><td>Frontend validation rejects unknown/non-enclosing qualifiers before execution, including unused bodies. Runtime selection still scans captured lexical scopes by name and preserves exact application ancestry at every depth; core nodes do not yet carry bound declaration identities.</td></tr>
 <tr><td>Holes</td><td>A reached hole is fatal (<code>UnresolvedHole</code>); no configurable concrete policy.</td></tr>
@@ -636,7 +636,7 @@ any claim of unlimited execution.</p>
 permission to replace accepted semantics. Future TCO must preserve captured
 homes and barriers; abstract execution needs sound domains, joins, transitions
 and foreign-effect models beyond an allocator change. See <a href="./future.html">Future Directions</a>
-and the <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/docs/design-notes/outer-newspeak-comparison.md">outer comparison</a> <small>(source access required)</small>.</p>
+and the <a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/docs/design-notes/outer-newspeak-comparison.md">outer comparison</a> <small>(source access required)</small>.</p>
 <h2 id="refinement-of-the-formal-machine"><a class="header" href="#refinement-of-the-formal-machine">Refinement of the Formal Machine</a></h2>
 <p>A refinement relation must decode addressed frames and suspended Java calls into
 the reference stack; map mutable entries to the current <code>σ</code>; and preserve scope,
@@ -685,7 +685,7 @@ prototype’s scalar subset and distinguish terminal failures from resumable
 <code>STEP_LIMIT_EXCEEDED</code>. Equal numeric budgets are not required to yield equal
 outcomes; each machine must instead preserve its own continuation across slices.
 No Java simulation proof is claimed. The
-<a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-lean/semantics/proof-obligations.md">Lean proof ledger</a> <small>(source access required)</small> distinguishes
+<a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/vh-lean/semantics/proof-obligations.md">Lean proof ledger</a> <small>(source access required)</small> distinguishes
 native coherence, partial component bridges and the composed refinement from an
 independent high-level source specification. That refinement covers scalar-free
 and native-decimal source-backed sessions under explicit profile, retained-world
@@ -705,13 +705,13 @@ alone is insufficient evidence of the control ownership decoded by \(R\).</p>
 <p><code>bash scripts/check-bootstrap.sh</code> runs focused backend checks with JDK 17+ and
 Python 3. <code>./gradlew test</code> additionally exercises parsing and the complete project
 with its configured JDK 23 toolchain. Relevant witnesses include
-<a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/test/java/boundaryclient/UnifiedInvocationTest.java">UnifiedInvocationTest</a> <small>(source access required)</small>,
-<a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/test/java/boundaryclient/ClassCompositionTest.java">ClassCompositionTest</a> <small>(source access required)</small>,
-<a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/test/java/boundaryclient/InitializerReturnHomeTest.java">InitializerReturnHomeTest</a> <small>(source access required)</small>,
-<a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/test/java/boundaryclient/NativeValuesTest.java">NativeValuesTest</a> <small>(source access required)</small>
-and <a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/test/java/boundaryclient/ModuleEntryTest.java">ModuleEntryTest</a> <small>(source access required)</small>.
+<a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/vh-core/src/test/java/boundaryclient/UnifiedInvocationTest.java">UnifiedInvocationTest</a> <small>(source access required)</small>,
+<a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/vh-core/src/test/java/boundaryclient/ClassCompositionTest.java">ClassCompositionTest</a> <small>(source access required)</small>,
+<a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/vh-core/src/test/java/boundaryclient/InitializerReturnHomeTest.java">InitializerReturnHomeTest</a> <small>(source access required)</small>,
+<a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/vh-core/src/test/java/boundaryclient/NativeValuesTest.java">NativeValuesTest</a> <small>(source access required)</small>
+and <a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/vh-core/src/test/java/boundaryclient/ModuleEntryTest.java">ModuleEntryTest</a> <small>(source access required)</small>.
 The admission regressions in
-<a href="https://github.com/plug-obp/variohyve/blob/8232f4876b00485e56ef457f62b2016154a538d1/vh-core/src/test/java/vh/vm/BoundaryReentryChecks.java">BoundaryReentryChecks</a> <small>(source access required)</small>
+<a href="https://github.com/plug-obp/variohyve/blob/873bd8bb0f302e5e82c651bdeaa0bd1c36efa147/vh-core/src/test/java/vh/vm/BoundaryReentryChecks.java">BoundaryReentryChecks</a> <small>(source access required)</small>
 cover competing callbacks and pending completion, rejection of unassociated
 preparation before allocation, leased idle preparation followed by stepping,
 and concurrent foreign computation and consumption of previously published
