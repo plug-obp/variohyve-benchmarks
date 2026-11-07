@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0e8722df.js";
+            window.path_to_searchindex_js = "searchindex-75c83f8c.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-ce909e20.js"></script>
+        <script src="toc-253640ee.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -182,6 +182,13 @@
 all send messages; there is no public direct field access or separate binding
 namespace. Receiver origins are defined in <a href="name-resolution.html">Name Resolution</a>.</p>
 <p>Operational definition: <a href="./formal-core.html#selection">SOS selection rules</a>.</p>
+<p>Public lookup searches the realized published interface, preserving candidate
+positions after simultaneous rename/hide. Private entries are absent before
+masking, reads or callability checks. Ordinary explicit sends first apply the
+<a href="name-resolution.html#private-authority-for-ordinary-explicit-sends">compatible private-authority rule</a>.
+Private success enters the exact selected operation and cannot retry publicly.
+Delegation preserves original lexical category separately from effective operation
+kind; invocation uses that effective kind and retained origin.</p>
 <h2 id="implicit-message-send"><a class="header" href="#implicit-message-send">Implicit Message Send</a></h2>
 <div class="table-wrapper">
 <table>
@@ -199,15 +206,13 @@ namespace. Receiver origins are defined in <a href="name-resolution.html">Name R
 <p>Parentheses remain semantically significant during message selection and dispatch.
 In particular, invocation cannot always be lowered to getter-then-apply.</p>
 <h3 id="list-separators"><a class="header" href="#list-separators">List Separators</a></h3>
-<p>A single trailing comma is permitted in a nonempty argument or formal list,
-including constructor parameters and mixin application lists. <code>f(1,)</code> has one
+<p>A single trailing comma is permitted in a nonempty argument or formal list.
+Constructor headers and routed actuals use brackets, as specified in
+<a href="objects-and-classes.html#constructor-clauses">Objects and Classes</a>. <code>f(1,)</code> has one
 argument; <code>fun(x,) {x}</code> has one formal. Empty parentheses have no items. A leading
 comma or a missing item between commas is an error, not an omitted value or a
 new formal: <code>f(,1)</code>, <code>f(1,,2)</code> and <code>fun(x,,y) {y}</code> are invalid. Descriptor lists
 use their separately specified optional trailing pipe.</p>
-<p>The current reader reports a nonblocking style warning for trailing commas.
-It preserves warnings on successful reads and still runs source checks; warnings
-do not alter arity or execution admission.</p>
 <h2 id="self-dispatch-message-send-leading-dot"><a class="header" href="#self-dispatch-message-send-leading-dot">Self-Dispatch Message Send (Leading Dot)</a></h2>
 <p><code>.m(args)</code> is equivalent to <code>self.m(args)</code>; both skip lexical receiver selection.
 Leading <code>..</code> likewise cascades on <code>self</code>. Prefer the explicit forms when nested
@@ -218,15 +223,16 @@ at the written arity. Evaluate the receiver first, then arguments once from
 left to right, then select behavior. Dot chains send each message to the
 previous result: <code>a.b.c(3)</code> sends <code>c/1</code> to the result of <code>a.b</code>.</p>
 <h3 id="invoking-the-current-receiver"><a class="header" href="#invoking-the-current-receiver">Invoking the Current Receiver</a></h3>
-<p><code>self(args)</code> sends exact <code>apply/N</code> to the current receiver after evaluating its
+<p><code>self(args)</code> sends exact public <code>apply/N</code> to the current receiver after evaluating its
 arguments once from left to right. <code>self.apply(args)</code> instead invokes <code>apply/N</code>
-under the ordinary candidate rules below. An exact <code>apply/N</code> method behaves the
-same in both forms; a generated accessor can distinguish them:</p>
+under the ordinary authority and candidate rules below, including compatible
+private access. A generated accessor can also distinguish their exact-access and
+invocation modes:</p>
 <!-- example-id: vh-callable-slot-access -->
 <pre><code class="language-vh">{
-    apply = fun { 42 };
-    exact { self() }
-    invoked { self.apply() }
+    pub apply = fun { 42 };
+    pub exact { self() }
+    pub invoked { self.apply() }
 }
 </code></pre>
 <p>Here <code>exact</code> returns the stored lambda, while <code>invoked</code> returns <code>42</code>. With a
@@ -243,10 +249,12 @@ returned by a selected ordinary method a second time.</p>
 lambdas, native callable objects and member factories. Invocation preserves
 the selected behavior’s receiver, declaration origin, lexical captures and
 return home. Parameters and locals expose generated accessors on private
-activation objects; direct backend reads may implement these messages.</p>
+activation objects.</p>
 <h3 id="candidate-selection"><a class="header" href="#candidate-selection">Candidate Selection</a></h3>
-<p>For <code>name/N</code>, examine each searched hierarchy contribution in order: owned
-contribution, direct mixins left-to-right, then the superclass recursively.</p>
+<p>For public invocation of <code>name/N</code>, examine the searched interface’s publication
+positions in order: owned contribution, direct mixins left-to-right, then the
+superclass recursively. Adaptation preserves those positions while changing
+which operations they publish.</p>
 <ol>
 <li>Prefer an exact operation <code>name/N</code>. At <code>N = 0</code>, a generated getter goes
 through the next rule instead of satisfying invocation by returning a value.</li>
@@ -256,27 +264,29 @@ accessor qualifies through its effective declaration’s factory signatures.</li
 <li>Continue only on a miss. Exhausting the search produces a missing-selector
 diagnostic.</li>
 </ol>
-<p>Exact-operation preference is local to each contribution: a nearer eligible
-accessor can beat a farther method. <code>super</code> starts after the executing
-contribution’s exact occurrence.</p>
+<p>Exact-operation preference is local to each position: a nearer eligible accessor
+can beat a farther method. <code>super</code> searches the executing origin’s
+<a href="name-resolution.html#super--lookup-redirector">retained lower public input</a>.</p>
 <p><strong>Getter masking.</strong> The first <code>name/0</code> operation masks later getters in that
 hierarchy search, even when its candidate is ineligible. An ordinary overriding
 getter is never executed to discover a callable, and its hidden storage is
 never inspected. Later exact <code>name/N</code> methods can still match. A <code>super</code> search
 starts masking afresh at its redirected origin.</p>
-<p><strong>Callable capability.</strong> Native values qualify through an exact <code>apply/N</code>
+<p><strong>Callable capability.</strong> Native values qualify through an exact public <code>apply/N</code>
 method, including inherited methods, or a lambda’s declared arity. A stored
 <code>apply</code> accessor does not recursively make its containing object callable.
+A generated setter renamed to <code>apply/1</code> remains an exact setter and does not
+qualify a stored value as callable.
 A stored Alien can qualify through effect-free boundary selection of <code>apply/N</code>,
 including <code>ForeignCallable</code>. An explicit Alien receiver instead selects the
 requested foreign name/arity directly: no foreign getter is probed for a
 callable result.</p>
 <p><strong>Implicit invocation.</strong> First perform
-<a href="name-resolution.html#lookup-order">declaration-relative receiver selection</a>,
-using these same candidates. Then dispatch the original invocation on that
-selected receiver. Method and eligible-accessor overrides both participate.
-Eligibility does not freeze the implementation, and final dispatch failure
-does not resume lexical search.</p>
+<a href="name-resolution.html#lookup-order">declaration-relative receiver selection</a>.
+Public qualification dispatches virtually through the selected receiver’s
+interface, so method and eligible-accessor overrides participate. Private
+qualification enters the committed operation. Neither a final miss nor a failure
+restarts lexical selection.</p>
 <p><strong>Evidence and failures.</strong> Retain an eligible accessor’s value and selected
 callable operation through final dispatch. Revisiting the same candidate
 reuses them without rereading storage or resolving a foreign operation.
@@ -314,24 +324,27 @@ implicitly invoked. Write <code>obj.f().apply()</code> to invoke that result exp
 Replacing a generated getter with a computed getter can therefore preserve
 bare reads while changing invocation behavior.</p>
 <h3 id="member-class-invocation"><a class="header" href="#member-class-invocation">Member-Class Invocation</a></h3>
-<p>A generated member accessor advertises its effective declaration’s constructor
-arity and owned <code>factory apply</code> arities. An overriding declaration supplies its
+<p>A generated member accessor advertises its effective public owned <code>apply</code>
+factory arities, including the generated constructor arity when no custom factory
+replaces it. A private custom factory suppresses the default at its arity before
+public filtering. An overriding declaration supplies its
 own signatures. Flat metaclasses import no contributor factories, so candidate
 testing needs neither contributor lookup nor class realization.</p>
-<p><code>class Widget(x, y) { factory apply(x) { new(x, x) } }</code> supplies invocation
+<p><code>class Widget[x, y] { pub factory apply(x) { new(x, x) } }</code> supplies invocation
 arities one and two. <code>Widget()</code> is a miss without evaluating definition clauses,
 whether its cache is empty, successful or failed.</p>
-<p>Metadata eligibility first selects the lexical receiver. If final dispatch
-chooses an overriding method, the member remains unrealized, even if its cache
-already holds a failure. When dispatch selects the member factory, commit to
-that candidate, realize it through its receiver-and-declaration-occurrence
-cache, then invoke exact <code>apply/N</code> with the saved arguments. Bare access also
-realizes through that cache. A selected failure is cached and propagated.</p>
+<p>Metadata eligibility can select a lexical receiver without realizing its member.
+If public dispatch chooses an overriding method, the member remains unrealized,
+even if its cache already holds a failure. Private selection instead retains its
+exact member. Once selection commits to a member factory, realize it through its
+receiver-and-declaration-occurrence cache, then invoke exact public <code>apply/N</code> with
+the saved arguments. Bare access also realizes through that cache. A selected
+failure is cached and propagated.</p>
 <p>Realization evaluates direct mixin targets left-to-right, then the superclass
 target; their computations may have effects and must produce native classes,
-excluding metaclasses. Terminal constructor arguments remain deferred until
+excluding metaclasses. Explicit bracketed constructor arguments remain deferred until
 construction. See <a href="objects-and-classes.html">class realization</a> and the
-<a href="../../design-notes/unified-callable-lookup.html">accepted decision</a>.</p>
+<a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/docs/design-notes/unified-callable-lookup.md">accepted decision</a>.</p>
 <h2 id="cascade-"><a class="header" href="#cascade-">Cascade (<code>..</code>)</a></h2>
 <p>A cascade evaluates its receiver once and sends every arm to that saved receiver.
 Arms execute left-to-right; each arm’s arguments execute immediately before its
@@ -339,7 +352,7 @@ send. Preserve each arm’s exact-access versus invocation mode and any setter
 sugar:</p>
 <!-- example-id: vh-send-cascade -->
 <pre><code class="language-vh">(fun {
-    var p = { x = 0; y = 0; describe { x.toString.concat(",").concat(y.toString) } };
+    var p = { pub var x = 0; pub var y = 0; pub describe { x.toString.concat(",").concat(y.toString) } };
     p..x!(2)..y!(3)..describe
 }).apply()
 </code></pre>
@@ -374,7 +387,7 @@ send select different receivers.</p>
 </div>
 <p>There is no <code>super..a..b</code> syntax: <code>super</code> is not a receiver value.
 Assignment has a separate <a href="syntactic-sugar.html#the-cascade-fence">cascade fence</a>.
-The precise grammar is <a href="../../../vh-core/src/main/antlr/vh.g4">vh.g4</a>.</p>
+The precise grammar is <a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/vh-core/src/main/antlr/vh.g4">vh.g4</a>.</p>
 
                     </main>
 
@@ -423,7 +436,7 @@ The precise grammar is <a href="../../../vh-core/src/main/antlr/vh.g4">vh.g4</a>
         <script src="searcher-09f2665d.js"></script>
 
         <script src="clipboard-1626706a.min.js"></script>
-        <script src="highlight-33e14e7d.js"></script>
+        <script src="highlight-c449d962.js"></script>
         <script src="book-c22b7243.js"></script>
 
         <!-- Custom JS scripts -->

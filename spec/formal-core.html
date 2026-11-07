@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0e8722df.js";
+            window.path_to_searchindex_js = "searchindex-75c83f8c.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-ce909e20.js"></script>
+        <script src="toc-253640ee.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -202,8 +202,8 @@ X=(\sigma,\Delta,H,B),\cr
 \end{gathered}
 \]</p>
 <p>\(A\) contains private runtime identities; \(u\) is uninitialized storage.
-\(B\) is the boundary state, including identity maps and canonical
-null/Boolean role identities. Failure is carried by the active control and is
+\(B\) is the boundary state, including foreign identity maps and explicit
+scalar conversion policy. Failure is carried by the active control and is
 reported at the nearest callback boundary or independent entry. Fresh identities
 are always distinct from existing ones. An omitted
 configuration component is unchanged; \(X[\sigma(v).p:=w]\) denotes a field
@@ -221,17 +221,22 @@ For context-preserving steps, \(\langle c\rangle_X\) abbreviates
 <tr><td>\(\mathrm{View}(v,o,\rho_d)\)</td><td>Declaration-relative receiver scope; no parameter bindings or return home.</td></tr>
 <tr><td>\(\Lambda(\bar x,e,\rho_d,v,o,h)\)</td><td>Native object of class Lambda, with code and private lexical captures.</td></tr>
 <tr><td>\(\Delta(\mu)=(D,\rho_d,\bar x,T,\bar S,\bar D_m,e_b)\)</td><td>Payload of the reified contribution identity: declaration, captured scope, formals, operations, slots, members, final initializer body.</td></tr>
-<tr><td>\(\mathrm{Class}(\mu,\bar o,S,R,L,M)\)</td><td>Owned contribution, direct applications, superclass, routes, complete layout, metaclass.</td></tr>
+<tr><td>\(\mathrm{Class}(\mu,\bar o,S,R,L,M,\mathcal B,P)\)</td><td>Owned contribution, direct applications, superclass, routes, complete layout, metaclass, retained boundaries, public interface.</td></tr>
 <tr><td>\(\mathrm{Meta}(\mu,\ldots)\)</td><td>Class-side record; its fixed structural fields are given below. Not an eligible construction-clause target.</td></tr>
 <tr><td>\(\mathrm{Alien}(\phi)\), \(\mathrm{Scalar}(p)\)</td><td>Foreign identity or scalar payload; neither implies a native class.</td></tr>
 </tbody>
 </table>
 </div>
-<p>Scopes use object accessors, not a separate binding environment. Every active
-scope carries receiver/origin/home metadata; a <code>View</code> has \(h=\bot\).
+<p>Scopes use object accessors, not a separate binding environment. An ordinary
+object may be a tooling scope: its own table is its top layer’s owned contribution
+and direct mixins, its parent is its definition scope, and it has no executing
+origin or return home. Activation objects retain their existing accessor table
+and parent; a lambda object’s private captures belong to invocation, not to an
+ordinary object parent. Every active scope carries receiver/origin/home metadata;
+a <code>View</code> has \(h=\bot\).
 \(\sigma(\rho).U\) is storage for generated accessors, not a source namespace.
-It retains declaration mutability: local bindings have setters; parameters do
-not. The maps below abbreviate these tagged storage declarations.</p>
+It retains declaration mutability: <code>var</code> locals have setters; <code>let</code> locals and
+parameters do not. The maps below abbreviate these tagged storage declarations.</p>
 <h3 id="contribution-identities-and-definition-store"><a class="header" href="#contribution-identities-and-definition-store">Contribution identities and definition store</a></h3>
 <p>\(\mathit{MixId}\) is a semantic identity sort distinct from value/class
 identities, source declarations and application positions. It supplies no
@@ -268,8 +273,7 @@ identities does not imply equality of occurrences.</li>
 <p>Definition closure does not require a live reverse reference to the source
 class. An application or lexical capture may retain a contribution after its
 original class is otherwise unreachable. No reverse owner capability or extra
-retention obligation is introduced. Garbage collection, relocation and startup
-substitution must preserve these identities and references up to their declared
+retention obligation is introduced. Garbage collection and relocation must preserve these identities and references up to their declared
 representation relation; they are not modeled by ordinary realization.</p>
 <p>Consequently equal source structure or record payloads need not imply equal
 identity-bearing class shapes. The algebra below retains contribution identities;
@@ -279,7 +283,7 @@ it is not a structural-equality test for realized definitions.</p>
 <code>Class</code> or <code>Meta</code>. The superclass field ranges over
 \(A_{\mathrm{cls}}\cup{\mathrm{Top}}\). The distinguished empty constructor
 \(\mathrm{Top}\notin A\) is not a store node, source value, lookup miss
-\(\bot\), uninitialized marker \(u\), or the canonical null identity.</p>
+\(\bot\), uninitialized marker \(u\), or a language value.</p>
 <p>The <a href="./objects-and-classes.html#top-and-the-class-algebra">class algebra</a> and its
 projection from realized classes are:</p>
 <p>\[
@@ -295,7 +299,7 @@ Q&amp;::=\mathrm{Top}\mid\mathrm{Apply}(\mu,Q),\cr
 \(\mathrm{shape}(C)=\mathrm{Apply}(\mu_C,\mathrm{shape}(S_C))\);
 for Object without direct applications,
 \(\mathrm{shape}(\mathrm{Object})=\mathrm{Apply}(\mu_{\mathrm{Object}},\mathrm{Top})\).
-A root with stateless direct applications follows the general projection above.
+Object has no direct applications, slots, methods or captured library scope.
 This is a projection of instance-side composition, not an equality of runtime
 identities: occurrences, scopes, routes and metaclasses remain in their records.
 It introduces no intermediate classes. Every realized superclass chain is
@@ -303,7 +307,7 @@ finite and ends at <code>Top</code>; only Object has <code>Top</code> as its dir
 <p><code>Top</code> has no owned contribution, scope, class-of link or superclass projection.
 There is no value, allocation, factory or initializer-entry rule for it. Source
 construction-clause targets must be realized non-metaclass identities in
-\(A_{\mathrm{cls}}\); the seed supplies Object’s terminal superclass.</p>
+\(A_{\mathrm{cls}}\); fixed structural startup supplies Object’s terminal superclass.</p>
 <h3 id="realized-hierarchy-invariant"><a class="header" href="#realized-hierarchy-invariant">Realized hierarchy invariant</a></h3>
 <p>Let \(\Sigma\) be the finite restriction of the runtime store to published
 class and metaclass records. It is a function on unique class identities.
@@ -322,7 +326,7 @@ acyclic superclass chains terminating at Object and then Top. The separate
 class-of graph need not be acyclic. Direct application positions are generated
 uniquely within each class; reusing a contribution does not add its source
 class’s superclass edge.</p>
-<p>Seed publication establishes this invariant. Ordinary realization extends
+<p>Fixed structural startup establishes this invariant. Ordinary realization extends
 \(\Sigma\) with fresh \(C,M\), using already realized superclass \(S\)
 and class-side superclass Class, without changing older records. Assign
 \(r(C)=r(S)+1\) and \(r(M)=r(\mathrm{Class})+1\), leaving old ranks
@@ -334,14 +338,14 @@ partially realized definition.</p>
 <h3 id="expression-notation-and-machine-controls"><a class="header" href="#expression-notation-and-machine-controls">Expression notation and machine controls</a></h3>
 <p>\[
 \begin{aligned}
-e::={}&amp;l\mid\mathrm{null}\mid ?\mid\mathrm{self}\mid\mathrm{outer}(n)\cr
+e::={}&amp;l\mid ?\mid\mathrm{self}\mid\mathrm{outer}(n)\cr
 &amp;\mid q.n(\bar e)_\iota\mid\lambda\bar x.e\mid\mathrm{class}(d)\mid\mathrm{object}(d)\cr
 &amp;\mid\mathrm{let}(\bar b;e)\mid\mathrm{ret}(e)\cr
 &amp;\mid\mathrm{alloc}(C)\mid\mathrm{init}(\tau;e_r,\bar e)
 \mid\mathrm{write}(j,e)\mid\mathrm{slotsDone},\cr
 q::={}&amp;\mathrm{implicit}\mid\mathrm{explicit}(e)\mid\mathrm{super},\cr
-\iota::={}&amp;\mathrm{exact}\mid\mathrm{invoke},\qquad
-b::=x\leftarrow e\mid_\leftarrow e.
+\iota::={}&amp;\mathrm{exact}\mid\mathrm{invoke}\mid\mathrm{publicExact},\qquad
+b::=x\leftarrow_m e\mid_\leftarrow e,\qquad m\in{\mathrm{mutable},\mathrm{immutable}}.
 \end{aligned}
 \]</p>
 <p>This display is an abbreviation scheme, subject to all source restrictions;
@@ -350,39 +354,47 @@ The literal metavariable \(l\) ranges over the number and string syntax
 defined in <a href="./literals.html">Literals</a>, with its specified escapes and profiles.
 Source syntax is finite. Each declaration record \(d\) denotes one source
 occurrence, with its declared name, formals, owned declarations, contributor
-targets and delayed constructor arguments. Distinct member occurrences have
+targets, explicit bracketed constructor arguments, owned/direct policies, visibility and slot mutability. Distinct member occurrences have
 distinct declaration identities \(d.D\), even when their bodies have identical
 spelling. A member is a named class declaration; its record retains that name.
-Contributor targets and delayed arguments are exactly the split specified by
+Contributor targets and delayed arguments are exactly the separate source fields specified by
 <a href="./objects-and-classes.html#constructor-clauses">constructor clauses</a>, not
 independently selectable expressions. For \(\mathrm{object}(d)\), the
 declaration is anonymous, has no constructor formals or factories, and retains
 only the contributor clauses permitted for an object literal.</p>
 <p>The return form \(\mathrm{ret}(e)\) denotes source <code>^e</code>. Bare access uses
 <code>exact/0</code>; ordinary parentheses use <code>invoke/k</code>. Leading-dot sends denote an
-explicit <code>self</code> receiver; the special <code>self(args)</code> form denotes exact <code>apply/k</code>.
+explicit <code>self</code> receiver; the special <code>self(args)</code> form denotes <code>publicExact</code> at
+<code>apply/k</code>. This mode abbreviates only that admitted source form. Generated
+construction sends use ordinary <code>exact</code> lookup from their actual caller scope,
+as shown in the construction rules below.
 Selector names and receiver forms must be derivable from the message syntax;
 parameter, local, declaration and qualifier names obey their respective source
 restrictions. In particular, arbitrary selector strings or mode/arity
 combinations are not additional source capabilities. Qualified <code>outer(n)</code> uses
 the nearest enclosing declaration with source name \(n\).</p>
-<p>The <code>let</code> notation represents source bodies and the sequencing prescribed by
-syntactic sugar. Its generated names are fresh. The final four expression forms
+<p>The mathematical <code>let</code> notation represents source bodies and the sequencing
+prescribed by syntactic sugar; it is distinct from the source <code>let</code> declaration
+marker. Each named step retains the declaration’s mutability tag: <code>var</code> is mutable
+and source <code>let</code> is immutable. Its generated names are fresh. The final four expression forms
 are auxiliary construction controls, introduced only by the construction rules
 below; a source expression cannot supply private allocation, initializer or
 storage-write operands. Recursion follows the source message and closure rules,
 not cycles in the written expression structure.</p>
-<p>The notation \(\mathrm{null}\) denotes the canonical value supplied for an
-empty body or omitted initializer, not the source identifier <code>null</code>. Source
-<code>null</code>, <code>true</code> and <code>false</code> denote ordinary implicit sends. Their results depend
-on lookup and the selected behavior, not on this constant rule or a reserved
-source spelling.</p>
+<p>Every slot and local declaration supplies its initializer expression. An ordinary
+routine body is nonempty and ends with an expression or explicit return; its
+<code>let</code> abbreviation therefore always has a final expression. A trailing semicolon
+does not remove that result. Empty executable input is not admitted. Empty class
+and object declarations remain valid, and initializer work may be empty or end
+with an initialized local. Source <code>null</code>, <code>true</code> and <code>false</code> are ordinary implicit
+sends with no reserved identity, default binding or VM codec role.</p>
 <p>\[
 \begin{aligned}
 c::={}&amp;e\mid\mathrm{val}(v)\mid\mathrm{collect}(a;\bar v;\bar e)
 \mid a[\bar v]\cr
-&amp;\mid\mathrm{call}(p,\bar v)\mid\mathrm{enter}(v,o,\bar x,\bar v,e,\chi)\cr
-&amp;\mid\mathrm{steps}(\bar b;e)\mid\mathrm{return}(h,v)\cr
+&amp;\mid\mathrm{call}(p,\bar v)\mid\mathrm{enter}(v,o,\bar x,\bar v,c,\chi)\cr
+&amp;\mid\mathrm{steps}(\bar b;e)\mid\mathrm{work}(\bar b)\mid\mathrm{workSteps}(\bar b)\cr
+&amp;\mid\mathrm{sequence}(\bar c)\mid\mathrm{completed}\mid\mathrm{return}(h,v)\cr
 &amp;\mid\mathrm{member}(g)\mid\mathrm{foreign}(\omega)
 \mid\mathrm{callback}(v,n,\bar f)\cr
 &amp;\mid\mathrm{error}(\epsilon)\mid\mathrm{abort}(\epsilon),\cr
@@ -392,7 +404,7 @@ c::={}&amp;e\mid\mathrm{val}(v)\mid\mathrm{collect}(a;\bar v;\bar e)
 <p>\(a\) is a pending control with a value-list hole: a send, a private initializer
 entry, or class realization. Frames appearing below are exhaustive for these
 forms: <code>Recv</code>, <code>Args</code>, <code>Bind</code>, <code>Restore</code>, <code>Done</code>, <code>Return</code>, <code>Write</code>, <code>Cache</code>,
-<code>Apply</code>, <code>Module</code>, and <code>Barrier</code>. Their fields are given by their rules; the tail is \(\kappa\).</p>
+<code>Apply</code>, <code>Module</code>, <code>Sequence</code>, <code>WorkBind</code>, <code>WorkSequence</code>, and <code>Barrier</code>. Their fields are given by their rules; the tail is \(\kappa\).</p>
 <h3 id="runtime-admission-and-conceptual-control"><a class="header" href="#runtime-admission-and-conceptual-control">Runtime admission and conceptual control</a></h3>
 <p>The following transition rules describe ordinary execution under the
 <a href="./foreign-objects.html#execution-authority">sequential execution agreement</a>.
@@ -454,8 +466,7 @@ parallel agreement. Proofs must state which extensions, if any, they include.</p
 <p>Literal interpretation \(B,\sigma\vdash l\Downarrow(v,\sigma’,B’)\) is fixed by the
 selected literal profile; conversion failures use <code>error</code>. A profile may
 specify an expansion into surface expressions, which then follow the ordinary
-evaluation rules. The auxiliary null form returns the canonical identity
-\(v_{\mathrm{null}}\).</p>
+evaluation rules. No literal or implicit-result rule supplies a null identity.</p>
 <p>\[
 \frac{B,\sigma\vdash l\Downarrow(v,\sigma’,B’)}
 {\langle l,\rho,\kappa\rangle_X\longrightarrow
@@ -463,8 +474,6 @@ evaluation rules. The auxiliary null form returns the canonical identity
 \]</p>
 <p>\[
 \begin{aligned}
-\langle\mathrm{null},\rho,\kappa\rangle_X
-&amp;\longrightarrow\langle\mathrm{val}(v_{\mathrm{null}}),\rho,\kappa\rangle_X,\cr
 \langle ?,\rho,\kappa\rangle_X
 &amp;\longrightarrow\langle\mathrm{error}(\mathrm{Hole}),\rho,\kappa\rangle_X,\cr
 \langle\mathrm{self},\rho,\kappa\rangle_X
@@ -523,23 +532,28 @@ an absent required receiver/origin is an error.</p>
 &amp;\longrightarrow\langle\mathrm{collect}(a;\bar v\cdot[v];\bar e),\rho,\kappa\rangle_X.
 \end{aligned}
 \]</p>
-<p>A class-target <code>Args</code> frame rejects each nonclass or metaclass result before
-advancing to the next target. Other argument lists retain values without
-executing their contents. These rules evaluate receivers/arguments once,
+<p>A class-target <code>Args</code> frame raises <code>InvalidContributor</code> for each nonclass or
+metaclass result before advancing to the next target. Both mixin and superclass
+targets evaluate complete ordinary expressions; direct mixin application later
+selects the validated class’s owned contribution. Other argument lists retain
+values without executing their contents. These rules evaluate receivers/arguments once,
 left-to-right.</p>
 <h3 id="local-scope-and-sequencing"><a class="header" href="#local-scope-and-sequencing">Local scope and sequencing</a></h3>
 <p>For \(\mathrm{let}(\bar b;e)\), allocate fresh \(a\) and
 \(\sigma’=\sigma[a\mapsto\mathrm{Act}(U,\rho,v,o,h)]\), where
 \((v,o,h)\) are copied from \(\rho\) and
-\(U={x\mapsto u\mid(x\leftarrow e_x)\in\bar b}\).
-All local names are reserved before the first initializer; duplicate names fail.</p>
+\(U={x\mapsto u\mid(x\leftarrow_m e_x)\in\bar b}\).
+Each reserved entry retains its tag: every entry generates a getter, and only
+mutable entries generate setters. All local names are reserved before the first
+initializer; duplicate names across either declaration form fail. Forward and
+self reads select the reserved cell and fail while it is uninitialized.</p>
 <p>\[
 \begin{aligned}
 \langle\mathrm{let}(\bar b;e),\rho,\kappa\rangle_X
 &amp;\longrightarrow\langle\mathrm{steps}(\bar b;e),a,\mathrm{Restore}(\rho)::\kappa\rangle_{X[\sigma:=\sigma’]},\cr
 \langle\mathrm{steps}([];e),\rho,\kappa\rangle_X
 &amp;\longrightarrow\langle e,\rho,\kappa\rangle_X,\cr
-\langle\mathrm{steps}((x\leftarrow e_0)::\bar b;e),\rho,\kappa\rangle_X
+\langle\mathrm{steps}((x\leftarrow_m e_0)::\bar b;e),\rho,\kappa\rangle_X
 &amp;\longrightarrow\langle e_0,\rho,\mathrm{Bind}(x,\bar b,e,\rho)::\kappa\rangle_X,\cr
 \langle\mathrm{val}(v),\rho’,\mathrm{Bind}(x,\bar b,e,\rho)::\kappa\rangle_X
 &amp;\longrightarrow\langle\mathrm{steps}(\bar b;e),\rho,\kappa\rangle_{X[\sigma(\rho).U(x):=v]},\cr
@@ -548,9 +562,54 @@ All local names are reserved before the first initializer; duplicate names fail.
 \end{aligned}
 \]</p>
 <p>For \(x=_\), the <code>Bind</code> rule discards the value and leaves storage unchanged.
-Source assignment remains a setter send. Empty bodies and missing initializers
-denote the auxiliary null form. Sequencing is a <code>let</code> with discard steps, not
-an additional binding discipline.</p>
+Successful <code>Bind</code> publication initializes the selected own cell directly,
+regardless of its mutability tag; it does not invoke a setter. The tag remains
+unchanged. Failure or a return signal during the operand prevents publication
+and subsequent steps. Source assignment remains a setter send. An immutable
+local getter does not mask an outer setter. Missing initializers and missing ordinary
+routine results are rejected before execution. Ordinary value sequencing uses
+<code>let</code> with discard steps.</p>
+<h3 id="initializer-work-and-administrative-completion"><a class="header" href="#initializer-work-and-administrative-completion">Initializer work and administrative completion</a></h3>
+<p><code>work</code> schedules initializer statements without requiring a final value.
+It reserves all its local names in a fresh activation exactly as <code>let</code> does.
+The control <code>completed</code> carries no datum: it is neither a value identity nor a
+storage marker, and cannot be returned to a source caller, exported, compared,
+or supplied as a message argument. Write publication, empty work, and sequencing
+use it only in rule-generated administrative continuations.</p>
+<p>\[
+\begin{aligned}
+\langle\mathrm{work}(\bar b),\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{workSteps}(\bar b),a,\mathrm{Restore}(\rho)::\kappa\rangle_{X[\sigma:=\sigma’]},\cr
+\langle\mathrm{workSteps}([]),\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{completed},\rho,\kappa\rangle_X,\cr
+\langle\mathrm{workSteps}((x\leftarrow e)::\bar b),\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle e,\rho,\mathrm{WorkBind}(x,\rho)::\mathrm{WorkSequence}(\bar b,\rho)::\kappa\rangle_X,\cr
+\langle\mathrm{val}(v),\rho’,\mathrm{WorkBind}(x,\rho)::\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{completed},\rho,\kappa\rangle_{X[\sigma(\rho).U(x):=v]},\cr
+\langle\mathrm{completed},\rho’,\mathrm{WorkSequence}(\bar b,\rho)::\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{workSteps}(\bar b),\rho,\kappa\rangle_X,\cr
+\langle\mathrm{completed},\rho’,\mathrm{Restore}(\rho)::\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{completed},\rho,\kappa\rangle_X.
+\end{aligned}
+\]</p>
+<p>For a discard step, <code>WorkBind</code> leaves storage unchanged. An explicit return uses
+the existing return-home rules and never continues to the next work step.
+Construction schedules also sequence private actions. For
+\(d\in{\mathrm{val}(v),\mathrm{completed}}\):</p>
+<p>\[
+\begin{aligned}
+\langle\mathrm{sequence}([]),\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{completed},\rho,\kappa\rangle_X,\cr
+\langle\mathrm{sequence}(c::\bar c),\rho,\kappa\rangle_X
+&amp;\longrightarrow\langle c,\rho,\mathrm{Sequence}(\bar c,\rho)::\kappa\rangle_X,\cr
+\langle d,\rho’,\mathrm{Sequence}(\bar c,\rho)::\kappa\rangle_X
+&amp;\longrightarrow\langle\mathrm{sequence}(\bar c),\rho,\kappa\rangle_X.
+\end{aligned}
+\]</p>
+<p>Only these administrative frames and initializer completion accept <code>completed</code>.
+A routine result, receiver, argument or literal always requires <code>val(v)</code>.
+Preservation must maintain this continuation distinction; adding a fallback
+value or generic error for an impossible continuation would change the model.</p>
 <h2 id="selection"><a class="header" href="#selection">Selection</a></h2>
 <p>This section is the formal counterpart of
 <a href="./message-sends.html#dispatch-rules">message selection</a> and
@@ -576,34 +635,61 @@ hierarchy. Scalar tables are parameter <strong>S</strong>.</p>
 <p>The recursive equation for \(\mathrm{lin}(C)\) applies only to realized class
 records. The empty base contributes no occurrence or slot mapping. Reaching it
 therefore uses the empty-list miss rules below for both exact and invocation
-search, including an exhausted <code>super</code> suffix; <code>Top</code> itself is never a receiver.</p>
+search, including an exhausted retained <code>super</code> input; <code>Top</code> itself is never a receiver.</p>
+<h3 id="publication-boundaries"><a class="header" href="#publication-boundaries">Publication boundaries</a></h3>
+<p>A boundary at occurrence \(o\) retains its original effective declaration
+table \(D_o\), unchanged ordered public lower input \(I_o\), simultaneous
+partial exposure/binding maps \(\rho_o,\beta_o\), and output \(P_o\).
+A publication contains an exposed signature, original source anchor/position,
+and effective operation with its execution origin. In each layer \(\ell\),
+\(P_{v,\ell}(s)\) instantiates that operation on receiver \(v\).</p>
+<p>The boundary judgment requires every written reference to resolve against the
+original \(D_o,I_o\); rename/hide sources have nonempty lower public families,
+and delegation selects a current public anchor and the first exact lower public
+target at equal explicit arity. Validate each directive in written order,
+source/anchor before destination/target, then arity and unique map key. Repeated
+exposure sources/binding anchors are errors, even with identical assignments.
+After reference validation, project every lower source independently through
+\(\rho_o\). Distinct sources at one output signature in one layer are a
+collision, diagnosed in layer order then canonical signature order. Current
+public entries with \(\beta_o\)’s bound operations precede that projection.
+Private entries remain only in original lexical declarations. Declaration
+formation precedes filtering: explicit methods replace generated accessors
+regardless of visibility.</p>
+<p>Projection preserves source identity, position, effective kind and origin.
+Renaming does not rewrite lexical names or requests; hiding does not revoke
+retained routes or reveal a deeper candidate from the hidden family. A later
+boundary sees only its supplied public input. All of these are structural
+constraints without expression evaluation. Their failures occur during class
+realization after target effects and before construction expressions.</p>
 <h3 id="exact-and-invocation-lookup"><a class="header" href="#exact-and-invocation-lookup">Exact and invocation lookup</a></h3>
-<p>Exact search over an ordered contribution list is:</p>
+<p>Exact search over an ordered public interface is:</p>
 <p>\[
 \begin{aligned}
 E(v,[],s)&amp;=\bot,\cr
-E(v,o::L,s)&amp;=
-\begin{cases}T_{v,o}(s)&amp;T_{v,o}(s)\ne\bot,\cr
-E(v,L,s)&amp;T_{v,o}(s)=\bot.\end{cases}
+E(v,\ell::L,s)&amp;=
+\begin{cases}P_{v,\ell}(s)&amp;P_{v,\ell}(s)\ne\bot,\cr
+E(v,L,s)&amp;P_{v,\ell}(s)=\bot.\end{cases}
 \end{aligned}
 \]</p>
 <p>For an Alien, \(E(v,s)\) instead uses effect-free adapter selection
 \(B\vdash\phi.s\Downarrow R\), translating a selected operation to
 <code>foreignOp(φ,op)</code> and retaining miss/error. No foreign getter is speculatively
-invoked. For native \(v\), \(E(v,s)\) starts at its complete hierarchy;
+invoked. For native \(v\), \(E(v,s)\) starts at its complete public interface;
 an activation uses only its own accessor table. Write \(L_v\) for the receiver’s
-search list: \(\mathrm{lin}(\mathrm{class}(v))\) for native objects,
+search list: \(P_{\mathrm{class}(v)}\) for native objects,
 including lambdas for non-<code>apply</code> selectors, and one accessor table for an
 activation. Lambda <code>apply/k</code> selects its intrinsic operation only at the declared
 arity; invocation retains the captures in the lambda rule below. Intrinsic
 apply has no invented method/contribution origin; inherited Object methods use
 their normal origin and the lambda object as receiver.</p>
-<p>Exact callable eligibility excludes generated getters. Compute \(E(v,(\mathrm{apply},k))\)
+<p>Exact native callable eligibility requires a public method or lambda intrinsic;
+foreign callable selection follows the boundary agreement. Compute \(E(v,(\mathrm{apply},k))\)
 once and match its retained outcome against these cases:</p>
 <p>\[
 P(v,k)=
 \begin{cases}
-t&amp;E(v,(\mathrm{apply},k))=t\text{ and }t\text{ is not a generated getter},\cr
+t&amp;E(v,(\mathrm{apply},k))=t\text{ and }t\text{ is a method, lambda intrinsic, or foreign operation},\cr
 !\epsilon&amp;E(v,(\mathrm{apply},k))=!\epsilon,\cr
 \bot&amp;\text{otherwise}.
 \end{cases}
@@ -623,61 +709,60 @@ A(g,k,\eta)&amp;=\bot&amp;&amp;\text{otherwise}.
 \end{aligned}
 \]</p>
 <p>Here storage notation includes activation slots. \(\mathrm{arities}(d)\)
-contains the selected member declaration’s constructor arity and owned <code>apply</code>
-factory arities; it neither consults the realization cache nor imports
+contains only the selected member declaration’s effective public <code>apply</code>
+factory arities, including the default when not replaced by a custom factory; it neither consults the realization cache nor imports
 contributor factories.</p>
 <p>Invocation search \(I(v,L,n,k,b,\eta)\) carries the getter-masking bit \(b\).
-In these rules set \(t=T_{v,o}(n,k)\), \(g=T_{v,o}(n,0)\):</p>
+In these rules set \(t=P_{v,\ell}(n,k)\), \(g=P_{v,\ell}(n,0)\):</p>
 <p>\[
 \begin{gathered}
 I(v,[],n,k,b,\eta)=\bot,\cr
 \frac{t\ne\bot\quad t\text{ not a generated getter}}
-{I(v,o::L,n,k,b,\eta)=t},\cr
+{I(v,\ell::L,n,k,b,\eta)=t},\cr
 \frac{t=\bot\text{ or generated}\quad \neg b\quad g\ne\bot\quad A(g,k,\eta)=R\ne\bot}
-{I(v,o::L,n,k,b,\eta)=R},\cr
+{I(v,\ell::L,n,k,b,\eta)=R},\cr
 \frac{t=\bot\text{ or generated}\quad
 b\ \lor\ g=\bot\ \lor\ A(g,k,\eta)=\bot}
-{I(v,o::L,n,k,b,\eta)=I(v,L,n,k,b\lor(g\ne\bot),\eta)}.
+{I(v,\ell::L,n,k,b,\eta)=I(v,L,n,k,b\lor(g\ne\bot),\eta)}.
 \end{gathered}
 \]</p>
-<p>For each occurrence, compute the unmasked \(A(g,k,\eta)\) at most once and
+<p>For each publication position, compute the unmasked \(A(g,k,\eta)\) at most once and
 match its retained outcome across the alternatives. Premises short-circuit
 left-to-right: never read a masked getter. All searches
 start with \(b=\mathrm{false}\). An ordinary <code>n/0</code> method masks older getters
 without being executed to discover <code>apply/k</code>. A nearer eligible accessor can
 precede a farther exact method. Errors terminate selection.</p>
 <h3 id="lexical-receiver-selection"><a class="header" href="#lexical-receiver-selection">Lexical receiver selection</a></h3>
-<p>For each scope \(\rho_i\), let \(D_i\) be its own declaration table and
-\(v_i\) its associated receiver: the activation itself or the receiver of a
-<code>View</code>. Define the eligibility judgment \(\rho_i\vdash(n,k,\iota)\Downarrow R_i\)
-by this ordered table. \(\checkmark(v_i,\eta)\) selects a receiver and evidence.</p>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>Condition</th><th>Eligibility result</th></tr>
-</thead>
-<tbody>
-<tr><td><code>exact</code>, \(D_i(n,k)\ne\bot\)</td><td>\(\checkmark(v_i,\varnothing)\)</td></tr>
-<tr><td><code>invoke</code>, \(D_i(n,k)\) exists and is not a generated getter</td><td>\(\checkmark(v_i,\varnothing)\)</td></tr>
-<tr><td><code>invoke</code>, \(D_i(n,0)\ne\bot\), \(g=E(v_i,(n,0))\) is an ordinary method, \(k=0\)</td><td>\(\checkmark(v_i,\varnothing)\)</td></tr>
-<tr><td><code>invoke</code>, \(D_i(n,0)\ne\bot\), \(g=E(v_i,(n,0))\), \(A(g,k,\varnothing)=p\)</td><td>\(\checkmark(v_i,{(g,k)\mapsto p})\)</td></tr>
-<tr><td>An evaluated selection premise yields \(!\epsilon\)</td><td>\(!\epsilon\)</td></tr>
-<tr><td>Otherwise</td><td>\(\bot\)</td></tr>
-</tbody>
-</table>
-</div>
-<p>Walk lexical parents until the first nonmiss. On \(\checkmark(v_i,\eta)\),
-dispatch the <strong>original</strong> selector/mode on \(v_i\); do not execute the declaring
-operation directly. Invocation uses \(I(v_i,L_{v_i},n,k,
-\mathrm{false},\eta)\). Exhausting the lexical chain starts the same search on
-current <code>self</code>, or misses if no receiver exists. A final dispatch error/miss
-never resumes lexical search. Eligibility is thus established before an override
-can replace the eligible accessor route.</p>
-<p>Explicit native sends start at the full receiver hierarchy. <code>super(v,o)</code> starts
-strictly after the <strong>executing occurrence</strong> \(o\), with fresh getter masking.
-The suffix is determined by occurrence identity, not by contribution equality.
-Explicit Aliens use adapter selection in either mode. Invalid native origins
-fail; foreign spellings <code>self</code>, <code>outer</code>, and <code>super</code> remain foreign selectors.
+<p>For each scope \(\rho_i\), let \(D_i\) be its original effective
+declarations and \(v_i\) its receiver. Activation accessors retain their
+ordinary qualification rules. For a member declaration retain its original
+category and visibility separately from its bound effective operation \(t\).
+An implicit exact private candidate yields \(\operatorname{private}(v_i,t)\);
+a public candidate yields \(\checkmark(v_i,\varnothing)\). For invocation,
+an original method qualifies by its exact selector. An original generated
+accessor qualifies only after effective eligibility; a miss may continue outward,
+while a selected error stops. Private qualification enters the exact operation;
+public qualification dispatches the original request virtually, retaining
+successful accessor evidence. A final miss/error after qualification never
+resumes the lexical search. Exhaustion searches public self. An ordinary
+supplied tooling object retains its captured data ancestry but supplies only
+public member authority: traversing that object cannot acquire private authority
+from its captured declaration scopes. A directly supplied captured activation
+retains its existing lexical capability.</p>
+<p>For an ordinary explicit send from \(\rho\), structurally choose the nearest
+original member candidate: exact selector first, then an original generated
+getter for invocation. Activation locals/parameters do not participate. A public
+candidate stops this search without private authority. A private candidate at
+occurrence \(o\) selects its exact bound operation on receiver \(v\) iff
+\(o\in\mathrm{lin}(\mathrm{class}(v))\). This test performs no source effects,
+reads or callable probes. Incompatibility does not search another private role.
+The compatible private branch commits before eligibility: misses and errors
+cannot retry publicly. Otherwise use the original public request. Explicit
+Aliens always retain their foreign selection protocol.</p>
+<p><code>publicExact</code> selects exact public <code>apply/k</code> for the special source <code>self(args)</code>;
+it cannot acquire private authority. <code>super(v,o)</code> searches the retained public
+input \(I_o\) of the executing operation, with fresh getter masking, rather
+than a suffix of the receiver’s later adapted output. Invalid origins fail.
 Write \(r\vdash(n,k,\iota)\Downarrow R\) for this complete selection judgment.</p>
 <p>\[
 \begin{gathered}
@@ -735,7 +820,7 @@ receiver’s own constructor activation. For a lambda, no fresh home is created:
 <h3 id="definition-occurrences-and-layout"><a class="header" href="#definition-occurrences-and-layout">Definition, occurrences and layout</a></h3>
 <p>A declaration’s target list is \(\bar e_d=[e_{A_1},\ldots,e_{A_m},e_S]\):
 direct mixins left-to-right, then an explicit superclass target. Omit \(e_S\)
-for implicit <code>Object</code>. Terminal constructor arguments remain in \(d.R\).</p>
+for implicit <code>Object</code>. Explicit bracketed constructor arguments remain in \(d.R\).</p>
 <p>\[
 \langle\mathrm{class}(d),\rho,\kappa\rangle_X
 \longrightarrow
@@ -748,25 +833,27 @@ Let \(\delta_i\) be the owned instance record assembled from \(d\), capturing
 \(\rho_d\), and \(\delta_c\) its owned class-side record with that capture,
 owned factories and generated factories: primary <code>new</code> captures \(C\).
 The default <code>apply</code> sends exact <code>new</code> to <code>self</code>, as defined below.
-These are record assemblies, not evaluations of initializer code. Let
+These are record assemblies, not evaluations of initializer code. Assemble boundaries from the complete superclass interface, then direct owned
+applications right-to-left, then the owned boundary, obtaining \(\mathcal B_C,P_C\).
+A structural boundary error enters its failure control with previous effects
+retained, and no construction expression starts. Let
 \(o_i=(C,i,\mu_{A_i})\) and \(o_0=(C,0,\mu_C)\). The store extension is:</p>
 <p>\[
 \begin{aligned}
 \Delta’&amp;=\Delta[\mu_C\mapsto\delta_i,\ \mu_C^{\mathrm{class}}\mapsto\delta_c],\cr
-\sigma’(C)&amp;=\mathrm{Class}(\mu_C,[o_1,\ldots,o_m],S,R_C,L_C,M),\cr
+\sigma’(C)&amp;=\mathrm{Class}(\mu_C,[o_1,\ldots,o_m],S,R_C,L_C,M,\mathcal B_C,P_C),\cr
 \sigma’(M)&amp;=\mathrm{Meta}(\mu_C^{\mathrm{class}},[],\mathrm{Class},[],L_M,\mathrm{Metaclass}),\cr
-L_C(o,j)&amp;=L_C(o’,j’)\ \Longleftrightarrow\ \mathrm{name}(o,j)=\mathrm{name}(o’,j’).
+L_C(o,j)&amp;=L_C(o’,j’)\ \Longleftrightarrow\ (o,j)=(o’,j’).
 \end{aligned}
 \]</p>
-<p>\(L_C\) is any faithful realization of the current same-slot-name sharing
-relation, retaining a mapping for every logical slot. First-occurrence numbering
+<p>\(L_C\) is a total injective mapping of logical slots to cells. First-occurrence numbering
 is one possible representation, not a required semantic order. All inherited
 occurrences keep their original applying class. The class-side contribution
 contains only owned factories and generated <code>new</code>/default <code>apply</code>.
 No target contribution record is copied or mutated; each \(\mu_{A_i}\) must
 already belong to \(\mathrm{dom}(\Delta)\). Freshness preserves distinct owned
 definitions, while applications retain the selected definition identity and
-captured scope. Seed publication establishes the same definition-store
+captured scope. Fixed structural startup establishes the same definition-store
 invariants for its initial records. The extended value store agrees with the
 old store outside the fresh class/metaclass identities. With these extensions \(\sigma’,\Delta’\):</p>
 <p>\[
@@ -774,7 +861,7 @@ old store outside the fresh class/metaclass identities. With these extensions \(
 \longrightarrow\langle\mathrm{val}(C),\rho,\kappa\rangle_{X[\sigma:=\sigma’,\Delta:=\Delta’]}.
 \]</p>
 <p>For implicit <code>Object</code>, insert that structural root without a source lookup.
-Declaration validity, reserved <code>new</code>, flat root seeding and factory signatures
+Declaration validity, reserved <code>new</code>, the fixed root graph and factory signatures
 are the static constraints of <a href="./objects-and-classes.html#factories">Objects and Classes</a>.
 For realized ordinary classes \(C\), including Object, Class, Metaclass and
 the shared Lambda class (not the semantic terminal <code>Top</code>):</p>
@@ -794,89 +881,34 @@ contribution’s identity; membership observations compare that identity with th
 supplied class’s owned contribution. IdentityMirror is an ordinary foreign
 capability governed by the <a href="./foreign-objects.html#identitymirror">observation contract</a>; it adds no
 privileged machine transition.</p>
-<h3 id="parametric-storage-and-sharing-safety"><a class="header" href="#parametric-storage-and-sharing-safety">Parametric storage and sharing safety</a></h3>
-<p>Let \(D_C\) be the finite set of logical slots \((o,j)\) contributed by
-\(\mathrm{lin}(C)\). The storage component takes a total map
-\(q_C:D_C\to P_C\) to semantic cells. Its sharing relation is
-\(a\sim_C b\ \Longleftrightarrow\ q_C(a)=q_C(b)\). Such a relation is an
-equivalence relation; arbitrary inconsistent sharing/disjointness constraints
-would not define a layout. A concrete layout must preserve and reflect it:</p>
-<p>\[
-L_C(a)=L_C(b)\ \Longleftrightarrow\ a\sim_C b.
-\]</p>
-<p>VarioHyve currently instantiates the component with
-\(a\sim_C b\ \Longleftrightarrow\ \mathrm{name}(a)=\mathrm{name}(b)\).
-The displayed layout equation in realization is this fixed instance. Identity
-maps (disjoint slots) and other consistent maps are mathematical family members
-only; adoption of another language policy or explicit source constraints is
-deferred indefinitely. This parameter does not make lookup platform-configurable.</p>
-<p>Cells are receiver-relative: a storage target is \((v,L_C(a))\).
-Every generated getter/setter and private initializer write uses the actual
-receiver’s same layout. Thus equal cell targets yield equal storage-getter
-evidence keys, even for different occurrences. Different receivers cannot
-share native instance cells through layout alone. Member getter keys remain
-\((v,o,d.D)\); they are not storage cells and are never merged by slot sharing.
-Successful evidence retains the selected callable operation and is not rerun.
-An injective cell renaming with related stores preserves aliases and reads,
-and commutes with writes; no backend offset is semantically privileged.</p>
-<p>For the current sharing policy, correct composition must preserve each
-contributor’s stated invariants under its stated assumptions at all designated
-phases and observation points. This includes establishment at the specified
-initialization phase, preservation by all applicable writers, and permitted
-callback/partial-receiver observations. A contributor’s invariant can constrain
-several cells or other semantic state; it is not restricted to the cell-local
-predicates below. This is a specification and future-verification obligation.
-The runtime performs no invariant checking, enforcement or repair, and an
-invariant violation adds no error transition or rollback. No new annotation
-syntax or automatic invariant inference is implied.</p>
-<p>The following exact store-level safety statements concern a fixed logical
-domain and observations, independently of source lookup. Let
-\(V_u=A\cup{u}\), let \(s:D_C\to V_u\) be a logical valuation, and let
-\(p:P_C\to V_u\) be a cell store. Then:</p>
+<p><a id="parametric-storage-and-sharing-safety"></a></p>
+<h3 id="disjoint-storage-and-write-frames"><a class="header" href="#disjoint-storage-and-write-frames">Disjoint storage and write frames</a></h3>
+<p>Let \(D_C\) be the finite logical-slot domain \((o,j)\) of a complete
+class. Its layout \(L_C:D_C\to \mathit{Cells}<em>C\) is total and injective. Receiver
+association \(\operatorname{cell}(v,o,j)=(v,L</em>{\mathrm{class}(v)}(o,j))\)
+is total and functional on the receiver’s retained recipe and satisfies:</p>
 <p>\[
 \begin{aligned}
-\exists p.\ \forall a,\ s(a)=p(q_C(a))
-\quad\Longleftrightarrow\quad
-\forall a,b,\ a\sim_C b\Rightarrow s(a)=s(b).
+\operatorname{cell}(v,o,j)=\operatorname{cell}(v’,o’,j’)
+&amp;\Longleftrightarrow (v,o,j)=(v’,o’,j’),\cr
+\sigma[\operatorname{cell}(v,o,j):=w]{}(\operatorname{cell}(v’,o’,j’))
+&amp;=\sigma(\operatorname{cell}(v’,o’,j’))\quad\text{if }(v,o,j)\ne(v’,o’,j’).
 \end{aligned}
 \]</p>
-<p>This is the maximal representable class of logical valuations for observations
-of every logical-slot read, including initializedness and value identity.
-Unused cells may contain \(u\). In the following comparison assume
-\(s=p\circ q_C\); square-bracket updates change one indicated function entry:</p>
-<p>\[
-\begin{aligned}
-p[q_C(a):=w]\circ q_C=s[a:=w]
-\quad\Longleftrightarrow\quad
-\forall b\ne a,\ b\sim_C a\Rightarrow s(b)=w.
-\end{aligned}
-\]</p>
-<p>The left side compares an actual shared-cell write with a hypothetical
-independent logical-slot write. VarioHyve performs the shared write regardless
-of whether this equivalence holds; the condition is not a source admission rule.</p>
-<p>For cell-local contributor contracts \(J_a:V_u\to\mathrm{Prop}\), assume
-\(\forall a,\ J_a(p(q_C(a)))\). The exact preservation condition is:</p>
-<p>\[
-\begin{aligned}
-\forall b,\ J_b(\bigl(p[q_C(a):=w]\bigr)(q_C(b)))
-\quad\Longleftrightarrow\quad
-\forall b,\ b\sim_C a\Rightarrow J_b(w).
-\end{aligned}
-\]</p>
-<p>This allows deliberate mutable sharing when every writer preserves the
-intersection of contracts for that cell. Apply the condition to each reachable
-write, including private initialization. Initial conditions and any temporary
-initialization contract must explicitly include or exclude \(u\) as appropriate.
-It neither removes initializers nor weakens their effect/control requirements.</p>
-<p>These conditions are necessary and sufficient for their respective complete-read
-and cell-local-contract claims. They are not a maximal criterion for arbitrary
-whole-program observations. Such a criterion must specify an observation
-relation on reachable configurations and prove its preservation, accounting for
-cross-cell invariants, selection, failures, effects and callbacks. Hidden or
-unreachable cells can make the complete-read comparison unnecessarily strong;
-equal final initializer values can make it too weak as an execution argument.
-The <a href="../../../vh-lean/semantics/VarioHyve/Semantics/Structure/Storage.lean">storage proofs</a>
-establish the local statements; full execution correspondence remains open.</p>
+<p>Every selected getter/setter and initializer write uses this same association.
+Each reached initializer expression executes once, with its pending write omitted
+on failure. Immutable slots have no generated setter; admitted post-initialization
+writes preserve their references. Identity-preserving GC relocation transports
+that fact. These requirements concern references, not deep immutability of the
+referenced objects. Member keys \((v,o,d.D)\) are distinct from slot cells;
+publication aliases of one key share its realization/failure state.</p>
+<p>All logical occurrence/cell/member/route associations are available before the
+first construction expression. Availability does not imply initializedness:
+reading an uninitialized selected cell fails, without trying another route.
+Public open recursion and callbacks retain their ordinary effects and failures.
+Contributor invariant preservation remains relative to declared preconditions,
+phases, supplied values and callback assumptions; it introduces no runtime
+invariant checks, rollback or initialization repair.</p>
 <h3 id="member-class-cache"><a class="header" href="#member-class-cache">Member-class cache</a></h3>
 <p>For \(g=\mathrm{memberGet}(v,o,d)\), the cache key is \(k_g=(v,o,d.D)\), with
 \(\Gamma(k_g)\in{\bot,\mathrm{busy},\mathrm{ready}(C),\mathrm{failed}(\epsilon)}\).
@@ -915,19 +947,20 @@ fails arity eligibility never enters these cache rules.</p>
 <h3 id="generated-constructor-code"><a class="header" href="#generated-constructor-code">Generated constructor code</a></h3>
 <p>Let \(\tau=\mathrm{whole}(C)\) select the complete coordinator and
 \(\tau=\mathrm{owned}(o)\) select one owned contribution. With <code>;</code> denoting the
-already-defined discard sequencing:</p>
+private construction sequencing defined above. Let \(\bar b_\mu\) be the explicit
+initializer statements (possibly empty):</p>
 <p>\[
 \begin{aligned}
-I_\mu&amp;=\mathrm{write}(0,e_0);\cdots;\mathrm{write}(r-1,e_{r-1});
-\mathrm{slotsDone};e_b,\cr
+I_\mu&amp;=\mathrm{sequence}([\mathrm{write}(0,e_0),\ldots,\mathrm{write}(r-1,e_{r-1}),
+\mathrm{slotsDone},\mathrm{work}(\bar b_\mu)]),\cr
 \mathrm{superRoute}(\mathrm{Top},[])&amp;=[],\cr
 \mathrm{superRoute}(S,\bar a_S)&amp;=[(\mathrm{whole}(S),\bar a_S)]
 \quad(S\in A_{\mathrm{cls}}),\cr
 R_C&amp;=\mathrm{superRoute}(S,\bar a_S)\cdot[
 (\mathrm{owned}(o_m),\bar a_m),\ldots,(\mathrm{owned}(o_1),\bar a_1)],\cr
 R_C&amp;=[(\tau_1,\bar\beta_1),\ldots,(\tau_q,\bar\beta_q)],\cr
-I_C&amp;=\mathrm{init}(\tau_1;\mathrm{self},\bar\beta_1);\cdots;
-\mathrm{init}(\tau_q;\mathrm{self},\bar\beta_q);I_{\mu_C},\cr
+I_C&amp;=\mathrm{sequence}([\mathrm{init}(\tau_1;\mathrm{self},\bar\beta_1),\ldots,
+\mathrm{init}(\tau_q;\mathrm{self},\bar\beta_q),I_{\mu_C}]),\cr
 \mathrm{new}_C(\bar x)&amp;=\mathrm{let}(z\leftarrow\mathrm{alloc}(C),
 _\leftarrow\mathrm{init}(\mathrm{whole}(C);z,\bar x);z),\cr
 \mathrm{apply}<em>C(\bar x)&amp;=\mathrm{explicit}(\mathrm{self}).\mathrm{new}(\bar x)</em>{\mathrm{exact}}.
@@ -935,9 +968,9 @@ _\leftarrow\mathrm{init}(\mathrm{whole}(C);z,\bar x);z),\cr
 \]</p>
 <p>Names \(z,\bar x\) in generated code denote exact accessor sends; \(z\) is
 fresh. An owned <code>apply/k</code> replaces the generated default at that arity. Object’s
-superclass is <code>Top</code>, so it has no superclass dependency by <code>superRoute</code>. Any
-direct root mixins and its owned contribution are stateless, zero-parameter, and
-have empty initializers; an empty implicit Object call may be omitted. No route
+superclass is <code>Top</code>, so it has no superclass dependency by <code>superRoute</code>. Its
+owned contribution is empty, has no captured library capability, and has no
+direct mixins; an empty implicit Object call may be omitted. No route
 targets <code>Top</code> and no initializer activation,
 return home or effects are created for it. The base equation admits no arguments;
 there is no \(\mathrm{whole}(\mathrm{Top})\) routine.
@@ -981,7 +1014,7 @@ contributor factory.</p>
 \langle\mathrm{val}(w),\rho’,\mathrm{Write}(v,p_s,\rho)::\kappa\rangle_X
 &amp;\longrightarrow\langle\mathrm{val}(w),\rho,\kappa\rangle_{X[\sigma(v).S[p_s]:=w]},\cr
 \langle\mathrm{slotsDone},\rho,\kappa\rangle_X
-&amp;\longrightarrow\langle\mathrm{val}(v),\rho,\kappa\rangle_{X[H(h):=\mathrm{body}]}.
+&amp;\longrightarrow\langle\mathrm{completed},\rho,\kappa\rangle_{X[H(h):=\mathrm{body}]}.
 \end{aligned}
 \]</p>
 <p>Invalid private targets, arities or phases raise errors. No selector or Expat
@@ -999,7 +1032,16 @@ targets, home liveness and initializer phase restrictions remain native rules.</
 {\langle\mathrm{val}(w),\rho’,\mathrm{Done}(h,v,\chi,\rho)::\kappa\rangle_X
 \longrightarrow\langle\mathrm{val}(v’),\rho,\kappa\rangle_{X[H(h):=\mathrm{dead}]}}.
 \]</p>
-<p>An initializer finishing in <code>slots</code> raises <code>PrematureCompletion</code>.
+<p>An initializer can also finish administrative work without a source result:</p>
+<p>\[
+\frac{H(h)=\mathrm{body}}
+{\langle\mathrm{completed},\rho’,\mathrm{Done}(h,v,\mathrm{initializer},\rho)::\kappa\rangle_X
+\longrightarrow\langle\mathrm{val}(v),\rho,\kappa\rangle_{X[H(h):=\mathrm{dead}]}}.
+\]</p>
+<p>The resulting value is the already allocated constructor receiver, as required
+by construction. This rule supplies no ordinary routine default. An initializer
+finishing in <code>slots</code> raises <code>PrematureCompletion</code>; missing or dead home authority
+retains its defined failure. No method <code>Done</code> frame accepts <code>completed</code>.
 A source return first evaluates its operand, capturing \(h=\sigma(\rho).h\):</p>
 <p>\[
 \begin{aligned}
@@ -1069,8 +1111,10 @@ interaction with foreign execution; merely removing <code>Barrier</code> is insu
 \(B,\sigma\vdash\bar v\Uparrow(\bar f,B’)\) and
 \(B,\sigma\vdash\bar f\Downarrow(\bar v,\sigma’,B’)\), or failure with the
 state reached before failure. Lists convert left-to-right. When the selected
-profile defines a canonical codec, null/Booleans convert by exact role identity;
-foreign-preserving profiles retain Alien payloads. Other scalars follow <strong>S</strong>. Compatible identity
+profile defines a scalar codec, admitted scalar payloads convert by that explicit
+agreement. Foreign null and Booleans retain Alien identity. Every native library
+object crosses as an Expat, regardless of its name or protocol. Other scalars
+follow <strong>S</strong>. Compatible identity
 round trips satisfy \(\Downarrow\Uparrow v=v\) and \(\Uparrow\Downarrow\phi=\phi\).
 These are boundary obligations, not privileged native service operations.</p>
 <p>Conversions and foreign actions also satisfy the
@@ -1186,10 +1230,15 @@ still changes later reads. It imposes no package resolution policy and grants no
 execution authority. A normal module must satisfy the source top-level-class
 restrictions and the empty-top entry below.</p>
 <h3 id="isolated-module-entry"><a class="header" href="#isolated-module-entry">Isolated module entry</a></h3>
-<p>Normal module definition starts at an empty top activation, with structural
-superclass <code>Object</code> and no mixins; forbidden top-level contributor clauses fail
-before evaluation. Instantiation supplies existing argument values to exact
-<code>new/k</code>, without capturing the service’s scope. Tools may explicitly supply a
+<p>A module declaration is a surface class literal, allowing grouping parentheses
+and inert annotations as specified in program structure. Validation checks this
+shape, absence of explicit contributor clauses and wiring directives, exact
+constructor arity, then existence of all supplied values, in that order, before
+allocating the top activation.
+Normal module definition starts at an empty top activation, with structural
+superclass <code>Object</code>, no mixins and empty wiring; forbidden top-level contributor
+clauses or nonempty wiring fail before evaluation. Instantiation supplies
+existing argument values to exact <code>new/k</code>, without capturing the service’s scope. Tools may explicitly supply a
 different starting activation for an admitted surface expression; the auxiliary
 controls above are not independent tooling inputs. See <a href="./program-structure.html#top-level-classes-and-instantiation">module entry</a>.
 Independent entry requires successful runtime admission from <code>idle</code> under the
@@ -1207,12 +1256,21 @@ Allocate fresh \(a\) with \(\sigma’=\sigma[a\mapsto\mathrm{Act}(\varnothing,\b
 &amp;\leadsto\langle e,\rho,\mathrm{halt}\rangle_X.
 \end{aligned}
 \]</p>
+<p>For supplied-object evaluation, entry first creates a fresh empty activation
+\(a\) with parent the ordinary scope of the supplied native object \(v\),
+receiver \(v\), and absent origin/home. It then uses \(\mathrm{tool}(e,a;X’)\).
+This retains the object’s actual lexical ancestry without borrowing caller
+bindings, an executing occurrence or return authority. In particular the
+existing <code>super</code> rule fails when evaluated directly at this entry. Calling a
+method creates its ordinary declaration-relative view and executing origin.</p>
 <p>These are admitted independent entry points, not source operations. The entry
 arrow acquires the existing idle token for the new continuation. The same
 admission premise applies to independent exact Expat sends; callbacks instead
-use the foreign invocation’s admission path. A rejected module declaration has no
-definition transition; it reports its validation error. Delivery of a <code>Final</code>
-observation returns control to <code>idle</code>; retaining the final configuration does
+use the foreign invocation’s admission path. A module rejected by entry validation
+has no definition transition; it reports its validation error. In particular,
+nonempty top-level wiring is an admission error, never a composition failure
+during module realization. Constructor execution may still fail. Delivery of
+a <code>Final</code> observation returns control to <code>idle</code>; retaining the final configuration does
 not retain execution authority.</p>
 <p>\[
 \mathrm{Final}(K)=
@@ -1316,7 +1374,7 @@ finite-step simulation are recorded under
         <script src="searcher-09f2665d.js"></script>
 
         <script src="clipboard-1626706a.min.js"></script>
-        <script src="highlight-33e14e7d.js"></script>
+        <script src="highlight-c449d962.js"></script>
         <script src="book-c22b7243.js"></script>
 
         <!-- Custom JS scripts -->

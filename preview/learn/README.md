@@ -25,10 +25,16 @@ lessons 9 and 10. Each lesson shows its files inline and links their downloads.
 The [starter reference](reference.md) collects details for when you need them.
 You do not need to read it before writing your first program.
 
-The first eight lessons use the Host Seed with JavaHostKernel. The last two
+This edition accompanies VarioHyve **0.6.0**. Use its matching downloads: earlier
+previews may use different declaration and constructor syntax.
+
+The first eight lessons use the Java starter with JavaHostKernel. The last two
 assemble explicit recipe worlds and package their dependencies. The kernel gives us familiar
 numbers, text, collections and a console. A capability is simply a tool a program
 is given: our first program receives a console through its `kernel` input.
+The [language essentials](reference.md#language-essentials) collect the rules
+used throughout the lessons. The [runtime guide](reference.md#java-and-lean)
+explains how this starter relates to the Lean native implementation.
 
 Contributors can check the actual lesson files with
 `python3 scripts/check-learn.py --distribution vh-host/build/install/vh-host`

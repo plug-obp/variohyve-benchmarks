@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>One Possible Native Seed - VarioHyve Language Specification</title>
+        <title>Ordinary Native Values - VarioHyve Language Specification</title>
 
 
         <!-- Custom HTML head -->
@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0e8722df.js";
+            window.path_to_searchindex_js = "searchindex-75c83f8c.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-ce909e20.js"></script>
+        <script src="toc-253640ee.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -177,72 +177,45 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="one-possible-native-seed"><a class="header" href="#one-possible-native-seed">One Possible Native Seed</a></h1>
-<p>The repository’s <a href="../../../vh-source/bootstrap/current-native-seed.vh">Current Native Seed module</a>
-is one library choice. It is an ordinary isolated module whose sole constructor
-input is a narrow host identity service. The module stores that service in its
-<code>_vm</code> slot because constructor parameters are not method bindings. Its members
-and ordinary object literals implement the native canonical values and root
-behavior. The provider module has state; the Object it supplies has none.</p>
-<p>The builder sends <code>null/0</code>, <code>true/0</code>, <code>false/0</code>, then <code>Object/0</code>, once each. The
-returned Object class initially inherits the provisional structural root. After
-validation, adoption removes that superclass edge, redirects the provisional
-root and scalar references throughout the retained graph, retires obsolete
-bootstrap ownership, and collects. The provider’s Object is then the actual
-root; its methods keep their original definition scope. No duplicate ancestor
-Object or forwarding wrapper is retained.</p>
-<p>This module supplies the following protocols:</p>
+                        <h1 id="ordinary-native-values"><a class="header" href="#ordinary-native-values">Ordinary Native Values</a></h1>
+<p><a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/vh-source/lib/native-values/Values.vh"><code>Values.vh</code></a> is a scalar-free
+ordinary module with no constructor inputs. Every instance creates its own
+<code>unit</code>, <code>true</code>, and <code>false</code> objects. None has a VM role, and loading the module
+changes no other object’s superclass or behavior.</p>
 <div class="table-wrapper">
 <table>
 <thead>
 <tr><th>Provider</th><th>Selectors</th><th>Behavior</th></tr>
 </thead>
 <tbody>
-<tr><td>Null</td><td><code>isNull/0</code>, <code>notNull/0</code>, <code>toString/0</code></td><td>Returns canonical true, canonical false, and <code>"null"</code>, respectively.</td></tr>
-<tr><td>True and false</td><td><code>and/1</code>, <code>or/1</code>, <code>not/0</code></td><td>Select an already evaluated argument or canonical Boolean according to the receiver.</td></tr>
-<tr><td>True and false</td><td><code>andThen/1</code>, <code>orElse/1</code></td><td>Invoke the selected thunk with <code>apply/0</code>; otherwise return the receiver.</td></tr>
-<tr><td>True and false</td><td><code>ifTrue/1</code>, <code>ifFalse/1</code></td><td>Invoke the selected thunk once; the unselected case returns canonical null.</td></tr>
-<tr><td>True and false</td><td><code>ifTrue/2</code>, <code>ifFalse/2</code></td><td>Invoke exactly one of the two thunks with <code>apply/0</code>.</td></tr>
-<tr><td>True and false</td><td><code>isNull/0</code>, <code>notNull/0</code>, <code>toString/0</code></td><td>Return false, true, and the receiver’s Boolean spelling.</td></tr>
-<tr><td>Object</td><td><code>equals/1</code>, <code>hash/0</code>, <code>toString/0</code></td><td>Identity equality, an identity hash, and <code>"an Object"</code>.</td></tr>
+<tr><td>True and false</td><td><code>choose/2</code></td><td>Return the selected supplied value without invoking it.</td></tr>
+<tr><td>True and false</td><td><code>and/1</code>, <code>or/1</code>, <code>not/0</code></td><td>Select an argument, receiver or this library’s other Boolean.</td></tr>
+<tr><td>True and false</td><td><code>andThen/1</code>, <code>orElse/1</code></td><td>Invoke the selected thunk; otherwise return the receiver.</td></tr>
+<tr><td>True and false</td><td><code>ifTrue/1</code>, <code>ifFalse/1</code></td><td>Invoke the selected thunk; otherwise return this library’s unit.</td></tr>
+<tr><td>True and false</td><td><code>ifTrue/2</code>, <code>ifFalse/2</code></td><td>Invoke exactly one supplied thunk through native <code>apply/0</code>.</td></tr>
 </tbody>
 </table>
 </div>
-<p>Null and Booleans inherit Object’s methods. Object delegates identity operations
-to the supplied service over the ordinary Alien/Expat boundary. Its methods are
-overridable client defaults, not VM instructions; independent observations use
-an explicitly supplied IdentityMirror. No number, string, or collection class
-is supplied by this module.</p>
-<p>Boolean branch methods execute as native methods. A thunk that returns to an
-accessible native home does not cross foreign execution merely because its
-receiver is a canonical Boolean. If that thunk or its caller invokes foreign
-code, the boundary’s return-transfer agreement still applies. The current Java
-agreement forbids non-local return through an active foreign call; using this
-native seed does not disable that barrier.</p>
-<p>With the compatibility Java codec, these three native identities cross as host
-<code>null</code>, <code>Boolean.TRUE</code>, and <code>Boolean.FALSE</code>; incoming host values recover the
-same native identities. Classification uses exact identities, without sending
-methods or recognizing names. Supported integral values and strings use the
-existing by-value transport. This conversion profile is a world choice, not a
-requirement imposed on all possible seeds.</p>
-<p>Number/string transport is selected before the provider executes and stays
-consistent across adoption. Canonical null/Boolean conversion becomes active
-after the replacement commits, so bootstrap provisioning does not depend on
-the native roles already existing.</p>
-<p>The source module records this library’s contract. Another provider may offer
-other methods or return Aliens for the scalar roles, provided it satisfies the
-structural and atomic-installation invariants. Missing library methods fail when
-sent; the machine does not preflight a Boolean or null protocol.</p>
-<p>To load the checked source module through the public Java bootstrap API:</p>
-<!-- example-id: java-current-native-seed -->
-<pre><code class="language-java">String source = Files.readString(Path.of("vh-source/bootstrap/current-native-seed.vh"));
-var runtime = BootstrapRuntime.fromNativeSeedModule(
-        source, BoundaryProfile.NATIVE_VALUES, Map.of());
-Object result = runtime.evaluate("false.not", 1_000); // Java Boolean.TRUE
+<p>Unit and both Booleans provide <code>literalInto/1</code>, which sends the corresponding
+<code>unitLiteral/0</code>, <code>trueLiteral/0</code> or <code>falseLiteral/0</code> to an explicitly supplied
+target. The Values module implements these constructors by returning its own
+stored values. Applications can choose a different completion value or a
+different Boolean interface. The language requires an explicit routine result;
+this library’s unit is not a default initializer or empty-body result.</p>
+<p>Native branch sends preserve accessible lexical return homes. Calls made from a
+branch to foreign code still obey the normal callback barrier. Native Booleans
+cross the Java boundary as Expats; Java Booleans remain foreign and are never
+silently substituted for these objects.</p>
+<!-- example-id: java-explicit-native-values -->
+<pre><code class="language-java">var runtime = new BootstrapRuntime(Map.of(), ScalarProfile.CODEC_VALUES);
+String source = Files.readString(Path.of("vh-source/lib/native-values/Values.vh"));
+var values = runtime.instantiateModule(source, 10_000);
+var yes = (ExpatReceipt) values.send("true");
+var no = (ExpatReceipt) yes.send("not");
+Object result = runtime.boundary().identityMirror().same(yes, no.send("not"));
 </code></pre>
-<p>The convenience entry explicitly supplies the module’s narrow identity service.
-For a different provider ABI, <code>fromSeedModule(source, profile, capabilities, inputs...)</code> supplies exactly the listed constructor inputs. Tooling capabilities
-are assembled after seed installation, so they are not ambient module inputs.</p>
+<p>The client holds and passes these objects explicitly. Two loaded libraries
+coexist without a conversion registry or adoption phase.</p>
 
                     </main>
 
@@ -291,7 +264,7 @@ are assembled after seed installation, so they are not ambient module inputs.</p
         <script src="searcher-09f2665d.js"></script>
 
         <script src="clipboard-1626706a.min.js"></script>
-        <script src="highlight-33e14e7d.js"></script>
+        <script src="highlight-c449d962.js"></script>
         <script src="book-c22b7243.js"></script>
 
         <!-- Custom JS scripts -->

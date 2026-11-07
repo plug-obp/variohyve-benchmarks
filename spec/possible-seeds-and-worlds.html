@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Seed Contracts - VarioHyve Language Specification</title>
+        <title>Explicit World Assembly - VarioHyve Language Specification</title>
 
 
         <!-- Custom HTML head -->
@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0e8722df.js";
+            window.path_to_searchindex_js = "searchindex-75c83f8c.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-ce909e20.js"></script>
+        <script src="toc-253640ee.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -177,36 +177,25 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="possible-seeds-and-worlds"><a class="header" href="#possible-seeds-and-worlds">Possible Seeds and Worlds</a></h1>
-<p>A seed is an object graph providing capabilities; its library contents are
-deliberately independent of the language definition. The VM specifies structural
-roles and startup invariants, not a mandatory library namespace or collection of
-primitive methods. A seed chooses the objects that occupy the VM’s canonical roles and the behavior
-of its structural root. A world also chooses boundary conversion and the
-capabilities explicitly supplied to programs. These choices do not change
-lookup, lexical scope, construction, or the native rules for return homes.</p>
-<p>The VM sends <strong>no required selectors</strong> to canonical null, true, or false.
-It supplies canonical null directly for empty expressions and omitted
-initializers; Boolean identities are used by the selected boundary conversion
-policy. Nor does the VM require any instance methods on root Object.
-<code>null/0</code>, <code>true/0</code>, <code>false/0</code>, and <code>Object/0</code> are the optional seed <em>provider’s</em>
-discovery protocol, not methods required on the returned values.</p>
-<p>Every native world retains classes, objects, activations, closures, and message
-dispatch even when all its data values are foreign. Root Object is a native
-class with <strong>no superclass and no instance state</strong>, whether owned or contributed
-by applied mixins. Its absent superclass represents semantic Top, not canonical
-null. Zero-parameter, stateless mixin contributions may supply behavior. Root
-initialization bodies and routed argument effects are unsupported; support for
-stateful roots is indefinitely deferred.</p>
-<p>Installation finishes before publication under the
-<a href="program-structure.html#startup-seed-installation">atomic startup contract</a>.
-It rewrites all retained references to retired seed identities and forces native
-GC. Selecting a new seed during application execution is unsupported. Installing
-a seed does not introduce ambient bindings into an isolated module.</p>
-<p>The following chapters describe <a href="host-seed.html">the Host Seed</a>,
-<a href="current-native-seed.html">one possible native seed</a>, and
-<a href="native-seed-host-scalars.html">a native-seed world with host scalars and strings</a>.
-These are concrete choices, not an exhaustive taxonomy of valid worlds.</p>
+                        <h1 id="explicit-worlds-and-value-libraries"><a class="header" href="#explicit-worlds-and-value-libraries">Explicit Worlds and Value Libraries</a></h1>
+<p>VarioHyve has a fixed structural graph and no replaceable seed. Object has an
+empty instance protocol and captures no external capability. Normal modules
+start over an empty activation; external behavior arrives through explicit
+constructor or message arguments.</p>
+<p>A world assembles ordinary native libraries and foreign providers. It may supply
+native Booleans, unit values, collections and base classes, or work directly with
+foreign values. These are library choices. Loading a library installs no
+canonical role, modifies no root, and grants no ambient binding.</p>
+<p>The Java boundary’s <code>ScalarProfile.HOST_VALUES</code> preserves host numeric/string
+payloads as Aliens; <code>CODEC_VALUES</code> supports the specified integer/string by-value
+codec. In both profiles Java null and Booleans remain foreign. Native values
+cross as Expats with native identity. Neither profile recognizes Boolean-like
+methods, object names or library instances as scalar roles.</p>
+<p><a href="host-seed.html">Host values</a> describe optional foreign receiver protocols;
+<a href="current-native-seed.html">ordinary native values</a> provide native branching;
+<a href="native-seed-host-scalars.html">mixed worlds</a> combine these explicit choices.
+The <a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/docs/design-notes/seedless-language-and-explicit-values.md">accepted seedless decision</a>
+records the rationale and migration scope.</p>
 
                     </main>
 
@@ -255,7 +244,7 @@ These are concrete choices, not an exhaustive taxonomy of valid worlds.</p>
         <script src="searcher-09f2665d.js"></script>
 
         <script src="clipboard-1626706a.min.js"></script>
-        <script src="highlight-33e14e7d.js"></script>
+        <script src="highlight-c449d962.js"></script>
         <script src="book-c22b7243.js"></script>
 
         <!-- Custom JS scripts -->

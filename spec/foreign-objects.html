@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0e8722df.js";
+            window.path_to_searchindex_js = "searchindex-75c83f8c.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-ce909e20.js"></script>
+        <script src="toc-253640ee.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -228,11 +228,12 @@ The exact-send interfaces, <code>VHExpat.send</code> within an attached invocati
 access; they do not apply source invocation’s callable-binding fallback. To use a
 stored callable, read the binding and send <code>apply/N</code> to the result explicitly.</p>
 <h3 id="expat-surface"><a class="header" href="#expat-surface">Expat Surface</a></h3>
-<p>Without language access control, an Expat exposes the same source-visible
-behavior available to an external native caller, including generated accessors.
-Backend-private construction routines are not selectors. Proposed
-<a href="./future.html#access-control">export control</a> must preserve equality of the
-native external interface and the foreign export interface.</p>
+<p>An Expat exposes the receiver’s public interface, including public generated
+accessors. It carries no lexical member authority and cannot select a private
+operation merely because its foreign caller knows the selector. This is the same
+interface available to a native caller without compatible private authority;
+see <a href="name-resolution.html#private-authority-for-ordinary-explicit-sends">ordinary explicit sends</a>.
+Private construction routines are not selectors.</p>
 <h3 id="expat-identity"><a class="header" href="#expat-identity">Expat Identity</a></h3>
 <p>A native object has at most one Expat proxy per compatible foreign runtime.
 Exporting it repeatedly through different paths returns the same proxy.
@@ -268,43 +269,29 @@ does not infer failure from an ordinary returned object’s shape, class name or
 truth value. Defined exceptional completions remain diagnostics under
 <a href="#error-propagation">Error Propagation</a>.</p>
 <h2 id="primitive-marshalling"><a class="header" href="#primitive-marshalling">Primitive Marshalling</a></h2>
-<p>Numbers, strings, booleans and null may cross by value instead of through
-proxies. Each adapter must state its supported domains and reject unsupported
-conversions. A numeric encoding must not silently turn a pointer into an integer
-while claiming to preserve its provenance.</p>
-<p>Canonical null and Boolean roles may hold native objects or Aliens. Assigning
-one of these roles adds neither methods nor a native class. Empty bodies and
-omitted initializers select canonical null directly; source
-names such as <code>null</code>, <code>true</code>, and <code>false</code> use ordinary message lookup.</p>
-<p>Each world selects an explicit conversion profile. The
-<a href="current-native-seed.html">Current Native Seed profile</a>
-uses ordinary native objects and maps their exact identities to Java <code>null</code>,
-<code>Boolean.TRUE</code>, and <code>Boolean.FALSE</code>, without Expats. Incoming host scalars recover
-those canonical identities. Conversion never sends <code>toString</code>, <code>isNull</code>, <code>not</code>,
-or a truth-testing message to classify another object. Similar behavior or a
-source name does not make an object canonical.</p>
-<p>The <a href="host-seed.html">Host Seed</a> instead preserves its
-foreign canonical payloads. A world may separately preserve numbers and strings
-as foreign values while using native canonical null and Booleans. Preserved
-values obey the originating adapter’s identity laws; by-value codecs obey their
-declared value relation. Neither policy silently overrides the other. The
-supported Java subset is recorded in
-<a href="interpreter-design.html#java-boundary">the implementation</a>.</p>
-<p>The <a href="program-structure.html#startup-seed-installation">startup installation contract</a>
-requires a participating boundary to repair its managed references and retire
-provisional ownership before publication, consistently with the final codec.
-It cannot rewrite opaque foreign heaps or leave obsolete mappings that recover
-retired native addresses. This adds no live-replacement exception to published
-identity laws and supplies no general foreign garbage collector.</p>
+<p>An adapter must state its supported scalar domains, preservation or codec
+policy, and rejected conversions. A numeric encoding must not silently turn a
+pointer into an integer while claiming to preserve its provenance.</p>
+<p>Java null and Booleans remain foreign values in both Java scalar profiles.
+Native objects, including ordinary Boolean and unit libraries, cross as Expats.
+No exact native identity, source name or recognized method set triggers an
+implicit null/Boolean conversion. Empty routines and omitted initializers are
+rejected by source admission; they cause no boundary operation.</p>
+<p><code>HOST_VALUES</code> preserves supported host scalar payloads as Aliens. <code>CODEC_VALUES</code>
+uses the declared integer/string by-value relation. Preservation follows the
+originating adapter’s identity laws; codecs follow their declared value relation.
+Neither policy silently overrides the other. Explicit library code may construct
+wrappers or choose among supplied native values. The supported Java subset is
+recorded in <a href="interpreter-design.html#java-boundary">the implementation</a>.</p>
 <h2 id="explicit-wrappers"><a class="header" href="#explicit-wrappers">Explicit Wrappers</a></h2>
 <p>A native wrapper supplies its own identity, scope and behavior around foreign
 values. Multiple wrappers may share one Alien without sharing native identity.
 For example, a callable capability can operate on an opaque handle:</p>
 <!-- example-id: vh-explicit-foreign-call -->
-<pre><code class="language-vh">class Device(deviceHandle, reader) {
+<pre><code class="language-vh">class Device[deviceHandle, reader] {
     handle = deviceHandle;
     readFn = reader;
-    read(buffer) { readFn(handle, buffer) }
+    pub read(buffer) { readFn(handle, buffer) }
 }
 </code></pre>
 <p>This is explicit adaptation, not a built-in calling convention. Persistent
@@ -360,7 +347,7 @@ resource diagnostic; they offer no foreign continuation transfer. This differs
 from <a href="formal-core.html#execution-budgets-and-resumption">native session budget suspension</a>,
 which retains its continuation for explicit resume. Neither mechanism introduces
 source-level resumable conditions or revives an aborted callback. See the
-<a href="../../design-notes/synchronous-foreign-interactions.html#accepted-decision-foreign-handling-of-callback-failure">accepted recovery agreement</a>.</p>
+<a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/docs/design-notes/synchronous-foreign-interactions.md#accepted-decision-foreign-handling-of-callback-failure">accepted recovery agreement</a>.</p>
 <h4 id="java-host-exit-limits"><a class="header" href="#java-host-exit-limits">Java host exit limits</a></h4>
 <p>The adapter preserves a supplied <code>BoundaryException</code> and its defined kind. It
 translates other <code>RuntimeException</code>s thrown by <code>ForeignObject.resolve</code> into
@@ -396,7 +383,7 @@ transfer. Such support does not change the lexical target of <code>^</code>, rev
 retired home, or bypass initializer phase restrictions. Crossing support and
 its transfer protocol are deferred; the default barrier must not be disabled
 without implementing a supporting agreement. See the
-<a href="../../design-notes/synchronous-foreign-interactions.html#accepted-decision-boundary-owned-non-local-return">accepted decision and examples</a>.</p>
+<a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/docs/design-notes/synchronous-foreign-interactions.md#accepted-decision-boundary-owned-non-local-return">accepted decision and examples</a>.</p>
 <p><a id="execution-authority"></a></p>
 <h3 id="control-tokens-and-execution-agreements"><a class="header" href="#control-tokens-and-execution-agreements">Control Tokens and Execution Agreements</a></h3>
 <p>Ordinary native transitions require execution authority under an explicit
@@ -607,32 +594,27 @@ observations, validation before reclamation, and agreed weak-reference,
 finalization and participant-loss behavior. Missing or incomplete cooperation
 retains conservatively. No universal foreign collector, introspection mechanism
 or cycle-collection algorithm is prescribed. See the
-<a href="../../design-notes/alien-expat-lifetimes.html">accepted lifetime decision</a>.</p>
+<a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/docs/design-notes/alien-expat-lifetimes.md">accepted lifetime decision</a>.</p>
 <h3 id="foreign-kinds-and-capability-contracts"><a class="header" href="#foreign-kinds-and-capability-contracts">Foreign Kinds and Capability Contracts</a></h3>
 <p>An adapter may classify a value as callable, pointer, struct or endpoint; these
 are foreign contracts, not native classes. Analysis needs explicit assumptions
 about effects, callbacks, blocking, determinism and state changes. Unknown
 behavior stays opaque. General contract metadata, provenance registries and
 foreign reflection remain unimplemented; see the
-<a href="../../design-notes/alien-semantic-membrane.html">boundary assessment</a>.</p>
-<h2 id="vm-services-and-the-trusted-seed"><a class="header" href="#vm-services-and-the-trusted-seed">VM Services and the Trusted Seed</a></h2>
-<p>The host boundary has a public foreign facet and a privileged VM-service facet
-over one private owner. The public facet exposes only the ordinary transport,
-explicit mirror grant and call-associated callback admission. Trusted seed
-provisioning supplies narrow VM service capabilities; public clients have no
-operation for obtaining the provisioning facet or raw runtime representations.
-Object’s identity service is provisioned only to its definition scope. The
-optional public <code>IdentityMirror</code> grants its own limited observations.</p>
-<p>Both facets share identity maps, conversion, execution admission, budgets and GC
-roots. Current services use the same serial admission protocol. Privilege changes
-authority, not lookup, return or failure semantics; privilege alone grants no
-additional ordinary native execution. A future independently operating service
-requires an explicit <a href="#execution-authority">execution or intervention agreement</a>.
-The same capability view preserves identity across either route. Distinct
-restricted views have distinct identities even when they concern one resource.
-Deliberately exporting a privileged capability delegates that capability; a
-partition label does not silently attenuate it. No new privilege registry,
-selector allowlist or native invocation path is introduced.</p>
+<a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/docs/design-notes/alien-semantic-membrane.md">boundary assessment</a>.</p>
+<h2 id="explicit-vm-service-capabilities"><a class="header" href="#explicit-vm-service-capabilities">Explicit VM Service Capabilities</a></h2>
+<p>The public foreign boundary exposes ordinary transport, explicit mirror grants
+and call-associated callback admission over a private backend owner. A host
+assembler may explicitly supply narrow service capabilities to a module. The
+structural root captures none, and public clients have no operation for obtaining
+raw runtime representations. <code>IdentityMirror</code> is one limited explicit grant.</p>
+<p>Service calls share the boundary’s identity maps, conversion, execution admission,
+budgets and GC roots. Privilege changes authority, not lookup, return or failure
+semantics. A future independently operating service requires an explicit
+<a href="#execution-authority">execution or intervention agreement</a>. The same capability
+view preserves identity across routes; distinct restricted views have distinct
+identities even when they concern one resource. Exporting a privileged capability
+delegates that capability; a partition label does not silently attenuate it.</p>
 <p>Language-visible VM services use this same boundary; there is no privileged
 native-function invocation path. The trusted backend may privately allocate
 values, maintain stores and implement lookup/continuations. Those internal
@@ -642,7 +624,7 @@ or receipt evidence, so import recovers the object. Returning its raw backend
 representation as a foreign value is
 invalid. Any future representation-sensitive service requires explicit authority
 and private unwrapping without adding raw-world access to public Expats. See
-<a href="../../design-notes/vm-lang-boundary.html">the VM boundary decision</a>.</p>
+<a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/docs/design-notes/vm-lang-boundary.md">the VM boundary decision</a>.</p>
 <p>The <a href="./tooling-architecture.html#admitted-source-services">admitted source services</a>
 use this route to evaluate captured source with an explicit object context or
 instantiate an isolated module. They share active admission, budgets, callback
@@ -675,9 +657,12 @@ other services; it grants no store, address or runtime access.</p>
 getter or member-class realization. Their arguments are first evaluated using
 ordinary message-send rules, which may themselves realize a member class.
 All explicit sends on an Alien retain their foreign meaning, even for these
-same selector names. Object’s ordinary equality and hash
-defaults are normative for the current runtime seed and remain available without
-granting the mirror itself. Another seed may choose different root defaults.</p>
+same selector names. The structural root has no equality or hash methods.
+Optional library classes may define them using an explicitly supplied mirror.</p>
+<p><code>sameSelect(left, right, whenSame, whenDifferent)</code> compares identities under the
+same supported-domain and failure rules as <code>same</code>, then returns exactly one
+supplied outcome. It invokes neither outcome. This lets a caller select native
+library values without a VM-global Boolean mapping or callback.</p>
 <h3 id="identity-and-kinds"><a class="header" href="#identity-and-kinds">Identity and kinds</a></h3>
 <p>Identity comparison is reflexive, symmetric and transitive on its supported
 domain. It observes native identity or adapter-preserved Alien identity, never
@@ -688,8 +673,8 @@ payload differ; differently restricted handles must not be merged merely because
 they refer to the same resource. Ownership failures require an explicit bridge.</p>
 <p>The supported kind labels are exactly <code>"Object"</code> and <code>"Alien"</code>, case sensitive.
 Object includes native instances, class objects, metaclasses, and lambdas.
-Native canonical null and Booleans belong to Object; canonical values implemented
-as Aliens belong to Alien. Canonical roles do not override representation kind.
+Native Boolean and unit library instances belong to Object. Foreign null and
+Booleans belong to Alien. There are no representation-overriding roles.
 Alien also includes opaque foreign references, preserved host scalars, and VM
 services exposed through the adapter. It does not imply callability or trust. Classification
 is relative to the observing runtime; importing its owned Expat recovers a native
@@ -698,8 +683,8 @@ object.</p>
 class or mixin membership. Identity operations on them, including mixed <code>same</code>
 queries, fail with <code>CONVERSION</code>; interning does not specify scalar identity.
 Preserved foreign scalars instead use their adapter’s identity and Alien kind;
-see <a href="possible-seeds-and-worlds.html">Possible Seeds and Worlds</a>.
-Thus <code>isNative</code> is not implemented as the negation of <code>isAlien</code>. Object’s default
+see <a href="possible-seeds-and-worlds.html">Explicit Worlds and Value Libraries</a>.
+Thus <code>isNative</code> is not implemented as the negation of <code>isAlien</code>. An explicitly defined library’s
 <code>equals</code> with a codec scalar still returns false because its receiver is native.
 An unknown kind label fails with <code>LANGUAGE_FAILURE</code>, a non-string kind label
 with <code>CONVERSION</code>, and a missing selector/arity follows ordinary lookup failure.</p>
@@ -738,14 +723,14 @@ mixin, not its metaclass’s contribution. In particular, <code>instanceOf(C, C)
 supplied, it can select that metaclass or its owned class-side contribution.
 This does not add a public class/metaclass getter.</p>
 <p>Both arguments undergo ordinary boundary ownership validation. A non-class
-target, including a string, canonical null, ordinary instance or foreign object,
+target, including a string, ordinary unit/Boolean instance or foreign object,
 fails with <code>CONVERSION</code>; an unowned class fails with <code>OWNERSHIP</code>. Invalid targets
 fail even when the subject is an Alien or codec value. With a valid target,
 Aliens and codec values return false because they have no native membership.</p>
 <p>These are structural identity tests, not proofs that a selector is supported or
 that a contribution’s behavior remains effective after overriding. They do not
 establish trust in a subclass or authorize its behavior. The
-<a href="../../design-notes/mirrors-identity-and-alien-classification.html">design note</a>
+<a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/docs/design-notes/mirrors-identity-and-alien-classification.md">design note</a>
 records the routing and capability tradeoffs.</p>
 
                     </main>
@@ -795,7 +780,7 @@ records the routing and capability tradeoffs.</p>
         <script src="searcher-09f2665d.js"></script>
 
         <script src="clipboard-1626706a.min.js"></script>
-        <script src="highlight-33e14e7d.js"></script>
+        <script src="highlight-c449d962.js"></script>
         <script src="book-c22b7243.js"></script>
 
         <!-- Custom JS scripts -->

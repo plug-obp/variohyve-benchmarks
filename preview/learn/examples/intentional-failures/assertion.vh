@@ -1,8 +1,8 @@
-class Tests(kernel, testing) {
+class Tests[kernel, testing] {
     Testing = testing;
 
-    tests {
-        var suite = Testing.suite("Practice reading a failure");
+    pub tests {
+        let suite = Testing.suite("Practice reading a failure");
         suite.add("two plus three", fun(assert) {
             assert.assertEquals(6, 2.plus(3))
         });

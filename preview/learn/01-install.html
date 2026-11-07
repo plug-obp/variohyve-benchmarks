@@ -5,12 +5,12 @@
 <script data-version-navigation src="../versions.js" defer></script>
 </head>
 <body><a class="skip" href="#lesson">Skip to lesson</a><header class="site-header wrap"><a class="wordmark" href="../">VarioHyve<span aria-hidden="true">.</span></a><nav aria-label="Tutorial navigation"><a href="./">All lessons</a><a href="../#downloads">Downloads</a></nav></header>
-<!-- version navigation --><div class="version-navigation wrap" data-version="0.4.0" data-page="learn/01-install.html"><span>Preview v0.4.0</span> · <a href="../versions.html">All tutorial versions</a></div><!-- /version navigation -->
+<!-- version navigation --><div class="version-navigation wrap" data-version="0.6.0" data-page="learn/01-install.html"><span>Preview v0.6.0</span> · <a href="../versions.html">All tutorial versions</a></div><!-- /version navigation -->
 
-<main id="lesson" class="lesson"><p class="eyebrow">LEARN VARIOHYVE · V0.3.2</p><h1>Install and say hello</h1>
+<main id="lesson" class="lesson"><p class="eyebrow">LEARN VARIOHYVE · V0.6.0</p><h1 id="install-and-say-hello">Install and say hello</h1>
 <p>You need a Java 23 JDK and a matching VarioHyve starter archive and VS Code
 extension (<code>.vsix</code>). Get both from the
-<a href="https://obpcdl.org/variohyve-benchmarks/preview/versions/0.3.2/">matching public release downloads</a>.
+<a href="https://obpcdl.org/variohyve-benchmarks/preview/versions/0.6.0/">matching public release downloads</a>.
 If you are building them yourself, follow the contributor commands below first.</p>
 <p>Extract the starter archive into a folder of your choice. It contains <code>bin</code>,
 <code>lib</code>, <code>contracts</code> and <code>learn</code>. Check your Java installation:</p>
@@ -34,10 +34,10 @@ directory and run:</p>
 </code></pre>
 
 <p>That is your first program. Open <a href="examples/hello.vh">hello.vh</a>:</p>
-<pre><code class="hljs language-vh"><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span>(kernel) {
+<pre><code class="hljs language-vh"><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span>[kernel] {
     Console = kernel<span class="hljs-title">.Console</span>;
 
-    <span class="hljs-title">run</span> {
+    <span class="hljs-keyword">pub</span> <span class="hljs-title">run</span> {
         Console<span class="hljs-title">.printLine</span>(<span class="hljs-string">&quot;Hello, VarioHyve!&quot;</span>)
     }
 }
@@ -51,10 +51,10 @@ the file and run it again.</p>
 <code>..\bin\vh.bat</code> wherever a command shows <code>../bin/vh</code>. Quote file paths
 containing spaces. You can also put the starter's <code>bin</code> directory on your PATH
 and use <code>vh</code> from any directory.</p>
-<h2>Use VS Code</h2>
+<h2 id="use-vs-code">Use VS Code</h2>
 <ol>
 <li>Open VS Code's Extensions view, choose <strong>Install from VSIX...</strong>, and select
-the matching <code>vh-lsp-vscode-0.4.0.vsix</code> artifact.</li>
+the matching <code>vh-lsp-vscode-0.6.0.vsix</code> artifact.</li>
 <li>Open the starter's <code>learn</code> folder and trust it when you want to run its code.</li>
 <li>If Java is not found, set <strong>Vh: Java Home</strong> (<code>vh.javaHome</code>) to the JDK folder.</li>
 <li>Open <code>examples/hello.vh</code>. In the Command Palette select
@@ -81,7 +81,7 @@ cannot be determined from the current source.</p>
 <p>If language services need restarting, select
 <strong>VarioHyve: Restart Language Server</strong>. A Java startup error includes guidance
 on the required version and <code>vh.javaHome</code>.</p>
-<h2>Building the artifacts from source</h2>
+<h2 id="building-the-artifacts-from-source">Building the artifacts from source</h2>
 <p>This section is for contributors. Running the extracted lessons only needs
 Java; it does not need Gradle, Node or repository credentials.</p>
 <p>From the repository root, with the documented build prerequisites:</p>
@@ -107,4 +107,4 @@ The public release downloads include <code>variohyve-packaging-*.zip</code> alon
 starter archive and VSIX. The packaging guide covers creating a project, native
 tests, packaging and running the output without the original installation.</p>
 </main>
-<footer class="wrap"><p>Public preview v0.3.2 · Download the files shown in each lesson. Recipe projects use the packaging tools.</p><a href="../">Back to the preview</a></footer></body></html>
+<footer class="wrap"><p>Public preview v0.6.0 · Download the files shown in each lesson. Recipe projects use the packaging tools.</p><a href="../">Back to the preview</a></footer></body></html>

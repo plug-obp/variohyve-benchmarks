@@ -46,7 +46,9 @@ and `theme/vh.css`. `learn.css` is carried into a new output directory. Local
 links labelled `Download filename.vh`, `Download filename.java`,
 `Download filename.json` or `Download filename.md` become download buttons.
 Markdown files are copied alongside their rendered HTML so a contract's Download
-button delivers its original text. The renderer does not change `spec/`.
+button delivers its original text. The renderer adds stable heading anchors for lesson cross-references. Links to
+the conformance map resolve to the versioned public reference; specification
+links resolve to the public book. The renderer does not change `spec/`.
 
 Promote the staged release locally after validation:
 

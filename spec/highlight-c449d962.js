@@ -61,7 +61,7 @@ hljs.registerLanguage("vh", function() {
       case_insensitive: false,
       // λ is Unicode — handled via begin: pattern below, not keyword matching
       keywords: {
-        keyword:  "class factory var fun extends with",
+        keyword:  "class factory pub var fun extends with",
         built_in: "self outer super"
       },
       contains: [
@@ -85,6 +85,8 @@ hljs.registerLanguage("vh", function() {
           contains: [hljs.BACKSLASH_ESCAPE],
           relevance: 0
         },
+        // Contextual local declaration; selectors named let remain ordinary.
+        { className: "keyword", begin: /\blet(?=\s+[_a-zA-Z][a-zA-Z_0-9]*)/ },
         // Numbers (integer or decimal)
         {
           className: "number",
@@ -94,7 +96,7 @@ hljs.registerLanguage("vh", function() {
         // Class name: identifier immediately after 'class' keyword
         {
           beginKeywords: "class",
-          end: /(?=[{(])/,
+          end: /(?=[{(\[])/,
           contains: [{
             className: "title",
             begin: /[_a-zA-Z][a-zA-Z_0-9]*/,
@@ -106,7 +108,7 @@ hljs.registerLanguage("vh", function() {
         // Factory method name: identifier immediately after 'factory' keyword
         {
           beginKeywords: "factory",
-          end: /(?=[{(])/,
+          end: /(?=[{(\[])/,
           contains: [{
             className: "title",
             begin: /[_a-zA-Z][a-zA-Z_0-9]*!*/,
@@ -118,7 +120,7 @@ hljs.registerLanguage("vh", function() {
         // Method declaration name: IDENT!* before optional (args) and {
         {
           className: "title",
-          begin: /\b(?!class\b|factory\b|var\b|fun\b|with\b|extends\b|self\b|outer\b|super\b)[_a-zA-Z][a-zA-Z_0-9]*!*(?=\s*(?:\([^)]*\))?\s*\{)/,
+          begin: /\b(?!class\b|factory\b|pub\b|var\b|fun\b|with\b|extends\b|self\b|outer\b|super\b)[_a-zA-Z][a-zA-Z_0-9]*!*(?=\s*(?:\([^)]*\))?\s*\{)/,
           relevance: 0
         },
         // Lambda keyword (Unicode — not matched by default \w pattern)

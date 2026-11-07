@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0e8722df.js";
+            window.path_to_searchindex_js = "searchindex-75c83f8c.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-ce909e20.js"></script>
+        <script src="toc-253640ee.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -178,10 +178,10 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="recursion"><a class="header" href="#recursion">Recursion</a></h1>
-<p>Recursion uses ordinary late-bound messages and lexical captures; it requires
+<p>Recursion uses ordinary message selection and lexical captures; it requires
 no special recursive declaration form. It remains subject to
-<a href="name-resolution.html#lookup-order">normal selection</a>, including overrides and
-callable eligibility.</p>
+<a href="name-resolution.html#lookup-order">normal selection</a>, including public overrides,
+committed private operations and callable eligibility.</p>
 <h2 id="named-method-recursion"><a class="header" href="#named-method-recursion">Named Method Recursion</a></h2>
 <p>A method can send its own selector or another method’s selector. Declarations
 are available regardless of textual order, enabling mutual recursion.
@@ -191,7 +191,7 @@ Use <code>self.m(...)</code> when current-receiver dispatch is intended; implici
 <p>A stored lambda can refer to the accessor holding it:</p>
 <!-- example-id: vh-recursive-factorial -->
 <pre><code class="language-vh">{
-    fact = fun(n) {
+    pub fact = fun(n) {
         n.equals(0).ifTrue(fun { 1 }, fun { n.times(fact(n.minus(1))) })
     };
 }
@@ -203,7 +203,9 @@ Normal expression results return through recursive invocations. A <code>^</code>
 target the creating initializer, normally already retired; see
 <a href="literals.html#early-return-with-">return homes</a>.</p>
 <h2 id="local-lambda-recursion"><a class="header" href="#local-lambda-recursion">Local Lambda Recursion</a></h2>
-<p>A <code>var</code> local can similarly hold a recursive lambda. Its accessor belongs to
+<p>A <code>let</code> or <code>var</code> local can similarly hold a recursive lambda. An immutable local
+needs no special <code>let rec</code> form: creating the lambda captures its reserved cell,
+and invocation reads it after initialization. Its accessor belongs to
 the captured activation. A lambda’s caller supplies no replacement lexical
 scope or implicit self-name.</p>
 <h2 id="mutual-recursion"><a class="header" href="#mutual-recursion">Mutual Recursion</a></h2>
@@ -271,7 +273,7 @@ Foreign callback depth and other execution limits are separate; see
         <script src="searcher-09f2665d.js"></script>
 
         <script src="clipboard-1626706a.min.js"></script>
-        <script src="highlight-33e14e7d.js"></script>
+        <script src="highlight-c449d962.js"></script>
         <script src="book-c22b7243.js"></script>
 
         <!-- Custom JS scripts -->

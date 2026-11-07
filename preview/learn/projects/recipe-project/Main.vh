@@ -1,5 +1,5 @@
 // The application receives its dependency; it does not select a host kernel.
-class Main(multiplier) {
+class Main[multiplier] {
     multiplier = multiplier;
-    answer { multiplier.multiply(14) }
+    pub answer { multiplier.multiply(14) }
 }

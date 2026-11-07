@@ -3,6 +3,55 @@
 User-visible changes to the public VarioHyve preview. Preview versions may change
 the Java embedding API. Java 23 is required and is not bundled.
 
+## 0.6.0 — 2026-11-07
+
+The first seedless language revision intentionally breaks the
+0.5.0 language and embedding contracts; no compatibility mode is provided.
+
+- Use a fixed Object/Class/Metaclass/Lambda graph with an empty Object protocol.
+  Load native unit/Boolean protocols as ordinary libraries with explicit inputs.
+- Require initializers for all source slots and locals, and an explicit final
+  expression or return operand in methods, factories and lambdas. Private
+  initializer work can be empty; empty executable input is rejected.
+- Remove runtime seed adoption and native null/Boolean identities. Preserve
+  incoming host null and Booleans as foreign values, and choose identity-query
+  results from values supplied by the caller.
+- Use native artifact version 3, the `native-sovereign-v1` profile and
+  `native-core-v3` transport. Fresh/reset sessions export no value handles;
+  legacy artifacts and null nodes are rejected.
+- Use bracket constructor parameters/routes, private and immutable declarations
+  by default, explicit `pub` publication and `var` mutation. Immutable locals
+  use `let`; mixin occurrences retain disjoint storage and finite publication maps.
+- Preserve independent source histories, native capability confinement and
+  resumable execution across the Java/Lean conformance corpus. Optional Lean
+  preparation policies retain their separate refinement and measurement scope.
+- Consolidate the specification/Java/Lean evidence map and Learn VarioHyve
+  language reference. Ship matching starter, packaging tools and VS Code
+  extension **0.6.0**; the installation lesson points to this release.
+
+Source/native proof integration, the full Lean audit, Java tests and cross-VM
+conformance checks pass. The
+[accepted design note](docs/design-notes/seedless-language-and-explicit-values.md)
+records the contract, validation evidence and proof boundaries.
+
+## 0.5.0 — 2026-10-28
+
+Release the native execution and frontend refinements before the seedless
+language transition. VS Code extension remains **0.4.0**.
+
+- Run native sessions with indexed code, structural metadata, heap rows and
+  handles, allocation-paced tracing, and separate external refinement observers.
+- Preserve independent source histories and ordered effects across collection,
+  linking, suspension and resumption. Keep optional function/class/initializer
+  preparation tied to checked refinement and explicit workload measurements.
+- Improve Lean parsing and source admission with proved scanner refinements,
+  prepared indexes and source-produced-core admission for normal imports.
+- Audit Lean declarations by owning module, including private and generated
+  declarations, and consolidate repository guidance and revision-pinned history.
+
+The seedless design is recorded for the next language revision. This release
+retains the existing seed, implicit-null and boundary contracts.
+
 ## 0.4.0 — 2026-10-25
 
 Add the native execution milestone and native recipe driven packaging worlds.

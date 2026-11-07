@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0e8722df.js";
+            window.path_to_searchindex_js = "searchindex-75c83f8c.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-ce909e20.js"></script>
+        <script src="toc-253640ee.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -178,9 +178,10 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="name-resolution"><a class="header" href="#name-resolution">Name Resolution</a></h1>
-<p>Implicit sends first select a receiver from lexical declarations, then dispatch
-on that receiver. Lookup is fixed by the language; there is no global
-environment or platform-selectable lookup policy.</p>
+<p>Implicit sends select original lexical declarations. Private selection enters the
+exact operation; public selection dispatches virtually on its selected receiver.
+Lookup is fixed by the language; there is no global environment or
+platform-selectable lookup policy.</p>
 <p>Operational definition: <a href="./formal-core.html#lexical-receiver-selection">SOS lexical receiver selection</a>.</p>
 <h2 id="names-and-contracts"><a class="header" href="#names-and-contracts">Names and Contracts</a></h2>
 <p>An ordinary name selects behavior through message lookup; its spelling alone
@@ -191,64 +192,87 @@ application selectors such as <code>ifTrue</code> or <code>plus</code>. They int
 bindings. Parameters, locals, slots and methods may use these names, subject to
 the ordinary declaration rules. Without an applicable declaration, a send fails
 under the ordinary lookup rules.</p>
-<p>Canonical null and Boolean identities, and structural root Object, are governed
-by the seed and core-object contracts. Those identities do not reserve source
-names for obtaining them. An omitted initializer supplies canonical null
-directly; an explicit initializer <code>null</code> sends <code>null/0</code> in its lexical context.
-A name or a matching protocol never establishes canonical identity at the
-foreign boundary.</p>
+<p>There are no canonical null or Boolean roles. The structural root has no lexical
+binding. An explicit initializer <code>null</code> sends <code>null/0</code> in its lexical context;
+omitting the initializer is an error. A name or matching protocol never causes
+native-to-foreign scalar conversion.</p>
 <p>The specification explicitly fixes grammar keywords and the receiver forms
 below. It also fixes the callable selector <a href="message-sends-apply-tear-offs.html"><code>apply/N</code></a>,
 the generated primary factory <a href="objects-and-classes.html#the-primary-factory-new"><code>new/N</code></a>
 and the setter selector mapping <a href="syntactic-sugar.html#-setter-sugar"><code>x!/1</code></a>.
 These contracts connect syntax to messages; the selected operations still use
 ordinary dispatch. They do not give other selectors intrinsic behavior.
-Seed methods and explicitly supplied foreign/tooling capabilities have their
+Library methods and explicitly supplied foreign/tooling capabilities have their
 own stated contracts, not meanings inferred from names on arbitrary objects.</p>
 <h2 id="lookup-order"><a class="header" href="#lookup-order">Lookup Order</a></h2>
 <p>Search the current method/lambda’s parameter and local accessors, then enclosing
 lexical scope objects from nearest to farthest. An activation contributes its
 own accessors. A lexical object scope contributes only declarations from its
 originating contribution, associated with its bound receiver. Arbitrary members
-added by a subclass do not become lexical declarations.</p>
+added by a subclass do not become lexical declarations. An ordinary object
+explicitly supplied as a tooling context instead exposes its top layer’s owned
+contribution and direct mixins as its own table, then its actual lexical parent.
+Only public entries are available through that ordinary tooling object. This
+does not turn the supplied object into an executing contribution or lend
+an enclosing <code>super</code> origin; see <a href="tooling-architecture.html#evaluation-contexts">evaluation contexts</a>.</p>
 <p>A selected contribution and its member classes retain their exact application
 occurrence and captured lexical ancestry at every nesting depth. Qualified
-<code>outer</code> and implicit lexical receiver selection follow that ancestry. Messages
-dispatch normally on the selected receiver, and <code>super</code> continues after the
-executing occurrence. Repeated applications of one declaration remain distinct;
+<code>outer</code> and implicit lexical receiver selection follow that ancestry. Public messages dispatch virtually on the selected receiver. Private messages
+retain their exact original operation. <code>super</code> searches the executing target’s
+retained public lower input. Repeated applications of one declaration remain distinct;
 lexical traversal never reselects an earlier application on the same receiver.</p>
-<p>For an exact send, the nearest scope declaring the selector selects its receiver;
-exact dispatch then honors overrides on that receiver. For invocation, use the
-<a href="message-sends.html#candidate-selection">candidate rules</a>:</p>
-<ol>
-<li>A declared exact <code>name/N</code> operation qualifies the scope, except that a
-generated getter at arity zero must establish callable eligibility.</li>
-<li>Otherwise, if the scope declares <code>name/0</code>, select its effective getter on
-the associated receiver. An eligible generated accessor qualifies the scope.
-At arity zero, an ordinary method overriding that getter also qualifies
-directly.</li>
-<li>A miss continues outward; an eligibility error stops selection.</li>
-<li>Once qualified, dispatch the original invocation uniformly on that receiver,
-retaining successful accessor evidence.</li>
-<li>If all lexical scopes miss, dispatch on current <code>self</code> through its owned
-contribution, direct mixins left-to-right, then superclass chain.</li>
-</ol>
+<p>Original declaration names and categories never change when publications are
+renamed, hidden or delegated. For an implicit exact send, the nearest original
+matching declaration selects its receiver. A private declaration enters its exact
+effective operation; a public declaration dispatches the original request through
+that receiver’s public interface.</p>
+<p>For invocation, original methods qualify by their declared selector. Original
+generated accessors establish eligibility from the effective operation. A private
+accessor’s eligibility miss may continue lexical search; a selected error stops.
+A qualified private operation executes exactly, ignoring public overrides. A
+qualified public operation dispatches the original invocation virtually, retaining
+successful getter/callable evidence. The effective operation kind determines
+execution even when delegation changes it: a method anchor delegated to a getter
+still qualifies lexically as a method and commits before that getter’s invocation
+eligibility is checked. A final miss or failure never restarts lexical selection.
+Exhausting the lexical scopes searches public <code>self</code>.</p>
 <p>A subclass <code>name/N</code> alone cannot make an ineligible declared getter qualify.
-Once eligible, that receiver’s overrides apply normally. An operation added
-on a different inner receiver cannot capture an enclosing dependency.</p>
+After a public getter qualifies, that receiver’s overrides apply normally;
+private qualification retains its exact operation. An operation added on a
+different inner receiver cannot capture an enclosing dependency.</p>
 <!-- example-id: vh-declaration-relative-dispatch -->
 <pre><code class="language-vh">{
-    class Base {
-        f = fun(x) { 7 };
-        run { f(1) }
+    pub class Base {
+        pub f = fun(x) { 7 };
+        pub run { f(1) }
     }
-    class Child &lt; Base { f(x) { 42 } }
+    pub class Child &lt; Base { pub f(x) { 42 } }
 }.Child().run // 42: Base selects the receiver; Child overrides f/1
 </code></pre>
 <p>If <code>Base.f</code> instead holds a non-callable or wrong-arity value, lexical search
 continues before the final self invocation. Getter masking, failure handling
 and retained callable evidence are specified once in
 <a href="message-sends.html#dispatch-rules">Message Sends</a>.</p>
+<h3 id="private-authority-for-ordinary-explicit-sends"><a class="header" href="#private-authority-for-ordinary-explicit-sends">Private authority for ordinary explicit sends</a></h3>
+<p>After receiver and arguments evaluate once, inspect the send site’s original
+lexical member declarations structurally, nearest first. Prefer an exact selector,
+then an original generated-getter candidate for invocation. Activation locals and
+parameters do not grant or shadow this member authority. A matching public member
+stops the search without granting private authority.</p>
+<p>A matching private candidate grants access only when the evaluated native receiver
+retains that exact realized application occurrence. Names and definition equality
+are insufficient; fresh owned reuse creates another occurrence, whereas complete
+inheritance retains it. The check performs no sends, reads, callable probes or
+member realization. Incompatibility does not search for another private role.</p>
+<p>Compatible access commits to that exact operation on the evaluated receiver,
+including its captures, effective kind and slot/member identity. Eligibility
+misses, uninitialized reads and selected failures cannot retry publicly. Otherwise
+the original request searches the receiver’s public interface. Private entries are
+excluded before masking and effects. An Alien uses its ordinary foreign protocol.</p>
+<p><code>self.x</code>, <code>.x</code>, and <code>alias.x</code> agree at the same lexical site when alias is self.
+<code>outer C</code> chooses a captured receiver without resetting lexical authority. Expat
+callers and ordinary supplied tooling objects have public authority; a supplied
+captured activation remains a separate explicit capability.</p>
 <h3 id="capabilities-and-declaration-scopes"><a class="header" href="#capabilities-and-declaration-scopes">Capabilities and declaration scopes</a></h3>
 <p>The instantiating caller does not supply a class’s lexical scope. Constructor
 parameters, member declarations and class expressions obey the
@@ -261,7 +285,7 @@ identifier but is not an ordinary getter; native declarations cannot shadow it.
 It can be passed as a value and used in chains such as <code>self.x</code>.
 An explicit native receiver has no <code>self</code> selector. <code>alien.self</code> is instead an
 ordinary foreign selector with adapter-defined meaning.</p>
-<p><code>self(args)</code> is a special receiver form: it sends exact <code>apply/N</code> to the current
+<p><code>self(args)</code> is a special receiver form: it sends exact public <code>apply/N</code> to the current
 receiver, with N equal to the argument count. It does not invoke a selector named
 <code>self</code>, perform lexical receiver selection or use a generated accessor to find
 a callable. <code>self.apply(args)</code> is an ordinary explicit invocation and follows
@@ -269,17 +293,17 @@ the <a href="message-sends.html#invoking-the-current-receiver">invocation select
 The distinction also affects <a href="objects-and-classes.html#constructor-clauses">constructor clauses</a>.</p>
 <h3 id="leading-dot-shorthand-for-self"><a class="header" href="#leading-dot-shorthand-for-self">Leading-Dot Shorthand for Self</a></h3>
 <p><code>.m(args)</code> equals <code>self.m(args)</code>; <code>..m..n</code> equals <code>self..m..n</code>.
-Both bypass lexical receiver selection. See <a href="message-sends.html#cascade-">cascades</a>.</p>
+Both use the same private-authority check as ordinary explicit sends. See <a href="message-sends.html#cascade-">cascades</a>.</p>
 <h2 id="outer--qualified-lexical-receiver"><a class="header" href="#outer--qualified-lexical-receiver"><code>outer</code> — Qualified Lexical Receiver</a></h2>
 <p><code>outer ClassName</code> selects the ordinary receiver for the nearest matching named
 lexically enclosing declaration, including the immediately containing class.
-Subsequent messages dispatch normally on that receiver.</p>
+Subsequent messages use the ordinary private-authority/public-dispatch rule.</p>
 <!-- example-id: vh-outer-occurrence -->
-<pre><code class="language-vh">class Counter(start) {
-    n = start;
-    class Stepper {
-        step { outer Counter.n!(outer Counter.n.plus(1)) }
-        current { outer Stepper }
+<pre><code class="language-vh">class Counter[start] {
+    pub var n = start;
+    pub class Stepper {
+        pub step { outer Counter.n!(outer Counter.n.plus(1)) }
+        pub current { outer Stepper }
     }
 }
 </code></pre>
@@ -298,7 +322,7 @@ Member classes also retain their bound receiver and declaration origin.
 This holds at every nesting depth: a member selected from the second of two
 applications retains that application’s farther enclosing objects, even when
 both applications share the same declaration and immediate receiver. The
-<a href="../../design-notes/outer-newspeak-comparison.html#deeper-repeated-parent-diagnostic">repeated-parent example</a>
+<a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/docs/design-notes/outer-newspeak-comparison.md#deeper-repeated-parent-diagnostic">repeated-parent example</a>
 therefore returns <code>42</code>, preserving the selected <code>b.Family</code> ancestry. This is an
 intentional difference from Newspeak’s deeper nearest-parent reselection rule.</p>
 <p><code>outer C</code> is a standalone receiver value: grouping, passing it as an argument
@@ -311,7 +335,7 @@ in an unused method or lambda. The <a href="tooling-architecture.html#source-che
 validate the qualifier against the named declarations enclosing that occurrence
 before execution. This is lexical declaration lookup, independent
 of same-named parameters, locals or accessors.</p>
-<p>A class’s own qualifier is available in its body, factories and routed terminal
+<p>A class’s own qualifier is available in its body, factories and routed bracket
 constructor arguments. Contributor target expressions run in the surrounding
 definition scope, so they cannot use the new class’s qualifier; surrounding
 named declarations remain available there. See
@@ -321,11 +345,14 @@ scopes described above. Qualifying a normal module’s own declaration
 can select its instance; it cannot expose the instantiation service, tooling
 capabilities or empty top activation.</p>
 <h2 id="super--lookup-redirector"><a class="header" href="#super--lookup-redirector"><code>super</code> — Lookup Redirector</a></h2>
-<p><code>super.m(args)</code> retains <code>self</code> and starts lookup immediately after the
-executing contribution’s exact application occurrence. It continues through
-later mixins and the superclass chain, preserving the send mode and using
-fresh getter masking. Repeated applications of one mixin remain distinct;
-lookup does not restart after the first occurrence of its definition.</p>
+<p><code>super.m(args)</code> retains <code>self</code> and searches the lower public input retained by
+the executing operation’s original application occurrence. That input contains
+the later mixin positions and complete superclass as they stood at that boundary,
+before its directives or later boundaries adapted their publication. Delegation
+retains the target operation’s origin, so its <code>super</code> uses that target’s input.
+The search preserves the send mode and starts with fresh getter masking.
+Repeated applications retain distinct inputs; lookup does not reselect an
+occurrence by definition identity or search a suffix of the final public output.</p>
 <p><code>super</code> is not a value: standalone use, assignment and <code>super..</code> are invalid.
 Its native meaning cannot be overridden. The explicit selector in <code>alien.super</code>
 belongs to the foreign protocol.</p>
@@ -337,10 +364,10 @@ belongs to the foreign protocol.</p>
 </thead>
 <tbody>
 <tr><td><code>m(args)</code></td><td>Declaration-relative lexical selection, then self fallback.</td></tr>
-<tr><td><code>self.m(args)</code> / <code>.m(args)</code></td><td>Current receiver’s hierarchy only.</td></tr>
-<tr><td><code>outer C.m(args)</code></td><td>Lexical receiver for C, then ordinary dispatch.</td></tr>
-<tr><td><code>super.m(args)</code></td><td>Current receiver, after the executing occurrence.</td></tr>
-<tr><td><code>receiver.m(args)</code></td><td>Evaluate receiver once; native hierarchy or Alien protocol.</td></tr>
+<tr><td><code>self.m(args)</code> / <code>.m(args)</code></td><td>Current receiver; compatible private authority, otherwise public dispatch.</td></tr>
+<tr><td><code>outer C.m(args)</code></td><td>Captured receiver for C; the send site’s authority remains unchanged.</td></tr>
+<tr><td><code>super.m(args)</code></td><td>Current receiver, through the executing origin’s retained lower public input.</td></tr>
+<tr><td><code>receiver.m(args)</code></td><td>Evaluate receiver once; compatible private authority or public native dispatch, or the Alien protocol.</td></tr>
 </tbody>
 </table>
 </div>
@@ -357,7 +384,8 @@ also allowed as explicit foreign selector spellings.</p>
 </thead>
 <tbody>
 <tr><td><code>class</code>, <code>factory</code></td><td>Class and factory declarations.</td></tr>
-<tr><td><code>var</code></td><td>Local declaration.</td></tr>
+<tr><td><code>pub</code></td><td>Public member, method, factory or slot declaration.</td></tr>
+<tr><td><code>var</code></td><td>Mutable slot or local declaration.</td></tr>
 <tr><td><code>fun</code>, <code>λ</code></td><td>Lambda literal.</td></tr>
 <tr><td><code>outer</code>, <code>super</code></td><td>Native receiver forms.</td></tr>
 <tr><td><code>&lt;</code>, <code>extends</code></td><td>Superclass clause.</td></tr>
@@ -365,6 +393,11 @@ also allowed as explicit foreign selector spellings.</p>
 </tbody>
 </table>
 </div>
+<p><code>let</code> is a contextual declaration marker, not a globally reserved keyword.
+At statement start, <code>let</code> followed by a plain identifier introduces an immutable
+local. Elsewhere it remains an ordinary identifier, including selector, slot,
+formal and local names. Both local forms reserve their names for the whole
+statement list; neither changes selector-based lookup.</p>
 <h3 id="semantically-reserved-identifiers"><a class="header" href="#semantically-reserved-identifiers">Semantically Reserved Identifiers</a></h3>
 <div class="table-wrapper">
 <table>
@@ -428,7 +461,7 @@ declarations before execution. See
         <script src="searcher-09f2665d.js"></script>
 
         <script src="clipboard-1626706a.min.js"></script>
-        <script src="highlight-33e14e7d.js"></script>
+        <script src="highlight-c449d962.js"></script>
         <script src="book-c22b7243.js"></script>
 
         <!-- Custom JS scripts -->

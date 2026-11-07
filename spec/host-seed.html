@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>The Host Seed - VarioHyve Language Specification</title>
+        <title>Explicit Host Values - VarioHyve Language Specification</title>
 
 
         <!-- Custom HTML head -->
@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0e8722df.js";
+            window.path_to_searchindex_js = "searchindex-75c83f8c.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-ce909e20.js"></script>
+        <script src="toc-253640ee.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -177,52 +177,30 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="the-host-seed"><a class="header" href="#the-host-seed">The Host Seed</a></h1>
-<p>The minimal host seed binds canonical null, true, and false to boundary-owned
-foreign values and installs an Object with an empty instance protocol. The Java
-host realization preserves the corresponding host payloads as Aliens. Those
-values need no <code>isNull</code>, conditional, equality, hashing, or display methods for
-the machine to execute. A client send succeeds only when the foreign adapter
-provides its selector; assigning a canonical role supplies no additional
-behavior or native superclass.</p>
-<p>The supplied Java adapter offers null tests/display and Boolean selection
-methods, plus <code>equals/1</code> for null and Booleans and Boolean <code>whileTrue/1</code>
-(<a href="java-host-kernel.html#boolean-and-null-additions">contracts</a>). These are optional
-adapter capabilities, not minimum seed requirements. In the unconfigured Host
-Seed, numbers and strings remain opaque unless an explicitly supplied foreign
-capability operates on them. The optional
-<a href="java-host-kernel.html">JavaHostKernel world</a> adds receiver protocols such as
-<code>2.plus(3)</code> through a host adapter chosen before runtime publication.</p>
-<p>The host seed can be used without loading a native library. Explicitly supplied
-foreign capabilities perform work, while native objects and closures coordinate
-them. Foreign scalar preservation avoids native data conversion; native
-coordination objects still use Expats when passed to a host capability. A
-preserved Java value does not acquire automatic Java reflection or a native
-number/string protocol.</p>
-<p><code>BootstrapRuntime(capabilities, BoundaryProfile.HOST_VALUES, adapter)</code> selects
-an explicit <code>HostValueAdapter</code> for preserved values. This is independent of the
-kernel bundle passed to a module: passing a bundle cannot install or change the
-runtime adapter. Its foreign selector resolution obeys the same no-effects,
-no-callback selection contract as <code>ForeignObject.resolve</code>; selected operations
-execute through the ordinary boundary. Known null/Boolean operations retain
-precedence, and explicit <code>ForeignObject</code> receivers retain their own resolver.
-The optional adapter adds no native class, slot, implicit namespace or I/O grant.</p>
-<p>Host Boolean control behavior is a boundary agreement. If a host Boolean
-adapter executes a native thunk, that execution crosses the Alien/Expat
-boundary. A non-local return from the thunk can cross this call only when every
-intervening boundary implements the required transfer. A supporting host and
-boundary can permit it; foreign Boolean representation is not intrinsically a
-limitation. The current Java implementation forbids this crossing and reports
-<code>LANGUAGE_FAILURE</code>. Ordinary callback returns and returns to homes created
-inside the callback remain possible. See
-<a href="foreign-objects.html#non-local-returns-across-the-boundary">non-local returns across the boundary</a>.</p>
-<p>The Java bootstrap selects this world explicitly:</p>
-<!-- example-id: java-explicit-host-seed -->
-<pre><code class="language-java">var runtime = new BootstrapRuntime(Map.of(), BoundaryProfile.HOST_VALUES);
-Object result = runtime.evaluate("true.ifTrue(fun { 7 })", 1_000);
+                        <h1 id="explicit-host-values"><a class="header" href="#explicit-host-values">Explicit Host Values</a></h1>
+<p>Java null and Boolean values remain Aliens. The bare runtime provides no
+conditional, null-test, equality or display selectors for them. A selected
+<code>HostValueAdapter</code> may supply these protocols; the
+<a href="java-host-kernel.html">JavaHostKernel world</a> supplies one such adapter.</p>
+<p><code>BootstrapRuntime(capabilities, ScalarProfile.HOST_VALUES, adapter)</code> preserves
+host payloads and selects an explicit receiver adapter. Its resolution obeys
+the same no-effects, no-callback contract as <code>ForeignObject.resolve</code>. A selected
+operation executes through the ordinary boundary. Explicit <code>ForeignObject</code>
+receivers retain their own resolver. Passing a kernel bundle to a module does
+not install or change this runtime adapter.</p>
+<p>Host Boolean branching invokes a native thunk through the Alien/Expat boundary.
+The current Java agreement rejects non-local returns across that active foreign
+call. Normal callback returns and returns to homes created inside the callback
+remain possible. See <a href="foreign-objects.html#non-local-returns-across-the-boundary">the return agreement</a>.</p>
+<p>This tooling example explicitly selects both the value and its protocol:</p>
+<!-- example-id: java-explicit-host-values -->
+<pre><code class="language-java">var runtime = new BootstrapRuntime(Map.of("flag", true), ScalarProfile.HOST_VALUES,
+        vh.host.StarterValueAdapter.INSTANCE);
+Object result = runtime.evaluate("flag.ifTrue(fun { 7 })", 1_000);
 </code></pre>
-<p>The tooling bundle supplies <code>true</code> for this expression. An isolated module must
-receive its capabilities as constructor arguments, even in the Host Seed.</p>
+<p>Normal modules receive their capabilities through constructor inputs. They do
+not inherit the tooling map. The adapter grants no native superclass, lexical
+name or Java reflection capability.</p>
 
                     </main>
 
@@ -271,7 +249,7 @@ receive its capabilities as constructor arguments, even in the Host Seed.</p>
         <script src="searcher-09f2665d.js"></script>
 
         <script src="clipboard-1626706a.min.js"></script>
-        <script src="highlight-33e14e7d.js"></script>
+        <script src="highlight-c449d962.js"></script>
         <script src="book-c22b7243.js"></script>
 
         <!-- Custom JS scripts -->

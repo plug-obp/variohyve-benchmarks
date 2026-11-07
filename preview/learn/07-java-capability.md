@@ -62,15 +62,15 @@ an **Alien**; the source uses it by sending messages, just like the console.
 
 <!-- example: java/use-label.vh -->
 ```vh
-class Program(kernel, labelMaker) {
+class Program[kernel, labelMaker] {
     Console = kernel.Console;
     labels = labelMaker;
 
-    run {
+    pub run {
         Console.printLine(labels.label("Ada"))
     }
 
-    rejectedLabel {
+    pub rejectedLabel {
         labels.label("   ")
     }
 }
@@ -154,7 +154,7 @@ or fill the hole.
 <!-- example: java/LabelMaker.vh -->
 ```vh
 class LabelMaker {
-    label(name) { ? }
+    pub label(name) { ? }
         : host("java", "LabelMaker#label(java.lang.Object)")
         : doc("Accepts a nonblank String, trims it, and returns a greeting String. Other values fail with CONVERSION; blank text fails with FOREIGN_FAILURE / FOREIGN_REJECTION. No I/O or callbacks.");
 }

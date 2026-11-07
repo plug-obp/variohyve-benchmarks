@@ -11,24 +11,25 @@ Score: 13
 ```
 
 The program declares a `Counter` class inside `Program`. `Counter(10)` makes an
-object whose `count` slot starts at ten. Sending `increment` updates that slot;
+object whose private `current` slot starts at ten. Sending `increment` updates that slot;
 sending `count` reads it. Each new counter has its own count.
 
 <!-- example: counter.vh -->
 ```vh
-class Program(kernel) {
+class Program[kernel] {
     Console = kernel.Console;
 
-    class Counter(start) {
-        count = start;
+    class Counter[start] {
+        var current = start;
+        pub count { current }
 
-        increment {
-            count = count.plus(1)
+        pub increment {
+            current = current.plus(1)
         }
     }
 
-    run {
-        var score = Counter(10);
+    pub run {
+        let score = Counter(10);
         3.timesRepeat(fun { score.increment });
         Console.printLine("Score: ".concat(score.count.toString))
     }
@@ -37,9 +38,11 @@ class Program(kernel) {
 
 [Download counter.vh](examples/counter.vh)
 
-`start` is a constructor input. The slot initializer copies it into `count`
-so methods can keep using the value. A slot has an ordinary getter and setter;
-`count = count.plus(1)` is convenient setter syntax.
+`start` is a constructor input. The slot initializer copies it into `current`
+so methods can keep using the value. `var` gives this private slot a getter and
+setter; `current = current.plus(1)` is convenient setter syntax. The public
+`count` method exposes only a read, so clients can increment the counter but
+cannot replace its state through `count!`.
 
 In `run`, `3.timesRepeat` sends `increment` three times, then the program reads
 and prints the score. Try constructing two counters with different starting

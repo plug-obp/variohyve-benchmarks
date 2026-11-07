@@ -16,10 +16,10 @@ Run [table.vh](examples/table.vh):
 
 <!-- example: table.vh -->
 ```vh
-class Program(kernel) {
+class Program[kernel] {
     Console = kernel.Console;
 
-    run {
+    pub run {
         1.toDo(5, fun(number) {
             Console.printLine(number.toString.concat(" x 3 = ").concat(number.times(3).toString))
         })
@@ -46,18 +46,18 @@ Average: 20.0
 
 <!-- example: average.vh -->
 ```vh
-class Program(kernel) {
+class Program[kernel] {
     Console = kernel.Console;
     Collections = kernel.Collections;
 
-    run {
-        var scores = Collections.list;
+    pub run {
+        let scores = Collections.list;
         scores.add(10);
         scores.add(20);
         scores.add(30);
         var total = 0;
         scores.do(fun(score) { total = total.plus(score) });
-        var average = total.asDouble.dividedBy(scores.size.asDouble);
+        let average = total.asDouble.dividedBy(scores.size.asDouble);
         Console.printLine("Total: ".concat(total.toString));
         Console.printLine("Average: ".concat(average.toString))
     }
@@ -88,14 +88,14 @@ green: 1
 
 <!-- example: word-count.vh -->
 ```vh
-class Program(kernel) {
+class Program[kernel] {
     Console = kernel.Console;
     Collections = kernel.Collections;
 
-    run {
-        var counts = Collections.map;
+    pub run {
+        let counts = Collections.map;
         "red blue red green blue red".split(" ").do(fun(word) {
-            var previous = counts.containsKey(word).ifTrue(
+            let previous = counts.containsKey(word).ifTrue(
                 fun { counts.get(word) },
                 fun { 0 });
             counts.put(word, previous.plus(1))

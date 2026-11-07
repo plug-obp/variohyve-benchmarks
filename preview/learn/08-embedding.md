@@ -7,12 +7,12 @@ message itself.
 
 <!-- example: java/calculator.vh -->
 ```vh
-class Calculator(kernel) {
-    twice(value) {
+class Calculator[kernel] {
+    pub twice(value) {
         value.times(2)
     }
 
-    unfinished {
+    pub unfinished {
         ?
     }
 }
@@ -23,7 +23,7 @@ class Calculator(kernel) {
 Read [Embed.java](examples/java/Embed.java). The important steps are:
 
 1. Create `JavaHostKernel` with the input and output streams the application owns.
-2. Call `kernel.newRuntime()` to select the Host Seed and its receiver protocols.
+2. Call `kernel.newRuntime()` to create the runtime with the kernel's receiver protocols.
 3. Read a source snapshot and pass its name, text and constructor arguments to
    `runtime.instantiateModule`.
 4. Keep the returned `ExpatReceipt` in a Java try-with-resources block and send

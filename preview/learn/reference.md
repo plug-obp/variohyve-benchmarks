@@ -1,9 +1,62 @@
-# Starter reference
+# Language and starter reference
 
-The lessons use one deliberately small host world: the Host Seed with the
-JavaHostKernel receiver adapters selected when the runtime is created. The
+## Language essentials
+
+These rules apply to the language independently of the starter's Java services.
+The complete [specification](../spec/src/SUMMARY.md) owns their detailed meaning.
+
+| Form or idea | Meaning in these lessons |
+|---|---|
+| `class Counter[start]` | Brackets declare constructor inputs. `Counter(10)` invokes the class with an argument. |
+| `current = start;` | An object slot is private and immutable by default. Its initializer is required. |
+| `var current = start;` | A mutable private slot has a getter and setter. `pub` independently publishes accessors. |
+| `pub count { current }` | A public method exposes behavior. Methods without `pub` are private. |
+| `let score = Counter(10);` | An immutable local retains a reference; it does not freeze the referenced counter. Use `var` for a rebindable local. |
+| `score.count` / `score.increment()` | Access and invocation are message sends. Parentheses request invocation, including callable values obtained through accessors. |
+| `current = value` | Assignment sends a setter message. Getters and setters are selected independently; an immutable declaration has no setter of its own. |
+| A method or lambda body | Its final expression supplies its result. An omitted result is not an implicit null. |
+
+Constructor parameters are available during initialization, not as bindings in
+instance methods. Save a dependency in a slot, as `Console = kernel.Console`
+does in [lesson 1](01-install.md), or `current = start` in
+[lesson 5](05-objects.md). A closure deliberately created during initialization
+can capture its inputs. Captured data can outlive the invocation that created it;
+that does not keep an early-return target alive.
+
+A normal module receives its external capabilities through constructor inputs.
+It does not inherit the caller's variables or a global kernel. A recipe is an
+explicit tooling context with its own supplied import and file capabilities;
+its imported application receives only the inputs the recipe passes.
+See [lesson 9](09-worlds.md) for this separation in a complete project.
+
+Composition preserves each applied contribution's own slots, even when names
+match. Applying a mixin imports its owned contribution; inheriting a superclass
+retains its assembled chain. Public publication and private lexical authority
+remain distinct. The [objects and classes chapter](../spec/src/objects-and-classes.md)
+covers composition beyond this introductory course.
+
+## Java and Lean
+
+| Implementation or world | What to use it for |
+|---|---|
+| Java `VisitorSemanticsVM` with JavaHostKernel | Run this course, Java interoperation, the VS Code tools and packaged recipe projects. |
+| Lean native machine | Execute native source with explicit native libraries and the supported source-backed session profiles. Its frontend and native refinement have checked proofs with stated premises. |
+| A native library or foreign adapter | Supplies value protocols and services. Selecting a VM does not make arbitrary libraries equivalent or give a program console/file access. |
+
+The Java starter's signed 64-bit integers, UTF-16 strings and synchronous Java
+callbacks are its library/boundary choices. Native number and text libraries
+have their own contracts; these lessons do not claim to run unchanged in a
+scalar-free Lean world. Java–Lean differential tests compare results, failures,
+aliases and effects on supported shared inputs. They do not prove the Java VM
+or arbitrary foreign adapters correct. The [conformance map](../conformance.md#specification-java-and-lean)
+connects the specification, tests and Lean proof scope.
+
+## Starter world
+
+The lessons use one deliberately small host world: the fixed structural runtime
+with JavaHostKernel receiver adapters selected when the runtime is created. The
 kernel's named services are constructor inputs. Passing a kernel bundle into
-an already-created plain Host Seed runtime does not install numeric protocols.
+an already-created runtime does not install numeric protocols.
 
 ## Values and services
 

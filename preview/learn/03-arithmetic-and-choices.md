@@ -8,10 +8,10 @@ Numbers receive messages too. Run [arithmetic.vh](examples/arithmetic.vh):
 
 <!-- example: arithmetic.vh -->
 ```vh
-class Program(kernel) {
+class Program[kernel] {
     Console = kernel.Console;
 
-    run {
+    pub run {
         Console.printLine(2.plus(3).toString);
         Console.printLine(2.plus(3).times(4).toString);
         Console.printLine(7.quotient(2).toString);
@@ -42,7 +42,7 @@ Celsius?
 
 <!-- example: temperature.vh -->
 ```vh
-class Program(kernel) {
+class Program[kernel] {
     Console = kernel.Console;
     Double = kernel.Double;
 
@@ -50,9 +50,9 @@ class Program(kernel) {
         celsius.times(1.8).plus(32.0)
     }
 
-    run {
+    pub run {
         Console.printLine("Celsius?");
-        var celsius = Double.parse(Console.readLine.trim);
+        let celsius = Double.parse(Console.readLine.trim);
         Console.printLine(fahrenheit(celsius).toString.concat(" F"))
     }
 }
@@ -81,19 +81,19 @@ An integer?
 
 <!-- example: choices.vh -->
 ```vh
-class Program(kernel) {
+class Program[kernel] {
     Console = kernel.Console;
     Integer = kernel.Integer;
 
-    describe(number) {
+    pub describe(number) {
         number.remainder(2).equals(0).ifTrue(
             fun { "even" },
             fun { "odd" })
     }
 
-    run {
+    pub run {
         Console.printLine("An integer?");
-        var number = Integer.parse(Console.readLine.trim);
+        let number = Integer.parse(Console.readLine.trim);
         Console.printLine(number.toString.concat(" is ").concat(describe(number)))
     }
 }

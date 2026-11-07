@@ -1,12 +1,12 @@
-class Program(kernel, labelMaker) {
+class Program[kernel, labelMaker] {
     Console = kernel.Console;
     labels = labelMaker;
 
-    run {
+    pub run {
         Console.printLine(labels.label("Ada"))
     }
 
-    rejectedLabel {
+    pub rejectedLabel {
         labels.label("   ")
     }
 }

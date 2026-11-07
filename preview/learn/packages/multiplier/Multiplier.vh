@@ -1,5 +1,5 @@
 // Entry module of an independently authored native package.
-class Multiplier(factor) {
+class Multiplier[factor] {
     factor = factor;
-    multiply(value) { value.times(factor) }
+    pub multiply(value) { value.times(factor) }
 }

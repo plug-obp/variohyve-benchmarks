@@ -1,9 +1,9 @@
-class Calculator(kernel) {
-    twice(value) {
+class Calculator[kernel] {
+    pub twice(value) {
         value.times(2)
     }
 
-    unfinished {
+    pub unfinished {
         ?
     }
 }

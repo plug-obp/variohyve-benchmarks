@@ -2,7 +2,7 @@
 
 You need a Java 23 JDK and a matching VarioHyve starter archive and VS Code
 extension (`.vsix`). Get both from the
-[matching public release downloads](https://obpcdl.org/variohyve-benchmarks/preview/versions/0.3.2/).
+[matching public release downloads](https://obpcdl.org/variohyve-benchmarks/preview/versions/0.6.0/).
 If you are building them yourself, follow the contributor commands below first.
 
 Extract the starter archive into a folder of your choice. It contains `bin`,
@@ -39,10 +39,10 @@ That is your first program. Open [hello.vh](examples/hello.vh):
 
 <!-- example: hello.vh -->
 ```vh
-class Program(kernel) {
+class Program[kernel] {
     Console = kernel.Console;
 
-    run {
+    pub run {
         Console.printLine("Hello, VarioHyve!")
     }
 }
@@ -62,7 +62,7 @@ and use `vh` from any directory.
 ## Use VS Code
 
 1. Open VS Code's Extensions view, choose **Install from VSIX...**, and select
-   the matching `vh-lsp-vscode-0.4.0.vsix` artifact.
+   the matching `vh-lsp-vscode-0.6.0.vsix` artifact.
 2. Open the starter's `learn` folder and trust it when you want to run its code.
 3. If Java is not found, set **Vh: Java Home** (`vh.javaHome`) to the JDK folder.
 4. Open `examples/hello.vh`. In the Command Palette select

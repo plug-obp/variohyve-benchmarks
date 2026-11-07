@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0e8722df.js";
+            window.path_to_searchindex_js = "searchindex-75c83f8c.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-ce909e20.js"></script>
+        <script src="toc-253640ee.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -182,11 +182,18 @@
 semantic authority. This chapter records how Java realizes the language contracts
 and <a href="./formal-core.html">formal reference machine</a>, including implementation
 restrictions. It does not claim a completed refinement proof.</p>
+<p>The <a href="/variohyve-benchmarks/preview/versions/0.6.0/reference/conformance.html#specification-java-and-lean">shared conformance map</a>
+connects source contracts to Java tests and the Lean proof scope. The
+<a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/vh-lean/semantics/README.md">Lean native machine</a> has an independent
+source semantics and a proved frontend/native refinement for its stated
+source-backed profiles. That result does not verify this Java implementation
+or the JavaHostKernel adapters. Cross-VM checks compare observable results,
+failures, aliases and effects; step counts and backend addresses may differ.</p>
 <h2 id="machine-components"><a class="header" href="#machine-components">Machine Components</a></h2>
 <p>The CESK-inspired configuration is
 <code>Configuration(control, environmentRef, runtimeWorld, continuationRef)</code>.
 The scope reference identifies an activation or lexical receiver view;
-<code>RuntimeWorld</code> supplies the store, boundary and seeded identities. There is no
+<code>RuntimeWorld</code> supplies the store, boundary and fixed structural identities. There is no
 separate environment namespace.</p>
 <div class="table-wrapper">
 <table>
@@ -205,9 +212,9 @@ separate environment namespace.</p>
 </table>
 </div>
 <p><code>Control</code> distinguishes expression evaluation, exact host send, committed foreign
-call, returned value, terminal error and resumable budget suspension. <a href="../../../vh-core/src/main/java/vh/vm/EvaluateStepVisitor.java">EvaluateStepVisitor</a>
-handles expressions; <a href="../../../vh-core/src/main/java/vh/vm/ContinuationStepVisitor.java">ContinuationStepVisitor</a>
-handles completion; <a href="../../../vh-core/src/main/java/vh/vm/ObjectProtocol.java">ObjectProtocol</a>
+call, returned value, terminal error and resumable budget suspension. <a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/vh-core/src/main/java/vh/vm/EvaluateStepVisitor.java">EvaluateStepVisitor</a>
+handles expressions; <a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/vh-core/src/main/java/vh/vm/ContinuationStepVisitor.java">ContinuationStepVisitor</a>
+handles completion; <a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/vh-core/src/main/java/vh/vm/ObjectProtocol.java">ObjectProtocol</a>
 selects and invokes operations. Its ordered loops, <code>getterSeen</code>, <code>Selection</code> and
 <code>EligibleAccessor</code> retain lookup evidence without repeating reads or selection.
 The language algorithm is specified in <a href="./message-sends.html">Message Sends</a>.</p>
@@ -238,32 +245,36 @@ fresh increasing identifiers. Reads return one entry; concrete <code>join</code>
 conflicting entries. Address reuse is not a
 supported abstract execution mode. Concrete addresses are internal and are never
 required by source programs or boundary clients.</p>
-<p>The native collector traces at complete configuration boundaries when occupancy
-reaches 75% of an elastic entry budget (16,384 initially; backend-configurable
-threshold from 70% to 80%). It compacts live entry references while preserving
+<p>The native collector traces at complete configuration boundaries when allocation
+debt since the last successful sweep reaches <code>max(1024, allowance)</code>. After a sweep,
+<code>allowance = max(1, live entries + enumerated root references)</code>. The default checks
+every 256 visitor transitions, also at execution entry, suspension and terminal
+delivery. This mirrors Lean’s allocation-paced formula using Java’s own heap
+accounting; it does not imply equal collection counts across the VMs. An explicit
+occupancy strategy remains available for backend testing. It compacts live entry references while preserving
 logical handles and Java object identity. The <code>GarbageCollector</code> interface
 separates policy from VM reference enumeration. This is storage compaction,
 not a replacement for the Java collector that manages the underlying objects.
 The native collector currently runs serially at safepoints; the
 <a href="./foreign-objects.html#control-tokens-and-execution-agreements">execution agreement</a>
 permits other correctly coordinated refinements, including concurrent collection.
-See <a href="../../design-notes/native-heap-gc.html">native heap collection</a> for roots,
+See <a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/docs/design-notes/native-heap-gc.md">native heap collection</a> for roots,
 boundary retention, measurements and limitations.</p>
 <p>Backend-only root provenance, shortest retention paths and Graphviz snapshots
 share the collector’s root enumerator and graph tracer. Graph snapshots can
-start at the complete root set or selected addresses, including an idle seed
+start at the complete root set or selected addresses, including an idle structural runtime
 before any execution configuration exists. Reports are non-owning observations rejected
 by the public boundary; no language selector or activation API is added. Audited
 field signatures, randomized graph oracles and GC-on/off execution comparisons
-guard coverage. See <a href="../../design-notes/native-heap-gc-hardening.html">graph hardening</a>
+guard coverage. See <a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/docs/design-notes/native-heap-gc-hardening.md">graph hardening</a>
 for guarantees and limits.</p>
 <h3 id="values"><a class="header" href="#values">Values</a></h3>
 <p><a href="./object-model.html">Runtime Object Representation</a> describes objects, classes,
 contributions, scopes, caches and occurrence layouts. <code>VMUninitialized</code> is an
 allocated backend sentinel, corresponding to the reference machine’s non-value
-marker. Canonical null and Booleans are role references: native objects in the
-Current Native Seed, and Aliens in the Host Seed. Integer/string codec transport
-and Aliens use separate private entries; preserving host scalars selects Aliens.</p>
+marker. There is no core null/empty expression or runtime null/Boolean role.
+Java null and Booleans are Aliens; native library objects retain ordinary native
+identity. Integer/string codecs and Aliens use separate private entries.</p>
 <h3 id="contribution-declaration-indexes"><a class="header" href="#contribution-declaration-indexes">Contribution declaration indexes</a></h3>
 <p>Immutable core mixins expose unbound declaration positions by selector and arity.
 Lists of up to four declarations use direct scans; larger method, member and slot
@@ -271,12 +282,13 @@ lists use immutable indexes prepared on first lookup and atomically published.
 Concurrent first readers may prepare equivalent indexes. Entries contain spellings, arities and local integer
 positions, never native references or cached receivers. The original declaration
 lists remain authoritative and preserve order.</p>
-<p><code>ObjectProtocol</code> still walks contributions and superclasses in semantic order,
-selects methods before members before slot accessors within a contribution, and
-binds the result to the current receiver and exact application occurrence. Physical
-slots are resolved through that receiver’s layout. Mutable callable eligibility
-is checked on each invocation. This is not a polymorphic inline cache, and neither
-Alien resolution nor lexical receiver selection is bypassed.</p>
+<p><code>CompositionLayout</code> forms effective declarations using those positions before
+visibility filtering, then retains original declarations, lower inputs and public
+publication layers. <code>ObjectProtocol</code> selects through the appropriate original or
+public view and binds the operation to the receiver and its exact occurrence.
+Physical slots are resolved through that receiver’s layout. Mutable callable
+eligibility is checked on each invocation. These indexes are not a polymorphic
+inline cache; Alien resolution and lexical authority checks remain part of selection.</p>
 <h3 id="prepared-binding-metadata"><a class="header" href="#prepared-binding-metadata">Prepared binding metadata</a></h3>
 <p>Function syntax owns reusable immutable parameter slot declarations, prepared
 on first invocation (with a shared empty case); let syntax
@@ -289,7 +301,8 @@ their separate earlier validation contract.</p>
 return homes, uninitialized values and ordered evaluation are unchanged. Shared
 metadata contains no activation or world reference. Graph inspection traces cached
 parameter metadata without preparing unused functions. Generated expressions retained
-by prepared slots participate in the native graph scan and startup pointer repair.
+by prepared slots participate in the native graph scan. Fixed structural startup
+performs no root replacement or pointer-repair pass.
 This is a representation refinement of the binding rules, not a new scope model.</p>
 <h3 id="continuations"><a class="header" href="#continuations">Continuations</a></h3>
 <p>Frames retain their next reference and the scope/operands needed on resumption:</p>
@@ -332,7 +345,7 @@ than a separately allocated binding cell. Initialization, setters, caches and
 home retirement mutate backend objects. Configurations share <code>RuntimeWorld</code>:
 retaining an earlier configuration does not preserve an earlier store state.
 Only reachable native entries survive a collection. Active and synchronously
-suspended configurations, seed objects, boundary handles and explicit backend
+suspended configurations, structural classes, boundary handles and explicit backend
 root leases define reachability. Backend tools retaining a configuration or raw
 address across other executions must use <code>world.nativeHeap().retain(...)</code> and
 close the lease when finished; a Java variable alone is not a native heap root.
@@ -348,37 +361,36 @@ reachability; collection drops their Java payload holds without inspecting
 foreign graphs. Collection preserves captured lexical data and retired return-home
 state, without restoring return authority or introducing activation reflection.</p>
 <p><a id="module-instantiation-requirements"></a></p>
-<h2 id="staged-seed-construction"><a class="header" href="#staged-seed-construction">Staged Seed Construction</a></h2>
-<p><code>RuntimeSeed.host(store)</code> publishes the structural Host Seed directly.
-<code>RuntimeSeed.create(store)</code> loads the parser-independent <code>CurrentNativeSeed</code>
-module definition with the compatibility boundary profile.
-<code>RuntimeSeed.currentNative(store, profile)</code> selects another boundary profile
-with that same native module. These are host construction choices; no language
-capability can reseed a published runtime.</p>
-<p><code>RuntimeSeed.fromModule(store, module, profile, arguments...)</code> accepts an
-ordinary core module definition and explicit constructor arguments. The
-<code>fromNativeModule</code> convenience entry supplies the narrow root identity service
-as its sole argument; parser integration lowers
-<a href="../../../vh-source/bootstrap/current-native-seed.vh"><code>current-native-seed.vh</code></a>
-and exercises that same installer. The parser-independent definition keeps the
-dependency-free bootstrap checks available; it does not install singleton method
-records by a separate semantic path.</p>
-<p>Public source clients select the same choices through
-<code>BootstrapRuntime(capabilities, profile)</code>,
-<code>BootstrapRuntime.fromSeedModule(source, profile, capabilities, inputs...)</code>, or
-<code>BootstrapRuntime.fromNativeSeedModule(source, profile, capabilities)</code>. The last
-entry grants the narrow identity service explicitly; the generic entry grants
-only its supplied inputs. Tooling capabilities are assembled after adoption and
-are not lent to the seed module’s definition scope.</p>
-<p>The builder owns a private unpublished world through module construction,
-exact-once discovery, validation, reference substitution, obsolete boundary-owner
-retirement and forced collection. It returns only a completed world. Failure
-closes provisional access and returns no usable partial world. Platform assembly
-occurs after this step. The full installation invariants are in
-<a href="program-structure.html#startup-seed-installation">Program Structure</a>.</p>
+<p><a id="staged-seed-construction"></a></p>
+<h2 id="structural-startup-and-world-assembly"><a class="header" href="#structural-startup-and-world-assembly">Structural Startup and World Assembly</a></h2>
+<p><code>StructuralRuntime.create(store)</code> constructs the fixed
+Object/Class/Metaclass/Lambda graph. Object’s instance protocol is empty and
+captures no library capability. The graph contains no native null/Boolean roles,
+replacement root, provider-discovery sends or adoption stage.</p>
+<p><code>BootstrapRuntime(capabilities, ScalarProfile, adapter)</code> adds only the caller’s
+explicit tooling capabilities and optional foreign receiver adapter. Its empty
+constructor supplies no bindings. Normal module construction still starts with
+an empty activation and receives explicit arguments. The private tooling context
+is an ordinary class-backed object; it is absent in bare structural execution.
+Collectors root only published structural/tooling objects, not reserved addresses.</p>
+<p>Surface local declarations retain their own mutability flag. Lowering places
+<code>let</code> and <code>var</code> in the same ordered <code>CoreLetExpression</code>: each <code>CoreBindStep</code>
+contributes an immutable or mutable activation binding. The complete layout is
+reserved before execution. <code>LetFrame</code> initializes the own cell directly and
+keeps its tag, so initialization never depends on setter lookup. This uses the
+existing activation, capture, home and collector machinery.</p>
+<p>Private initializer lowering uses <code>self</code> when its work has no final expression
+to satisfy the core continuation convention. That generated terminal is never the meaning of
+an empty routine or missing source initializer. Source admission rejects those
+forms; core construction also rejects a missing slot or local initializer.
+Parser recovery nodes can retain missing syntax for editor diagnostics, but no
+core null/empty expression represents an executable default.</p>
 <h2 id="module-entry"><a class="header" href="#module-entry">Module Entry</a></h2>
-<p><code>BootstrapRuntime.instantiateModule</code> checks a class literal’s declared arity and
-module restrictions, evaluates it in a fresh empty top activation, then uses an
+<p><code>BootstrapRuntime.instantiateModule</code> checks class-literal shape, absence of
+explicit superclass/mixins and empty wiring, then declared arity and argument
+conversion. Nonempty <code>CoreClassLiteral.directives()</code> reports <code>INVALID_MODULE</code>
+without allocating a top activation or realizing the class. This applies to
+source and direct-core module entry. It evaluates an admitted class in a fresh empty top activation, then uses an
 exact Expat <code>new</code> send. Definition, construction and synchronous callbacks share
 one transition budget. It returns an <code>ExpatReceipt</code>; the host explicitly sends
 any entry message and closes its receipt when finished. The intermediate class
@@ -389,12 +401,10 @@ assembled kernel as parent and receiver. Its supplied capability context may
 become part of returned closures/classes. The
 normative isolation contract is in <a href="./program-structure.html">Program Structure</a>;
 the richer contexts are described in <a href="./tooling-architecture.html#evaluation-contexts">Tooling</a>.</p>
-<p><code>MinimalRuntimeWorld</code> installs ordinary immutable bundle slots named <code>null</code>,
-<code>true</code>, <code>false</code> and <code>Object</code>, holding the corresponding seed identities.
-Additional supplied capabilities cannot replace those slots in this assembler.
-These are this tooling bundle’s assembly rules, not reserved language names; nearer
-declarations can shadow its slots through ordinary lexical lookup. Normal
-modules do not receive these bindings implicitly.</p>
+<p><code>MinimalRuntimeWorld</code> installs exactly the supplied tooling capabilities as ordinary
+immutable slots. Names such as <code>null</code>, <code>true</code>, <code>false</code> and <code>Object</code> have no default
+bindings and are not reserved. Normal modules receive constructor arguments
+explicitly and never inherit this tooling context.</p>
 <h2 id="java-boundary"><a class="header" href="#java-boundary">Java Boundary</a></h2>
 <h3 id="runtime-diagnostics"><a class="header" href="#runtime-diagnostics">Runtime diagnostics</a></h3>
 <p>Missing-selector errors say <code>Message not understood: selector/arity</code> and describe
@@ -461,26 +471,25 @@ frames. Step exhaustion uses <code>EXECUTION_POLICY</code> with reason
 <code>EXECUTION_POLICY</code>. The resource diagnostic accompanies a resumable native
 suspension, or explicit cancellation by a completion-only adapter. It is not
 a terminal guest failure merely because it has a diagnostic payload. See the
-<a href="../../design-notes/vm-diagnostics.html">diagnostics decisions and evidence</a>.</p>
+<a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/docs/design-notes/vm-diagnostics.md">diagnostics decisions and evidence</a>.</p>
 <h3 id="boundary-implementation"><a class="header" href="#boundary-implementation">Boundary implementation</a></h3>
 <p><code>ForeignBoundary.identityMirror()</code> returns a stable, boundary-owned capability.
 It is supplied explicitly to modules and observes identity and membership through
 the <a href="./foreign-objects.html#identitymirror">ordinary mirror protocol</a>, never a
-special evaluator dispatch branch. The narrow root Object service shares private
-identity helpers without exposing the mirror. Native identity hashes follow the
+special evaluator dispatch branch. The structural Object root has no identity
+service or methods. Native identity hashes follow the
 stable native identity; preserved foreign values use their payload identity so
 collecting and recreating an Alien wrapper does not change the hash of a still
 live foreign referent. The concrete hashing algorithm is a backend policy, not
 a portable identifier.</p>
-<p><a href="../../../vh-core/src/main/java/vh/vm/internal/DefaultJavaBoundary.java">DefaultJavaBoundary</a>
+<p><a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/vh-core/src/main/java/vh/vm/internal/DefaultJavaBoundary.java">DefaultJavaBoundary</a>
 owns the <a href="./foreign-objects.html">Alien/Expat contract</a>. <code>BootstrapRuntime.boundary()</code>
-returns a narrow <code>PublicFacet</code>; package-private <code>VmServices</code> provisions the seed
-identity service. Both delegate to the same private owner. Canonical Expat and
+returns a narrow <code>PublicFacet</code>, delegating to the private boundary owner. Canonical Expat and
 Alien indexes preserve compatible round trips without acting as native roots.
 Native GC reclaims unreferenced Alien wrappers and prunes their identity-cache
 entries, relinquishing the Java payload holds. Foreign heaps remain opaque.
-Startup retirement advances an export epoch, preventing old construction proxies
-from becoming valid under later attachments to a surviving identity.</p>
+There is no startup adoption epoch or construction-proxy retirement protocol;
+normal export lifetime remains governed by attachments and receipts.</p>
 <p><code>VHExpat</code> is the canonical proxy; a bare proxy is usable through its current
 invocation attachment. <code>ExpatReceipt</code> supplies durable lifetime evidence for
 checked sending and transport, independently of proxy identity. <code>expat()</code>
@@ -518,16 +527,15 @@ them unreachable.</p>
 entries whose native transport values were reclaimed. An open public boundary
 reference retains its value until <code>close()</code>; <code>ForeignBoundary.Reference</code> is
 <code>AutoCloseable</code>. Conversion by value does not promise host identity.</p>
-<p>The selected boundary profile defines conversion. <code>NATIVE_VALUES</code> maps exact
-native null/Boolean identities to Java <code>null</code>/<code>Boolean</code> without Expats. <code>Byte</code>,
-<code>Short</code>, <code>Integer</code> and in-range <code>BigInteger</code> normalize to <code>Long</code>; <code>Long</code> and
-<code>String</code> use by-value transport. Other numeric forms are rejected by that codec.
-<code>HOST_VALUES</code> preserves host null, Booleans, numbers, and strings as Aliens.
-<code>HOST_SCALARS</code> combines native null/Boolean conversion with preserved host numbers
-and strings. Preservation supplies foreign identity, not Java reflection or
-native class dispatch. Raw VM representation values are rejected by all profiles.
-See <a href="possible-seeds-and-worlds.html">Possible Seeds and Worlds</a> for the corresponding
-seed choices.</p>
+<p>The selected <code>ScalarProfile</code> defines scalar transport. <code>CODEC_VALUES</code> normalizes
+<code>Byte</code>, <code>Short</code>, <code>Integer</code> and in-range <code>BigInteger</code> to <code>Long</code>; <code>Long</code> and <code>String</code>
+use by-value transport. Other numeric forms are rejected by that codec.
+<code>HOST_VALUES</code> preserves host scalar payloads as Aliens. Java null and Booleans
+remain Aliens in both profiles; native library objects always cross as Expats.
+The optional <code>HostValueAdapter</code> supplies only foreign receiver protocols.
+Codec integer/string values remain opaque to it. Decimal literals require
+<code>HOST_VALUES</code> and an adapter that explicitly admits them. Raw VM representation
+values are rejected by both profiles. See <a href="possible-seeds-and-worlds.html">world assembly</a>.</p>
 <p>For the specified <a href="./foreign-objects.html#concurrency-boundary">callback admission protocol</a>,
 <code>DefaultJavaBoundary.Call</code> records the suspended
 configuration, parent call, originating thread, admission state and active
@@ -609,11 +617,12 @@ any claim of unlimited execution.</p>
 <tr><th>Area</th><th>Current implementation status</th></tr>
 </thead>
 <tbody>
-<tr><td>Numbers and strings</td><td>Default literal transport supports signed 64-bit integers and decoded strings. An explicit host-preserving adapter may enable finite binary64 decimal literals and receiver protocols; unconfigured worlds still reject decimals. Optional <a href="tooling-architecture.html#optional-native-integer-elaboration">native integer elaboration</a> preserves arbitrary-length integer spelling as ordinary sends to the loadable Peano/Scott/Church kernels, subject to execution budgets. Native Natural/List libraries are also available. These packages add no scalar primitive or seed role; native fractions, floating-point arithmetic and a general native text library remain open. <a href="java-host-kernel.html">JavaHostKernel</a> supplies separate foreign protocols.</td></tr>
+<tr><td>Numbers and strings</td><td>Default literal transport supports signed 64-bit integers and decoded strings. An explicit host-preserving adapter may enable finite binary64 decimal literals and receiver protocols; unconfigured worlds still reject decimals. Optional <a href="tooling-architecture.html#optional-native-integer-elaboration">native integer elaboration</a> preserves arbitrary-length integer spelling as ordinary sends to the loadable Peano/Scott/Church kernels, subject to execution budgets. Native Natural/List and <a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/vh-source/lib/native-text/README.md">Unicode Scalar/Text libraries</a> are implemented. The optional Java string-literal policy emits ordinary native construction sends; the standalone native artifact frontend does not yet expose that policy. These packages add no scalar primitive or seed role. Native fractions, floating-point arithmetic and complete Text library proofs remain open. <a href="java-host-kernel.html">JavaHostKernel</a> supplies separate foreign protocols.</td></tr>
 <tr><td>Source checks</td><td>Independent configurable surface-AST traversals reject statically inadmissible forms before lowering; the bootstrap runner and LSP use the standard set. Parser-only and direct core entry remain available. See <a href="tooling-architecture.html#source-checks">source checks</a>.</td></tr>
 <tr><td>Qualified <code>outer</code></td><td>Frontend validation rejects unknown/non-enclosing qualifiers before execution, including unused bodies. Runtime selection still scans captured lexical scopes by name and preserves exact application ancestry at every depth; core nodes do not yet carry bound declaration identities.</td></tr>
 <tr><td>Holes</td><td>A reached hole is fatal (<code>UnresolvedHole</code>); no configurable concrete policy.</td></tr>
-<tr><td>Composition</td><td>Whole-declaration member override and the specified shared-name state; no deep family merge or adaptation algebra.</td></tr>
+<tr><td>Composition</td><td>Whole-declaration member override, private/public selection, disjoint cells and finite publication/binding maps; no deep family merge.</td></tr>
+<tr><td>Directive arities</td><td>Java surface/core selector carriers support <code>0</code> through <code>2147483647</code>. Larger natural spellings fail at reading with <code>selector-arity-range</code>, including in unused bodies. This is a Java coverage limit, not a language arity bound; Lean retains natural-valued arities. Fractional spellings instead report <code>selector-arity</code>.</td></tr>
 <tr><td>Non-local returns across foreign execution</td><td>Boundary-owned agreement; only default no crossing is implemented. A supporting transfer protocol is deferred.</td></tr>
 <tr><td>Tail calls and reclamation</td><td>Native tracing and entry compaction at occupancy safepoints; invocation attachments and explicit receipts replace permanent boundary pins, and unreachable Alien wrappers release Java payload holds. No TCO, cooperative foreign cycle collection or hard memory bound.</td></tr>
 <tr><td>Execution agreements</td><td>Sequential ordinary execution with scoped worker callbacks. The conceptual token is not reified; parallel native execution, concurrent native GC and general monitor/intervention capabilities are permitted extension directions, not implemented APIs.</td></tr>
@@ -627,7 +636,7 @@ any claim of unlimited execution.</p>
 permission to replace accepted semantics. Future TCO must preserve captured
 homes and barriers; abstract execution needs sound domains, joins, transitions
 and foreign-effect models beyond an allocator change. See <a href="./future.html">Future Directions</a>
-and the <a href="../../design-notes/outer-newspeak-comparison.html">outer comparison</a>.</p>
+and the <a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/docs/design-notes/outer-newspeak-comparison.md">outer comparison</a>.</p>
 <h2 id="refinement-of-the-formal-machine"><a class="header" href="#refinement-of-the-formal-machine">Refinement of the Formal Machine</a></h2>
 <p>A refinement relation must decode addressed frames and suspended Java calls into
 the reference stack; map mutable entries to the current <code>σ</code>; and preserve scope,
@@ -643,8 +652,9 @@ the owning attempt remain distinct operations.</p>
 superclass, routes, logical layout and generated coordinator decode to one formal
 realized-class record. Private snapshot preparation is administrative work inside
 a transition; no source-visible partial class or extra target/argument evaluation
-is introduced. Startup can replace a complete snapshot under its unpublished-world
-contract; this does not provide persistent configurations or live class mutation.</p>
+is introduced. Startup builds the fixed structural graph once; ordinary assembly
+adds fresh definitions without replacing existing snapshots. This provides
+neither persistent configurations nor live class mutation.</p>
 <p>It must reconstruct control ownership from the coordinator according to
 <a href="./formal-core.html#runtime-admission-and-conceptual-control">runtime admission</a>.
 Representation maintenance may stutter; declared interventions would need
@@ -675,10 +685,13 @@ prototype’s scalar subset and distinguish terminal failures from resumable
 <code>STEP_LIMIT_EXCEEDED</code>. Equal numeric budgets are not required to yield equal
 outcomes; each machine must instead preserve its own continuation across slices.
 No Java simulation proof is claimed. The
-<a href="../../../vh-lean/semantics/proof-obligations.html">Lean proof ledger</a> distinguishes
-proved native coherence and partial source bridges from the still missing
-independent high-level specification and full source/core refinement. These
-results do not verify Java or its foreign boundary. The obligations below remain open.</p>
+<a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/vh-lean/semantics/proof-obligations.md">Lean proof ledger</a> distinguishes
+native coherence, partial component bridges and the composed refinement from an
+independent high-level source specification. That refinement covers scalar-free
+and native-decimal source-backed sessions under explicit profile, retained-world
+and supported-command premises; arbitrary raw-core histories need a separate
+source representation argument. These results do not verify Java or its foreign
+boundary. The Java correspondence obligations below remain open.</p>
 <p>The relation \(R(J,K)\) between Java and reference configurations must satisfy,
 within the declared scalar and sequential execution profile:</p>
 <p>\[
@@ -692,17 +705,26 @@ alone is insufficient evidence of the control ownership decoded by \(R\).</p>
 <p><code>bash scripts/check-bootstrap.sh</code> runs focused backend checks with JDK 17+ and
 Python 3. <code>./gradlew test</code> additionally exercises parsing and the complete project
 with its configured JDK 23 toolchain. Relevant witnesses include
-<a href="../../../vh-core/src/test/java/boundaryclient/UnifiedInvocationTest.java">UnifiedInvocationTest</a>,
-<a href="../../../vh-core/src/test/java/boundaryclient/ClassCompositionTest.java">ClassCompositionTest</a>,
-<a href="../../../vh-core/src/test/java/boundaryclient/InitializerReturnHomeTest.java">InitializerReturnHomeTest</a>,
-<a href="../../../vh-core/src/test/java/boundaryclient/NativeValuesTest.java">NativeValuesTest</a>
-and <a href="../../../vh-core/src/test/java/boundaryclient/ModuleEntryTest.java">ModuleEntryTest</a>.
+<a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/vh-core/src/test/java/boundaryclient/UnifiedInvocationTest.java">UnifiedInvocationTest</a>,
+<a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/vh-core/src/test/java/boundaryclient/ClassCompositionTest.java">ClassCompositionTest</a>,
+<a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/vh-core/src/test/java/boundaryclient/InitializerReturnHomeTest.java">InitializerReturnHomeTest</a>,
+<a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/vh-core/src/test/java/boundaryclient/NativeValuesTest.java">NativeValuesTest</a>
+and <a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/vh-core/src/test/java/boundaryclient/ModuleEntryTest.java">ModuleEntryTest</a>.
 The admission regressions in
-<a href="../../../vh-core/src/test/java/vh/vm/BoundaryReentryChecks.java">BoundaryReentryChecks</a>
+<a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/vh-core/src/test/java/vh/vm/BoundaryReentryChecks.java">BoundaryReentryChecks</a>
 cover competing callbacks and pending completion, rejection of unassociated
 preparation before allocation, leased idle preparation followed by stepping,
 and concurrent foreign computation and consumption of previously published
 immutable diagnostics while native execution owns the guard.</p>
+<h3 id="sovereign-core-send-modes"><a class="header" href="#sovereign-core-send-modes">Sovereign core send modes</a></h3>
+<p>The revised core carries separate declaration visibility and slot mutability,
+explicit bracket-route arguments and ordered directives. <code>PUBLIC_SEND</code> distinguishes
+the generated exact public <code>self(args)</code> operation from ordinary explicit exact
+sends, which can select compatible private authority. <code>INVOKE</code> retains generated-
+accessor eligibility; <code>PURE_SEND</code> is ordinary exact access. This distinction is
+lowering metadata, not another surface message form or authority supplied by a
+descriptor. Source and core transports use the single v3 sovereign revision;
+legacy headers and missing declaration fields are rejected.</p>
 
                     </main>
 
@@ -751,7 +773,7 @@ immutable diagnostics while native execution owns the guard.</p>
         <script src="searcher-09f2665d.js"></script>
 
         <script src="clipboard-1626706a.min.js"></script>
-        <script src="highlight-33e14e7d.js"></script>
+        <script src="highlight-c449d962.js"></script>
         <script src="book-c22b7243.js"></script>
 
         <!-- Custom JS scripts -->

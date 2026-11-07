@@ -1,12 +1,12 @@
 // This ordinary native module owns the deployment inventory and launch policy.
-class Package(sources, tools, importModule, output) {
+class Package[sources, tools, importModule, output] {
     sources = sources;
     tools = tools;
     output = output;
     runtimeSource = tools.capture("native/RuntimeIngredients.vh");
     runtime = importModule(tools.source(runtimeSource), tools, output);
     source(path) { output.source(path, sources.capture(path)) }
-    build {
+    pub build {
         output.runtime("native/RuntimeIngredients.vh", runtimeSource);
         runtime.write;
         source("Main.vh");

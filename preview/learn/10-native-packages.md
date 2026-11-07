@@ -7,9 +7,9 @@ receives its factor at construction and exposes one method, `multiply(value)`:
 <!-- example-file: packages/multiplier/Multiplier.vh -->
 ```vh
 // Entry module of an independently authored native package.
-class Multiplier(factor) {
+class Multiplier[factor] {
     factor = factor;
-    multiply(value) { value.times(factor) }
+    pub multiply(value) { value.times(factor) }
 }
 ```
 
@@ -87,17 +87,17 @@ remain the same.
     application = importModule(files.resolve("Main.vh"), multiplier);
     makeConsole = loadAlien("aliens/console");
     console = makeConsole(provisions.input, provisions.output);
-    run {
-        var line = console.readLine;
+    pub run {
+        let line = console.readLine;
         null.equals(line).ifTrue(fun { console.printLine(application.answer.toString) },
             fun { console.printLine(line.concat(": ").concat(application.answer.toString)) })
     }
     // Development dependencies are constructed only for this explicit entry.
-    test {
-        var suiteKernel = importModule(files.resolve("lib/SuiteKernel.vh"));
-        var testing = importModule(files.resolve("lib/SUnit.vh"), suiteKernel);
-        var tests = importModule(files.resolve("Tests.vh"), application, testing);
-        var runner = importModule(files.resolve("SuiteReporter.vh"), console, true);
+    pub test {
+        let suiteKernel = importModule(files.resolve("lib/SuiteKernel.vh"));
+        let testing = importModule(files.resolve("lib/SUnit.vh"), suiteKernel);
+        let tests = importModule(files.resolve("Tests.vh"), application, testing);
+        let runner = importModule(files.resolve("SuiteReporter.vh"), console, true);
         runner.run(tests.tests)
     }
 }
@@ -112,14 +112,14 @@ JAR are captured in the deployment.
 <!-- example-file: projects/alien-project/Package.vh -->
 ```vh
 // This ordinary native module owns the deployment inventory and launch policy.
-class Package(sources, tools, importModule, output) {
+class Package[sources, tools, importModule, output] {
     sources = sources;
     tools = tools;
     output = output;
     runtimeSource = tools.capture("native/RuntimeIngredients.vh");
     runtime = importModule(tools.source(runtimeSource), tools, output);
     source(path) { output.source(path, sources.capture(path)) }
-    build {
+    pub build {
         output.runtime("native/RuntimeIngredients.vh", runtimeSource);
         runtime.write;
         source("Main.vh");

@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0e8722df.js";
+            window.path_to_searchindex_js = "searchindex-75c83f8c.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-ce909e20.js"></script>
+        <script src="toc-253640ee.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -180,8 +180,8 @@
                         <h1 id="program-structure"><a class="header" href="#program-structure">Program Structure</a></h1>
 <p>Operational definition: <a href="./formal-core.html#entry-observations-and-remaining-parameters">SOS entry rules</a>.</p>
 <h2 id="a-program-is-a-single-expression"><a class="header" href="#a-program-is-a-single-expression">A Program Is a Single Expression</a></h2>
-<p>The grammar entry is <code>top: expression? EOF</code>. Empty input is an empty expression;
-normal expression evaluation returns canonical null. A named or anonymous
+<p>An executable program must contain an expression. The recovery grammar may
+represent empty input, but checked execution rejects it. A named or anonymous
 <strong>class literal</strong> can instead serve as a module. Naming it retains declaration
 metadata without creating an ambient binding. Module instantiation requires a
 class literal and rejects empty input or other expression forms without
@@ -209,31 +209,47 @@ or create new ones. Authority therefore includes behavior and captured scopes,
 not merely objects present in an initial heap. Nesting shares enclosing
 capabilities; it is not an isolation boundary.</p>
 <h2 id="top-level-classes-and-instantiation"><a class="header" href="#top-level-classes-and-instantiation">Top-Level Classes and Instantiation</a></h2>
+<p>A normal module input must be a class literal, optionally surrounded by grouping
+parentheses and inert descriptor annotations. Empty input and other expressions
+are rejected without evaluation; the service does not run an expression to
+discover whether its result is a class.</p>
 <p>Normal module definition evaluates the class over a <strong>fresh empty top
 activation</strong>. The execution frame exists, but has no capability accessors,
 lexical parent, receiver or enclosing application scope. The class inherits
 only from structural root <code>Object</code> and composes no mixins. This structural
 relationship supplies neither an <code>Object</code> binding nor a platform namespace.
 Every explicit top-level superclass or mixin clause is rejected before its
-expressions execute, including a clause spelled <code>Object</code>.</p>
+expressions execute, including a clause spelled <code>Object</code>. Top-level wiring must
+also be empty: any <code>rename</code>, <code>hide</code> or <code>delegate</code> directive rejects the module
+at admission, before arity checking, input conversion, top-activation allocation
+or class realization. This restriction concerns the module class itself; nested
+classes retain ordinary composition and wiring.</p>
 <p>At entry, the module’s declared constructor arguments are its only external
 capability inputs. Zero, one or multiple arguments are allowed, with exact
 arity. The service passes existing objects, preserving identity and sharing
 through the ordinary boundary. It does not lend the module its own scope,
 registry or other services. Supplied objects retain their capabilities and
 captures; later explicit message arguments are additional inputs.</p>
+<p>Execution cannot acquire authority over an unrelated existing object merely
+because that object is present elsewhere in the world. Effects on existing
+objects must follow the capabilities available through the routes above,
+including behavior and captured definition scopes of supplied objects.
+Allocating new objects does not grant access to unrelated existing objects.
+Explicitly granted native and foreign services retain their own stated
+capabilities; module isolation does not attenuate those grants.</p>
 <p>Class definition precedes construction, so constructor arguments cannot provide
 that top-level class’s superclass or mixins. They can be stored and used when
 realizing <strong>nested</strong> classes:</p>
 <!-- example-id: vh-module-capability-composition -->
-<pre><code class="language-vh">class Module(baseClass, loggingMixin) {
+<pre><code class="language-vh">class Module[baseClass, loggingMixin] {
     Base = baseClass;
     Logging = loggingMixin;
-    class Worker(identifier) &lt;: Logging &lt; Base { id = identifier; }
+    pub class Worker[identifier] &lt;: Logging &lt; Base { pub id = identifier; }
 }
 </code></pre>
 <p>The host receives the constructed module instance and explicitly chooses any
 entry message. Instantiation does not guess or send <code>main</code> or <code>run</code>.
+A top-level <code>hide super.x/0</code>, for example, is rejected at admission.
 Construction failure does not return a successful instance; effects already
 performed are not rolled back, and an initializer may deliberately share <code>self</code>.</p>
 <h3 id="independently-compiled-modules"><a class="header" href="#independently-compiled-modules">Independently Compiled Modules</a></h3>
@@ -258,7 +274,7 @@ parameter or global lookup mechanism. Services may be separate inputs or grouped
 in native/Alien bundles. Passing a narrow object does not remove authority
 already retained by its methods, enclosing scopes or composed contributions.</p>
 <h3 id="optional-bootstrap-bundle"><a class="header" href="#optional-bootstrap-bundle">Optional Bootstrap Bundle</a></h3>
-<p>A platform may bundle canonical values, libraries and I/O capabilities. Bundle
+<p>A platform may bundle ordinary values, libraries and I/O capabilities. Bundle
 inventory and the behavior of its selectors are platform contracts. Source names
 such as <code>null</code>, <code>true</code> and <code>false</code> select behavior through ordinary lookup;
 their spelling establishes no canonical identity. See
@@ -268,7 +284,7 @@ tooling bundle is described in <a href="./interpreter-design.html#module-entry">
 <p>A kernel package has no privileged language status. It may distribute ordinary
 native modules, foreign providers, or an assembly of both. Its package name,
 path and exported selector names do not install ambient bindings, change lookup,
-select a literal policy or replace a seed. Package resolution and dependency
+select a literal policy or replace the structural graph. Package resolution and dependency
 wiring belong to the explicitly supplied packaging services and application
 recipe; each native module still uses the isolated entry rules above.</p>
 <p>The native <code>NativeKernel</code> bundle receives Natural and List library instances as
@@ -287,60 +303,28 @@ the same mathematical result while remaining different native identities.
 For sequences, element order and any promised alias relationships remain part of
 the observation. Such abstractions do not change language identity, conceal
 effects, or remove the caller’s obligation to preserve stated library invariants.</p>
-<h2 id="startup-seed-installation"><a class="header" href="#startup-seed-installation">Startup Seed Installation</a></h2>
-<p>This contract governs atomic finalization before publishing a runtime. It grants
-no authority to replace the seed during application execution. The accepted
-profiles are described in <a href="possible-seeds-and-worlds.html">Possible Seeds and Worlds</a>;
-the <a href="../../design-notes/staged-runtime-seed.html">staged seed design</a> records the
-rationale and implementation evidence.</p>
-<p>When a builder adopts a replacement seed before publishing its runtime, it
-must substitute every retained reference to a retired seed identity using a
-validated old-to-new map. Updating only the canonical roles is insufficient.
-The substitution includes values in ordinary/immutable slots and captures,
-class and contribution relationships, private construction code, derived
-layouts/caches, root owners and VM-managed boundary state. Newly supplied
-objects are part of the rewrite too. Unchanged objects preserve their identities;
-references to a deliberately retired object consistently select its replacement.</p>
-<p>The map’s final targets must be fixed points, and conflicting mappings,
-unresolved cycles, incompatible structural uses and unsupported key collisions
-must fail before publication. Every retained use of a retired identity needs a
-valid replacement. Old machinery with no retained use can instead be reclaimed.
-Reused structural infrastructure is not implicitly retired.</p>
-<p>The provider’s <code>Object/0</code> must return an ordinary native class whose direct
-superclass is the provisional Object by identity. Its owned contribution and
-each directly applied mixin must have no instance slots, no constructor
-parameters, no initializer body, and no routed argument expressions. Stateless
-mixins, methods, member classes, and owned factories are permitted. Support
-for state in Object, owned or contributed, is indefinitely deferred.</p>
-<p>Root Object adoption removes the candidate’s edge to the provisional Object
-before substitution, representing Top and preventing self-inheritance. The
-installed root therefore has <strong>no superclass and no instance state</strong>. Repair
-preserves valid flat metaclasses, definition scopes, application occurrences,
-owned-contribution boundaries and construction semantics. Pointer substitution
-alone does not define new slot initialization or repair arbitrary data derived
-from replaced identities; unsupported cases require rejection or a separately
-specified preparation contract.</p>
-<p>Finalization requires exclusive builder ownership and no active execution or
-callbacks. It performs reference repair, invariant validation, bootstrap-owner
-retirement and a forced full native collection before publishing the result as
-one atomic operation. The collection must run even below normal GC thresholds.
-Success requires no retired store entries or operative references to them in
-the final world. A partially installed runtime must never become usable.
-Preparation failure preserves the preceding private stage or discards the
-unpublished builder; it does not roll back or replay earlier foreign effects.</p>
-<p>Foreign payloads remain opaque. The builder must prevent unmanaged provisional
-references from escaping and repair or close controlled bootstrap handles.
-Retiring a provisional Alien includes removing its native ownership roots and
-wrapper; it does not imply destroying the foreign payload or general foreign
-garbage collection. If the boundary cannot establish these conditions,
-installation fails. Published boundary identity laws then apply to the final
-world; this startup operation grants no live object-replacement authority.</p>
+<p><a id="startup-seed-installation"></a></p>
+<h2 id="fixed-structural-startup"><a class="header" href="#fixed-structural-startup">Fixed Structural Startup</a></h2>
+<p>Execution starts with the fixed Object/Class/Metaclass/Lambda graph. Object has
+an empty instance protocol, no state, no direct mixins, and no captured library
+capability. Its terminal superclass is <code>Top</code>. Structural constructors,
+generated accessors, lambda application, flat metaclasses and private
+initialization remain language machinery. They install no lexical names.</p>
+<p>There are no replaceable root, null, true or false roles and no startup adoption
+operation. Programs construct optional base classes and value libraries as
+ordinary objects and pass them explicitly. Separate libraries can coexist with
+distinct identities and protocols. Inheriting a library class uses ordinary
+subclassing; it never changes the structural root of unrelated objects.</p>
+<p>Platform assembly supplies only its chosen capabilities to tooling contexts or
+module constructors. Literal transport and optional foreign receiver adapters
+are explicit implementation choices, described under
+<a href="possible-seeds-and-worlds.html">world assembly</a>.</p>
 <h2 id="bootstrap-conformance-requirements"><a class="header" href="#bootstrap-conformance-requirements">Bootstrap Conformance Requirements</a></h2>
 <p>Definition, construction and synchronous callbacks share the requested execution
 budget. Host sends supply an empty caller activation; the target’s definition
 supplies its lexical scope. The concrete APIs and validation are documented under
 <a href="./interpreter-design.html#module-entry">module entry</a> and in the
-<a href="../../design-notes/isolated-module-entry.html">implemented entry decision</a>.</p>
+<a title="Private source repository; access required" href="https://github.com/plug-obp/variohyve/blob/c8fbc4abdad5c13dabceb1299fdd51ab09b4de46/docs/design-notes/isolated-module-entry.md">implemented entry decision</a>.</p>
 <h2 id="development-and-debugging-contexts"><a class="header" href="#development-and-debugging-contexts">Development and Debugging Contexts</a></h2>
 <p>Richer <a href="./tooling-architecture.html#evaluation-contexts">tool evaluation contexts</a>
 are distinct from normal module entry. A class created with tooling authority
@@ -406,7 +390,7 @@ raw activation addresses nor host exceptions. The boundary preserves its
         <script src="searcher-09f2665d.js"></script>
 
         <script src="clipboard-1626706a.min.js"></script>
-        <script src="highlight-33e14e7d.js"></script>
+        <script src="highlight-c449d962.js"></script>
         <script src="book-c22b7243.js"></script>
 
         <!-- Custom JS scripts -->

@@ -2,6 +2,7 @@
 // Usage: node scripts/render-learn.cjs /path/to/learn /path/to/node_modules/markdown-it /path/to/docs/spec/theme [destination] [release-manifest]
 const fs = require('node:fs');
 const path = require('node:path');
+const { assignHeadingIds } = require('./render-reference.cjs');
 if (process.argv.length < 5) {
   console.error('Usage: node scripts/render-learn.cjs <learn> <markdown-it> <spec-theme> [destination] [release-manifest]');
   process.exit(1);
@@ -31,6 +32,7 @@ const md = new MarkdownIt({
 });
 const htmlName = name => path.basename(name) === 'README.md'
   ? path.join(path.dirname(name), 'index.html') : name.replace(/\.md$/, '.html');
+md.core.ruler.push('lesson_heading_ids', state => assignHeadingIds(state.tokens));
 const escaped = text => md.utils.escapeHtml(text);
 const baseLink = md.renderer.rules.link_open || ((tokens, index, options, env, self) => self.renderToken(tokens, index, options));
 md.renderer.rules.link_open = (tokens, index, options, env, self) => {
@@ -47,12 +49,17 @@ md.renderer.rules.link_open = (tokens, index, options, env, self) => {
     const sourceTarget = path.posix.normalize(path.posix.join('docs/Learn VarioHyve',
       path.dirname(env.relative).split(path.sep).join('/'), decodeURIComponent(relativePath)));
     const publicGuides = {
+      'docs/conformance.md': 'conformance.html',
       'vh-packaging/GETTING-STARTED.md': 'getting-started.html',
       'vh-packaging/CUSTOM-ALIENS.md': 'custom-aliens.html'
     };
     if (publicGuides[sourceTarget]) {
       href = path.posix.relative(path.posix.dirname('learn/' + env.relative.split(path.sep).join('/')),
         'reference/' + publicGuides[sourceTarget]) + suffix;
+    } else if (sourceTarget.startsWith('docs/spec/src/')) {
+      const chapter = sourceTarget.slice('docs/spec/src/'.length);
+      href = '/variohyve-benchmarks/spec/' +
+        (chapter === 'SUMMARY.md' ? 'index.html' : chapter.replace(/\.md$/, '.html')) + suffix;
     }
     if (!download) href = href.replace(/README\.md(?=[?#]|$)/, 'index.html').replace(/\.md(?=[?#]|$)/, '.html');
     token.attrSet('href', href);

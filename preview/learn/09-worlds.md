@@ -42,9 +42,9 @@ kernel, console or filesystem, and does not choose how its multiplier is built.
 <!-- example-file: projects/recipe-project/Main.vh -->
 ```vh
 // The application receives its dependency; it does not select a host kernel.
-class Main(multiplier) {
+class Main[multiplier] {
     multiplier = multiplier;
-    answer { multiplier.multiply(14) }
+    pub answer { multiplier.multiply(14) }
 }
 ```
 
@@ -65,17 +65,17 @@ ordinary runs do not import those test dependencies.
     application = importModule(files.resolve("Main.vh"), multiplier);
     makeConsole = loadAlien("aliens/console");
     console = makeConsole(provisions.input, provisions.output);
-    run {
-        var line = console.readLine;
+    pub run {
+        let line = console.readLine;
         null.equals(line).ifTrue(fun { console.printLine(application.answer.toString) },
             fun { console.printLine(line.concat(": ").concat(application.answer.toString)) })
     }
     // Development dependencies are constructed only for this explicit entry.
-    test {
-        var suiteKernel = importModule(files.resolve("lib/SuiteKernel.vh"));
-        var testing = importModule(files.resolve("lib/SUnit.vh"), suiteKernel);
-        var tests = importModule(files.resolve("Tests.vh"), application, testing);
-        var runner = importModule(files.resolve("SuiteReporter.vh"), console, true);
+    pub test {
+        let suiteKernel = importModule(files.resolve("lib/SuiteKernel.vh"));
+        let testing = importModule(files.resolve("lib/SUnit.vh"), suiteKernel);
+        let tests = importModule(files.resolve("Tests.vh"), application, testing);
+        let runner = importModule(files.resolve("SuiteReporter.vh"), console, true);
         runner.run(tests.tests)
     }
 }
@@ -94,11 +94,11 @@ that the world's `run` method uses, along with the testing capability.
 
 <!-- example-file: projects/recipe-project/Tests.vh -->
 ```vh
-class Tests(application, testing) {
+class Tests[application, testing] {
     application = application;
     testing = testing;
-    tests {
-        var suite = testing.suite("My application");
+    pub tests {
+        let suite = testing.suite("My application");
         suite.add("supplied multiplier", fun(assert) { assert.assertEquals(42, application.answer) });
         suite
     }
@@ -114,16 +114,16 @@ each recorded failure; reporting is ordinary VarioHyve code too.
 <!-- example-file: projects/recipe-project/SuiteReporter.vh -->
 ```vh
 // Reporting is native policy. A raised failure aborts; assertions return a Boolean.
-class SuiteReporter(console, trueValue) {
+class SuiteReporter[console, trueValue] {
     console = console;
     success = trueValue;
-    run(suite) { runAt(suite, 0) }
+    pub run(suite) { runAt(suite, 0) }
     runAt(suite, index) {
         index.lessThan(suite.count).ifTrue(fun {
-            var test = suite.caseAt(index);
-            var assertions = test.run;
+            let test = suite.caseAt(index);
+            let assertions = test.run;
             report(test.name, assertions, 0);
-            var passed = assertions.failureCount.equals(0);
+            let passed = assertions.failureCount.equals(0);
             passed.and(runAt(suite, index.plus(1)))
         }, fun { success })
     }
@@ -195,14 +195,14 @@ this inventory because only the development `test` entry imports them.
 <!-- example-file: projects/recipe-project/Package.vh -->
 ```vh
 // This ordinary native module owns the deployment inventory and launch policy.
-class Package(sources, tools, importModule, output) {
+class Package[sources, tools, importModule, output] {
     sources = sources;
     tools = tools;
     output = output;
     runtimeSource = tools.capture("native/RuntimeIngredients.vh");
     runtime = importModule(tools.source(runtimeSource), tools, output);
     source(path) { output.source(path, sources.capture(path)) }
-    build {
+    pub build {
         output.runtime("native/RuntimeIngredients.vh", runtimeSource);
         runtime.write;
         source("Main.vh");

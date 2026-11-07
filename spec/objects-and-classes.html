@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0e8722df.js";
+            window.path_to_searchindex_js = "searchindex-75c83f8c.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-ce909e20.js"></script>
+        <script src="toc-253640ee.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -197,13 +197,10 @@ composition, not the source <code>apply</code> selector or a factory invocation.
 <p><code>Top</code> contributes no methods, slots, member declarations, definition scope,
 capabilities or initialization. Lookup ends there with a miss and its layout is
 empty. Only <code>Object</code> has <code>Top</code> as its direct superclass; other native class
-chains reach it through <code>Object</code>. The selected seed supplies Object’s owned contribution and any direct mixin
-applications. All these root contributions are stateless: no instance slots,
-constructor parameters, initializer bodies, or routed argument expressions.
-When there are no direct applications, its shape is simply
-<code>Apply(ObjectMixin, Top)</code>. State in Object is indefinitely deferred; a provider
-module may still hold capabilities in its own slots. The VM requires no instance
-methods on Object; one native seed supplies the protocol below.</p>
+chains reach it through <code>Object</code>. The fixed Object contribution is empty and
+stateless, has no direct applications and captures no library capability. Its
+shape is <code>Apply(ObjectMixin, Top)</code>. The structural root cannot be replaced.
+Optional library base classes use ordinary subclassing and explicit inputs.</p>
 <p>The algebra describes composition structure, not class identity. A realized
 class retains its owned contribution, ordered direct applications, superclass,
 routes and metaclass. Expanding its shape neither manufactures intermediate
@@ -228,11 +225,10 @@ to every realized class, strictly decreasing at each superclass edge. Thus no
 superclass chain repeats a class identity, and every chain terminates at Object
 and then <code>Top</code>. The graph of <strong>class-of</strong> links is separate; its specified
 metaclass cycle does not violate this invariant.</p>
-<p>Seed publication establishes these conditions. Ordinary class realization adds
+<p>Structural startup establishes these conditions. Ordinary class realization adds
 fresh class/metaclass identities with edges to validated existing targets and
 does not rewrite existing superclass edges. It therefore preserves the invariant
-and existing superclass chains. Root substitution during startup must reestablish
-the invariant before publication; it is not an ordinary class-extension step.
+and existing superclass chains.
 Direct mixin applications reuse owned contributions and do not add superclass
 edges to their source classes. The
 <a href="./formal-core.html#realized-hierarchy-invariant">formal invariant</a> makes these
@@ -245,44 +241,39 @@ premises explicit; it does not constrain target computations to terminate.</p>
 <tr><th>Form</th><th>Result</th></tr>
 </thead>
 <tbody>
-<tr><td><code>class { body }</code> or <code>class() { body }</code></td><td>Anonymous zero-parameter class</td></tr>
-<tr><td><code>class(params) { body }</code></td><td>Anonymous class with constructor parameters</td></tr>
-<tr><td><code>class Name { body }</code> or <code>class Name() { body }</code></td><td>Named zero-parameter class</td></tr>
-<tr><td><code>class Name(params) { body }</code></td><td>Named class with constructor parameters</td></tr>
+<tr><td><code>class { body }</code> or <code>class[] { body }</code></td><td>Anonymous zero-parameter class</td></tr>
+<tr><td><code>class[params] { body }</code></td><td>Anonymous class with constructor parameters</td></tr>
+<tr><td><code>class Name { body }</code> or <code>class Name[] { body }</code></td><td>Named zero-parameter class</td></tr>
+<tr><td><code>class Name[params] { body }</code></td><td>Named class with constructor parameters</td></tr>
 <tr><td><code>{ body }</code></td><td>One object, allocated and initialized on each evaluation</td></tr>
-<tr><td><code>&lt;: Mixins(args) &lt; Base(args) { body }</code></td><td>One object with the selected mixins and superclass</td></tr>
+<tr><td><code>&lt;: Mixins[args] &lt; Base[args] { body }</code></td><td>One object with the selected mixins and superclass</td></tr>
 </tbody>
 </table>
 </div>
 <h3 id="class-literal-syntax"><a class="header" href="#class-literal-syntax">Class Literal Syntax</a></h3>
-<pre><code class="language-antlr">namedClassLiteral
-    : CLASS IDENT arguments? mixinApplications superclassApplication
-      LB classBodyElement* initializerBody? RB (COLON descriptorList)* ;
-anonymousClassLiteral
-    : CLASS arguments? mixinApplications superclassApplication
-      LB classBodyElement* initializerBody? RB (COLON descriptorList)* ;
-classLiteral         : namedClassLiteral | anonymousClassLiteral ;
-arguments            : LP formalList? RP ;
-mixinApplications    : (WITH expressionList)? ;
-superclassApplication: (EXTENDS expression)? ;
-classBodyElement     : namedClassLiteral SEMICOLON? | methodDecl SEMICOLON?
-                     | slotDecl SEMICOLON | factoryDecl SEMICOLON? ;
-factoryDecl          : FACTORY methodDecl ;
-methodDecl           : IDENT BANG* (arguments (COLON descriptorList)*)?
-                       methodBody (COLON descriptorList)* ;
-initializerBody      : PIPE statementList? ;
-</code></pre>
-<p><code>WITH</code> is <code>&lt;:</code> or <code>with</code>; <code>EXTENDS</code> is <code>&lt;</code> or <code>extends</code>. Empty parameter
-parentheses are optional. Class bodies contain slots, methods, member classes
-and factories, followed by an optional final <code>|</code> statement section. Slot
-declarations require semicolons; methods, members and factories permit them.
-Descriptor chains retain their <a href="./descriptors.html">annotation syntax</a>.</p>
+<p>Constructor formals use brackets: <code>class C[x, y] { body }</code>. Empty brackets
+may be omitted. A class header contains formals first, then comma-separated
+composition directives, with at most one trailing comma. Parentheses remain
+ordinary message arguments; <code>class C()</code> is invalid.</p>
+<p>Methods, factories, member classes and slots are private unless prefixed <code>pub</code>.
+Slots are immutable unless marked <code>var</code>; the canonical combined spelling is
+<code>pub var x = value;</code>. Duplicate/reversed modifiers, <code>var</code> on a method, class or
+factory, and visibility on locals/formals are invalid. Named class expressions
+at expression or module entry have no visibility modifier. <code>pub class</code> declares
+a public member. Generated <code>new/N</code>, default <code>apply/N</code>, and lambda <code>apply/N</code> are
+public protocols. An explicit private factory at the default <code>apply</code> arity
+replaces that default before public filtering. Possessing a privately acquired
+class value permits its public construction protocol; it grants no private
+authority over the resulting instance.</p>
+<p>Class bodies contain slots, methods, member classes and factories, followed by
+an optional final <code>|</code> statement section. Slot declarations require semicolons;
+methods, members and factories permit them. Descriptor chains retain their
+<a href="./descriptors.html">annotation syntax</a>.</p>
 <h3 id="object-literals"><a class="header" href="#object-literals">Object Literals</a></h3>
-<pre><code class="language-antlr">objectLiteral    : mixinApplications superclassApplication
-                   LB objectBodyElement* initializerBody? RB (COLON descriptorList)* ;
-objectBodyElement: namedClassLiteral SEMICOLON? | methodDecl SEMICOLON?
-                | slotDecl SEMICOLON ;
-</code></pre>
+<p>An object may begin with a bracket header containing composition directives only.
+It then has optional direct applications and a superclass application, followed
+by its body. For example, <code>[hide super.x/0] &lt; Base { body }</code> adapts Base’s public
+interface at the object’s owned boundary.</p>
 <p>An object literal has no constructor parameter list or factories. Its optional
 mixin and superclass clauses have the same syntax, order and meaning as class
 clauses: mixins precede the superclass; <code>&lt;:</code>/<code>with</code> and <code>&lt;</code>/<code>extends</code> are synonyms.
@@ -290,18 +281,18 @@ Omitting the superclass selects structural root <code>Object</code>, without nam
 Slot declarations still require their terminating semicolon.</p>
 <!-- example-id: vh-anonymous-composition -->
 <pre><code class="language-vh">{
-    class M1(input) { first = input; }
-    class M2(input) { second = input; }
-    class S(input) { base = input; }
-    composed = &lt;: M1(1), M2(2) &lt; S(3) { x = 5; };
-    inherited = &lt; S(4) { x = 5; };
-    mixed = with M1(6) { x = 5; };
+    class M1[input] { pub first = input; }
+    class M2[input] { pub second = input; }
+    class S[input] { pub base = input; }
+    pub composed = &lt;: M1[1], M2[2] &lt; S[3] { pub x = 5; };
+    pub inherited = &lt; S[4] { pub x = 5; };
+    pub mixed = with M1[6] { pub x = 5; };
 }
 </code></pre>
 <p>Each evaluation realizes a fresh anonymous zero-parameter class, then immediately
 sends its generated primary <code>new/0</code> using ordinary exact message dispatch.
-Thus <code>&lt;: M(p) &lt; S(q) { body }</code> is equivalent to
-<code>(class &lt;: M(p) &lt; S(q) { body }).new</code>, with a factory-free body. Successful
+Thus <code>&lt;: M[p] &lt; S[q] { body }</code> is equivalent to
+<code>(class &lt;: M[p] &lt; S[q] { body }).new</code>, with a factory-free body. Successful
 evaluation returns the initialized object. Repeated evaluation creates distinct
 class, metaclass and instance identities; it does not cache a singleton.
 Contributor factories and custom <code>apply</code> methods are not called or imported.</p>
@@ -312,7 +303,7 @@ activation, immediately before their contribution is initialized. In particular,
 <code>self</code> in a target computation denotes the enclosing receiver, while <code>self</code> in a
 routed argument denotes the new object. Ordinary initializer lookup also applies:
 an own slot can shadow an enclosing name and is still uninitialized during routing.
-For example, <code>&lt; S(x) { x = 5; }</code> cannot use its own pending <code>x</code> as an argument;
+For example, <code>&lt; S[x] { x = 5; }</code> cannot use its own pending <code>x</code> as an argument;
 use a distinct captured binding or a qualified outer receiver when that is intended.</p>
 <p>The anonymous class captures the literal’s evaluation scope, including deliberate
 creation inside another initializer. Contributors retain their own definition
@@ -329,54 +320,32 @@ Nested literals may use explicitly supplied module inputs, under the existing
 <code>config = { debug = false; };</code>, the slot already holds the initialized object.
 See <a href="./message-sends.html#invocation-at-arity-zero">zero-arity invocation</a>.</p>
 <h2 id="root-object-protocol"><a class="header" href="#root-object-protocol">Root Object Protocol</a></h2>
-<p>In the <a href="current-native-seed.html">Current Native Seed</a>, native objects, including
-lambdas, inherit these
-ordinary methods from root <code>Object</code>. This executable example packages the same
-method bodies with an explicitly injected IdentityMirror. The actual seed root
-captures <code>_vm</code> lexically and has no instance slots:</p>
+<p>The fixed root has an empty instance protocol. Native objects and lambdas do
+not inherit equality, hash, display, null tests or conditional behavior. Their
+generated class/accessor/lambda operations remain available where applicable.</p>
+<p>A library may explicitly define such methods and supply that class to clients.
+This example uses an injected IdentityMirror and ordinary source methods:</p>
 <!-- example-id: vh-explicit-identity-mirror -->
-<pre><code class="language-vh">class Example(vm) {
+<pre><code class="language-vh">class Example[vm] {
     _vm = vm;
-    class Value {
-        equals(other) { _vm.same(self, other) }
-        hash { _vm.identityHash(self) }
-        toString { "an Object" }
+    pub class Value {
+        pub equals(other) { _vm.same(self, other) }
+        pub hash { _vm.identityHash(self) }
+        pub toString { "an Object" }
     }
 }
 </code></pre>
-<p>These are normative defaults of this seed. Another seed may choose different
-root methods without changing lookup, invocation or boundary laws. Replacing an
-application kernel does not replace the structural root. The
-<a href="program-structure.html#startup-seed-installation">startup installation contract</a>
-requires complete reference substitution and collection before publication,
-including class/contribution metadata affected by root adoption.</p>
-<p>Root Object does not supply <code>same</code> or <code>identityHash</code>. Reliable identity and
-classification observations belong to an explicitly supplied
-<a href="./foreign-objects.html#identitymirror">IdentityMirror capability</a>.
-The mirror observes subjects without invoking their methods. Defining these
-selector names on an application object cannot intercept mirror observations
-or the root defaults’ direct use of <code>_vm</code>; no selector is thereby reserved on Aliens.</p>
-<p><code>equals</code> defaults to native identity equality, including identity recovered from
-an owned Expat. This seed’s canonical null and Booleans participate with their
-native identities. The default <code>hash</code> returns an integer stable for the identity’s
-lifetime; equal identities have equal hashes, but collisions are permitted.
-Hashes are neither addresses nor persistent identifiers across runtime sessions.</p>
-<p><code>equals</code>, <code>hash</code> and <code>toString</code> remain overridable. Equality overrides should
-define a reflexive, symmetric, transitive relation with compatible hashes.
-The defaults provide identity-derived results without a separately supplied
-mirror; the mirror grants observation independent of subject behavior.</p>
-<p>The default <code>toString</code> returns exactly <code>"an Object"</code>. It reveals neither a class
-name nor an instance or class identity hash. Named and anonymous instances,
-class objects, metaclasses and lambdas retain this generic answer unless they
-override it. Canonical values keep their explicit <code>null</code>, <code>true</code> and <code>false</code>
-overrides. Diagnostic detail is therefore chosen by the object’s own protocol.</p>
-<p><code>_vm</code> is a narrow seed capability stored on the provider module and retained
-through Object’s definition scope. It is not an inherited Object slot, ambient
-module binding or accessor for IdentityMirror. Its
-operations cross the normal Alien/Expat boundary and expose no backend
-representation. Aliens retain their own protocols and do not acquire these
-methods by inheritance. Scalar Object behavior and identity remain subject to
-<a href="../../design-notes/native-values-and-abstract-semantics.html">the scalar design decision</a>.</p>
+<p>The returned Boolean and hash are foreign values under the selected boundary
+agreement. A native Boolean library can instead use <code>sameSelect(self, other, yes, no)</code> with its explicitly supplied objects. Selection returns the chosen
+object without invoking a callback. The client controls any later branch send.</p>
+<p>Independent identity observations belong to the explicitly supplied
+<a href="./foreign-objects.html#identitymirror">IdentityMirror capability</a>. It observes
+subjects without invoking their methods. Defining <code>equals</code>, <code>hash</code>, <code>same</code> or
+<code>identityHash</code> cannot intercept it. Library equality overrides should define a
+reflexive, symmetric, transitive relation with compatible hashes. Identity hashes
+are stable during the identity’s lifetime, may collide, and are not persistent
+identifiers or addresses. These optional library contracts add no inherited
+service or ambient authority to unrelated native objects or Aliens.</p>
 <h2 id="capabilities-and-definition-scope"><a class="header" href="#capabilities-and-definition-scope">Capabilities and Definition Scope</a></h2>
 <p>The <a href="./program-structure.html#sources-of-an-objects-capabilities">capability sources</a>
 do not change definition scope: calling a class does not capture its caller’s scope.
@@ -394,11 +363,11 @@ composition does not replace its captured definition dependencies.</p>
 <h3 id="member-declarations-and-class-expressions"><a class="header" href="#member-declarations-and-class-expressions">Member Declarations and Class Expressions</a></h3>
 <p>A named class in body-declaration position declares a <strong>member class</strong>:</p>
 <!-- example-id: vh-member-definition-captures -->
-<pre><code class="language-vh">class Container(input) {
-    value = input;
-    class Member { read { value } }
-    Captured = class { read { input } };
-    NamedCapture = class Snapshot { read { input } };
+<pre><code class="language-vh">class Container[input] {
+    pub value = input;
+    pub class Member { pub read { value } }
+    pub Captured = class { pub read { input } };
+    pub NamedCapture = class Snapshot { pub read { input } };
 }
 </code></pre>
 <p><code>Member</code> binds to the enclosing receiver and its declaration/application origin.
@@ -408,8 +377,8 @@ different enclosing receivers or application occurrences obtain distinct classes
 The member binds to the actual enclosing receiver while retaining the selected
 occurrence’s captured lexical ancestry at every depth, including when selected
 through <code>super</code>. Its factories retain that same definition parent. Ordinary
-messages to the enclosing receiver still honor overrides; retaining ancestry
-does not restrict virtual sibling selection to the originating contribution.
+public messages to the enclosing receiver still honor overrides; retaining
+ancestry does not restrict virtual sibling selection to the originating contribution.
 See <a href="name-resolution.html#lookup-order">lexical receiver selection</a>.</p>
 <p>The member can use stored <code>value</code>, but cannot acquire <code>Container</code>’s constructor
 binding <code>input</code>.
@@ -422,12 +391,11 @@ member declarations. Lowering must preserve this distinction.</p>
 <p>Member and slot names share a namespace; duplicates in one body are errors.
 A member also conflicts with a zero-argument method of the same name and has
 no setter. A stored class is callable through its current value;
-a member advertises the selected declaration’s constructor and owned
-<code>factory apply</code> arities before realization. Wrong-arity invocation evaluates no
-contributor targets. Selected realization failures, including cycles or
-abandonment during non-local return, are cached without replay. See
-<a href="./message-sends.html#member-class-invocation">member invocation</a> for selection
-and overriding.</p>
+a member advertises its effective public factory arities before realization,
+as defined by <a href="./message-sends.html#member-class-invocation">member invocation</a>.
+Wrong-arity invocation evaluates no contributor targets. Selected realization
+failures, including cycles or abandonment during non-local return, are cached
+without replay.</p>
 <h3 id="initializer-bodies"><a class="header" href="#initializer-bodies">Initializer Bodies</a></h3>
 <p>The optional final <code>|</code> section executes after the contribution’s ordered slots.
 Constructor parameters remain available. No member, method, slot or factory
@@ -436,20 +404,22 @@ and class expressions, may occur there. Its ordinary result
 or permitted early-return value is ignored. The complete phase, home-lifetime
 and failure rules are in <a href="./literals.html#initializer-completion">Initializer completion</a>.</p>
 <h2 id="inheritance"><a class="header" href="#inheritance">Inheritance</a></h2>
-<p><code>&lt; Base(args)</code> selects a native class and inherits its complete instance-side
+<p><code>&lt; Base[args]</code> selects a native class and inherits its complete instance-side
 chain: owned contribution, applied mixins and ancestors. Omitting the clause
 uses structural root <code>Object</code>, without looking up the name <code>Object</code>. An instance
 or Alien is not a class target; no implicit <code>instance.class</code> conversion occurs.
-Native <code>super</code> cannot be a contributor target.</p>
+Bare <code>super</code> is a lookup origin, not a first-class expression. An ordinary
+expression such as <code>super.Base</code> or <code>super.choose(config)</code> may be a contributor
+target; it uses the surrounding definition scope’s <code>super</code> origin.</p>
 <p>Construction runs the superclass’s complete initializer schedule on the newly
 allocated receiver. Inheritance imports no factories; factories belong to the
 <a href="#factories">declaring class</a>.</p>
 <h2 id="mixins"><a class="header" href="#mixins">Mixins</a></h2>
-<p><code>&lt;: A(args), B(args)</code> applies the <strong>owned reified contribution</strong> of each selected
+<p><code>&lt;: A[args], B[args]</code> applies the <strong>owned reified contribution</strong> of each selected
 native class: directly declared methods, slots, member classes, constructor
 formals and own initializer. It imports no source superclass, applied mixins,
-factories or argument routes. The definition scope remains captured. Resolving
-the source class itself still realizes its targets normally; applying its owned
+factories, argument routes or prior composition policies. The definition scope
+remains captured. Resolving the source class itself still realizes its targets normally; applying its owned
 contribution does not evaluate those original constructor argument routes.</p>
 <p>For example, if <code>A &lt;: M1, M2 &lt; S1</code>, <code>B &lt;: M3, M4 &lt; S2</code>, and <code>C &lt;: A &lt; B</code>,
 the contribution order is:</p>
@@ -459,36 +429,87 @@ the contribution order is:</p>
 Repeated applications share the reified definition but have distinct application
 occurrences and initializer invocations. A contributed method’s <code>super</code> resumes
 from its application occurrence; see <a href="./name-resolution.html">Name Resolution</a>.
-Public mixin extraction and reflection are not part of the current language.</p>
+Public mixin extraction and reflection are not part of the current language.
+Both clause forms select a class value; <code>&lt;:</code> extracts its owned contribution
+internally and does not accept a standalone contribution value.</p>
 <h2 id="constructor-clauses"><a class="header" href="#constructor-clauses">Constructor Clauses</a></h2>
-<p>A terminal ordinary invocation in a superclass or mixin clause has construction
-semantics. Its selector is read with an exact zero-argument send during class
-realization to select the contributor; its argument expressions are retained for
-each later construction. That terminal operation does not call a factory.
-Bare targets route zero arguments, and parentheses around the whole clause do
-not change its meaning. Other target expressions are evaluated normally during
-realization and must produce a native class.</p>
-<p>The special exact-send form <a href="message-sends.html#invoking-the-current-receiver"><code>self(args)</code></a>
-is therefore an ordinary target computation: <code>&lt; self(x)</code> evaluates <code>x</code> and
-sends exact <code>apply/1</code> during realization, then routes no construction arguments.
-By contrast, <code>&lt; self.apply(x)</code> reads exact <code>apply/0</code> during realization and routes
-<code>x</code> to the resulting contributor during each construction. In the first form,
-<code>x</code> uses the surrounding definition scope; in the second it uses the new class’s
-initializer scope. These forms are not interchangeable.</p>
+<p>Contributor targets are complete ordinary expressions, subject to the usual
+source-admission and lexical-scope rules. There is no additional syntactic
+restriction to names, paths or expressions statically known to return classes.
+Explicit brackets carry construction actuals and, for direct mixins,
+composition directives. Empty
+brackets may be omitted. Superclass brackets accept actuals only. Inputs precede
+the first directive; later inputs are invalid. No terminal call is split into a
+constructor route: <code>&lt; S(x)</code> evaluates that ordinary call during realization and
+routes no arguments. <code>&lt; S[x]</code> evaluates <code>S</code> during realization and evaluates <code>x</code>
+during each construction.</p>
+<p>These clauses are available on ordinary class and object literals, including
+nested classes. Normal top-level module classes instead follow the
+<a href="./program-structure.html#top-level-classes-and-instantiation">isolated module-entry restrictions</a>,
+which reject explicit contributor clauses before evaluating their targets.</p>
 <h3 id="computed-contributor-targets"><a class="header" href="#computed-contributor-targets">Computed Contributor Targets</a></h3>
-<p>For <code>&lt; registry.choose(kind).Base(x)</code>, realization evaluates
+<p>For <code>&lt; registry.choose(kind).Base[x]</code>, realization evaluates
 <code>registry.choose(kind)</code> and reads <code>Base</code>; construction later evaluates <code>x</code>.
-Receiver subexpressions perform ordinary computations in the surrounding
-definition scope. The class being realized does not yet supply its own named
-<code>outer</code> qualifier there. Routed terminal arguments run later in that class’s
-initializer scope and may qualify it; both contexts retain their enclosing named
-declarations. Direct mixin targets run left-to-right, then the superclass target.
-Their choices are fixed for the realized class. This applies to class expressions
-and cached member classes.</p>
+<code>&lt; choose(config)[arg]</code> similarly evaluates the complete <code>choose(config)</code> call
+as its target. Targets run in the surrounding definition scope, including its
+<code>super</code> origin; the class being realized does not yet supply its own <code>outer</code>
+qualifier. Actuals run in the declaring class’s initializer scope and may qualify
+it. Direct mixin targets run left-to-right, then the superclass target. Each
+result is checked immediately and must be a native, non-metaclass class.
+A nonclass result, including an instance, lambda or Alien, or a metaclass result
+raises a runtime invalid-contributor error during realization, before any later
+target or routed argument runs. Errors or non-local returns from evaluating the
+target itself retain their ordinary behavior; target evaluation need not terminate.</p>
+<p>After target evaluation, assemble the complete superclass, then direct owned
+contributions right-to-left, then the owned boundary. Every boundary binds its
+written directives against its unchanged lower public input and original
+current declarations. This work executes no source expression.</p>
+<h3 id="sovereign-publication-and-binding"><a class="header" href="#sovereign-publication-and-binding">Sovereign publication and binding</a></h3>
+<p>A header supports <code>rename super.x/0 as y</code>, <code>hide super.x/0</code>, and
+<code>delegate x/0 to super.y/0</code>. These words are contextual at complete directive
+forms; ordinary expressions named <code>rename</code>, <code>hide</code> and <code>delegate</code> remain inputs
+before wiring begins. Rename/hide address the entire lower candidate family at
+an exact selector. Delegation replaces a current public owned operation with the
+first exact public lower target of equal explicit arity. The anchor keeps its
+original declaration category; execution uses the target’s effective kind,
+original occurrence, captures, slot/member identity and retained <code>super</code> input.
+Binding uses structural exact selection, never a getter read or a probe of its
+possible returned callable.
+Directive endpoints use explicit selector spellings, including <code>outer</code> and
+<code>super</code> with optional bang suffixes. These names do not select lexical receivers
+inside a directive. Parsing a directive does not validate its native signature:
+reserved native names fail composition validation when the class is realized.
+Consequently, an uncalled lambda containing <code>class[hide super.outer/0] {}</code> is
+valid source; evaluating that class fails realization.
+Only public effective declarations participate; wiring cannot recover private
+operations. Form each effective table before filtering visibility: an explicit
+private method replacing a public generated getter suppresses that getter.</p>
+<p>The exposure and binding policies are simultaneous partial maps. Repeating an
+exposure source or binding anchor is invalid, including identical directives.
+Two surviving sources at one exact output selector within the same contribution
+position are a collision. Different positions retain ordinary lookup order.
+Identity rename adds no precedence. Swapping <code>a</code> and <code>b</code> is valid; renaming <code>a</code>
+to an unchanged <code>b</code> at the same position requires also hiding or moving <code>b</code>.</p>
+<p>Validate written directives in order, source/anchor before destination/target,
+then equal arity and key uniqueness. After all directives bind, diagnose output
+collisions in contribution order, then selector-name order and numeric arity.
+Invalid signatures, absent public sources/anchors/targets, arity mismatch,
+repeated exposure or binding keys and collisions fail realization before
+construction effects. Valid source syntax alone cannot establish that these
+dynamic references and output signatures will succeed.</p>
+<p>Publication changes never rename lexical declarations or requests in method
+bodies. Public requests remain virtual at their original spelling. A retained
+route survives hiding its target; a later boundary cannot acquire that hidden
+target through the restricted output. Hiding removes the entire lower family,
+without revealing deeper same-name candidates, reserving a spelling or providing
+a fallback. Two anchors bound to one target remain distinct publication sources.
+Complete superclass reuse preserves established boundaries/routes. Fresh owned
+reuse imports only the selected definition and receives fresh occurrence/policy.</p>
 <h3 id="construction-order"><a class="header" href="#construction-order">Construction Order</a></h3>
-<p>For <code>class C(x) &lt;: A(a), B(b) &lt; S(s) { ... }</code>, successful primary construction:</p>
+<p>For <code>class C[x] &lt;: A[a], B[b] &lt; S[s] { ... }</code>, successful primary construction:</p>
 <ol>
-<li>Allocates one receiver with fresh uninitialized storage for its complete layout.</li>
+<li>Allocates one receiver with complete occurrence, route, cell and member-cache
+associations and fresh uninitialized storage for its complete layout.</li>
 <li>Evaluates <code>s</code> and runs S’s complete initialization schedule on that receiver.</li>
 <li>Evaluates <code>b</code> and runs B’s owned initializer, then does the same for <code>a</code> and A.</li>
 <li>Runs C’s own ordered slots and final body, then returns the allocated receiver.</li>
@@ -506,94 +527,40 @@ slots and final body before the next contribution runs.</p>
 bypass overridable setters. No component instances are allocated, no effects
 are replayed or rolled back, and escaped partial receivers are not retracted.
 Return and failure handling follows <a href="./literals.html#initializer-completion">Initializer completion</a>.</p>
-<h3 id="ordered-overrides-and-shared-state"><a class="header" href="#ordered-overrides-and-shared-state">Ordered Overrides and Shared State</a></h3>
-<p>Own declarations have precedence, followed by direct mixins left-to-right, then
-the superclass recursively. At each contribution, selector/accessor choice
-follows <a href="./message-sends.html">Message Sends</a>. A member override selects the whole
-declaration and its origin; it does not merge nested families automatically.
-Duplicate slots, members or exact method selectors within one body remain errors;
-an explicit method may override a generated slot accessor.</p>
-<p>Every slot retains its logical identity <code>(applying class, occurrence, local slot)</code>.
-<strong>Slots with the same name across contributions share storage.</strong> The names of
-the contributions or classes do not determine sharing. Initialization runs in the reverse
-contribution order above, so later writes replace earlier values. Every occurrence
-still initializes, including repeated applications. Surviving methods may therefore
-observe shared state; this policy does not promise independent stateful mixins.
-Getter/setter eligibility and mutability belong to the selected declaration,
-even when storage is shared.</p>
-<h3 id="storage-sharing-and-its-safety-conditions"><a class="header" href="#storage-sharing-and-its-safety-conditions">Storage Sharing and Its Safety Conditions</a></h3>
-<p>The semantic components distinguish logical slots from their storage cells.
-For each receiver class, a layout maps every logical slot to a cell. Equality of
-mapped cells defines the sharing relation. This interface can describe disjoint
-slots, sharing by name, or an explicitly specified sharing relation without
-changing occurrence identities or the lookup algorithm; stored contents can
-still change eligibility and selection outcomes. <strong>Current VarioHyve fixes
-the relation to equality of slot names throughout the hierarchy.</strong> Disjoint
-storage, explicit sharing/disjointness specifications, renaming and deep family
-state composition are future language-evolution choices deferred indefinitely.
-There is no runtime policy switch or new source syntax.</p>
-<p>A valid layout is total on the class’s logical slots and maps two slots to the
-same cell if and only if the selected sharing relation relates them. Different
-receivers have distinct storage. Numbering cells is a representation choice;
-it must preserve this equivalence. Initializer writes, selected accessors and
-retained getter evidence all use the same receiver/layout mapping. Sharing never
-merges occurrences, initializer invocations, declaration mutability, or member
-cache keys. These conditions make the specified shared behavior coherent; they
-do not guarantee that independently designed contributors compose safely.</p>
-<p><strong>Contributor invariant preservation is a requirement of correct composition
-under the current sharing policy.</strong> A composition must preserve every
-participating contributor’s stated invariants under their stated preconditions,
-at the phases and observation points for which they are claimed. Shared-cell
-writes must respect all applicable contributor invariants, not just the writer’s.
-This includes initializer and callback exposure when those observations are
-within the stated contract. Initialization contracts must say when an invariant
-is established and which temporary states may be observed.</p>
-<p>This is a specification/verification obligation on a composition. <strong>The runtime
-does not check, enforce or repair contributor invariants</strong>, and violation does
-not introduce a new language diagnostic or change the prescribed effects.
-Future verification tools may discharge or refute the obligation from supplied
-invariant statements, assumptions and program evidence. No new invariant
-annotation syntax or required runtime metadata is introduced here. Absence of
-verification evidence is not a proof of safety. Invariants may relate several
-cells or other semantic state; the cell-local theorem below covers one useful
-case, not the entire requirement.</p>
-<p>The primary safety objective is preservation of these contributor invariants.
-Comparison with disjoint storage is an additional, separately stated property.
-Safety analysis must identify the observation or contract being preserved. The
-following conditions are exact within their stated scopes, not new checks that
-reject otherwise valid source programs:</p>
-<ul>
-<li><strong>All logical-slot reads.</strong> A valuation of independent logical slots can be
-represented by shared storage exactly when every shared group has one value,
-including the distinction between uninitialized and initialized. Starting
-from such a valuation, an independent write of <code>v</code> to slot <code>s</code> agrees with
-the shared write on every logical-slot read exactly when every <em>other</em> slot
-sharing <code>s</code> already has value <code>v</code>. No-collision layouts satisfy this
-automatically, but are not necessary.</li>
-<li><strong>Contributor cell contracts.</strong> Suppose each logical slot has a predicate on
-its permitted cell contents and all predicates currently hold. A shared write
-of <code>v</code> preserves all these predicates exactly when <code>v</code> satisfies every
-predicate attached to a slot sharing that cell. This permits intentional
-mutable sharing through a common invariant. The condition includes private
-initializer writes and every reachable setter/method write; mutability of
-one accessor does not protect the cell from another accessor.</li>
-<li><strong>Whole-program observations.</strong> Preserving only selected public observations
-may permit more sharing than preserving every logical read. The obligation
-is then relative to those observations and reachable executions: preserve
-results, failures, identity/alias observations, selected behavior and ordered
-effects, including callbacks and partial initialization. Local cell predicates
-alone do not establish that claim or preserve invariants relating several
-cells. There is no universal maximal syntactic test based on names or initial
-values alone. A proof must state the relevant observation relation and show
-it survives the admitted transitions.</li>
-</ul>
-<p>Equal final initializer values are therefore insufficient: an intermediate read
-can distinguish initializedness, an earlier initializer may observe a later
-declaration’s accessor, and a subsequent write may change callable eligibility.
-The language retains the specified writes and effects even when a contributor’s
-intended invariant is violated. <a href="./formal-core.html#parametric-storage-and-sharing-safety">Appendix A</a>
-states the exact store-level conditions; full observational equivalence remains
-a separate proof obligation.</p>
+<p><a id="ordered-overrides-and-shared-state"></a></p>
+<h3 id="ordered-overrides-and-disjoint-state"><a class="header" href="#ordered-overrides-and-disjoint-state">Ordered Overrides and Disjoint State</a></h3>
+<p>Current public declarations precede the adapted lower interface. Direct mixins
+retain their declared left-to-right search positions, followed by the complete
+superclass. At each position, effective selector/accessor choice follows
+<a href="./message-sends.html">Message Sends</a>. Private declarations are absent from public
+search and do not mask a lower public operation. A member override selects its
+whole declaration and origin; it does not merge families. Duplicate explicit
+declarations remain errors; explicit methods replace generated accessors before
+visibility filtering.</p>
+<p><a href="slots.html#contribution-slots-and-storage">Slot storage</a> is disjoint by receiver,
+application occurrence and local slot. Publication changes affect accessors,
+not cell identity or initialization. An immutable slot has no generated setter;
+a surviving mutable lower setter changes only its own cell. Immutability fixes
+the stored reference after initialization, not the referenced object’s state.</p>
+<p><a id="storage-sharing-and-its-safety-conditions"></a></p>
+<h3 id="storage-and-contributor-contracts"><a class="header" href="#storage-and-contributor-contracts">Storage and Contributor Contracts</a></h3>
+<p>The logical-slot mapping is total, functional and injective, and all selected
+accessors and initializer writes use that mapping. Member cache keys remain
+separate: two aliases of one member share one cache on a receiver, while separate
+occurrences remain distinct. Establishing routes and logical associations causes
+no getter read, callable probe, member realization or source effect.</p>
+<p>Availability does not imply readiness. A public virtual read in a lower
+initializer can select an uninitialized upper cell and fail. There is no fallback
+to another initialized cell, no initializer replay, and no construction repair.
+Explicit state/provider objects can supply deliberate shared state through their
+public protocols.</p>
+<p>Correct composition preserves contributors’ stated invariants under their stated
+preconditions and phases. The runtime does not check or repair these contracts.
+Public overriding, shared referents, callbacks/reentrancy, escaped partial
+receivers and supplied values still need their stated assumptions. Disjoint cells
+prevent one contribution’s primitive setter from writing another’s cell; they do
+not establish behavioral substitution. <a href="./formal-core.html#parametric-storage-and-sharing-safety">Appendix A</a>
+states the injectivity and write-frame requirements.</p>
 <h2 id="factories"><a class="header" href="#factories">Factories</a></h2>
 <p>A <code>factory</code> method is sent to the class object; an ordinary method is sent to
 its instances. Both use ordinary method invocation and lexical scope.</p>
@@ -618,11 +585,11 @@ coexist with it. A custom factory controls its result and causes no automatic
 allocation or initialization. It may call <code>new</code>, return a cached instance, or
 return another value.</p>
 <!-- example-id: vh-factory-constructors -->
-<pre><code class="language-vh">class Point(xInput, yInput) {
-    x = xInput;
-    y = yInput;
-    factory apply() { new(0, 0) }
-    factory copy(point) { new(point.x, point.y) }
+<pre><code class="language-vh">class Point[xInput, yInput] {
+    pub var x = xInput;
+    pub var y = yInput;
+    pub factory apply() { new(0, 0) }
+    pub factory copy(point) { new(point.x, point.y) }
 }
 </code></pre>
 <p><code>Point(2, 3)</code> uses default <code>apply/2</code>; <code>Point()</code> uses the custom <code>apply/0</code>;
@@ -706,7 +673,7 @@ create no public <code>class</code> or <code>outer</code> selector, ambient bind
         <script src="searcher-09f2665d.js"></script>
 
         <script src="clipboard-1626706a.min.js"></script>
-        <script src="highlight-33e14e7d.js"></script>
+        <script src="highlight-c449d962.js"></script>
         <script src="book-c22b7243.js"></script>
 
         <!-- Custom JS scripts -->

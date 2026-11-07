@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>A World with Native Seed but Host Scalars and Strings - VarioHyve Language Specification</title>
+        <title>Native Libraries with Foreign Scalars - VarioHyve Language Specification</title>
 
 
         <!-- Custom HTML head -->
@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0e8722df.js";
+            window.path_to_searchindex_js = "searchindex-75c83f8c.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-ce909e20.js"></script>
+        <script src="toc-253640ee.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -177,35 +177,22 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="a-world-with-native-seed-but-host-scalars-and-strings"><a class="header" href="#a-world-with-native-seed-but-host-scalars-and-strings">A World with Native Seed but Host Scalars and Strings</a></h1>
-<p>A world may install the same native null, Booleans, and Object while preserving
-host numeric scalars and strings as Aliens. Native control protocols are then
-available without assigning native classes or by-value wrapper semantics to
-numbers and strings. Canonical null and Boolean conversion remains explicit and
-independent of numeric/string preservation.</p>
-<p>Supported number/string source literals use the configured Java import path.
-With host preservation they produce foreign Java values; Java integral literals
-remain limited by the parser’s supported signed 64-bit domain. Preservation does
-not add arbitrary precision, Python literals, native arithmetic, or a reflected
-Java method interface. Programs use explicitly supplied foreign operations for
-those values, and repeated compatible boundary crossings preserve foreign
-identity instead of normalizing it by value.</p>
-<p>This world can coordinate Java data directly while retaining native conditional
-control and Object defaults. Additional foreign domains require explicit
-ownership and translation agreements. Java Booleans and Python integers could
-coexist in a future multi-domain world, but this choice alone provides neither
-a Python adapter nor a cross-domain conversion bridge.</p>
-<p>The public Java bootstrap selects this combination with
-<code>new BootstrapRuntime(capabilities, BoundaryProfile.HOST_SCALARS)</code>. To load the
-native source provider itself, pass <code>BoundaryProfile.HOST_SCALARS</code> to
-<code>BootstrapRuntime.fromNativeSeedModule</code>. The default <code>NATIVE_VALUES</code> profile
-instead retains the compatibility integer/string codec.</p>
-<p>The public constructor also accepts an explicit <code>HostValueAdapter</code> as its third
-argument. Selecting JavaHostKernel’s adapter enables its numeric/string receiver
-protocols and finite binary64 decimal literals while retaining native canonical
-null/Booleans. Omitting the adapter preserves the existing opaque scalar behavior.
-The native codec profile rejects this adapter configuration. See
-<a href="java-host-kernel.html">JavaHostKernel</a> for the optional library contract.</p>
+                        <h1 id="native-libraries-with-foreign-scalars"><a class="header" href="#native-libraries-with-foreign-scalars">Native Libraries with Foreign Scalars</a></h1>
+<p>A world can pass ordinary native Boolean or unit objects alongside preserved
+foreign numbers, strings, null and Booleans. Native control uses the supplied
+native library’s messages. Foreign receiver operations use the explicitly
+selected adapter. These choices do not alter the fixed structural graph.</p>
+<p><code>new BootstrapRuntime(capabilities, ScalarProfile.HOST_VALUES, adapter)</code> selects
+host scalar preservation and optional protocols. <code>CODEC_VALUES</code> selects the
+integer/string by-value codec. An adapter may also be supplied with that profile
+for foreign values such as null and Booleans; codec integers/strings remain
+opaque native codec values. Finite binary64 decimal source literals require
+<code>HOST_VALUES</code> and an adapter that admits them.</p>
+<p>Supported host integral literals retain the signed 64-bit limit. Native integer
+elaboration is a separate explicit frontend policy. Neither choice adds Java
+reflection, arbitrary precision, a global numeric class or automatic conversions
+between independently loaded libraries. See <a href="java-host-kernel.html">JavaHostKernel</a>
+and <a href="tooling-architecture.html#optional-native-integer-elaboration">native integer elaboration</a>.</p>
 
                     </main>
 
@@ -254,7 +241,7 @@ The native codec profile rejects this adapter configuration. See
         <script src="searcher-09f2665d.js"></script>
 
         <script src="clipboard-1626706a.min.js"></script>
-        <script src="highlight-33e14e7d.js"></script>
+        <script src="highlight-c449d962.js"></script>
         <script src="book-c22b7243.js"></script>
 
         <!-- Custom JS scripts -->

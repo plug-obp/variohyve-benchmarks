@@ -1,7 +1,7 @@
-class Program(kernel) {
+class Program[kernel] {
     Console = kernel.Console;
 
-    run {
+    pub run {
         Console.printLine("Hello, VarioHyve!")
     }
 }

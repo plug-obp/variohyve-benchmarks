@@ -1,143 +1,159 @@
 {
   "schema_version": 1,
   "name": "VarioHyve public preview",
-  "version": "0.4.0",
-  "date": "2026-10-25",
+  "version": "0.6.0",
+  "date": "2026-11-07",
   "java_requirement": "JDK 23; not bundled",
+  "extension_version": "0.6.0",
   "source": {
     "repository": "https://github.com/plug-obp/variohyve",
     "visibility": "private",
-    "tag": "v0.4.0",
-    "commit": "48ba22b5e18e53257564055852eabf7344ee4fbd"
+    "tag": "v0.6.0",
+    "commit": "c8fbc4abdad5c13dabceb1299fdd51ab09b4de46"
   },
   "ci": {
     "workflow": "Starter slice",
-    "run_id": 40173689401,
-    "url": "https://github.com/plug-obp/variohyve/actions/runs/40173689401",
+    "run_id": 42369289483,
+    "url": "https://github.com/plug-obp/variohyve/actions/runs/42369289483",
     "event": "push",
-    "ref": "v0.4.0",
-    "head_sha": "48ba22b5e18e53257564055852eabf7344ee4fbd",
-    "conclusion": "failure",
-    "explanation": "All three platform jobs completed without starting because GitHub blocked runner allocation under the account payment/spending limit. No CI validation is claimed; the following local validations were run against the exact tagged source.",
+    "ref": "main",
+    "head_sha": "c8fbc4abdad5c13dabceb1299fdd51ab09b4de46",
+    "conclusion": "cancelled",
+    "explanation": "No workflow steps ran. Windows/Linux jobs failed before startup under the account payment/spending limit; macOS was cancelled. Lean run 42369289779 likewise failed before startup.",
     "platforms": [
       {
-        "platform": "ubuntu-24.04",
-        "job_id": 121109754027,
-        "url": "https://github.com/plug-obp/variohyve/actions/runs/40173689401/job/121109754027",
-        "job_conclusion": "failure",
+        "platform": "windows-2022",
         "validation": "not_run",
-        "java": {
-          "result": "not_run",
-          "modules": [],
-          "tests": null,
-          "reason": "Runner was not allocated; no workflow steps ran."
-        },
-        "starter_learn_cases": null,
-        "native_package_journey_checks": null,
-        "custom_alien_journey_checks": null,
-        "extension_unit_tests": {
-          "tests": null,
-          "pass": null,
-          "fail": null
-        },
-        "vsix_packaging": "not_run",
-        "vsix_smoke": {
-          "result": "not_run",
-          "vscode": null,
-          "checks": null,
-          "reason": "Runner was not allocated."
-        },
-        "artifact_upload": {
-          "result": "not_run",
-          "reason": "Runner was not allocated."
-        },
-        "blocker": "GitHub Actions did not start the job because the account payment or spending limit blocked runner allocation."
+        "job_conclusion": "failure"
       },
       {
-        "platform": "windows-2022",
-        "job_id": 121109754194,
-        "url": "https://github.com/plug-obp/variohyve/actions/runs/40173689401/job/121109754194",
-        "job_conclusion": "failure",
+        "platform": "ubuntu-24.04",
         "validation": "not_run",
-        "java": {
-          "result": "not_run",
-          "modules": [],
-          "tests": null,
-          "reason": "Runner was not allocated; no workflow steps ran."
-        },
-        "starter_learn_cases": null,
-        "native_package_journey_checks": null,
-        "custom_alien_journey_checks": null,
-        "extension_unit_tests": {
-          "tests": null,
-          "pass": null,
-          "fail": null
-        },
-        "vsix_packaging": "not_run",
-        "vsix_smoke": {
-          "result": "not_run",
-          "vscode": null,
-          "checks": null,
-          "reason": "Runner was not allocated."
-        },
-        "artifact_upload": {
-          "result": "not_run",
-          "reason": "Runner was not allocated."
-        },
-        "blocker": "GitHub Actions did not start the job because the account payment or spending limit blocked runner allocation."
+        "job_conclusion": "failure"
       },
       {
         "platform": "macos-14",
-        "job_id": 121109754261,
-        "url": "https://github.com/plug-obp/variohyve/actions/runs/40173689401/job/121109754261",
-        "job_conclusion": "failure",
         "validation": "not_run",
-        "java": {
-          "result": "not_run",
-          "modules": [],
-          "tests": null,
-          "reason": "Runner was not allocated; no workflow steps ran."
-        },
-        "starter_learn_cases": null,
-        "native_package_journey_checks": null,
-        "custom_alien_journey_checks": null,
-        "extension_unit_tests": {
-          "tests": null,
-          "pass": null,
-          "fail": null
-        },
-        "vsix_packaging": "not_run",
-        "vsix_smoke": {
-          "result": "not_run",
-          "vscode": null,
-          "checks": null,
-          "reason": "Runner was not allocated."
-        },
-        "artifact_upload": {
-          "result": "not_run",
-          "reason": "Runner was not allocated."
-        },
-        "blocker": "GitHub Actions did not start the job because the account payment or spending limit blocked runner allocation."
+        "job_conclusion": "cancelled"
       }
     ]
   },
+  "assets": [
+    {
+      "name": "variohyve-0.6.0-linux.zip",
+      "kind": "starter",
+      "platform": "linux",
+      "bytes": 1599986,
+      "sha256": "c2a5fa7d25485be750991c15867db77b5e51b8115dbce30219c8261f50ceaad8",
+      "ci_artifact": null,
+      "build_origin": "local-tagged-build-linux-arm64-docker-c8fbc4abdad5c13dabceb1299fdd51ab09b4de46"
+    },
+    {
+      "name": "variohyve-0.6.0-macos.zip",
+      "kind": "starter",
+      "platform": "macos",
+      "bytes": 1600120,
+      "sha256": "a47230b5bc95b5dab0b4ef4c0262e0bb84cc80d3bb75b7b5b1ad4913ad39d198",
+      "ci_artifact": null,
+      "build_origin": "local-tagged-build-macos-arm64-c8fbc4abdad5c13dabceb1299fdd51ab09b4de46"
+    },
+    {
+      "name": "variohyve-0.6.0-windows.zip",
+      "kind": "starter",
+      "platform": "windows",
+      "bytes": 1600120,
+      "sha256": "a47230b5bc95b5dab0b4ef4c0262e0bb84cc80d3bb75b7b5b1ad4913ad39d198",
+      "ci_artifact": null,
+      "build_origin": "local-tagged-build-macos-arm64-c8fbc4abdad5c13dabceb1299fdd51ab09b4de46"
+    },
+    {
+      "name": "variohyve-packaging-0.6.0-linux.zip",
+      "kind": "packaging",
+      "platform": "linux",
+      "bytes": 1678884,
+      "sha256": "526739e99f427ef66cfc9fe8763d7fc3bbaec283a63f074dbaa2b27f32850b73",
+      "ci_artifact": null,
+      "build_origin": "local-tagged-build-linux-arm64-docker-c8fbc4abdad5c13dabceb1299fdd51ab09b4de46"
+    },
+    {
+      "name": "variohyve-packaging-0.6.0-macos.zip",
+      "kind": "packaging",
+      "platform": "macos",
+      "bytes": 1678884,
+      "sha256": "526739e99f427ef66cfc9fe8763d7fc3bbaec283a63f074dbaa2b27f32850b73",
+      "ci_artifact": null,
+      "build_origin": "local-tagged-build-macos-arm64-c8fbc4abdad5c13dabceb1299fdd51ab09b4de46"
+    },
+    {
+      "name": "variohyve-packaging-0.6.0-windows.zip",
+      "kind": "packaging",
+      "platform": "windows",
+      "bytes": 1678884,
+      "sha256": "526739e99f427ef66cfc9fe8763d7fc3bbaec283a63f074dbaa2b27f32850b73",
+      "ci_artifact": null,
+      "build_origin": "local-tagged-build-macos-arm64-c8fbc4abdad5c13dabceb1299fdd51ab09b4de46"
+    },
+    {
+      "name": "vh-lsp-vscode-0.6.0.vsix",
+      "kind": "extension",
+      "platform": "universal",
+      "bytes": 5545565,
+      "sha256": "6b7287a010cc5f14074e8979f017c6be1f7e860ae442b0158880437c5d07446b",
+      "ci_artifact": null,
+      "build_origin": "local-tagged-build-macos-arm64-c8fbc4abdad5c13dabceb1299fdd51ab09b4de46"
+    }
+  ],
+  "build": {
+    "origin": "local-tagged-build",
+    "source_commit": "c8fbc4abdad5c13dabceb1299fdd51ab09b4de46",
+    "status": "passed",
+    "host": "macOS arm64",
+    "jdk": "Java 23 Gradle toolchain",
+    "gradle": "9.1.0",
+    "node": "v26.8.2",
+    "tag": "v0.6.0"
+  },
+  "packaging": "Built locally from the exact source tag. Linux ZIPs were built and validated in Linux/arm64 Docker with JDK 23. The macOS and Windows filenames are byte-identical aliases of universal Java ZIPs built on macOS; these bytes also passed the Linux container archive checks. All ZIPs include POSIX and Windows launchers. Windows is not tested. The universal VSIX was built locally on macOS. These are not CI artifacts.",
+  "release_limitations": [
+    {
+      "platform": "Windows and Linux x86_64",
+      "status": "not_run",
+      "reason": "Local runtime/package validation covers macOS arm64 and Linux arm64; hosted CI was blocked before startup."
+    },
+    {
+      "platform": "macOS VS Code",
+      "status": "smoke_timeout",
+      "reason": "VSIX installed and activated, but the isolated VS Code run timed out after 300 seconds while showing an untitled editor; no successful smoke-result.json was produced."
+    },
+    {
+      "platform": "browser",
+      "status": "not_run",
+      "reason": "Local browser use disabled in Work settings. Automated link, exact-source, asset-checksum and version-selector checks passed."
+    }
+  ],
   "additional_validation": {
-    "source_commit": "48ba22b5e18e53257564055852eabf7344ee4fbd",
+    "source_commit": "c8fbc4abdad5c13dabceb1299fdd51ab09b4de46",
     "documentation": {
       "result": "passed",
-      "markdown_files": 205,
-      "docs_check": "python3 scripts/check-docs.py",
+      "markdown_files": 268,
+      "command": "python3 scripts/check-docs.py",
       "spec_pdf": {
-        "path": "spec/variohyve-spec-2026-10-25.pdf",
-        "pages": 141,
-        "bytes": 628116,
-        "sha256": "3a3fdc3f1d00bb97f07185f8a72ec33ee900ea72520c0dd9463b67aa407c901d",
-        "visual_review": "All 141 pages rendered; pages 1, 2, 70 and 141 inspected for layout and legibility."
+        "path": "spec/variohyve-spec-2026-11-07.pdf",
+        "pages": 143,
+        "bytes": 835560,
+        "sha256": "22ba111ab20ee972bc89db59b21cef7e191c9a4427adb637e94947e3a0e249f1",
+        "visual_review": "All 143 pages rendered; pages 1, 2, 3, 40, 70, 78, 100, 120 and 143 visually inspected for layout and legibility.",
+        "publication_links": "88 source-only PDF links mapped to versioned public references or pinned private GitHub source; representative rendered page unchanged."
       }
     },
-    "lean_source_check": {
+    "learn_source_check": {
       "result": "passed",
       "command": "python3 scripts/check-learn.py --source-only"
+    },
+    "lean": {
+      "result": "passed",
+      "command": "bash scripts/check-lean.sh",
+      "build": "3265 jobs, including cached proof replay; structure/audit regression checks passed"
     },
     "bootstrap": {
       "result": "passed",
@@ -145,8 +161,60 @@
     },
     "gradle": {
       "result": "passed",
-      "command": "GITHUB_REF_TYPE=tag GITHUB_REF_NAME=v0.4.0 ./gradlew validateTagVersion test :vh-host:distZip :vh-host:installDist :vh-lsp:installDist :vh-packaging:installDist :vh-packaging:distZip --rerun-tasks --no-daemon --no-parallel --max-workers=2",
-      "tasks_executed": 50
+      "command": "GITHUB_REF_TYPE=tag GITHUB_REF_NAME=v0.6.0 ./gradlew validateTagVersion test :vh-host:distZip :vh-host:installDist :vh-lsp:installDist :vh-packaging:installDist :vh-packaging:distZip --rerun-tasks --no-daemon --no-parallel --max-workers=2",
+      "tasks_executed": 50,
+      "modules": [
+        {
+          "module": "vh-core",
+          "tests": 1208,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "module": "vh-host",
+          "tests": 90,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "module": "vh-lsp",
+          "tests": 102,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "module": "vh-packaging",
+          "tests": 87,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "module": "vh-benchmarks",
+          "tests": 156,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      ]
+    },
+    "differential": {
+      "result": "passed",
+      "structural_observations": 45,
+      "native_assemblies": 52,
+      "native_observations": 823,
+      "generated_modules": 32,
+      "generated_observations": 286,
+      "seed": 20261022,
+      "retained_scenarios": 460,
+      "retained_checks": 4397,
+      "entrypoint_scenarios": 12,
+      "independent_graphs": 8,
+      "entrypoint_protocol_checks": 5288,
+      "resumed_slices": 3730
     },
     "extracted_archive_journey": {
       "result": "passed",
@@ -158,126 +226,86 @@
     "vscode_extension": {
       "typecheck": "passed",
       "unit_tests": {
-        "tests": 76,
-        "pass": 76,
+        "tests": 78,
+        "pass_count": 78,
         "fail": 0
       },
       "vsix_packaging": "passed",
       "smoke_test": {
         "result": "failed",
-        "reason": "VS Code extension host emitted macOS EMFILE: too many open files while watching an isolated profile; no smoke-result.json was produced."
+        "reason": "VSIX installed and activated, but the isolated VS Code run timed out after 300 seconds while showing an untitled editor; no successful smoke-result.json was produced."
       }
     },
     "site_validation": {
-      "preview_structure": "passed: 4 releases, 82 pages",
-      "source_comparison": "passed: 23 VarioHyve and 3 Java blocks",
-      "tutorial_checks": "passed: 28 download buttons, 10 complete-file excerpts, 9 chapter transitions",
-      "python_tests": {
-        "tests": 11,
-        "pass": 11,
-        "fail": 0
-      },
-      "node_tests": {
-        "tests": 8,
-        "pass": 8,
-        "fail": 0
-      },
-      "result": "passed"
-    }
-  },
-  "assets": [
-    {
-      "name": "variohyve-0.4.0-linux.zip",
-      "kind": "starter",
-      "platform": "linux",
-      "bytes": 1528333,
-      "sha256": "abe721babfdaf9475845900d4d6e3fbf733ea55587bc40abfb72aee422f82b9e",
-      "ci_artifact": null,
-      "build_origin": "local-tagged-build-macos-arm64-48ba22b5e18e53257564055852eabf7344ee4fbd"
-    },
-    {
-      "name": "variohyve-0.4.0-macos.zip",
-      "kind": "starter",
-      "platform": "macos",
-      "bytes": 1528333,
-      "sha256": "abe721babfdaf9475845900d4d6e3fbf733ea55587bc40abfb72aee422f82b9e",
-      "ci_artifact": null,
-      "build_origin": "local-tagged-build-macos-arm64-48ba22b5e18e53257564055852eabf7344ee4fbd"
-    },
-    {
-      "name": "variohyve-0.4.0-windows.zip",
-      "kind": "starter",
-      "platform": "windows",
-      "bytes": 1528333,
-      "sha256": "abe721babfdaf9475845900d4d6e3fbf733ea55587bc40abfb72aee422f82b9e",
-      "ci_artifact": null,
-      "build_origin": "local-tagged-build-macos-arm64-48ba22b5e18e53257564055852eabf7344ee4fbd"
-    },
-    {
-      "name": "variohyve-packaging-0.4.0-linux.zip",
-      "kind": "packaging",
-      "platform": "linux",
-      "bytes": 1632181,
-      "sha256": "5a5820e11cbbbba300d7a67819c22dc11d35433f985726890eb7c808c9460745",
-      "ci_artifact": null,
-      "build_origin": "local-tagged-build-macos-arm64-48ba22b5e18e53257564055852eabf7344ee4fbd"
-    },
-    {
-      "name": "variohyve-packaging-0.4.0-macos.zip",
-      "kind": "packaging",
-      "platform": "macos",
-      "bytes": 1632181,
-      "sha256": "5a5820e11cbbbba300d7a67819c22dc11d35433f985726890eb7c808c9460745",
-      "ci_artifact": null,
-      "build_origin": "local-tagged-build-macos-arm64-48ba22b5e18e53257564055852eabf7344ee4fbd"
-    },
-    {
-      "name": "variohyve-packaging-0.4.0-windows.zip",
-      "kind": "packaging",
-      "platform": "windows",
-      "bytes": 1632181,
-      "sha256": "5a5820e11cbbbba300d7a67819c22dc11d35433f985726890eb7c808c9460745",
-      "ci_artifact": null,
-      "build_origin": "local-tagged-build-macos-arm64-48ba22b5e18e53257564055852eabf7344ee4fbd"
-    },
-    {
-      "name": "vh-lsp-vscode-0.4.0.vsix",
-      "kind": "extension",
-      "platform": "universal",
-      "bytes": 5400540,
-      "sha256": "91de8fd8bdef051bbdc632e163022a682af8d74f5c799d2fc1457e904f291bf0",
-      "ci_artifact": null,
-      "build_origin": "local-tagged-build-macos-arm64-48ba22b5e18e53257564055852eabf7344ee4fbd"
-    }
-  ],
-  "packaging": "Built from exact tag v0.4.0 at source commit 48ba22b5e18e53257564055852eabf7344ee4fbd on macOS arm64. The three starter filenames contain byte-identical universal Java ZIPs, and the three packaging filenames contain byte-identical universal Java ZIPs; each includes POSIX and Windows launchers. They are local builds, not CI artifacts. The VSIX is a universal local build.",
-  "extension_version": "0.4.0",
-  "build": {
-    "origin": "local-tagged-build",
-    "source_commit": "48ba22b5e18e53257564055852eabf7344ee4fbd",
-    "status": "passed",
-    "host": "macOS 26.6 arm64",
-    "jdk": "Temurin 25.0.3 (Java 23 Gradle toolchain)",
-    "gradle": "9.1.0",
-    "node": "26.8.2",
-    "tag": "v0.4.0"
-  },
-  "release_limitations": [
-    {
-      "platform": "ubuntu-24.04, windows-2022, macos-14",
-      "status": "ci_validation_unavailable",
-      "reason": "All three GitHub Actions jobs were blocked before runner startup by the account payment/spending limit. Local source and archive validation is recorded separately. VS Code isolated extension-host smoke also failed with EMFILE on macOS."
-    }
-  ],
-  "tutorial_revision": {
-    "source_commit": "48ba22b5e18e53257564055852eabf7344ee4fbd",
-    "runtime_source_commit": "48ba22b5e18e53257564055852eabf7344ee4fbd",
-    "date": "2026-10-25",
-    "description": "Tutorial and reference material rendered from the exact v0.4.0 source tag.",
-    "release_assets": "The release assets listed in this manifest.",
-    "validation": {
       "result": "passed",
-      "rendered_html_pages": 15
+      "preview_releases": 5,
+      "preview_pages": 101,
+      "specification_local_links": 1628,
+      "vh_blocks": 23,
+      "java_blocks": 3,
+      "download_buttons": 28,
+      "complete_files": 10,
+      "chapter_transitions": 9,
+      "python_tests": 11,
+      "node_tests": 8,
+      "browser_review": "not_run: local browser use disabled in Work settings"
+    },
+    "linux_docker": {
+      "result": "passed",
+      "platform": "Linux arm64, Colima on macOS arm64",
+      "jdk": "Temurin 23.0.2+7",
+      "gradle": "9.1.0",
+      "source_commit": "c8fbc4abdad5c13dabceb1299fdd51ab09b4de46",
+      "build": "Fresh offline build from tagged source; read-only cached dependency inputs, no build credentials supplied",
+      "tasks_executed": 50,
+      "modules": [
+        {
+          "module": "vh-core",
+          "tests": 1208,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "module": "vh-host",
+          "tests": 90,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "module": "vh-lsp",
+          "tests": 102,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "module": "vh-packaging",
+          "tests": 87,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "module": "vh-benchmarks",
+          "tests": 156,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      ],
+      "linux_built_archives": {
+        "starter_cases": 16,
+        "native_package_checks": 13,
+        "custom_alien_checks": 21
+      },
+      "macos_built_archives_on_linux": {
+        "starter_cases": 16,
+        "native_package_checks": 13,
+        "custom_alien_checks": 21
+      },
+      "scope": "Java runtime and archives; no Linux Lean build or Linux VS Code editor smoke claimed."
     }
   }
 }

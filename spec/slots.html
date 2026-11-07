@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0e8722df.js";
+            window.path_to_searchindex_js = "searchindex-75c83f8c.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-ce909e20.js"></script>
+        <script src="toc-253640ee.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -182,31 +182,30 @@
 <p>Operational definition: <a href="./formal-core.html#calls-and-generated-accessors">SOS accessor rules</a>.</p>
 <h2 id="slot-declaration"><a class="header" href="#slot-declaration">Slot Declaration</a></h2>
 <!-- example-id: vh-slot-initialization -->
-<pre><code class="language-vh">class Point(a, b) {
-    x = a;
-    y = b;
-    label;
+<pre><code class="language-vh">class Point[a, b] {
+    pub var x = a;
+    pub var y = b;
+    pub var label = "unlabelled";
 }
 </code></pre>
-<p>A slot declaration ends with <code>;</code>. Its <code>=</code> introduces initialization, whereas
+<p>A slot is private and immutable by default. <code>pub</code> exports its accessors; <code>var</code>
+generates a setter. <code>pub var</code> combines these independent modifiers. A slot
+declaration ends with <code>;</code>. Its <code>=</code> introduces initialization, whereas
 <a href="syntactic-sugar.html#-setter-sugar">expression assignment</a> invokes a setter.
-An omitted initializer supplies canonical null; storage awaiting its initializer
-is uninitialized, and reading it is an error.</p>
+Every slot requires an explicit initializer. Storage awaiting that initializer
+is uninitialized, and reading it is an error; uninitialized storage is not a value.</p>
 <h2 id="contribution-slots-and-storage"><a class="header" href="#contribution-slots-and-storage">Contribution Slots and Storage</a></h2>
-<p>Each contributed slot retains its application occurrence and local position.
-The actual receiver’s complete layout maps these logical identities to storage.
-The current policy shares one location among same-named slots, while preserving
-their separate initializers and effects. A selected accessor uses its own
-logical identity in that layout.</p>
-<p>Declaration initialization writes through this mapping without calling an
-overridable setter. Later initializer writes to shared storage replace earlier
-ones. Sharing and construction order are specified in <a href="objects-and-classes.html#ordered-overrides-and-shared-state">Objects and Classes</a>;
-explicit sharing policies and contribution-private access remain deferred.
-The <a href="objects-and-classes.html#storage-sharing-and-its-safety-conditions">storage seam and safety conditions</a>
-separate the current same-slot-name default from possible future layout policies,
-and distinguish coherent shared execution from preserving contributor contracts.</p>
+<p>Each contributed slot retains its exact application occurrence and local position.
+The receiver’s complete layout gives every such slot a distinct cell, including
+same-named slots and repeated applications of one definition. Selected accessors
+and private initializer writes use that same mapping. Initialization runs exactly
+once for each reached slot even if its accessors are hidden or delegated.</p>
+<p>An initializer bypasses overridable setters and writes only its own cell. A lower
+mutable <code>x!</code> can coexist with an upper immutable <code>x</code>; writing through that setter
+does not change the upper slot. See <a href="objects-and-classes.html#ordered-overrides-and-shared-state">composition and storage</a>.</p>
 <h2 id="synthesized-accessors"><a class="header" href="#synthesized-accessors">Synthesized Accessors</a></h2>
-<p>Source instance slots and <code>var</code> locals supply:</p>
+<p>Every slot supplies a getter; only <code>var</code> slots and mutable locals supply a setter.
+A generated slot accessor inherits the slot declaration’s visibility:</p>
 <div class="table-wrapper">
 <table>
 <thead>
@@ -240,23 +239,43 @@ to that method; it does not expose the overridden storage primitive. There is
 no public raw-slot operation. Use a distinct backing slot when needed:</p>
 <!-- example-id: vh-custom-setter-validation -->
 <pre><code class="language-vh">{
-    _x = 0;
-    x { _x }
+    var _x = 0;
+    pub x { _x }
     validate(v) { v.greaterOrEqual(0).ifFalse(fun { ? }) }
-    x!(v) { validate(v); _x!(v) }
+    pub x!(v) { validate(v); _x!(v) }
 }
 </code></pre>
 <p>Here the example validator rejects negative values by reaching an explicit hole;
-nonnegative writes return the stored value. The underscore is only a naming convention, not access control.</p>
-<h2 id="var-locals"><a class="header" href="#var-locals"><code>var</code> Locals</a></h2>
-<p><code>var count = 0;</code> declares a mutable local with getter/setter messages on a
-backend-private activation object. All locals in a source scope are reserved
+nonnegative writes return the stored value. The underscore is only a naming convention; omitting <code>pub</code> supplies private access.</p>
+<p><a id="var-locals"></a></p>
+<h2 id="local-declarations"><a class="header" href="#local-declarations">Local Declarations</a></h2>
+<p><code>let value = expression;</code> declares an immutable local with a getter and no
+synthesized setter. <code>var count = 0;</code> declares a mutable local with getter/setter
+messages. Both use private activation objects and require explicit initializers.
+Immutability fixes the local reference; the referenced object may remain mutable.
+A declaration evaluates its initializer once when reached and initializes its
+reserved cell directly, without sending a setter. Failure or a non-local return
+stops the remaining statements without rolling back preceding effects.
+All locals in a source scope are reserved
 before its initializers run. A reference to a later local therefore selects
 that local and fails if it is still uninitialized; it does not fall through
-to an outer name. Duplicate local declarations in the same statement list are
-errors; a local may shadow a parameter or a binding from an enclosing scope.
+to an outer name. Duplicate local declarations across both <code>let</code> and <code>var</code> in the same statement
+list are errors; a local may shadow a parameter or a binding from an enclosing scope.
 This supports <a href="recursion.html#mutual-recursion">mutual recursion</a>
 when the lambdas run after their bindings are initialized.</p>
+<p>A <code>let</code> getter does not mask an enclosing setter with the same base name.
+<code>value = replacement</code> remains an ordinary <code>value!/1</code> send: it may reach an outer
+setter or fail, but cannot rebind the immutable local. This is the same rule as
+for immutable parameters. Captured locals keep their ordinary data lifetime;
+they do not extend a non-local return home’s lifetime.</p>
+<p>Local declarations are admitted in methods, factories, lambdas and private
+initializer work. They retain descriptor attachment rules. An ordinary routine
+must end with an expression or return; a final <code>let</code> or <code>var</code> is not a result.
+Private initializer work may end with a declaration. <code>pub let</code> and <code>let var</code> are
+not local forms, and object/class slots keep their existing syntax.</p>
+<p><code>let</code> is contextual: it introduces a local only at the start of a statement when
+followed by a plain identifier. <code>let(...)</code>, <code>.let</code>, and a slot or formal named
+<code>let</code> remain ordinary uses of that identifier.</p>
 <h2 id="parameter-immutability"><a class="header" href="#parameter-immutability">Parameter Immutability</a></h2>
 <p>Each formal parameter list requires distinct names. Parameters have immutable
 getter accessors and no synthesized setter.
@@ -275,7 +294,7 @@ such as <code>commit!(v) { callback(v) }</code> can communicate that intent. Use
 bang methods need not be setters.</p>
 <h2 id="descriptors-on-slots"><a class="header" href="#descriptors-on-slots">Descriptors on Slots</a></h2>
 <p><a href="descriptors.html">Descriptors</a> may annotate slots and locals. They do not change
-raw accessor behavior or make a slot immutable.</p>
+accessor visibility or mutability. Those properties come from declaration modifiers.</p>
 
                     </main>
 
@@ -324,7 +343,7 @@ raw accessor behavior or make a slot immutable.</p>
         <script src="searcher-09f2665d.js"></script>
 
         <script src="clipboard-1626706a.min.js"></script>
-        <script src="highlight-33e14e7d.js"></script>
+        <script src="highlight-c449d962.js"></script>
         <script src="book-c22b7243.js"></script>
 
         <!-- Custom JS scripts -->

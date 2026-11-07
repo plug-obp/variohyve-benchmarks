@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0e8722df.js";
+            window.path_to_searchindex_js = "searchindex-75c83f8c.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-ce909e20.js"></script>
+        <script src="toc-253640ee.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -205,12 +205,12 @@ and multiplicity. Payload text has no language-mandated meaning.</p>
 <p>Short annotations require no extra delimiters:</p>
 <!-- example-id: vh-descriptor-declarations -->
 <pre><code class="language-vh">class Arithmetic {
-    add!(a: int, b: int): int { a.plus(b) } : documented;
-    legacy(a: int, b: int) { a.plus(b) } : int;
-    count = 0 : tracked | nonNegative;
+    pub add!(a: int, b: int): int { a.plus(b) } : documented;
+    pub legacy(a: int, b: int) { a.plus(b) } : int;
+    pub var count = 0 : tracked | nonNegative;
 }
 </code></pre>
-<p>A short payload ends at a top-level <code>:</code>, <code>|</code>, <code>,</code>, <code>;</code>, <code>)</code>, <code>}</code>, newline or end
+<p>A short payload ends at a top-level <code>:</code>, <code>|</code>, <code>,</code>, <code>;</code>, <code>)</code>, <code>]</code>, <code>}</code>, newline or end
 of input. Balanced parentheses, braces and brackets, quoted text, and comments
 protect separators inside them. This is lexical framing only: quote escapes are
 not validated, and names, operators and payload grammar are not interpreted.
@@ -233,10 +233,12 @@ remain payload text: <code>answer(): tool({key: value}) { 42 }</code> and
 <code>answer(): [=[arbitrary { unfinished]=] { 42 }</code> are both valid. Pipes and chained
 colons work in headers as elsewhere. Comments shield their contents too.</p>
 <p>Use explicit <code>()</code> for a zero-parameter header, such as <code>answer(): int { 42 }</code>.
-This preserves existing uninitialized slots: <code>answer: int {42};</code> remains a slot
-whose descriptor includes the braces. Existing trailing descriptors and omitted
-parameter lists, such as <code>answer { 42 } : int</code>, remain valid. Other attachment
-sites, including lambda descriptors, retain their existing framing.</p>
+Without that parameter list, <code>answer: int {42};</code> is an incomplete slot declaration:
+the braces belong to its descriptor, and the required initializer is missing.
+An initialized slot such as <code>answer = value: int {42};</code> keeps those braces as
+payload. A method may instead omit its parameter list and use a trailing
+descriptor, as in <code>answer { 42 } : int</code>. Other attachment sites, including lambda
+descriptors, retain their existing framing.</p>
 <h3 id="verbatim-annotations"><a class="header" href="#verbatim-annotations">Verbatim annotations</a></h3>
 <p>An optional fence permits arbitrary text, including unmatched brackets or
 quotes, newlines, and every short-form separator:</p>
@@ -278,8 +280,8 @@ optional trailing <code>|</code> does not create an additional entry.</p>
 its surrounding declaration:</p>
 <!-- example-id: vh-descriptor-attachment-owner -->
 <pre><code class="language-vh">{
-    expression = (3 : annotation);  // describes the expression
-    slot = 3 : annotation;         // describes the slot
+    pub expression = (3 : annotation);  // describes the expression
+    pub slot = 3 : annotation;         // describes the slot
 }
 </code></pre>
 <p>Groups may chain at every attachment point. Text that resembles nested
@@ -348,7 +350,7 @@ are described under <a href="tooling-architecture.html#inert-core-metadata">impl
         <script src="searcher-09f2665d.js"></script>
 
         <script src="clipboard-1626706a.min.js"></script>
-        <script src="highlight-33e14e7d.js"></script>
+        <script src="highlight-c449d962.js"></script>
         <script src="book-c22b7243.js"></script>
 
         <!-- Custom JS scripts -->
