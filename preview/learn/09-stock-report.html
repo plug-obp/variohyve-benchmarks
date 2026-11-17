@@ -1,0 +1,91 @@
+<!doctype html>
+  <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Find what needs restocking · Learn VarioHyve</title><link rel="stylesheet" href="../preview.css"><link rel="stylesheet" href="./highlight.css"><link rel="stylesheet" href="./learn.css">
+<link data-version-navigation rel="stylesheet" href="../versions.css">
+<script data-version-navigation src="../versions.js" defer></script>
+</head>
+  <body><a class="skip" href="#lesson">Skip to lesson</a><header class="site-header wrap"><a class="wordmark" href="../">VarioHyve<span aria-hidden="true">.</span></a><nav aria-label="Tutorial navigation"><a href="./">All lessons</a><a href="../#downloads">Downloads</a></nav></header>
+<!-- version navigation --><div class="version-navigation wrap" data-version="0.6.4" data-page="learn/09-stock-report.html"><span>Preview v0.6.4</span> · <a href="../versions.html">All tutorial versions</a></div><!-- /version navigation -->
+
+  <main id="lesson" class="lesson"><p class="eyebrow">LEARN VARIOHYVE · V0.6.4</p><h1 id="find-what-needs-restocking">Find what needs restocking</h1>
+<p>The <a href="08-stock-list.html">stock list</a> tells us what is on the shelves. Now turn
+that data into a useful decision: which products need ordering, and how many
+units will bring each one up to five?</p>
+<p>This lesson combines three familiar steps: visit an item, choose whether to
+include it, and add its contribution to a total. The same pattern can produce
+a list of overdue tasks or a summary of scores above a target.</p>
+<h2 id="run-it">Run it</h2>
+<p>Save <a href="examples/stock-report.vh">stock-report.vh</a> in <code>examples</code>, then run it
+from the starter's <code>learn</code> directory:</p>
+<pre><code class="hljs language-sh">../bin/vh run examples/stock-report.vh
+</code></pre>
+
+<p>On Windows PowerShell, use <code>..\bin\vh.bat run examples\stock-report.vh</code>.
+You can also open the file in VS Code and choose <strong>VarioHyve: Run File</strong>.</p>
+<pre><code class="hljs language-text">Notebooks: order 2
+Folders: order 3
+Products to restock: 2
+Units to order: 5
+</code></pre>
+
+<p>There are twelve pencils, so they do not appear in the order. The report
+counts two kinds of product and five individual units to buy.</p>
+<pre><code class="hljs language-vh"><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span>[kernel] {
+    Console = kernel<span class="hljs-title">.Console</span>;
+    Collections = kernel<span class="hljs-title">.Collections</span>;
+
+    <span class="hljs-keyword">class</span> <span class="hljs-title">StockItem</span>[label, quantity] {
+        itemName = label;
+        units = quantity;
+        <span class="hljs-keyword">pub</span> <span class="hljs-title">name</span> { itemName }
+        <span class="hljs-keyword">pub</span> <span class="hljs-title">count</span> { units }
+    }
+
+    <span class="hljs-title">reportLowStock</span>(items, target) {
+        <span class="hljs-keyword">var</span> products = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">var</span> unitsToOrder = <span class="hljs-number">0</span>;
+        items<span class="hljs-title">.do</span>(<span class="hljs-keyword">fun</span>(item) {
+            item<span class="hljs-title">.count</span><span class="hljs-title">.lessThan</span>(target)<span class="hljs-title">.ifTrue</span>(<span class="hljs-keyword">fun</span> {
+                <span class="hljs-keyword">let</span> needed = target<span class="hljs-title">.minus</span>(item<span class="hljs-title">.count</span>);
+                products = products<span class="hljs-title">.plus</span>(<span class="hljs-number">1</span>);
+                unitsToOrder = unitsToOrder<span class="hljs-title">.plus</span>(needed);
+                Console<span class="hljs-title">.printLine</span>(item<span class="hljs-title">.name</span><span class="hljs-title">.concat</span>(<span class="hljs-string">&quot;: order &quot;</span>)<span class="hljs-title">.concat</span>(needed<span class="hljs-title">.toString</span>))
+            })
+        });
+        Console<span class="hljs-title">.printLine</span>(<span class="hljs-string">&quot;Products to restock: &quot;</span><span class="hljs-title">.concat</span>(products<span class="hljs-title">.toString</span>));
+        Console<span class="hljs-title">.printLine</span>(<span class="hljs-string">&quot;Units to order: &quot;</span><span class="hljs-title">.concat</span>(unitsToOrder<span class="hljs-title">.toString</span>))
+    }
+
+    <span class="hljs-keyword">pub</span> <span class="hljs-title">run</span> {
+        <span class="hljs-keyword">let</span> stock = Collections<span class="hljs-title">.list</span>;
+        stock<span class="hljs-title">.add</span>(StockItem(<span class="hljs-string">&quot;Notebooks&quot;</span>, <span class="hljs-number">3</span>));
+        stock<span class="hljs-title">.add</span>(StockItem(<span class="hljs-string">&quot;Pencils&quot;</span>, <span class="hljs-number">12</span>));
+        stock<span class="hljs-title">.add</span>(StockItem(<span class="hljs-string">&quot;Folders&quot;</span>, <span class="hljs-number">2</span>));
+        reportLowStock(stock, <span class="hljs-number">5</span>)
+    }
+}
+</code></pre>
+
+<p><a href="examples/stock-report.vh" class="button example-download" download="stock-report.vh">Download stock-report.vh</a></p>
+<h2 id="select-then-summarize">Select, then summarize</h2>
+<p><code>reportLowStock(items, target)</code> receives the list and the desired stock level.
+<code>items.do</code> visits each item, just as in the previous lesson. The comparison
+<code>item.count.lessThan(target)</code> decides whether it needs restocking.</p>
+<p>Here <code>ifTrue</code> takes one block: it runs that block when the comparison is true
+and skips it otherwise. We only calculate <code>needed</code>, update the totals and print
+a line for an item that needs more stock.</p>
+<p>Both totals start at zero each time the method runs. <code>products</code> increases by
+one for each selected item; <code>unitsToOrder</code> increases by that item's shortage.
+The final two lines print after all items have been visited. Reading a report
+does not change the quantities in the stock list.</p>
+<h2 id="make-it-yours">Make it yours</h2>
+<p>Change <code>reportLowStock(stock, 5)</code> to <code>reportLowStock(stock, 10)</code>. Before running,
+work out the shortages. You should see orders for seven notebooks and eight
+folders, with totals of two products and fifteen units.</p>
+<p>Then try a target of <code>2</code>. Every product already meets that target, so the report
+prints only the two totals, both zero. This is a useful check that the report
+also makes sense when nothing needs ordering.</p>
+<p>Next, give one printing method two different ways to present the same stock.</p>
+<p><a href="10-reusable-blocks.html">Next: Pass a small piece of behavior</a></p>
+</main>
+  <footer class="wrap"><p>Public preview v0.6.4 · Download the files shown in each lesson. Recipe projects use the packaging tools.</p><a href="../">Back to the preview</a></footer></body></html>

@@ -48,7 +48,7 @@ Save the two downloads together in a folder named `multiplier`, then copy or
 archive that folder. The tools archive also ships this independent producer as
 `examples/native-package`. A consumer copies the folder to `packages/multiplier`
 inside its own source root. Use the project from the
-[previous chapter](09-worlds.md); it already contains this wiring and a copy of
+[previous chapter](15-worlds.md); it already contains this wiring and a copy of
 the package.
 
 In its recipe, `importModule(files.resolve("packages/multiplier/Multiplier.vh"),
@@ -69,7 +69,7 @@ they do not add global names or implicit imports to VarioHyve.
 
 ## Substitute an Alien without changing the application
 
-Follow [Bring your own Alien package](https://obpcdl.org/variohyve-benchmarks/preview/versions/0.6.3/reference/custom-aliens.html#build-a-provider)
+Follow [Bring your own Alien package](https://obpcdl.org/variohyve-benchmarks/preview/versions/0.6.4/reference/custom-aliens.html#build-a-provider)
 to compile the Java multiplier, package its separate dependency JAR and write
 `aliens/multiplier/alien.json` with their actual digests. That guide is also
 included as `CUSTOM-ALIENS.md` in the tools archive. The provider implements the
@@ -149,4 +149,4 @@ boundary; composition and packaging policy remain native.
 
 Back to [Learn VarioHyve](README.md).
 
-[Next: Bring components together](11-composition.md)
+[Next: Choose your next project](README.md)

@@ -104,14 +104,22 @@ def check_full_files(markdown, source, learn):
 
 
 def check_chapter_navigation(learn, rendered_learn, pages):
-    """Only require successors that belong to this tutorial's own chapter index."""
+    """Follow each indexed learning path; older unmarked indexes remain one path."""
     index = (learn / 'README.md').read_text()
-    chapters = re.findall(r'^\d+\.\s+\[[^\]]+\]\((\d{2}-[^/\n)]+\.md)\)', index, re.M)
+    paths = re.split(r'^<!-- learning-path: [a-z-]+ -->\s*$', index, flags=re.M)
+    explicit_paths = len(paths) > 1
     checked = 0
-    for current, following in zip(chapters, chapters[1:]):
+    steps = []
+    for section in paths:
+        chapters = re.findall(r'^\d+\.\s+\[[^\]]+\]\((\d{2}-[^/\n)]+\.md)\)', section, re.M)
+        steps.extend(zip(chapters, chapters[1:]))
+        if explicit_paths and chapters:
+            steps.append((chapters[-1], 'README.md'))
+    for current, following in steps:
         assert (learn / current).is_file() and (learn / following).is_file(), 'Chapter index names a missing source'
         rendered = rendered_learn / Path(current).with_suffix('.html')
-        successor = (rendered_learn / Path(following).with_suffix('.html')).resolve()
+        successor = (rendered_learn / ('index.html' if following == 'README.md'
+                                      else Path(following).with_suffix('.html'))).resolve()
         page = pages[rendered]
         next_links = [anchor['attrs'].get('href', '') for paragraph in page.paragraphs
                       if ' '.join(paragraph['text'].split()).startswith('Next:')

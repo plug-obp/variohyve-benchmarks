@@ -115,10 +115,8 @@ class Program[kernel] {
 count with `put(word, value)`. Map `do` passes two block arguments: key and value.
 Entries appear in the order their keys were first added.
 
-Try a different sequence of words separated by single spaces. Both list and
-map iteration run one callback at a time over a snapshot of their entries.
-When finished with a collection, send `close` to release the values it retains.
-A closed collection cannot be used again, but an iteration already in progress
-finishes with its snapshot. Replacing an entry releases the old retained value.
+Try a different sequence of words separated by single spaces. For later lookup,
+the [collection reference](reference.md#values-and-services) explains changing
+collections during iteration and closing collections when you finish with them.
 
 [Next: Objects that remember](05-objects.md)

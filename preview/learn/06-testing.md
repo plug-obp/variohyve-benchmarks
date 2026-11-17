@@ -135,8 +135,12 @@ class Tests[kernel, testing] {
 ## Choose your next project
 
 You can now write small programs, give objects state and check their behavior.
-Try [connecting a few components](11-composition.md) with the same starter, or
-continue below to use a Java tool. The [course contents](README.md#choose-what-to-try-next)
-lets you choose the route that interests you.
+Continue with [a receipt built from small methods](07-named-methods.md), then
+build a stock report and test collaborating objects. This practice path uses
+the same starter throughout. The [course contents](README.md#build-useful-programs)
+shows the steps and their outcomes.
 
-[Next: Add a capability written in Java](07-java-capability.md)
+If you already have an external tool in mind, you can go straight to
+[Add a capability written in Java](13-java-capability.md).
+
+[Next: Give each step a name](07-named-methods.md)

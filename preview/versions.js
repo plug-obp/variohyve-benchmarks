@@ -14,8 +14,12 @@
     select.name = 'version';
     for (const release of index.versions) {
       const option = document.createElement('option');
-      const page = release.pages.includes(panel.dataset.page) ? panel.dataset.page
-        : panel.dataset.page.startsWith('learn/') ? 'learn/index.html' : 'index.html';
+      const current = panel.dataset.page;
+      const chapter = /^learn\/\d{2}-(.+\.html)$/.exec(current)?.[1];
+      const matching = chapter && release.pages.find(page =>
+        /^learn\/\d{2}-(.+\.html)$/.exec(page)?.[1] === chapter);
+      const page = release.pages.includes(current) ? current : matching
+        || (current.startsWith('learn/') ? 'learn/index.html' : 'index.html');
       option.value = new URL(release.path + page, base).href;
       option.textContent = `v${release.version}${release.version === index.latest ? ' (latest)' : ''}`;
       option.selected = release.version === panel.dataset.version;

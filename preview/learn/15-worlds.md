@@ -1,6 +1,6 @@
 # From starter to your own world
 
-The first eight lessons use a ready-made JavaHostKernel. A recipe lets you choose
+The starter lessons use a ready-made JavaHostKernel. A recipe lets you choose
 the capabilities your application receives. You still write ordinary modules,
 construct objects and send messages; the recipe owns the wiring.
 
@@ -52,7 +52,7 @@ class Main[multiplier] {
 
 ## Wire its world
 
-`World.vh` constructs the [native multiplier](10-native-packages.md) with factor
+`World.vh` constructs the [native multiplier](16-native-packages.md) with factor
 3 and passes it into the application. It loads a console realizer, then supplies
 the explicitly granted input and output streams. Sending `run` reads a line and
 prints the application's answer. Sending `test` constructs the development suite;
@@ -242,5 +242,5 @@ JSON and `output.execution(1000000)` in the native policy. The default is 100000
 steps per independent VM entry. Imports and callbacks share the remaining budget
 of their active entry; neither resets it.
 
-Next: [Publish and consume a tiny native package](10-native-packages.md) ·
+Next: [Publish and consume a tiny native package](16-native-packages.md) ·
 [Back to the lessons](README.md).

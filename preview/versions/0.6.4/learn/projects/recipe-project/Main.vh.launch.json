@@ -1,0 +1,22 @@
+{
+  "format": "variohyve-launch-1",
+  "root": ".",
+  "recipe": "World.vh",
+  "selector": "run",
+  "arguments": [],
+  "startup": {
+    "valueAdapter": "aliens/starter-values",
+    "profile": "host-values",
+    "provisioning": "stdio",
+    "result": "discard"
+  },
+  "test": {
+    "selector": "test",
+    "arguments": []
+  },
+  "packaging": {
+    "policy": "Package.vh",
+    "selector": "build"
+  },
+  "alienRoot": "."
+}

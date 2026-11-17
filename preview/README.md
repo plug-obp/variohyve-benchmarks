@@ -4,8 +4,9 @@
 published tutorial has a permanent snapshot at `versions/<version>/learn/`, next
 to its original download page and build manifest. `versions.json` records all
 versions in descending numeric order. The selector keeps the current chapter
-when the selected release has it, and otherwise opens that release's lesson
-index. [All versions](versions.html) works without browser JavaScript.
+when the selected release has it, matching the chapter's filename topic after
+renumbering, and otherwise opens that release's lesson index.
+[All versions](versions.html) works without browser JavaScript.
 
 The recovered v0.1.0 snapshot comes from public-site commit
 `dfe2b814f7440a98732d81495d9b1c0eea980e1e` (including its checked inline examples);
@@ -49,6 +50,16 @@ Markdown files are copied alongside their rendered HTML so a contract's Download
 button delivers its original text. The renderer adds stable heading anchors for lesson cross-references. Links to
 the conformance map resolve to the versioned public reference; specification
 links resolve to the public book. The renderer does not change `spec/`.
+
+The current course uses consecutive lessons 1–12 and optional lessons 13–16.
+Source-only `<!-- learning-path: starter -->` and `<!-- learning-path: optional -->`
+markers separate their navigation checks; they are removed from rendered prose.
+Each marked path returns to the course index at its end. Older unmarked indexes
+retain their original sequence. The renderer supplies forwarding pages for the
+published `07-java-capability`, `08-embedding`, `09-worlds` and
+`10-native-packages` URLs when their renumbered source chapters exist. It never
+replaces an old chapter that remains in the selected source tree. Historical
+versioned content stays at its original addresses.
 
 Promote the staged release locally after validation:
 

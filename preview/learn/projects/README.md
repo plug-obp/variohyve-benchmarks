@@ -1,6 +1,6 @@
 # Recipe lesson files
 
-[Lesson 9](../09-worlds.md) displays and links these exact copies of the shipping
+[Lesson 15](../15-worlds.md) displays and links these exact copies of the shipping
 recipe-project files:
 
 - [Main.vh](recipe-project/Main.vh): application behavior.
@@ -16,7 +16,7 @@ the SUnit library or packaged console and value-adapter JARs. The independent
 [native multiplier package](../packages/multiplier/README.md) supplies the
 project's `packages/multiplier` dependency.
 
-[Lesson 10](../10-native-packages.md) supplies complete alternative
+[Lesson 16](../16-native-packages.md) supplies complete alternative
 [World.vh](alien-project/World.vh) and [Package.vh](alien-project/Package.vh) files
 for the custom Alien exercise. Copy them under those same names in the existing
 project after building the provider described by the lesson. The application,

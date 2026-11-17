@@ -42,10 +42,6 @@ text. Sending `trim` to that text removes leading and trailing spaces. Sending
 `concat(name)` to `"Hello, "` returns new text, and another `concat` adds `!`.
 That is a message chain: each result receives the next message.
 
-Local names are reserved for the whole body; reading one before its initializer
-runs fails. Assignment remains a setter send. A `let` has no local setter, but an
-enclosing object may provide a setter with the same base name.
-
 A message without arguments needs no parentheses: `name.length` asks for the
 text's length. Semicolons separate statements. The last expression of a method
 is its result; no `return` keyword is needed.

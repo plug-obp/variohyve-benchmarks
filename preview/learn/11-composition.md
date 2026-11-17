@@ -88,12 +88,14 @@ Try changing the friendly checker's message, adding a fourth review, or giving
 the second desk a new `Notebook()`. Predict the output, then run the program.
 You already have the pieces to make these choices yourself.
 
-When you are ready to connect a real external tool, [lesson 7](07-java-capability.md)
+When you are ready to connect a real external tool, [lesson 13](13-java-capability.md)
 shows how a Java capability answers an ordinary VarioHyve message.
-[Lessons 9](09-worlds.md) and [10](10-native-packages.md) take that idea into a
+[Lessons 15](15-worlds.md) and [16](16-native-packages.md) take that idea into a
 recipe: the same application can receive a native package or a Java provider,
 then carry its chosen ingredients in a deployment.
 
-That is the next step from this small desk to your own application. Start with
-one useful protocol, supply the components explicitly, and keep each component's
-responsibility clear.
+Before adding an external tool, try testing this desk with a notebook that lets
+you inspect what it receives. The next lesson builds on the basic tests and the
+collaborators you have just connected.
+
+[Next: Test collaborating objects](12-component-tests.md)

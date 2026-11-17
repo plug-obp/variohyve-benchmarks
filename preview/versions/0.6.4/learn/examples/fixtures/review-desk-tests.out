@@ -1,0 +1,5 @@
+Suite: Review desk tests
+PASS two desks share numbering
+PASS records one checked result
+PASS records a replacement checker's result
+Tests: 3, passed: 3, failed: 0, errors: 0

@@ -1,0 +1,4 @@
+Suite: Practice reading an error
+ERROR unfinished operation
+PASS the next case still runs
+Tests: 2, passed: 1, failed: 0, errors: 1

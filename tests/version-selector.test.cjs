@@ -22,9 +22,9 @@ const versions = {
     {version: '0.2.0', path: 'versions/0.2.0/', pages: ['index.html', 'learn/index.html', 'learn/01-install.html']}
   ]
 };
-async function run(page, reject = false) {
+async function run(page, reject = false, index = versions, version = index.latest) {
   const panel = new Element('div');
-  panel.dataset = {version: '0.3.0', page};
+  panel.dataset = {version, page};
   panel.append(new Element('span'), new Element('a'));
   let assigned;
   vm.runInNewContext(script, {
@@ -34,7 +34,7 @@ async function run(page, reject = false) {
     fetch: async url => {
       assert.equal(url.href, 'https://example.test/preview/versions.json');
       if (reject) throw new Error('Offline');
-      return {ok: true, json: async () => versions};
+      return {ok: true, json: async () => index};
     }
   });
   await new Promise(resolve => setImmediate(resolve));
@@ -67,4 +67,33 @@ test('failed version loading keeps the ordinary version-list link', async () => 
   assert.equal(panel.querySelector('form'), undefined);
   assert.ok(panel.querySelector('a'));
   assert.equal(panel.querySelector('span').removed, undefined);
+});
+
+const renumbered = {
+  latest: '0.6.4',
+  versions: [
+    {version: '0.6.4', path: 'versions/0.6.4/', pages: [
+      'index.html', 'learn/index.html', 'learn/09-stock-report.html', 'learn/15-worlds.html']},
+    {version: '0.6.3', path: 'versions/0.6.3/', pages: [
+      'index.html', 'learn/index.html', 'learn/09-worlds.html']}
+  ]
+};
+
+test('renumbered chapters keep their topic when selecting an older release', async () => {
+  const {panel} = await run('learn/15-worlds.html', false, renumbered);
+  const select = panel.querySelector('form').querySelector('label').querySelector('select');
+  assert.equal(select.children[1].value, 'https://example.test/preview/versions/0.6.3/learn/09-worlds.html');
+});
+
+test('old chapter numbers find the same topic in the current release', async () => {
+  const {panel} = await run('learn/09-worlds.html', false, renumbered, '0.6.3');
+  const select = panel.querySelector('form').querySelector('label').querySelector('select');
+  assert.equal(select.children[0].value, 'https://example.test/preview/versions/0.6.4/learn/15-worlds.html');
+  assert.equal(select.children[1].selected, true);
+});
+
+test('a new topic falls back to the older index even if that number was already used', async () => {
+  const {panel} = await run('learn/09-stock-report.html', false, renumbered);
+  const select = panel.querySelector('form').querySelector('label').querySelector('select');
+  assert.equal(select.children[1].value, 'https://example.test/preview/versions/0.6.3/learn/index.html');
 });

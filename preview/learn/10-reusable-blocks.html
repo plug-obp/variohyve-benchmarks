@@ -1,0 +1,94 @@
+<!doctype html>
+  <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pass a small piece of behavior · Learn VarioHyve</title><link rel="stylesheet" href="../preview.css"><link rel="stylesheet" href="./highlight.css"><link rel="stylesheet" href="./learn.css">
+<link data-version-navigation rel="stylesheet" href="../versions.css">
+<script data-version-navigation src="../versions.js" defer></script>
+</head>
+  <body><a class="skip" href="#lesson">Skip to lesson</a><header class="site-header wrap"><a class="wordmark" href="../">VarioHyve<span aria-hidden="true">.</span></a><nav aria-label="Tutorial navigation"><a href="./">All lessons</a><a href="../#downloads">Downloads</a></nav></header>
+<!-- version navigation --><div class="version-navigation wrap" data-version="0.6.4" data-page="learn/10-reusable-blocks.html"><span>Preview v0.6.4</span> · <a href="../versions.html">All tutorial versions</a></div><!-- /version navigation -->
+
+  <main id="lesson" class="lesson"><p class="eyebrow">LEARN VARIOHYVE · V0.6.4</p><h1 id="pass-a-small-piece-of-behavior">Pass a small piece of behavior</h1>
+<p>After the <a href="09-stock-report.html">restocking report</a>, let's use the stock list for
+two more jobs: printing shelf labels and printing quantities. Both jobs visit
+the same items. Only the text for each item changes.</p>
+<p>You have already supplied blocks to <code>do</code> and <code>ifTrue</code>. Now write your own
+method that accepts a block. The caller chooses how to turn an item into text;
+the method handles visiting the items and printing the results.</p>
+<h2 id="run-it">Run it</h2>
+<p>Save <a href="examples/stock-format.vh">stock-format.vh</a> in <code>examples</code>, then run it
+from the starter's <code>learn</code> directory:</p>
+<pre><code class="hljs language-sh">../bin/vh run examples/stock-format.vh
+</code></pre>
+
+<p>On Windows PowerShell, use <code>..\bin\vh.bat run examples\stock-format.vh</code>.
+You can also open the file in VS Code and choose <strong>VarioHyve: Run File</strong>.</p>
+<pre><code class="hljs language-text">Shelf labels
+Notebooks
+Pencils
+Folders
+Stock counts
+Notebooks: 3
+Pencils: 12
+Folders: 2
+</code></pre>
+
+<pre><code class="hljs language-vh"><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span>[kernel] {
+    Console = kernel<span class="hljs-title">.Console</span>;
+    Collections = kernel<span class="hljs-title">.Collections</span>;
+
+    <span class="hljs-keyword">class</span> <span class="hljs-title">StockItem</span>[label, quantity] {
+        itemName = label;
+        units = quantity;
+        <span class="hljs-keyword">pub</span> <span class="hljs-title">name</span> { itemName }
+        <span class="hljs-keyword">pub</span> <span class="hljs-title">count</span> { units }
+    }
+
+    <span class="hljs-title">printStock</span>(items, format) {
+        items<span class="hljs-title">.do</span>(<span class="hljs-keyword">fun</span>(item) {
+            Console<span class="hljs-title">.printLine</span>(format(item))
+        })
+    }
+
+    <span class="hljs-keyword">pub</span> <span class="hljs-title">run</span> {
+        <span class="hljs-keyword">let</span> stock = Collections<span class="hljs-title">.list</span>;
+        stock<span class="hljs-title">.add</span>(StockItem(<span class="hljs-string">&quot;Notebooks&quot;</span>, <span class="hljs-number">3</span>));
+        stock<span class="hljs-title">.add</span>(StockItem(<span class="hljs-string">&quot;Pencils&quot;</span>, <span class="hljs-number">12</span>));
+        stock<span class="hljs-title">.add</span>(StockItem(<span class="hljs-string">&quot;Folders&quot;</span>, <span class="hljs-number">2</span>));
+        Console<span class="hljs-title">.printLine</span>(<span class="hljs-string">&quot;Shelf labels&quot;</span>);
+        <span class="hljs-title">printStock</span>(stock, <span class="hljs-keyword">fun</span>(item) { item<span class="hljs-title">.name</span> });
+        Console<span class="hljs-title">.printLine</span>(<span class="hljs-string">&quot;Stock counts&quot;</span>);
+        <span class="hljs-title">printStock</span>(stock, <span class="hljs-keyword">fun</span>(item) {
+            item<span class="hljs-title">.name</span><span class="hljs-title">.concat</span>(<span class="hljs-string">&quot;: &quot;</span>)<span class="hljs-title">.concat</span>(item<span class="hljs-title">.count</span><span class="hljs-title">.toString</span>)
+        })
+    }
+}
+</code></pre>
+
+<p><a href="examples/stock-format.vh" class="button example-download" download="stock-format.vh">Download stock-format.vh</a></p>
+<h2 id="supply-the-work-then-call-it">Supply the work, then call it</h2>
+<p><code>printStock</code> takes two inputs: a list and a block named <code>format</code>. The block's
+job is small and specific: receive one stock item and return one line of text.</p>
+<p>In the first call, <code>fun(item) { item.name }</code> creates that block and passes it
+to <code>printStock</code>. Inside the loop, <code>format(item)</code> runs the supplied block on the
+current item. Its final expression supplies the text that <code>Console.printLine</code>
+prints. This happens once for each item.</p>
+<p>The second call supplies a block that joins the name and quantity. The loop
+and console code stay in one place. You can add another presentation by
+supplying another block with the same one-item-in, text-out job.</p>
+<h2 id="make-it-yours">Make it yours</h2>
+<p>Change the final expression in the second formatting block to
+<code>item.count.toString.concat(&quot; x &quot;).concat(item.name)</code>. The shelf labels stay
+the same, while the second group becomes:</p>
+<pre><code class="hljs language-text">Stock counts
+3 x Notebooks
+12 x Pencils
+2 x Folders
+</code></pre>
+
+<p>You can now pass a small operation to a method you wrote yourself. For a
+collaborator with several operations or its own state, an object is useful.
+The review-desk lesson gives you that next step, followed by
+<a href="12-component-tests.html">tests for collaborating objects</a>.</p>
+<p><a href="11-composition.html">Next: Bring components together</a></p>
+</main>
+  <footer class="wrap"><p>Public preview v0.6.4 · Download the files shown in each lesson. Recipe projects use the packaging tools.</p><a href="../">Back to the preview</a></footer></body></html>

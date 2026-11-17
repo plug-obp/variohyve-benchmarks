@@ -1,6 +1,6 @@
 {
-  "source_commit": "873bd8bb0f302e5e82c651bdeaa0bd1c36efa147",
-  "release": "0.6.3",
+  "source_commit": "a5373379d438681a7dcee2c4363875820ecc32d6",
+  "release": "0.6.4",
   "lean_toolchain": "leanprover/lean4:v4.35.0",
   "scope": "Selected exact declarations and premises; definitions and proof dependencies are required for independent replay.",
   "files": [

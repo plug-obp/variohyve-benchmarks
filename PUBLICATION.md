@@ -1,3 +1,47 @@
+# Learn course consolidation — 0.6.4
+
+The 17 November 2026 release gives Learn VarioHyve consecutive numbering and a
+shorter, more welcoming index. Source tag `v0.6.4` pins
+`a5373379d438681a7dcee2c4363875820ecc32d6` on `main`. The release integrates only
+the tutorial work onto the existing main branch; separate later proof-branch
+work is outside this release.
+
+Lessons 1–6 establish a first milestone. Lessons 7–12 build a receipt, stock list,
+reorder report and reusable formatter, then connect and test collaborating
+objects. Java integration and packaging are optional lessons 13–16. Each path
+returns to the index. Four published chapter URLs forward to their new numbers,
+and version selection matches chapter topics across numbering changes. Older
+instructional content and binary assets are preserved.
+
+The [0.6.4 manifest](preview/versions/0.6.4/manifest.json) records exact artifact
+hashes, source identity, commands and platform scope. Validation includes:
+
+- All 1,644 Java tests, 78 extension tests, standalone bootstrap checks and the
+  strict assembled ZIP/VSIX documentation and version gate.
+- All 22 course cases, 15 native deployment checks and 23 custom-Alien checks
+  against extracted archives on macOS arm64 and Linux arm64.
+- Ten suggested lesson edits with exact expected output, and 37 isolated
+  installed-editor checks in VS Code 1.90 on Linux arm64.
+- The full Lean checker, including module structure, proof audits, negative-audit
+  regressions and inventory regressions. Main already contained proof changes
+  since 0.6.3, so the previous release's Lean results were not reused.
+- Eight tutorial versions, 192 preview pages, 16 chapter transitions, exact
+  code/download matching and 16 public help destinations from the built artifacts.
+  Site regressions cover old URLs and version switching in both directions.
+
+Downloads are local builds from the exact tag. Each OS-named ZIP is explicitly a
+byte-identical alias of a universal Java archive. Hosted CI ran no validation
+steps: payment/spending limits blocked Linux, Windows and Lean; the macOS runner
+configuration was unsupported. Windows and x86_64 execution, the macOS installed
+editor, and browser visual review were not performed. Browser access is disabled
+in Work settings; HTTP and structural checks are recorded separately.
+
+Specification HTML is rebuilt from the tag. The existing PDF retains its
+original bytes, source revision and visual-review evidence: `git diff v0.6.0
+v0.6.4 -- docs/spec` is empty. No new PDF build or visual inspection is claimed.
+
+---
+
 # Public preview review follow-up — 0.6.3
 
 The follow-up review keeps Learn VarioHyve focused on small, rewarding programs.
@@ -18,7 +62,7 @@ The source-only v0.6.2 candidate failed the assembled-documentation gate before
 public promotion. Its existing source tag is preserved; no v0.6.2 download
 release was published. v0.6.3 contains the completed corrections.
 
-The [current manifest](preview/manifest.json) records exact bytes, commands and
+The [0.6.3 manifest](preview/versions/0.6.3/manifest.json) records exact bytes, commands and
 platform scope. Local validation is separate from hosted CI, which again ran no
 validation steps because of billing and runner configuration failures. Browser
 access remains disabled. The specification PDF is retained with its original

@@ -14,6 +14,12 @@ without reading it from beginning to end.
 | Print something | Send `Console.printLine("Hello!")` to the console your program was given. See [values and input](02-values-and-input.md). |
 | Run a test | From the starter's `learn` directory, run `../bin/vh test examples/tests/lessons.vh` (Windows: `..\bin\vh.bat test examples\tests\lessons.vh`). See [testing](06-testing.md). |
 
+For larger programs, use the [receipt](07-named-methods.md) to organize work into
+methods, the [stock list](08-stock-list.md) to group related values, and the
+[reorder report](09-stock-report.md) to select and summarize them. The
+[blocks lesson](10-reusable-blocks.md) customizes reusable work; the
+[component tests](12-component-tests.md) check what a collaborator receives.
+
 The sections below explain the precise rules and the starter's services. For a
 complete account, follow the linked specification chapters when you need them.
 
@@ -40,11 +46,16 @@ does in [lesson 1](01-install.md), or `current = start` in
 can capture its inputs. Captured data can outlive the invocation that created it;
 that does not keep an early-return target alive.
 
+Local names are reserved for the whole body; reading one before its initializer
+runs fails. Assignment remains a setter send. A `let` has no local setter, but an
+enclosing object may provide a setter with the same base name. Use distinct names
+for locals and object state in introductory examples.
+
 A normal module receives its external capabilities through constructor inputs.
 It does not inherit the caller's variables or a global kernel. A recipe is an
 explicit tooling context with its own supplied import and file capabilities;
 its imported application receives only the inputs the recipe passes.
-See [lesson 9](09-worlds.md) for this separation in a complete project.
+See [lesson 15](15-worlds.md) for this separation in a complete project.
 
 Composition preserves each applied contribution's own slots, even when names
 match. Applying a mixin imports its owned contribution; inheriting a superclass
@@ -65,7 +76,7 @@ callbacks are its library/boundary choices. Native number and text libraries
 have their own contracts; these lessons do not claim to run unchanged in a
 scalar-free Lean world. Java–Lean differential tests compare results, failures,
 aliases and effects on supported shared inputs. They do not prove the Java VM
-or arbitrary foreign adapters correct. The [conformance map](https://obpcdl.org/variohyve-benchmarks/preview/versions/0.6.3/reference/conformance.html#specification-java-and-lean)
+or arbitrary foreign adapters correct. The [conformance map](https://obpcdl.org/variohyve-benchmarks/preview/versions/0.6.4/reference/conformance.html#specification-java-and-lean)
 connects the specification, tests and Lean proof scope.
 
 ## Three layers of a world

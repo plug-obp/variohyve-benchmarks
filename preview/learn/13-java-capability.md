@@ -165,4 +165,4 @@ class LabelMaker {
 The example checker parses the declaration without executing it, verifies the
 adapter's selector/arity, and runs the actual Java launcher.
 
-[Next: Call VarioHyve from Java](08-embedding.md)
+[Next: Call VarioHyve from Java](14-embedding.md)

@@ -1,16 +1,14 @@
 # Learn VarioHyve
 
-Welcome! Let's build small programs that greet someone, convert a temperature,
-count words and keep score. Along the way you will learn how VarioHyve objects
-communicate by sending messages, and how a program receives the tools it needs.
+Build small programs, run them, and make them your own. Start with
+[Install and say hello](01-install.md); each lesson includes a complete example,
+a download and a small change to try.
 
-Start with [Install and say hello](01-install.md). Each chapter has a complete
-example shown inline, with a download link so you can run and change it.
+<!-- learning-path: starter -->
 
 ## Your first small programs
 
-Lessons 1–6 take you from a greeting to objects you can test. Finishing them is
-a useful first milestone: you can write, change and check a small program.
+Begin here. These six lessons take you from a greeting to objects you can test.
 
 1. [Install and say hello](01-install.md)
 2. [Values, messages and input](02-values-and-input.md)
@@ -19,54 +17,37 @@ a useful first milestone: you can write, change and check a small program.
 5. [Objects that remember](05-objects.md)
 6. [Test your program](06-testing.md)
 
-## Choose what to try next
+That is a useful first milestone: you can write, change and check a small program.
+Try a few ideas of your own, or continue when you feel ready.
 
-Continue in order, or pick the path that interests you. These later lessons are
-optional; [Bring components together](11-composition.md) needs only the objects
-and tests you have already tried.
+## Build useful programs
 
-| What would you like to do? | Start here |
-|---|---|
-| Connect objects and replace a collaborator | [Bring components together](11-composition.md) |
-| Use an existing Java tool | [Add a capability written in Java](07-java-capability.md) |
-| Call your program from Java | [Call VarioHyve from Java](08-embedding.md) |
-| Assemble and distribute an application | [Your own world](09-worlds.md), then [native packages](10-native-packages.md) |
-| Look up a form while editing | [Starter reference](reference.md) |
+Use the same starter to make a shop receipt, grow a stock report, and connect
+components you can test. Each lesson builds on the previous one.
 
-Explore the later chapters:
-
-7. [Add a capability written in Java](07-java-capability.md)
-8. [Call VarioHyve from Java](08-embedding.md)
-9. [From starter to your own world](09-worlds.md)
-10. [Publish and consume a tiny native package](10-native-packages.md)
+7. [Give each step a name](07-named-methods.md)
+8. [Build a stock list](08-stock-list.md)
+9. [Find what needs restocking](09-stock-report.md)
+10. [Pass a small piece of behavior](10-reusable-blocks.md)
 11. [Bring components together](11-composition.md)
+12. [Test collaborating objects](12-component-tests.md)
 
-The [starter examples folder](examples/) contains the first eight lessons'
-programs and their input and output fixtures. The [recipe lesson files](projects/README.md)
-contain the complete application, recipes, tests and launch configuration from
-lessons 9 and 10. Each lesson shows its files inline and links their downloads.
-The [starter reference](reference.md) collects details for when you need them.
-You do not need to read it before writing your first program.
+You can now organize a small application and check how its pieces work together.
 
-This edition accompanies VarioHyve **0.6.3**. Use its matching downloads: earlier
-previews may use different declaration and constructor syntax.
+<!-- learning-path: optional -->
 
-The first eight lessons use the Java starter with JavaHostKernel. Lessons 9 and 10
-assemble explicit recipe worlds and package their dependencies. The kernel gives us familiar
-numbers, text, collections and a console. A capability is simply a tool a program
-is given: our first program receives a console through its `kernel` input.
-The [language essentials](reference.md#language-essentials) collect the rules
-used throughout the lessons. The [runtime guide](reference.md#java-and-lean)
-explains how this starter relates to the Lean native implementation.
+## Go further when you need it
 
-Lesson 11 brings the pieces together in a small review desk with a replaceable
-checker and a shared notebook.
+These lessons are optional. Choose Java integration when you have an existing
+tool to connect, or application packaging when you want to share a program.
 
-Contributors can check the actual lesson files with
-`python3 scripts/check-learn.py --distribution vh-host/build/install/vh-host`
-from the repository root after building the starter distribution. The checker
-also compiles the Java lessons against the packaged jars.
+13. [Add a capability written in Java](13-java-capability.md)
+14. [Call VarioHyve from Java](14-embedding.md)
+15. [From starter to your own world](15-worlds.md)
+16. [Publish and consume a tiny native package](16-native-packages.md)
 
-The [native multiplier package](packages/multiplier/README.md) is a separate
-producer folder used by the packaging archive journey; it is not an additional
-starter-kernel lesson.
+Keep the [starter reference](reference.md) handy while editing. The
+[runnable examples](examples/README.md) and [recipe projects](projects/README.md)
+collect the lesson files and contributor checks.
+
+This edition accompanies VarioHyve **0.6.4**. Use its matching downloads.

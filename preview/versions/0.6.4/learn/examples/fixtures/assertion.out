@@ -1,0 +1,5 @@
+Suite: Practice reading a failure
+FAIL two plus three
+  Expected 6 but got 5
+PASS the next case still runs
+Tests: 2, passed: 1, failed: 1, errors: 0

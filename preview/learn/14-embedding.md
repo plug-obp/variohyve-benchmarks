@@ -109,6 +109,6 @@ You have now written programs, made objects, checked their behavior and connecte
 both sides of the Java boundary. Try adding a second operation to the calculator,
 then add a test and call it from Java.
 
-Next: [From starter to your own world](09-worlds.md).
+Next: [From starter to your own world](15-worlds.md).
 
 [Starter reference](reference.md) · [Back to the lessons](README.md)

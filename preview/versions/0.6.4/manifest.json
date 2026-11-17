@@ -1,0 +1,603 @@
+{
+  "schema_version": 1,
+  "name": "VarioHyve public preview",
+  "version": "0.6.4",
+  "extension_version": "0.6.4",
+  "date": "2026-11-17",
+  "java_requirement": "JDK 23 or newer; not bundled; tested versions and platform scopes below",
+  "source": {
+    "repository": "https://github.com/plug-obp/variohyve",
+    "visibility": "private",
+    "tag": "v0.6.4",
+    "commit": "a5373379d438681a7dcee2c4363875820ecc32d6"
+  },
+  "packaging": "Built locally from the exact source tag. Every OS filename is a byte-identical alias of a universal Java archive built on macOS with POSIX and Windows launchers. The VSIX is a universal local macOS build. These are not CI artifacts. Actual platform checks are recorded separately below.",
+  "build": {
+    "origin": "local-tagged-build",
+    "source_commit": "a5373379d438681a7dcee2c4363875820ecc32d6",
+    "status": "passed",
+    "host": "macOS arm64",
+    "jdk": "GraalVM CE 23.0.2; Java 23 Gradle toolchain",
+    "gradle": "9.1.0",
+    "node": "v26.8.2",
+    "tag": "v0.6.4"
+  },
+  "ci": {
+    "workflow": "Starter slice",
+    "run_id": 44157207338,
+    "url": "https://github.com/plug-obp/variohyve/actions/runs/44157207338",
+    "event": "push",
+    "ref": "main",
+    "head_sha": "a5373379d438681a7dcee2c4363875820ecc32d6",
+    "conclusion": "cancelled",
+    "explanation": "No validation steps ran. Linux/Windows and Lean jobs were blocked by account payment/spending limits; the macOS runner configuration was unsupported. Downloads are validated local builds from the exact tag.",
+    "platforms": [
+      {
+        "platform": "starter (ubuntu-24.04)",
+        "validation": "not_run",
+        "job_conclusion": "failure"
+      },
+      {
+        "platform": "starter (windows-2022)",
+        "validation": "not_run",
+        "job_conclusion": "failure"
+      },
+      {
+        "platform": "starter (macos-14)",
+        "validation": "not_run",
+        "job_conclusion": "cancelled"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "lean",
+        "conclusion": "failure",
+        "messages": [
+          "The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the 'Billing & plans' section in your settings"
+        ]
+      },
+      {
+        "name": "starter (ubuntu-24.04)",
+        "conclusion": "failure",
+        "messages": [
+          "The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the 'Billing & plans' section in your settings"
+        ]
+      },
+      {
+        "name": "starter (windows-2022)",
+        "conclusion": "failure",
+        "messages": [
+          "The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the 'Billing & plans' section in your settings"
+        ]
+      },
+      {
+        "name": "starter (macos-14)",
+        "conclusion": "cancelled",
+        "messages": [
+          "The configuration 'macos-14-arm64-us-xl' is not supported"
+        ]
+      }
+    ],
+    "related_runs": [
+      {
+        "workflow": "Lean formalizations",
+        "run_id": 44157207368,
+        "url": "https://github.com/plug-obp/variohyve/actions/runs/44157207368",
+        "conclusion": "failure"
+      }
+    ]
+  },
+  "release_limitations": [
+    {
+      "platform": "Windows, Linux x86_64 and macOS x86_64",
+      "status": "not_run",
+      "reason": "No platform validation performed for this release."
+    },
+    {
+      "platform": "macOS VS Code",
+      "status": "not_run",
+      "reason": "Installed-editor validation is checked separately on Linux arm64."
+    },
+    {
+      "platform": "browser",
+      "status": "not_run",
+      "reason": "Local browser access is disabled in Work settings; links, fragments, source, downloads and navigation are checked automatically."
+    }
+  ],
+  "assets": [
+    {
+      "name": "variohyve-0.6.4-linux.zip",
+      "kind": "starter",
+      "platform": "linux",
+      "bytes": 1631131,
+      "sha256": "755974112da63ea479e7be3b3049258a14602838a177dc0da486da72d1cb047d",
+      "ci_artifact": null,
+      "build_origin": "local-tagged-build-macos-arm64-a5373379d438681a7dcee2c4363875820ecc32d6"
+    },
+    {
+      "name": "variohyve-0.6.4-macos.zip",
+      "kind": "starter",
+      "platform": "macos",
+      "bytes": 1631131,
+      "sha256": "755974112da63ea479e7be3b3049258a14602838a177dc0da486da72d1cb047d",
+      "ci_artifact": null,
+      "build_origin": "local-tagged-build-macos-arm64-a5373379d438681a7dcee2c4363875820ecc32d6"
+    },
+    {
+      "name": "variohyve-0.6.4-windows.zip",
+      "kind": "starter",
+      "platform": "windows",
+      "bytes": 1631131,
+      "sha256": "755974112da63ea479e7be3b3049258a14602838a177dc0da486da72d1cb047d",
+      "ci_artifact": null,
+      "build_origin": "local-tagged-build-macos-arm64-a5373379d438681a7dcee2c4363875820ecc32d6"
+    },
+    {
+      "name": "variohyve-packaging-0.6.4-linux.zip",
+      "kind": "packaging",
+      "platform": "linux",
+      "bytes": 1698406,
+      "sha256": "ea8d799b42561dfa303a8c9322566b72891b43ad13b956627ee37bb371350bdf",
+      "ci_artifact": null,
+      "build_origin": "local-tagged-build-macos-arm64-a5373379d438681a7dcee2c4363875820ecc32d6"
+    },
+    {
+      "name": "variohyve-packaging-0.6.4-macos.zip",
+      "kind": "packaging",
+      "platform": "macos",
+      "bytes": 1698406,
+      "sha256": "ea8d799b42561dfa303a8c9322566b72891b43ad13b956627ee37bb371350bdf",
+      "ci_artifact": null,
+      "build_origin": "local-tagged-build-macos-arm64-a5373379d438681a7dcee2c4363875820ecc32d6"
+    },
+    {
+      "name": "variohyve-packaging-0.6.4-windows.zip",
+      "kind": "packaging",
+      "platform": "windows",
+      "bytes": 1698406,
+      "sha256": "ea8d799b42561dfa303a8c9322566b72891b43ad13b956627ee37bb371350bdf",
+      "ci_artifact": null,
+      "build_origin": "local-tagged-build-macos-arm64-a5373379d438681a7dcee2c4363875820ecc32d6"
+    },
+    {
+      "name": "vh-lsp-vscode-0.6.4.vsix",
+      "kind": "extension",
+      "platform": "universal",
+      "bytes": 5615282,
+      "sha256": "a6f8443b862a11ea15c717b9ca2455f6adb95569cce08213825bb3eba61870b0",
+      "ci_artifact": null,
+      "build_origin": "local-tagged-build-macos-arm64-a5373379d438681a7dcee2c4363875820ecc32d6"
+    }
+  ],
+  "additional_validation": {
+    "source_commit": "a5373379d438681a7dcee2c4363875820ecc32d6",
+    "documentation": {
+      "result": "passed",
+      "markdown_files": 282,
+      "command": "python3 scripts/check-docs.py",
+      "spec_pdf": {
+        "path": "spec/variohyve-spec-2026-11-07.pdf",
+        "pages": 143,
+        "bytes": 835560,
+        "sha256": "22ba111ab20ee972bc89db59b21cef7e191c9a4427adb637e94947e3a0e249f1",
+        "visual_review": "All 143 pages rendered; pages 1, 2, 3, 40, 70, 78, 100, 120 and 143 visually inspected for layout and legibility.",
+        "publication_links": "88 source-only PDF links mapped to versioned public references or pinned private GitHub source; representative rendered page unchanged.",
+        "source_commit": "c8fbc4abdad5c13dabceb1299fdd51ab09b4de46",
+        "retained_from": "0.6.0",
+        "input_verification": "git diff v0.6.0 v0.6.4 -- docs/spec: empty. Original 0.6.0 PDF bytes and historical visual-review evidence retained; no new PDF build or visual review claimed."
+      },
+      "html": "mdbook build docs/spec from exact v0.6.4 tag; public source-link mapping is a publication transformation"
+    },
+    "learn_source_check": {
+      "result": "passed",
+      "command": "python3 scripts/check-learn.py --source-only"
+    },
+    "bootstrap": {
+      "result": "passed",
+      "command": "bash scripts/check-bootstrap.sh"
+    },
+    "gradle": {
+      "result": "passed",
+      "command": "GITHUB_REF_TYPE=tag GITHUB_REF_NAME=v0.6.4 JAVA_HOME=<GraalVM CE 23.0.2> ./gradlew validateTagVersion test :vh-host:distZip :vh-host:installDist :vh-lsp:installDist :vh-packaging:installDist :vh-packaging:distZip --rerun-tasks --offline --no-daemon --no-parallel --max-workers=2",
+      "tasks_executed": 50,
+      "modules": [
+        {
+          "module": "vh-core",
+          "tests": 1208,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "module": "vh-host",
+          "tests": 90,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "module": "vh-lsp",
+          "tests": 102,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "module": "vh-packaging",
+          "tests": 88,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "module": "vh-benchmarks",
+          "tests": 156,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      ]
+    },
+    "python_regressions": {
+      "result": "passed",
+      "command": "python3 -m unittest discover -s scripts/tests -p 'test_*.py'",
+      "tests": 170,
+      "skipped": 8
+    },
+    "extracted_archive_journey": {
+      "result": "passed",
+      "starter_learn_cases": 22,
+      "native_package_checks": 15,
+      "custom_alien_checks": 23,
+      "host": "macOS arm64",
+      "jdk": "GraalVM CE 23.0.2",
+      "commands": [
+        "python3 scripts/check-starter-package.py --archive vh-host/build/distributions/vh-host-0.6.4.zip --java-home <JDK23>",
+        "python3 vh-packaging/scripts/check-user-journey.py --archive vh-packaging/build/distributions/vh-packaging-0.6.4.zip --java-home <JDK23>",
+        "python3 vh-packaging/scripts/check-user-journey.py --archive vh-packaging/build/distributions/vh-packaging-0.6.4.zip --java-home <JDK23> --custom-alien"
+      ]
+    },
+    "beginner_exercises": {
+      "result": "passed",
+      "source_commit": "a5373379d438681a7dcee2c4363875820ecc32d6",
+      "jdk": "GraalVM CE 23.0.2",
+      "scope": "Temporary edited copies outside the checkout, using the tagged installed starter; exact stdout and empty stderr checked. Commands below use portable path placeholders.",
+      "new_lesson_exercises": 7,
+      "existing_composition_exercises": 3,
+      "cases": [
+        {
+          "name": "receipt-four-notebooks",
+          "lesson": "07-named-methods.md",
+          "source": "receipt.vh",
+          "source_sha256": "3455875969019184279caea45739e2894fe579a5467a201c5cc67cdc8fc9263b",
+          "exercise_source_sha256": "2bbd428a1da81e98b2d7663067b82051a89e0ef74ddc23ab7684e6789358c7f7",
+          "changes": [
+            {
+              "before": "lineTotal(4, 3)",
+              "after": "lineTotal(4, 4)"
+            }
+          ],
+          "exit": 0,
+          "stdout": "Notebooks: 16 credits\nPencils: 5 credits\nTotal: 21 credits\n",
+          "passed": true,
+          "command": [
+            "<starter>/bin/vh",
+            "run",
+            "<temporary exercises>/receipt-four-notebooks.vh"
+          ]
+        },
+        {
+          "name": "receipt-shop-credits",
+          "lesson": "07-named-methods.md",
+          "source": "receipt.vh",
+          "source_sha256": "3455875969019184279caea45739e2894fe579a5467a201c5cc67cdc8fc9263b",
+          "exercise_source_sha256": "41b8bb6197451902f775fe0428c3d9f821f5c413ffe2d9450b61766f2823dc70",
+          "changes": [
+            {
+              "before": "lineTotal(4, 3)",
+              "after": "lineTotal(4, 4)"
+            },
+            {
+              "before": "\" credits\"",
+              "after": "\" shop credits\""
+            }
+          ],
+          "exit": 0,
+          "stdout": "Notebooks: 16 shop credits\nPencils: 5 shop credits\nTotal: 21 shop credits\n",
+          "passed": true,
+          "command": [
+            "<starter>/bin/vh",
+            "run",
+            "<temporary exercises>/receipt-shop-credits.vh"
+          ]
+        },
+        {
+          "name": "stock-add-markers",
+          "lesson": "08-stock-list.md",
+          "source": "stock-list.vh",
+          "source_sha256": "4611c856d7701aee9eb4755fb2f2083aa85f97a34c0ca85ec707237d93916b61",
+          "exercise_source_sha256": "b7209b74b1e77875c2949f19abcf9027d50f888c4376666e23e624fe720096ac",
+          "changes": [
+            {
+              "before": "stock.add(StockItem(\"Folders\", 2));",
+              "after": "stock.add(StockItem(\"Folders\", 2));\n        stock.add(StockItem(\"Markers\", 5));"
+            }
+          ],
+          "exit": 0,
+          "stdout": "Notebooks: 3\nPencils: 12\nFolders: 2\nMarkers: 5\nTotal units: 22\n",
+          "passed": true,
+          "command": [
+            "<starter>/bin/vh",
+            "run",
+            "<temporary exercises>/stock-add-markers.vh"
+          ]
+        },
+        {
+          "name": "restock-target-ten",
+          "lesson": "09-stock-report.md",
+          "source": "stock-report.vh",
+          "source_sha256": "092ccc9eee73bf44f551480efcbedab98a0a43172fc00f468ca541c050510880",
+          "exercise_source_sha256": "27785a0a7227b5775f4b8f032c487adb18a44d8b77dfaa464cfdb39f3fabaf14",
+          "changes": [
+            {
+              "before": "reportLowStock(stock, 5)",
+              "after": "reportLowStock(stock, 10)"
+            }
+          ],
+          "exit": 0,
+          "stdout": "Notebooks: order 7\nFolders: order 8\nProducts to restock: 2\nUnits to order: 15\n",
+          "passed": true,
+          "command": [
+            "<starter>/bin/vh",
+            "run",
+            "<temporary exercises>/restock-target-ten.vh"
+          ]
+        },
+        {
+          "name": "restock-target-two",
+          "lesson": "09-stock-report.md",
+          "source": "stock-report.vh",
+          "source_sha256": "092ccc9eee73bf44f551480efcbedab98a0a43172fc00f468ca541c050510880",
+          "exercise_source_sha256": "41166888f02d3f6f6edae57fee18cb8a8ea89c0f89f4c76d9f7efb0d7ab89c59",
+          "changes": [
+            {
+              "before": "reportLowStock(stock, 5)",
+              "after": "reportLowStock(stock, 2)"
+            }
+          ],
+          "exit": 0,
+          "stdout": "Products to restock: 0\nUnits to order: 0\n",
+          "passed": true,
+          "command": [
+            "<starter>/bin/vh",
+            "run",
+            "<temporary exercises>/restock-target-two.vh"
+          ]
+        },
+        {
+          "name": "stock-count-first",
+          "lesson": "10-reusable-blocks.md",
+          "source": "stock-format.vh",
+          "source_sha256": "fd94ebca47b6be42ca48559040b57ad605b09b3d8a1badbb681c8008de474f3a",
+          "exercise_source_sha256": "47f3a90da24fc017fe67f19748405c63d4c42fb6618ca6faa6debc8d67c44005",
+          "changes": [
+            {
+              "before": "item.name.concat(\": \").concat(item.count.toString)",
+              "after": "item.count.toString.concat(\" x \").concat(item.name)"
+            }
+          ],
+          "exit": 0,
+          "stdout": "Shelf labels\nNotebooks\nPencils\nFolders\nStock counts\n3 x Notebooks\n12 x Pencils\n2 x Folders\n",
+          "passed": true,
+          "command": [
+            "<starter>/bin/vh",
+            "run",
+            "<temporary exercises>/stock-count-first.vh"
+          ]
+        },
+        {
+          "name": "review-desk-second-record",
+          "lesson": "12-component-tests.md",
+          "source": "tests/review-desk.vh",
+          "source_sha256": "eadec8c26625becce4c88c302cd6c6792353bcddeab08aaccd5cabe166e3c20d",
+          "exercise_source_sha256": "bc316c4323cc37111edf2b6888549457dec8d2bebd8826eb87ccbefa91862fad",
+          "changes": [
+            {
+              "before": "            assert.assertEquals(1, notebook.count)\n        });\n        suite.add(\"records a replacement checker's result\"",
+              "after": "            assert.assertEquals(1, notebook.count);\n            assert.assertEquals(\"Saved\", desk.review(\"Station model\"));\n            assert.assertEquals(\"Checked: Station model\", notebook.lastEntry);\n            assert.assertEquals(2, notebook.count)\n        });\n        suite.add(\"records a replacement checker's result\""
+            }
+          ],
+          "exit": 0,
+          "stdout": "Suite: Review desk tests\nPASS two desks share numbering\nPASS records one checked result\nPASS records a replacement checker's result\nTests: 3, passed: 3, failed: 0, errors: 0\n",
+          "passed": true,
+          "command": [
+            "<starter>/bin/vh",
+            "test",
+            "<temporary exercises>/review-desk-second-record.vh"
+          ]
+        },
+        {
+          "name": "composition-change-wording",
+          "lesson": "11-composition.md",
+          "source": "federation.vh",
+          "source_sha256": "56c491c37484a1c1ef7cf58b352b3df578e21e17dc278fa4b4cb33d388e024f2",
+          "exercise_source_sha256": "48307d76ca5405891864ffcc52549727fbd7e302f63da068c56d674577a92c62",
+          "changes": [
+            {
+              "before": "\"Ready to discuss: \"",
+              "after": "\"Reviewed: \""
+            }
+          ],
+          "exit": 0,
+          "stdout": "Note 1: Checked: Bridge model\nNote 2: Checked: Station model\nNote 3: Reviewed: Garden model\n",
+          "passed": true,
+          "command": [
+            "<starter>/bin/vh",
+            "run",
+            "<temporary exercises>/composition-change-wording.vh"
+          ]
+        },
+        {
+          "name": "composition-fourth-review",
+          "lesson": "11-composition.md",
+          "source": "federation.vh",
+          "source_sha256": "56c491c37484a1c1ef7cf58b352b3df578e21e17dc278fa4b4cb33d388e024f2",
+          "exercise_source_sha256": "2471a112564d9dfec800e09b6331bb118275bb059cae4235e1f929b49fb8ffc9",
+          "changes": [
+            {
+              "before": "Console.printLine(friendlyDesk.review(\"Garden model\"))",
+              "after": "Console.printLine(friendlyDesk.review(\"Garden model\"));\n        Console.printLine(friendlyDesk.review(\"Museum model\"))"
+            }
+          ],
+          "exit": 0,
+          "stdout": "Note 1: Checked: Bridge model\nNote 2: Checked: Station model\nNote 3: Ready to discuss: Garden model\nNote 4: Ready to discuss: Museum model\n",
+          "passed": true,
+          "command": [
+            "<starter>/bin/vh",
+            "run",
+            "<temporary exercises>/composition-fourth-review.vh"
+          ]
+        },
+        {
+          "name": "composition-new-notebook",
+          "lesson": "11-composition.md",
+          "source": "federation.vh",
+          "source_sha256": "56c491c37484a1c1ef7cf58b352b3df578e21e17dc278fa4b4cb33d388e024f2",
+          "exercise_source_sha256": "b0d1438d070ee2d4517004495214d6806bc4d763fd348c0a4bded89ea63fdf2e",
+          "changes": [
+            {
+              "before": "ReviewDesk(friendlyChecker, notebook)",
+              "after": "ReviewDesk(friendlyChecker, Notebook())"
+            }
+          ],
+          "exit": 0,
+          "stdout": "Note 1: Checked: Bridge model\nNote 2: Checked: Station model\nNote 1: Ready to discuss: Garden model\n",
+          "passed": true,
+          "command": [
+            "<starter>/bin/vh",
+            "run",
+            "<temporary exercises>/composition-new-notebook.vh"
+          ]
+        }
+      ]
+    },
+    "vscode_extension": {
+      "typecheck": "passed",
+      "unit_tests": {
+        "tests": 78,
+        "pass_count": 78,
+        "fail": 0
+      },
+      "vsix_packaging": "passed",
+      "smoke_test": {
+        "result": "passed",
+        "platform": "Linux arm64 in Docker/Colima on macOS",
+        "vscode": "1.90.0",
+        "jdk": "Temurin 23.0.2+7",
+        "isolated": true,
+        "checks": [
+          "isolated HOME/PATH/credentials",
+          "untitled diagnostics and outline",
+          "parse",
+          "edit",
+          "completion",
+          "hover",
+          "definition",
+          "pub/var diagnostics and execution",
+          "bracket constructors and mixin/superclass routes",
+          "rename/hide/delegate wiring and outline",
+          "required mutable initializer",
+          "run",
+          "header and trailing descriptors",
+          "split navigation input",
+          "backspace and multiline input",
+          "stop",
+          "stale snapshot",
+          "restart",
+          "passing tests",
+          "failing tests",
+          "independent selection scratch",
+          "scratch runtime identity",
+          "scratch rerun",
+          "recipe scalar assistance",
+          "native recipe launch",
+          "dirty imported source save",
+          "cross-source runtime Problems",
+          "imported revision invalidation",
+          "new recipe project",
+          "user-compiled Alien and separate dependency JAR",
+          "project provider pin rejection",
+          "authored module and native dependencies",
+          "recipe test PASS/status 0",
+          "recipe test FAIL/status 1",
+          "declared stdio",
+          "native packaging command",
+          "relocated deployment without original project or tools"
+        ],
+        "source_commit": "a5373379d438681a7dcee2c4363875820ecc32d6",
+        "asset": "vh-lsp-vscode-0.6.4.vsix",
+        "sha256": "a6f8443b862a11ea15c717b9ca2455f6adb95569cce08213825bb3eba61870b0"
+      }
+    },
+    "public_distribution": {
+      "result": "passed",
+      "command": "python3 scripts/check-public-distribution.py --version 0.6.4 <starter.zip> <packaging.zip> <extension.vsix>"
+    },
+    "linux_archives": {
+      "result": "passed",
+      "platform": "Linux arm64 in Docker/Colima on macOS",
+      "jdk": "Temurin 23.0.2+7",
+      "starter_learn_cases": 22,
+      "native_package_checks": 15,
+      "custom_alien_checks": 23,
+      "scope": "Exact macOS-built release bytes verified by SHA-256 inside an offline Linux container. No Linux source rebuild or full Linux Java/Lean suite claimed."
+    },
+    "lean": {
+      "result": "passed",
+      "command": "bash scripts/check-lean.sh",
+      "source_commit": "a5373379d438681a7dcee2c4363875820ecc32d6",
+      "toolchain": "Lean 4.35.0",
+      "structure_modules": 2585,
+      "structure_tests": 73,
+      "build_jobs": 3396,
+      "negative_audit_regressions": 3,
+      "inventory_regressions": 6,
+      "proof_audits": {
+        "capability_declarations": 4135,
+        "gc_declarations": 1294,
+        "source_semantics_declarations": 22100,
+        "source_library_declarations": 33778,
+        "source_library_example_declarations": 40290,
+        "full_semantics_declarations": 106539
+      },
+      "scope": "Fresh check against the exact tag using an isolated build cache. Audit scopes overlap and must not be summed. These are Lean development checks, not a proof of the Java runtime or arbitrary foreign libraries."
+    },
+    "benchmarks": {
+      "result": "not_run",
+      "scope": "No benchmark implementation or measurement changes. Development history remains separate from the downloadable release."
+    },
+    "site_validation": {
+      "result": "passed",
+      "preview_releases": 8,
+      "preview_pages": 192,
+      "entry_spec_pages": 30,
+      "local_links": 1895,
+      "vh_blocks": 29,
+      "java_blocks": 3,
+      "download_buttons": 34,
+      "complete_files": 16,
+      "chapter_transitions": 16,
+      "python_tests": 14,
+      "node_tests": 13,
+      "browser_review": "not_run: local browser access disabled in Work settings",
+      "commands": [
+        "python3 scripts/check-preview.py --learn <extracted starter>/learn --assets <release assets>",
+        "python3 scripts/check-site.py",
+        "python3 -m unittest discover -s tests -p 'test_*.py'",
+        "node --test tests/*.test.cjs"
+      ],
+      "artifact_public_destinations": 16
+    }
+  },
+  "release_notes": "Consecutive lessons 1\u201312 introduce the starter, useful shop programs and component tests. Java and packaging are optional lessons 13\u201316. Published old chapter URLs forward to their new numbers; version selection follows the same chapter topic. Earlier release assets and instructional content are retained."
+}

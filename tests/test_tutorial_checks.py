@@ -90,6 +90,39 @@ class TutorialChecks(unittest.TestCase):
         pages[self.rendered / '07-java-capability.html'] = preview.Page('<p>Next: <a href="08-embedding.html">Embedding</a>.</p>')
         self.assertEqual(preview.check_chapter_navigation(self.learn, self.rendered, pages), 1)
 
+    def test_marked_paths_join_stages_but_return_to_index_before_optional_lessons(self):
+        names = ['06-testing.md', '07-named-methods.md', '12-component-tests.md',
+                 '13-java-capability.md', '16-native-packages.md']
+        pages = self.chapters(names)
+        (self.learn / 'README.md').write_text(
+            '# Learn\n\n<!-- learning-path: starter -->\n'
+            '## First programs\n6. [Tests](06-testing.md)\n'
+            '## Keep building\n7. [Methods](07-named-methods.md)\n'
+            '12. [Component tests](12-component-tests.md)\n'
+            '<!-- learning-path: optional -->\n## Go further\n'
+            '13. [Java](13-java-capability.md)\n'
+            '16. [Packages](16-native-packages.md)\n')
+        successors = ['07-named-methods.html', '12-component-tests.html', 'index.html',
+                      '16-native-packages.html', 'index.html']
+        for name, successor in zip(names, successors):
+            pages[self.rendered / Path(name).with_suffix('.html')] = preview.Page(
+                f'<p><a href="{successor}">Next: Continue</a></p>')
+        self.assertEqual(preview.check_chapter_navigation(self.learn, self.rendered, pages), 5)
+        pages[self.rendered / '12-component-tests.html'] = preview.Page(
+            '<p>Next: <a href="13-java-capability.html">Java</a>.</p>')
+        with self.assertRaisesRegex(AssertionError, '12-component-tests.md: missing Next link to README.md'):
+            preview.check_chapter_navigation(self.learn, self.rendered, pages)
+
+    def test_index_path_break_cannot_hide_a_missing_link_within_a_stage(self):
+        names = ['06-testing.md', '07-named-methods.md', '13-java-capability.md']
+        pages = self.chapters(names)
+        (self.learn / 'README.md').write_text(
+            '<!-- learning-path: starter -->\n6. [Tests](06-testing.md)\n'
+            '## Keep building\n7. [Methods](07-named-methods.md)\n'
+            '<!-- learning-path: optional -->\n13. [Java](13-java-capability.md)\n')
+        with self.assertRaisesRegex(AssertionError, '06-testing.md: missing Next link to 07-named-methods.md'):
+            preview.check_chapter_navigation(self.learn, self.rendered, pages)
+
 
 if __name__ == '__main__':
     unittest.main()

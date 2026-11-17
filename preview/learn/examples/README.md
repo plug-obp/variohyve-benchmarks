@@ -25,3 +25,25 @@ the exact output without terminal echo, redirect input, for example:
 ```
 
 That command assumes the current directory is `learn`, as in the lessons.
+
+The [starter practice path](../README.md#build-useful-programs) adds
+`receipt.vh`, `stock-list.vh`, `stock-report.vh` and `stock-format.vh`. Run each
+with `vh run`. After the review desk in `federation.vh`, run
+`../bin/vh test examples/tests/review-desk.vh` from `learn` to check its collaborators.
+
+## Course files and contributor checks
+
+Lessons 1–14 use the Java starter with JavaHostKernel. This folder contains their
+programs, Java clients, test suites and reviewed output fixtures. Lessons 15 and
+16 use the [recipe projects](../projects/README.md) and the separate
+[native multiplier package](../packages/multiplier/README.md).
+
+From the source repository root, after building the starter distribution, run:
+
+```sh
+python3 scripts/check-learn.py --distribution vh-host/build/install/vh-host
+```
+
+This checks every example and compiles the Java clients against the packaged
+jars. `python3 scripts/check-learn.py --source-only` checks the inline files,
+downloads, lesson navigation and canonical recipe copies without a JDK.

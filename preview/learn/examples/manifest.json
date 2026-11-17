@@ -138,6 +138,41 @@
       "source": "federation.vh",
       "stdout": "fixtures/federation.out",
       "exit": 0
+    },
+    {
+      "name": "receipt",
+      "mode": "run",
+      "source": "receipt.vh",
+      "stdout": "fixtures/receipt.out",
+      "exit": 0
+    },
+    {
+      "name": "stock-list",
+      "mode": "run",
+      "source": "stock-list.vh",
+      "stdout": "fixtures/stock-list.out",
+      "exit": 0
+    },
+    {
+      "name": "stock-report",
+      "mode": "run",
+      "source": "stock-report.vh",
+      "stdout": "fixtures/stock-report.out",
+      "exit": 0
+    },
+    {
+      "name": "stock-format",
+      "mode": "run",
+      "source": "stock-format.vh",
+      "stdout": "fixtures/stock-format.out",
+      "exit": 0
+    },
+    {
+      "name": "review-desk-tests",
+      "mode": "test",
+      "source": "tests/review-desk.vh",
+      "stdout": "fixtures/review-desk-tests.out",
+      "exit": 0
     }
   ]
 }

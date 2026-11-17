@@ -41,8 +41,8 @@ class Program[kernel] {
 `start` is a constructor input. The slot initializer copies it into `current`
 so methods can keep using the value. `var` gives this private slot a getter and
 setter; `current = current.plus(1)` is convenient setter syntax. The public
-`count` method exposes only a read, so clients can increment the counter but
-cannot replace its state through `count!`.
+`count` method exposes a read. Clients read the count and change it through
+`increment`.
 
 In `run`, `3.timesRepeat` sends `increment` three times, then the program reads
 and prints the score. Try constructing two counters with different starting

@@ -1,0 +1,133 @@
+<!doctype html>
+  <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Test collaborating objects · Learn VarioHyve</title><link rel="stylesheet" href="../preview.css"><link rel="stylesheet" href="./highlight.css"><link rel="stylesheet" href="./learn.css">
+<link data-version-navigation rel="stylesheet" href="../../../versions.css">
+<script data-version-navigation src="../../../versions.js" defer></script>
+</head>
+  <body><a class="skip" href="#lesson">Skip to lesson</a><header class="site-header wrap"><a class="wordmark" href="../">VarioHyve<span aria-hidden="true">.</span></a><nav aria-label="Tutorial navigation"><a href="./">All lessons</a><a href="../#downloads">Downloads</a></nav></header>
+<!-- version navigation --><div class="version-navigation wrap" data-version="0.6.4" data-page="learn/12-component-tests.html"><span>Preview v0.6.4</span> · <a href="../../../versions.html">All tutorial versions</a></div><!-- /version navigation -->
+
+  <main id="lesson" class="lesson"><p class="eyebrow">LEARN VARIOHYVE · V0.6.4</p><h1 id="test-collaborating-objects">Test collaborating objects</h1>
+<p>You can test a whole conversation between objects, including what one object
+asks another to save. Start with <a href="06-testing.html">basic tests</a> and run the
+<a href="11-composition.html">review desk</a> first. This lesson uses the same starter.</p>
+<p>The review desk accepts a checker and a notebook. That gives us a useful choice:
+use the ordinary notebook to check numbering, or supply a small recording
+notebook to see exactly what the desk sends to it.</p>
+<h2 id="give-the-test-something-to-observe">Give the test something to observe</h2>
+<p><code>RecordingNotebook</code> answers the same <code>record(text)</code> message as <code>Notebook</code>.
+It saves the latest text, counts the calls and returns <code>&quot;Saved&quot;</code>. Its <code>lastEntry</code>
+and <code>count</code> methods let a test check those effects. Such a small stand-in is
+often called a <strong>test double</strong>.</p>
+<p>The complete file below includes the same <code>Checker</code>, <code>Notebook</code> and <code>ReviewDesk</code>
+classes as the previous lesson, plus the recorder and three tests. This is a
+standalone exercise: it does not load <code>federation.vh</code>. If you change a shared
+class while experimenting, make the same edit in both files.</p>
+<pre><code class="hljs language-vh"><span class="hljs-keyword">class</span> <span class="hljs-title">Tests</span>[kernel, testing] {
+    Testing = testing;
+
+    <span class="hljs-keyword">class</span> <span class="hljs-title">Checker</span> {
+        <span class="hljs-keyword">pub</span> <span class="hljs-title">inspect</span>(name) { <span class="hljs-string">&quot;Checked: &quot;</span><span class="hljs-title">.concat</span>(name) }
+    }
+
+    <span class="hljs-keyword">class</span> <span class="hljs-title">Notebook</span> {
+        <span class="hljs-keyword">var</span> entries = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">pub</span> <span class="hljs-title">record</span>(text) {
+            entries = entries<span class="hljs-title">.plus</span>(<span class="hljs-number">1</span>);
+            <span class="hljs-string">&quot;Note &quot;</span><span class="hljs-title">.concat</span>(entries<span class="hljs-title">.toString</span>)<span class="hljs-title">.concat</span>(<span class="hljs-string">&quot;: &quot;</span>)<span class="hljs-title">.concat</span>(text)
+        }
+    }
+
+    <span class="hljs-keyword">class</span> <span class="hljs-title">ReviewDesk</span>[checker, notebook] {
+        checks = checker;
+        notes = notebook;
+        <span class="hljs-keyword">pub</span> <span class="hljs-title">review</span>(name) { notes<span class="hljs-title">.record</span>(checks<span class="hljs-title">.inspect</span>(name)) }
+    }
+
+    <span class="hljs-keyword">class</span> <span class="hljs-title">RecordingNotebook</span> {
+        <span class="hljs-keyword">var</span> savedText = <span class="hljs-string">&quot;&quot;</span>;
+        <span class="hljs-keyword">var</span> entries = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">pub</span> <span class="hljs-title">lastEntry</span> { savedText }
+        <span class="hljs-keyword">pub</span> <span class="hljs-title">count</span> { entries }
+
+        <span class="hljs-keyword">pub</span> <span class="hljs-title">record</span>(text) {
+            savedText = text;
+            entries = entries<span class="hljs-title">.plus</span>(<span class="hljs-number">1</span>);
+            <span class="hljs-string">&quot;Saved&quot;</span>
+        }
+    }
+
+    <span class="hljs-keyword">pub</span> <span class="hljs-title">tests</span> {
+        <span class="hljs-keyword">let</span> suite = Testing<span class="hljs-title">.suite</span>(<span class="hljs-string">&quot;Review desk tests&quot;</span>);
+        suite<span class="hljs-title">.add</span>(<span class="hljs-string">&quot;two desks share numbering&quot;</span>, <span class="hljs-keyword">fun</span>(assert) {
+            <span class="hljs-keyword">let</span> notebook = Notebook();
+            <span class="hljs-keyword">let</span> firstDesk = ReviewDesk(Checker(), notebook);
+            <span class="hljs-keyword">let</span> secondDesk = ReviewDesk(Checker(), notebook);
+            assert<span class="hljs-title">.assertEquals</span>(<span class="hljs-string">&quot;Note 1: Checked: Bridge model&quot;</span>, firstDesk<span class="hljs-title">.review</span>(<span class="hljs-string">&quot;Bridge model&quot;</span>));
+            assert<span class="hljs-title">.assertEquals</span>(<span class="hljs-string">&quot;Note 2: Checked: Station model&quot;</span>, secondDesk<span class="hljs-title">.review</span>(<span class="hljs-string">&quot;Station model&quot;</span>))
+        });
+        suite<span class="hljs-title">.add</span>(<span class="hljs-string">&quot;records one checked result&quot;</span>, <span class="hljs-keyword">fun</span>(assert) {
+            <span class="hljs-keyword">let</span> notebook = RecordingNotebook();
+            <span class="hljs-keyword">let</span> desk = ReviewDesk(Checker(), notebook);
+            assert<span class="hljs-title">.assertEquals</span>(<span class="hljs-string">&quot;Saved&quot;</span>, desk<span class="hljs-title">.review</span>(<span class="hljs-string">&quot;Bridge model&quot;</span>));
+            assert<span class="hljs-title">.assertEquals</span>(<span class="hljs-string">&quot;Checked: Bridge model&quot;</span>, notebook<span class="hljs-title">.lastEntry</span>);
+            assert<span class="hljs-title">.assertEquals</span>(<span class="hljs-number">1</span>, notebook<span class="hljs-title">.count</span>)
+        });
+        suite<span class="hljs-title">.add</span>(<span class="hljs-string">&quot;records a replacement checker&#x27;s result&quot;</span>, <span class="hljs-keyword">fun</span>(assert) {
+            <span class="hljs-keyword">let</span> notebook = RecordingNotebook();
+            <span class="hljs-keyword">let</span> friendlyChecker = { <span class="hljs-keyword">pub</span> <span class="hljs-title">inspect</span>(name) { <span class="hljs-string">&quot;Ready to discuss: &quot;</span><span class="hljs-title">.concat</span>(name) } };
+            <span class="hljs-keyword">let</span> desk = ReviewDesk(friendlyChecker, notebook);
+            assert<span class="hljs-title">.assertEquals</span>(<span class="hljs-string">&quot;Saved&quot;</span>, desk<span class="hljs-title">.review</span>(<span class="hljs-string">&quot;Garden model&quot;</span>));
+            assert<span class="hljs-title">.assertEquals</span>(<span class="hljs-string">&quot;Ready to discuss: Garden model&quot;</span>, notebook<span class="hljs-title">.lastEntry</span>);
+            assert<span class="hljs-title">.assertEquals</span>(<span class="hljs-number">1</span>, notebook<span class="hljs-title">.count</span>)
+        });
+        suite
+    }
+}
+</code></pre>
+
+<p><a href="examples/tests/review-desk.vh" class="button example-download" download="review-desk.vh">Download review-desk.vh</a></p>
+<h2 id="run-it">Run it</h2>
+<p>Save <a href="examples/tests/review-desk.vh">review-desk.vh</a> in <code>examples/tests</code>, then
+run it from the starter's <code>learn</code> directory:</p>
+<pre><code class="hljs language-sh">../bin/vh <span class="hljs-built_in">test</span> examples/tests/review-desk.vh
+</code></pre>
+
+<p>On Windows PowerShell:</p>
+<pre><code class="language-powershell">..\bin\vh.bat test examples\tests\review-desk.vh
+</code></pre>
+<pre><code class="hljs language-text">Suite: Review desk tests
+PASS two desks share numbering
+PASS records one checked result
+PASS records a replacement checker&#x27;s result
+Tests: 3, passed: 3, failed: 0, errors: 0
+</code></pre>
+
+<p>The first test checks two real desks sharing one real notebook. The next test
+checks three separate promises: the desk returns the notebook's answer, passes
+it the checked text, and records exactly once. The final test checks that a
+different checker's wording reaches the notebook too.</p>
+<p>Each test creates fresh objects. The assertions compare text and numbers that
+we can observe through public methods. The desk needs no changes to work with
+the recorder: both notebooks answer the message it already uses.</p>
+<h2 id="make-it-yours">Make it yours</h2>
+<p>In <code>records one checked result</code>, after the existing assertions, review
+<code>&quot;Station model&quot;</code> using the same desk. Add assertions that its result is
+<code>&quot;Saved&quot;</code>, <code>notebook.lastEntry</code> is <code>&quot;Checked: Station model&quot;</code> and
+<code>notebook.count</code> is <code>2</code>. Separate the added statements with semicolons.
+The report should still show three passing tests: you added checks to an
+existing case.</p>
+<p>This catches a useful mistake: recording the first result twice instead of
+recording each new review once. You now have a way to check both an answer and
+the work a component asks its collaborators to do.</p>
+<h2 id="your-next-project">Your next project</h2>
+<p>You can organize calculations, keep related data together, select and summarize
+it, customize a report, and test components together. Try applying that sequence
+to a book list or a supply cupboard of your own.</p>
+<p>For an external collaborator, continue to the Java capability lesson. To move
+shared code into separate source files, the <a href="15-worlds.html">worlds lesson</a> shows
+an application assembled from explicit inputs.</p>
+<p><a href="13-java-capability.html">Try next: Add a capability written in Java</a></p>
+<p><a href="index.html">Next: Choose your next learning path</a></p>
+</main>
+  <footer class="wrap"><p>Public preview v0.6.4 · Download the files shown in each lesson. Recipe projects use the packaging tools.</p><a href="../">Back to the preview</a></footer></body></html>
